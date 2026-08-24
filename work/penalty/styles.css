@@ -286,3 +286,65 @@ h2{
 @media (prefers-contrast:more){
   :root{ --grey:#C6CDD9; --grey-2:#9AA2B2; --line:#3C4353; }
 }
+
+/* ── motion ───────────────────────────────────────────────────────────────
+   Scoped to .motion, which app.js adds at runtime. If the script never
+   runs, nothing here applies and the page is fully visible — content that
+   is hidden by CSS and revealed by JS is the standard way scroll animation
+   takes a page down. */
+
+.motion [data-enter],
+.motion [data-rise]{ opacity:0; transform:translateY(18px); }
+.motion [data-enter].in,
+.motion [data-rise].in{
+  opacity:1; transform:none;
+  transition:opacity .58s var(--ease) var(--d,0ms),
+             transform .58s var(--ease) var(--d,0ms);
+}
+.motion .hero-art[data-enter]{ transform:translateY(26px) scale(.97); }
+.motion .hero-art[data-enter].in{ transform:none; transition-duration:.72s; }
+
+/* the phone's own contents deal themselves in behind the phone */
+.motion .hero-art .p-list li,
+.motion .hero-art .p-flag{ opacity:0; transform:translateY(8px); }
+.motion .hero-art.in .p-list li,
+.motion .hero-art.in .p-flag{
+  opacity:1; transform:none;
+  transition:opacity .4s var(--ease) var(--pd,0ms), transform .4s var(--ease) var(--pd,0ms);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .motion [data-enter], .motion [data-rise],
+  .motion .hero-art .p-list li, .motion .hero-art .p-flag{
+    opacity:1 !important; transform:none !important;
+  }
+}
+
+/* ── hover ────────────────────────────────────────────────────────────── */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .ico{ transition:transform .3s var(--ease); }
+  .feat:hover .ico{ transform:translateY(-3px) rotate(-5deg) scale(1.06); }
+
+  .steps li{ transition:border-color .25s var(--ease); }
+  .steps li:hover{ border-top-color:var(--lime); }
+  .steps .n{ transition:transform .25s var(--ease); }
+  .steps li:hover .n{ transform:scale(1.14); }
+
+  .plan{ transition:transform .2s var(--ease), border-color .2s var(--ease); }
+  .plan:hover{ transform:translateY(-4px); border-color:#4B5468; }
+  .plan.hot:hover{ border-color:var(--lime); }
+
+  .quotes figure{ transition:transform .2s var(--ease), border-color .2s var(--ease); }
+  .quotes figure:hover{ transform:translateY(-3px); border-color:#3D465A; }
+
+  .faq summary::after{ transition:transform .22s var(--ease); }
+  .faq details[open] summary::after{ transform:rotate(180deg); }
+
+  .btn.solid{ position:relative; overflow:hidden; }
+  .btn.solid::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(100deg,transparent 32%,rgba(255,255,255,.42) 50%,transparent 68%);
+    transform:translateX(-100%);
+  }
+  .btn.solid:hover::after{ transform:translateX(100%); transition:transform .58s var(--ease); }
+}

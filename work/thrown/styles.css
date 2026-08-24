@@ -1,4 +1,4 @@
-/* TANAH — concept storefront.
+/* THROWN — concept storefront.
    Palette: raw sand ground, kiln brown ink, terracotta accent. Warm and
    earthy, apart from the portfolio (paper + cobalt) and the landing page
    (near-black + lime).
@@ -298,4 +298,66 @@ body.cart-open .cart{ transform:translateX(0); }
 
 @media (prefers-contrast:more){
   :root{ --ink-2:#463A2C; --ink-3:#5F5241; --rule:#B2A38B; }
+}
+
+/* ── motion ───────────────────────────────────────────────────────────────
+   Scoped to .motion, added by app.js at runtime. With JS off nothing here
+   applies, so every product stays visible and buyable. */
+
+.motion [data-enter],
+.motion [data-rise]{ opacity:0; transform:translateY(16px); }
+.motion [data-enter].in,
+.motion [data-rise].in{
+  opacity:1; transform:none;
+  transition:opacity .5s var(--ease) var(--d,0ms),
+             transform .5s var(--ease) var(--d,0ms);
+}
+.motion .hero-swatches[data-enter] .sw{ transform:scale(.86); }
+.motion .hero-swatches[data-enter].in .sw{
+  transform:none; transition:transform .5s var(--ease);
+}
+.motion .hero-swatches.in .sw:nth-child(2){ transition-delay:.07s; }
+.motion .hero-swatches.in .sw:nth-child(3){ transition-delay:.14s; }
+
+@media (prefers-reduced-motion:reduce){
+  .motion [data-enter], .motion [data-rise]{ opacity:1 !important; transform:none !important; }
+}
+
+/* the cart badge kicks when a piece lands in it */
+@keyframes bump{
+  0%{ transform:scale(1) }
+  38%{ transform:scale(1.42) }
+  100%{ transform:scale(1) }
+}
+.count.bump{ animation:bump .38s var(--ease); }
+
+/* ── hover ────────────────────────────────────────────────────────────── */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  /* the pot lifts off the shelf and its shadow tightens under it */
+  .pot{ transition:transform .34s var(--ease); }
+  .pot .shadow{ transition:transform .34s var(--ease), opacity .34s var(--ease); transform-origin:50% 90%; }
+  .card:hover .pot{ transform:translateY(-7px); }
+  .card:hover .pot .shadow{ transform:scaleX(.82); opacity:.7; }
+
+  .shot{ transition:background-position .5s var(--ease); background-size:150% 150%; }
+  .card:hover .shot{ background-position:100% 100%; }
+
+  .dot::before{ transition:transform .16s var(--ease), border-color .16s var(--ease); }
+  .dot:hover::before{ transform:scale(1.16); border-color:var(--ink-2); }
+
+  .add{ position:relative; overflow:hidden; }
+  .add::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(100deg,transparent 32%,rgba(255,255,255,.22) 50%,transparent 68%);
+    transform:translateX(-100%);
+  }
+  .add:hover::after{ transform:translateX(100%); transition:transform .58s var(--ease); }
+
+  .sw{ transition:transform .25s var(--ease); }
+  .hero-swatches:hover .sw{ transform:translateY(-4px); }
+  .hero-swatches .sw:nth-child(2){ transition-delay:.05s; }
+  .hero-swatches .sw:nth-child(3){ transition-delay:.1s; }
+
+  .chip{ transition:background .14s var(--ease), color .14s var(--ease), transform .14s var(--ease); }
+  .chip:hover{ transform:translateY(-2px); }
 }

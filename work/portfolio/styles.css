@@ -289,3 +289,75 @@ h1 em{ font-style:normal; color:var(--blue); }
 @media (prefers-contrast:more){
   :root{ --ink-2:#26262C; --ink-3:#4A4A52; --rule:#B4B4AC; }
 }
+
+/* ── motion ───────────────────────────────────────────────────────────────
+   Everything below is scoped to .motion, a class app.js adds at runtime.
+   That is deliberate: if the script never runs, none of these rules apply
+   and the page renders fully visible. Hiding content in the stylesheet and
+   relying on JS to reveal it is how scroll animation takes a site down. */
+
+.motion [data-enter],
+.motion [data-rise]{
+  opacity:0;
+  transform:translateY(16px);
+}
+.motion [data-enter].in,
+.motion [data-rise].in{
+  opacity:1; transform:none;
+  transition:opacity .55s var(--ease) var(--d,0ms),
+             transform .55s var(--ease) var(--d,0ms);
+}
+.motion h1[data-enter]{ transform:translateY(22px); }
+
+/* the hero rule under the heading draws itself in */
+.motion .proof{ position:relative; }
+
+@media (prefers-reduced-motion:reduce){
+  .motion [data-enter], .motion [data-rise]{ opacity:1 !important; transform:none !important; }
+}
+
+/* ── hover: the thumbnails come alive, but only while pointed at ───────── */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .chip{ transition:transform .38s var(--ease); }
+  .card:hover .c1{ transform:rotate(-13deg) translate(-10px,-5px); }
+  .card:hover .c2{ transform:rotate(10deg) translate(8px,-2px); }
+  .card:hover .c3{ transform:rotate(-3deg) translate(-1px,7px); }
+
+  .t-brew .bar{ transition:height .42s var(--ease); }
+  .card:hover .b1{ height:40%; }
+  .card:hover .b2{ height:26%; }
+  .card:hover .b3{ height:50%; }
+  .t-brew .medal{ transition:transform .42s var(--ease); }
+  .card:hover .medal{ transform:rotate(-14deg) scale(1.07); }
+
+  .t-tools .row{ transition:width .4s var(--ease); }
+  .card:hover .r1{ width:64%; }
+  .card:hover .r2{ width:52%; }
+  .card:hover .r3{ width:44%; }
+  /* the caret only blinks while you are on the card — never ambiently */
+  .card:hover .cur{ animation:caret 1s steps(1) infinite; }
+  @keyframes caret{ 0%,55%{ opacity:1 } 56%,100%{ opacity:0 } }
+
+  .tier{ transition:transform .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease); }
+  .tier:hover{ transform:translateY(-4px); border-color:var(--ink); box-shadow:0 14px 30px rgba(17,17,20,.10); }
+
+  .facts div{ transition:background .15s var(--ease); }
+  .facts div:hover{ background:var(--paper-2); }
+
+  /* nav underline sweeps out from the left rather than just appearing */
+  .nav a{ position:relative; border-bottom-color:transparent !important; }
+  .nav a::after{
+    content:""; position:absolute; left:0; right:0; bottom:8px; height:1.5px;
+    background:var(--blue); transform:scaleX(0); transform-origin:left;
+    transition:transform .22s var(--ease);
+  }
+  .nav a:hover::after, .nav a:focus-visible::after{ transform:scaleX(1); }
+
+  .btn.primary{ position:relative; overflow:hidden; }
+  .btn.primary::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,.30) 50%, transparent 70%);
+    transform:translateX(-100%);
+  }
+  .btn.primary:hover::after{ transform:translateX(100%); transition:transform .6s var(--ease); }
+}

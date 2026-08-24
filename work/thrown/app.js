@@ -1,4 +1,4 @@
-/* TANAH — a concept storefront.
+/* THROWN — a concept storefront.
    =========================================================================
    A real e-commerce front end: filter, sort, colourway selection, add to
    cart, a cart drawer with quantities, a live subtotal, a free-shipping
@@ -47,8 +47,8 @@ const chosen = {};                      // product id -> glaze key
 PRODUCTS.forEach((p) => (chosen[p.id] = p.glazes[0]));
 
 let cart = [];
-try { cart = JSON.parse(localStorage.getItem("tanah-cart") || "[]"); } catch { cart = []; }
-const save = () => localStorage.setItem("tanah-cart", JSON.stringify(cart));
+try { cart = JSON.parse(localStorage.getItem("thrown-cart") || "[]"); } catch { cart = []; }
+const save = () => localStorage.setItem("thrown-cart", JSON.stringify(cart));
 
 /* ── the pot ─────────────────────────────────────────────────────────── */
 function vessel(p, glazeKey) {
@@ -88,7 +88,7 @@ function drawGrid() {
     const gk = (filter !== "all" && p.glazes.includes(filter)) ? filter : chosen[p.id];
     chosen[p.id] = gk;
     return `
-    <li class="card">
+    <li class="card" data-rise>
       <div class="shot g-${gk}">${vessel(p, gk)}</div>
       <div class="info">
         <div class="line">
@@ -113,6 +113,7 @@ function drawGrid() {
     drawGrid();
   }));
   $$("#products .add").forEach((b) => b.addEventListener("click", () => add(b.dataset.add)));
+  if (typeof scan === "function") scan();
 }
 
 /* ── cart ────────────────────────────────────────────────────────────── */
@@ -122,7 +123,7 @@ function add(id) {
   const line = cart.find((l) => l.id === id && l.glaze === gk);
   if (line) line.qty += 1;
   else cart.push({ id, glaze: gk, qty: 1 });
-  save(); drawCart(); openCart();
+  save(); drawCart(); bump(); openCart();
 }
 
 function setQty(i, d) {
@@ -208,5 +209,56 @@ $("#signup").addEventListener("submit", (e) => {
   e.target.reset();
 });
 
+/* ── motion ──────────────────────────────────────────────────────────────
+   Same rule as the other pages: the .motion class is added by this script,
+   so with JavaScript off nothing is hidden and the shop still works. And
+   the reveal is a rAF position sweep rather than an IntersectionObserver,
+   because IO delivers asynchronously and a fast flick-scroll or an anchor
+   jump can pass an element without it ever being reported — that leaves
+   products permanently invisible, which on a shop means unsellable. */
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!REDUCED) document.documentElement.classList.add("motion");
+
+document.querySelectorAll("[data-enter]").forEach((el) => {
+  el.style.setProperty("--d", (el.dataset.enter - 1) * 90 + "ms");
+  requestAnimationFrame(() => el.classList.add("in"));
+});
+
+let pending = [];
+function scan() {
+  pending = [...document.querySelectorAll("[data-rise]:not(.in)")];
+  if (REDUCED) { pending.forEach((el) => el.classList.add("in")); return; }
+  pending.forEach((el) => {
+    const sibs = [...el.parentElement.children].filter((c) => c.hasAttribute("data-rise"));
+    el.style.setProperty("--d", Math.min(Math.max(sibs.indexOf(el), 0), 5) * 65 + "ms");
+  });
+  sweep();
+}
+let queued = false;
+function sweep() {
+  queued = false;
+  const line = innerHeight * 0.94;
+  for (let i = pending.length - 1; i >= 0; i--) {
+    if (pending[i].getBoundingClientRect().top < line) {
+      pending[i].classList.add("in");
+      pending.splice(i, 1);
+    }
+  }
+}
+const ping = () => { if (!queued) { queued = true; requestAnimationFrame(sweep); } };
+addEventListener("scroll", ping, { passive: true });
+addEventListener("resize", ping);
+
+/* the cart badge kicks when something lands in it — feedback for an action
+   whose result is otherwise off-screen behind the drawer */
+function bump() {
+  if (REDUCED) return;
+  const c = $("#cartCount");
+  c.classList.remove("bump");
+  void c.offsetWidth;
+  c.classList.add("bump");
+}
+
 drawGrid();
 drawCart();
+scan();
