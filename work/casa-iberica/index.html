@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casa Iberica Deli — take a number</title>
+<meta name="description" content="Concept redesign for Casa Iberica Deli, 25 Johnston Street Fitzroy. A Spanish, Portuguese and Latin American deli, family run since 1975.">
+
+<!--
+  ═══════════════════════════════════════════════════════════════════════════
+  UNSOLICITED CONCEPT REDESIGN — Casa Iberica Deli, 25 Johnston Street Fitzroy.
+  Not commissioned. Not affiliated. Stated plainly in the footer.
+
+  OBJECT: a deli TICKET DISPENSER. The enamel box on the wall with a paper
+  tongue hanging out of its throat. You drag the tongue down; the perforation
+  strains, tears, and the ticket falls onto the granite counter below.
+
+  WHY IT IS LOAD-BEARING — delete it and information is lost:
+    · the roll's remaining diameter IS how much of the deli you have not seen
+    · the ticket number IS the section  (six numbers, six things to know)
+    · the stubs on the brass spike ARE your progress
+    · the fold in each ticket IS the "tell me more" control — the detail is
+      printed on the folded half and only exists once you unfold it
+  There is no nav, no accordion and no spec table anywhere on this page.
+  Everything the deli has to say arrives through the paper.
+
+  PALETTE "trastienda" (the back room): a dark cacao-brown ground, a blue
+  enamel machine, mint ticket stock, one pimentón red. Deliberately NOT the
+  oxblood/terracotta that a Spanish deli defaults to, and not a cream ground.
+
+  MOTION: every movement is caused by the visitor — drag, tear, unfold, tap,
+  pointer-tilt. Nothing loops, nothing moves while you sit still.
+
+  FACTS: only what the business publishes itself — the address, 1975, the
+  family names, the Alphington kitchen/factory/school, the bookings address.
+  Nothing invented. Placeholders marked PLACEHOLDER (no angle brackets — a nested comment
+  delimiter would terminate this block early) where real copy would have
+  to come from the owner.
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%232B211B'/%3E%3Crect x='6' y='4' width='20' height='17' rx='2' fill='%231D5C99'/%3E%3Crect x='9' y='19' width='14' height='9' fill='%23CFE0D2'/%3E%3Cpath d='M9 28l2.3-2 2.4 2 2.3-2 2.4 2 2.3-2 2.3 2z' fill='%232B211B'/%3E%3Ccircle cx='16' cy='12' r='5' fill='%23CFE0D2'/%3E%3Ccircle cx='16' cy='12' r='1.6' fill='%23C08B3C'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="rail">
+  <span class="mark">Casa Iberica</span>
+  <span class="rail-r">Fitzroy · since 1975</span>
+</header>
+
+<main class="page">
+
+  <p class="kicker">Take a number.</p>
+  <h1 class="lead">A Spanish, Portuguese and Latin&nbsp;American deli<span class="dsk"> on Johnston Street</span>.</h1>
+
+  <!-- ═══ THE OBJECT ═══ -->
+  <div class="counter-stage" id="stage">
+
+    <!-- tiled back wall, the dispenser mounted on it -->
+    <div class="wall">
+
+      <div class="serving">
+        <span class="serving-k">Now serving</span>
+        <span class="serving-n" id="servingN">00</span>
+      </div>
+
+      <div class="disp-3d">
+        <div class="dispenser" id="disp">
+
+          <div class="face f-top"></div>
+          <div class="face f-right"></div>
+
+          <div class="face f-front">
+            <span class="plate">Tome un número</span>
+
+            <span class="window">
+              <svg class="roll-svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle cx="50" cy="50" r="41" class="well"/>
+                <g id="rollG" class="rollg">
+                  <circle cx="50" cy="50" r="36" class="pap"/>
+                  <circle cx="50" cy="50" r="29" class="lay"/>
+                  <circle cx="50" cy="50" r="22" class="lay"/>
+                  <circle cx="50" cy="50" r="15" class="lay"/>
+                  <path d="M50 14 A36 36 0 0 1 82 44" class="edge"/>
+                </g>
+                <circle cx="50" cy="50" r="5.5" class="spindle"/>
+                <circle cx="50" cy="50" r="41" class="glass"/>
+              </svg>
+            </span>
+
+            <span class="throat" aria-hidden="true"></span>
+
+            <!-- the paper hanging out. drag it. -->
+            <div class="tongue" id="tongue" role="presentation">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="tear-line" aria-hidden="true"></span>
+            </div>
+
+            <button class="pull" id="pull" type="button" aria-label="Pull a ticket from the dispenser">Pull</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- the granite counter the ticket lands on -->
+    <div class="shelf">
+      <div class="slab">
+        <div class="drop" id="drop">
+          <div class="ghost" aria-hidden="true"><span>Pull the tab &mdash; your ticket lands here</span></div>
+        </div>
+        <div class="spike" id="spike" aria-label="Tickets you have taken">
+          <span class="needle" aria-hidden="true"></span>
+          <span class="foot-brass" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ the only other section: two painted tiles ═══ -->
+  <section class="tiles">
+    <h2 class="h2">Two counters</h2>
+    <div class="tile-row">
+      <div class="tile">
+        <span class="tile-n">25 Johnston Street</span>
+        <span class="tile-s">Fitzroy · the deli</span>
+      </div>
+      <div class="tile">
+        <span class="tile-n">Casa Iberica Kitchen</span>
+        <span class="tile-s">Alphington · warehouse, factory, classes</span>
+      </div>
+    </div>
+    <!-- PLACEHOLDER: opening hours belong on these tiles. Not published in a
+         form I can verify, so they are omitted rather than invented. -->
+    <p class="bookings"><span class="bk">Bookings</span> <a href="mailto:classes@casaibericadeli.com.au">classes@casaibericadeli.com.au</a></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  An unsolicited concept by Aufan Rachmad. Not affiliated with, commissioned by or endorsed by Casa Iberica Deli. Every fact shown is taken from the business&rsquo;s own published pages.
+</footer>
+
+<!-- drawn marks — one per ticket. no photographs anywhere on this page. -->
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+
+  <symbol id="i-shop" viewBox="0 0 64 64">
+    <path d="M6 22h52v4H6z" fill="var(--ink)"/>
+    <path d="M6 22 10 10h44l4 12z" fill="var(--azul)"/>
+    <path d="M18 10 16 22M30 10l-1 12M42 10l2 12" stroke="var(--tile)" stroke-width="2.2" fill="none"/>
+    <path d="M10 26h44v30H10z" fill="none" stroke="var(--ink)" stroke-width="2.4"/>
+    <path d="M26 38h12v18H26z" fill="var(--azul)" opacity=".9"/>
+    <path d="M15 32h7v7h-7zM42 32h7v7h-7z" fill="var(--ink)" opacity=".35"/>
+  </symbol>
+
+  <symbol id="i-family" viewBox="0 0 64 64">
+    <path d="M4 12h56" stroke="var(--ink)" stroke-width="2.6"/>
+    <g fill="var(--azul)">
+      <path d="M12 16c0-2 2-2 3-3 1 3 5 3 6 0 1 1 3 1 3 3v22H12z"/>
+      <path d="M40 16c0-2 2-2 3-3 1 3 5 3 6 0 1 1 3 1 3 3v22H40z"/>
+    </g>
+    <g fill="var(--ink)" opacity=".55">
+      <path d="M26 16c0-2 2-2 3-3 1 3 5 3 6 0 1 1 3 1 3 3v16H26z"/>
+    </g>
+    <path d="M15 12v4M44 12v4M29 12v4" stroke="var(--ink)" stroke-width="2"/>
+    <path d="M8 46h48" stroke="var(--ink)" stroke-width="2" opacity=".3"/>
+  </symbol>
+
+  <symbol id="i-chorizo" viewBox="0 0 64 64">
+    <path d="M6 12c0 8 6 10 12 10s12 2 12 10 6 10 12 10 12 2 12 10" fill="none" stroke="var(--ink)" stroke-width="2"/>
+    <g fill="var(--piment)">
+      <ellipse cx="16" cy="24" rx="7" ry="12" transform="rotate(-24 16 24)"/>
+      <ellipse cx="32" cy="36" rx="7" ry="12" transform="rotate(-24 32 36)"/>
+      <ellipse cx="48" cy="48" rx="7" ry="12" transform="rotate(-24 48 48)"/>
+    </g>
+    <g stroke="var(--ink)" stroke-width="1.8" opacity=".55" fill="none">
+      <path d="M10 16c3 2 7 2 10 0M26 28c3 2 7 2 10 0M42 40c3 2 7 2 10 0"/>
+    </g>
+  </symbol>
+
+  <symbol id="i-kitchen" viewBox="0 0 64 64">
+    <path d="M4 30 14 18l10 12 10-12 10 12 10-12v26H4z" fill="var(--azul)"/>
+    <path d="M4 30 14 18l10 12M24 30l10-12 10 12M44 30l10-12" fill="none" stroke="var(--tile)" stroke-width="2" opacity=".7"/>
+    <path d="M4 56h56" stroke="var(--ink)" stroke-width="2.6"/>
+    <rect x="24" y="38" width="14" height="18" fill="var(--ink)" opacity=".4"/>
+    <path d="M46 8c0 4-3 4-3 8M52 6c0 4-3 4-3 8" stroke="var(--ink)" stroke-width="2" fill="none" opacity=".4"/>
+  </symbol>
+
+  <symbol id="i-class" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="36" rx="22" ry="9" fill="var(--ink)" opacity=".2"/>
+    <path d="M10 32a22 8 0 0 0 44 0v2a22 12 0 0 1-44 0z" fill="var(--azul)"/>
+    <ellipse cx="32" cy="32" rx="22" ry="8" fill="var(--azul)"/>
+    <ellipse cx="32" cy="32" rx="16" ry="5.4" fill="var(--piment)" opacity=".85"/>
+    <path d="M10 32H2M54 32h8" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M24 18c0 4-3 4-3 8M32 14c0 5-3 5-3 10M40 18c0 4-3 4-3 8" stroke="var(--ink)" stroke-width="2" fill="none" opacity=".45"/>
+  </symbol>
+
+  <symbol id="i-shelf" viewBox="0 0 64 64">
+    <path d="M4 30h56M4 54h56" stroke="var(--ink)" stroke-width="2.6"/>
+    <g fill="var(--azul)">
+      <rect x="10" y="12" width="12" height="18"/>
+      <rect x="42" y="16" width="12" height="14"/>
+      <rect x="18" y="38" width="11" height="16"/>
+    </g>
+    <g fill="var(--piment)">
+      <rect x="26" y="17" width="11" height="13"/>
+      <rect x="34" y="40" width="13" height="14"/>
+    </g>
+    <g fill="var(--ink)" opacity=".35">
+      <rect x="12" y="16" width="8" height="4"/>
+      <rect x="28" y="21" width="7" height="3"/>
+      <rect x="36" y="44" width="9" height="3"/>
+    </g>
+  </symbol>
+
+</defs></svg>
+
+<script src="app.js"></script>
+</body>
+</html>
