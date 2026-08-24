@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aufan Rachmad — design &amp; front-end, Melbourne</title>
+<meta name="description" content="Aufan Rachmad builds landing pages and websites with a real mechanic in them. Melbourne. Available for project work, internships and junior roles.">
+<meta name="theme-color" content="#17131F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&family=Instrument+Sans:ital,wght@0,400..700;1,400..600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317131F'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FFF3D8'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23FF3D6E'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#contact">Skip to contact</a>
+
+<header class="topbar">
+  <a class="topbar-mark" href="#room">
+    <span class="topbar-dot" aria-hidden="true"></span>
+    <span class="topbar-name">Aufan Rachmad</span>
+    <span class="topbar-role">design &amp; front-end</span>
+  </a>
+  <nav class="topbar-nav" aria-label="Sections">
+    <a href="#rates">Rates</a>
+    <a href="#about">About</a>
+  </nav>
+  <div class="topbar-cta">
+    <a class="topbar-mail" href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a>
+    <a class="btn btn-signal" href="mailto:aufanhakim1920@gmail.com?subject=Project%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AWhat%20I%27m%20building%3A%0ARough%20timing%3A%0ABudget%20range%3A%0A%0A">Start a project <span aria-hidden="true">→</span></a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ 1. THE ROOM ============ -->
+<section class="room" id="room">
+  <div class="floor" aria-hidden="true"></div>
+  <div class="beam" id="beam" aria-hidden="true"></div>
+
+  <div class="copy">
+    <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Melbourne · open for work · replies within a day</p>
+    <h1>Landing pages<br>people actually<br><em>play with.</em></h1>
+    <p class="lede">
+      I'm Aufan — a designer and front-end developer. I build sites with a real
+      mechanic in them: something you can turn, drag or open that tells you
+      something when you do. Written by hand — no template, no page builder.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-signal btn-lg" href="mailto:aufanhakim1920@gmail.com?subject=Project%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AWhat%20I%27m%20building%3A%0ARough%20timing%3A%0ABudget%20range%3A%0A%0A">Start a project <span aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost" href="#rates">See what it costs</a>
+    </div>
+    <p class="disclosure">
+      Everything on the wall is <strong>self-initiated or spec work</strong> —
+      built to prove the craft, not for a client. Two real ones are listed
+      <a href="#about">further down</a>.
+    </p>
+  </div>
+
+  <div class="stage">
+    <div class="slide-frame" id="slideFrame">
+      <div class="projection">
+        <img id="slideImg" src="art/gacha.jpg" alt="Gacha — a working capsule machine built in CSS" width="1200" height="800">
+        <span class="proj-lift" aria-hidden="true"></span>
+        <span class="proj-falloff" aria-hidden="true"></span>
+      </div>
+      <div class="proj-caption">
+        <span class="proj-no" id="projNo">01</span>
+        <span class="proj-title" id="projTitle">Gacha</span>
+        <span class="proj-kind" id="projKind">Capsule machine · collect ten</span>
+      </div>
+    </div>
+    <p class="stage-hint">
+      <kbd>←</kbd><kbd>→</kbd> or press <strong>ADVANCE</strong> · drag the tray · turn the knob to focus
+    </p>
+
+    <!-- the object -->
+    <div class="projector" id="projector">
+      <div class="pj-shadow" aria-hidden="true"></div>
+
+      <div class="pj-tray" id="tray" title="Drag the carousel tray">
+        <div class="pj-tray-disc" aria-hidden="true"></div>
+        <div class="pj-tray-slots" id="traySlots" aria-hidden="true"></div>
+        <div class="pj-tray-hub" aria-hidden="true"></div>
+      </div>
+
+      <div class="pj-body" aria-hidden="true">
+        <div class="pj-deck"></div>
+        <div class="pj-house"><span class="pj-vents"></span></div>
+        <div class="pj-gate"></div>
+        <div class="pj-plate">RACHMAD&nbsp;OPTICAL · CAROUSEL&nbsp;8</div>
+        <div class="pj-power"><span class="pj-power-lamp"></span> PWR</div>
+      </div>
+
+      <div class="pj-arm" aria-hidden="true">
+        <div class="pj-barrel">
+          <div class="pj-lens" id="lens"><i></i></div>
+        </div>
+      </div>
+
+      <div class="pj-knob" id="focusKnob" role="slider" tabindex="0"
+           aria-label="Focus" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="soft">
+        <span class="pj-knob-face" aria-hidden="true"></span>
+      </div>
+
+      <div class="pj-buttons">
+        <button class="pj-btn pj-btn-adv" id="btnNext" aria-label="Advance to the next slide">
+          <span class="pj-btn-top">ADVANCE</span>
+        </button>
+        <button class="pj-btn pj-btn-rev" id="btnPrev" aria-label="Go back one slide">
+          <span class="pj-btn-top">REV</span>
+        </button>
+      </div>
+
+      <div class="pj-feet" aria-hidden="true"><i></i><i></i></div>
+    </div>
+  </div>
+
+  <div class="rig">
+
+    <!-- the index card that comes with the tray -->
+    <article class="indexcard" id="indexCard" aria-live="polite">
+      <header class="ic-head">
+        <span class="ic-no" id="icNo">01</span>
+        <span class="ic-of">of 08</span>
+        <span class="ic-tag" id="icTag">Self-initiated</span>
+      </header>
+      <h2 class="ic-title" id="icTitle">Gacha</h2>
+      <p class="ic-body" id="icBody">
+        A working capsule machine. Insert the coin, turn the crank, catch the
+        capsule and crack it open — ten projects, collected one at a time, with
+        the drop rates printed on the side.
+      </p>
+      <ul class="ic-stack" id="icStack">
+        <li>Physics-lite</li><li>Sequenced states</li><li>Vanilla JS</li>
+      </ul>
+      <footer class="ic-foot">
+        <span id="icRole">Design + build</span>
+        <span id="icYear">2026</span>
+      </footer>
+    </article>
+
+    <div class="readout" aria-hidden="true">
+      <p><span class="ro-k">SLIDE</span> <span class="ro-v" id="roSlide">01 / 08</span></p>
+      <p><span class="ro-k">FOCUS</span> <span class="ro-v ro-bars" id="roFocus">▮▮▮▯▯</span></p>
+      <p><span class="ro-k">LAMP</span> <span class="ro-v ro-lamp" id="roLamp">ON</span></p>
+      <button class="ro-sound" id="btnSound" aria-pressed="true" aria-hidden="false">
+        <span class="ro-k">SOUND</span> <span class="ro-v" id="roSound">ON</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 2. THE FILMSTRIP ============ -->
+<section class="strip-wrap" aria-label="What I do">
+  <div class="filmstrip">
+    <div class="fs-frame">
+      <span class="fs-no">01</span>
+      <h2>Design in the browser</h2>
+      <p>No static mockup hand-off. The layout, the type scale and the motion get decided in the thing itself, so what you approve is what ships.</p>
+    </div>
+    <div class="fs-frame">
+      <span class="fs-no">02</span>
+      <h2>Built by hand</h2>
+      <p>HTML, CSS and JavaScript I wrote. No page builder, no theme, no eighty kilobytes of framework to render six paragraphs. It loads fast because there is nothing in it that shouldn't be.</p>
+    </div>
+    <div class="fs-frame">
+      <span class="fs-no">03</span>
+      <h2>Motion that means something</h2>
+      <p>Every moving thing on a page I build is started by the visitor and carries information. Nothing loops at you, nothing drifts in the background.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. RATES ============ -->
+<section class="rates" id="rates">
+  <div class="sec-head">
+    <p class="sec-kicker">Mounts 01–03</p>
+    <h2 class="sec-title">What it costs</h2>
+    <p class="sec-sub">Fixed price, quoted before anything starts. Half up front, half on launch.</p>
+  </div>
+
+  <div class="mounts">
+
+    <article class="mount">
+      <div class="mount-strip"><span>MOUNT 01</span><span>LANDING PAGE</span></div>
+      <div class="mount-window">
+        <!-- PRICE: Aufan to confirm -->
+        <p class="mount-price">From <strong>A$600</strong></p>
+        <p class="mount-what">One page, custom-built. Not a template, not a Framer preset.</p>
+        <ul class="mount-list">
+          <li>Design and build, one page</li>
+          <li>Copy tightened, not written from scratch</li>
+          <li>Responsive down to 360px</li>
+          <li>Roughly a week</li>
+        </ul>
+      </div>
+      <a class="mount-cta" href="mailto:aufanhakim1920@gmail.com?subject=Landing%20page%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AI%27d%20like%20a%20landing%20page.%0A%0AWhat%20it%27s%20for%3A%0AWhen%20I%20need%20it%3A%0A%0A">Enquire <span aria-hidden="true">→</span></a>
+    </article>
+
+    <article class="mount">
+      <div class="mount-strip"><span>MOUNT 02</span><span>FULL SITE</span></div>
+      <div class="mount-window">
+        <!-- PRICE: Aufan to confirm -->
+        <p class="mount-price">From <strong>A$1,500</strong></p>
+        <p class="mount-what">Four to six pages, designed and built as one system.</p>
+        <ul class="mount-list">
+          <li>Type, colour and component system</li>
+          <li>Content in plain files you can edit</li>
+          <li>Responsive, accessible, fast</li>
+          <li>Two to three weeks</li>
+        </ul>
+      </div>
+      <a class="mount-cta" href="mailto:aufanhakim1920@gmail.com?subject=Full%20site%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AI%27d%20like%20a%20full%20site.%0A%0AWhat%20it%27s%20for%3A%0APages%20I%20think%20I%20need%3A%0AWhen%20I%20need%20it%3A%0A%0A">Enquire <span aria-hidden="true">→</span></a>
+    </article>
+
+    <article class="mount mount-hero">
+      <div class="mount-strip"><span>MOUNT 03</span><span>THE INTERESTING ONE</span></div>
+      <div class="mount-window">
+        <!-- PRICE: Aufan to confirm -->
+        <p class="mount-price">From <strong>A$2,200</strong></p>
+        <p class="mount-what">A page with a real mechanic built for it — like the eight on the wall.</p>
+        <ul class="mount-list">
+          <li>One invented object, made for your thing</li>
+          <li>Concept, prototype, then the build</li>
+          <li>The part people screenshot</li>
+          <li>Three to four weeks</li>
+        </ul>
+      </div>
+      <a class="mount-cta" href="mailto:aufanhakim1920@gmail.com?subject=%22The%20interesting%20one%22%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AI%20want%20the%20one%20with%20a%20mechanic%20in%20it.%0A%0AWhat%20it%27s%20for%3A%0AThe%20idea%20so%20far%3A%0AWhen%20I%20need%20it%3A%0A%0A">Enquire <span aria-hidden="true">→</span></a>
+    </article>
+
+  </div>
+
+  <p class="rates-alt">
+    Also available for <strong>internships and junior front-end / design roles</strong> —
+    same address, <a href="mailto:aufanhakim1920@gmail.com?subject=Internship%20%2F%20junior%20role">aufanhakim1920@gmail.com</a>.
+  </p>
+</section>
+
+<!-- ============ 4. ABOUT ============ -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-main">
+      <p class="sec-kicker">The projectionist</p>
+      <h2 class="sec-title">Muhammad Raufan<br>Hakim Rachmad</h2>
+      <p>
+        Aufan. Melbourne by way of Surabaya, first year of a BSc in Data Science
+        at the University of Melbourne.
+      </p>
+      <p>
+        <strong>Two first places at CISSA Codebrew</strong> — both in my first
+        year, both against teams of masters students. Front of house at a bakery
+        from six in the morning; I got that job off a cold email, round twelve.
+        Nationally certified barista. Indonesian native speaker, IELTS 7.0.
+      </p>
+      <p>
+        I learned this by rebuilding things I liked until the details stopped
+        being wrong. That is still the method.
+      </p>
+    </div>
+
+    <dl class="facts">
+      <div><dt>Codebrew</dt><dd>1st × 2</dd></div>
+      <div><dt>On the wall</dt><dd>8 builds</dd></div>
+      <div><dt>Shift starts</dt><dd>06:00</dd></div>
+      <div><dt>Languages</dt><dd>ID · EN</dd></div>
+    </dl>
+  </div>
+
+  <div class="offwall">
+    <h3>Two that aren't on the wall</h3>
+    <ul>
+      <li>
+        <span class="ow-name">baka nae.</span>
+        <span class="ow-tag">Brand site · real</span>
+        <p>A standalone brand site for an independent anime-merch label — 10.7k Shopee followers, 7.4k reviews. Bilingual ID/EN, live filtering and sorting over her catalogue.</p>
+      </li>
+      <li>
+        <span class="ow-name">Biomate</span>
+        <span class="ow-tag">Shipped · team of four</span>
+        <p>A hiking-match app: you swipe on groups, not people. Built and shipped with a team at a hackathon.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 5. CONTACT — the blank slide at the end of the tray ============ -->
+<section class="contact" id="contact">
+  <p class="contact-kicker">Slide 09 — empty</p>
+
+  <div class="blank-slide">
+    <div class="blank-inner">
+      <p class="blank-lead">The tray runs out here.</p>
+      <a class="blank-mail" href="mailto:aufanhakim1920@gmail.com?subject=Project%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AWhat%20I%27m%20building%3A%0ARough%20timing%3A%0ABudget%20range%3A%0A%0A">aufanhakim1920@gmail.com</a>
+      <p class="blank-sub">Melbourne, AEST · I reply within a day</p>
+    </div>
+  </div>
+
+  <div class="contact-what">
+    <h2>Send me three things</h2>
+    <ol>
+      <li><span>01</span> A sentence about what you're building.</li>
+      <li><span>02</span> Roughly when you need it.</li>
+      <li><span>03</span> A link to anything you like the look of.</li>
+    </ol>
+    <p class="contact-note">That's enough to quote from. If it isn't a fit I'll say so in the reply rather than waste your week.</p>
+    <a class="btn btn-signal btn-lg" href="mailto:aufanhakim1920@gmail.com?subject=Project%20enquiry&amp;body=Hi%20Aufan%2C%0A%0AWhat%20I%27m%20building%3A%0ARough%20timing%3A%0ABudget%20range%3A%0A%0A">Write to me <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>Aufan Rachmad · design &amp; front-end · Melbourne</p>
+  <p><a href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a></p>
+  <p>Built by hand. No template, no page builder.</p>
+</footer>
+
+<div class="grain" aria-hidden="true"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

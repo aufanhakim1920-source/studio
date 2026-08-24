@@ -1,0 +1,140 @@
+{
+  "projects": [
+    {
+      "name": "FanNest",
+      "category": "web",
+      "year": "2026",
+      "status": "LIVE",
+      "url": "https://fannest.store/",
+      "desc": "A full Shopify anime-merch storefront — theme build, product catalogue, pricing rules and an automated Instagram/Facebook Reels pipeline that sources product media, prices it in USD and posts on a schedule without duplicating a listing.",
+      "tags": ["Shopify", "Liquid", "Node", "Automation", "Meta API"]
+    },
+    {
+      "name": "Aufan Week Board",
+      "category": "web",
+      "year": "2026",
+      "status": "LIVE",
+      "url": "https://stellular-queijadas-097900.netlify.app",
+      "desc": "A public departures-board style site showing my real weekly availability, pulled live from Google Calendar, with a booking request flow that emails me and blocks the slot on approval. Cut manual back-and-forth to near zero.",
+      "tags": ["Netlify", "Serverless", "Google Calendar", "Composio"]
+    },
+    {
+      "name": "baka nae.",
+      "category": "web",
+      "year": "2026",
+      "status": "IN BUILD",
+      "url": "",
+      "desc": "Brand showcase site for my sister's anime fanart label — 10.7k Shopee followers, 7.4k five-star reviews. Bilingual ID/EN, live catalogue filtering and sorting, built as a credibility flagship that hands checkout back to Shopee.",
+      "tags": ["HTML/CSS/JS", "i18n", "Design System"]
+    },
+    {
+      "name": "Pixel Dungeon Knight",
+      "category": "game",
+      "year": "2026",
+      "status": "PLAYABLE",
+      "url": "",
+      "desc": "Browser and mobile roguelike dungeon shooter built end to end: 18 characters with two skills each, 136 weapons, 15 attachments, 9 pets, 98 enemies, 28 bosses, 17 biomes, plus Boss Rush and hidden vaults.",
+      "tags": ["JavaScript", "Canvas", "Game Design", "Mobile"]
+    },
+    {
+      "name": "Untitled Game",
+      "category": "game",
+      "year": "2026",
+      "status": "IN BUILD",
+      "url": "",
+      "desc": "Co-op 3D pixel-art adventure in Unity, built with a partner. Where I learned to actually measure a game instead of guessing — combat balance work cut time-per-kill from 8.0s to 2.2s after instrumenting it.",
+      "tags": ["Unity", "C#", "3D Pixel Art", "Co-op"]
+    },
+    {
+      "name": "Hollowborne",
+      "category": "game",
+      "year": "2026",
+      "status": "IN BUILD",
+      "url": "",
+      "desc": "Browser action-RPG with an original story bible — combat, progression and world design written before a line of engine code.",
+      "tags": ["JavaScript", "Game Design", "Narrative"]
+    },
+    {
+      "name": "AgentSentry",
+      "category": "ai",
+      "year": "2026",
+      "status": "PROTOTYPE",
+      "url": "",
+      "desc": "A kill-switch proxy for AI agents: sits between an agent and the APIs it calls, logs every request, and lets a human cut it off mid-run. Built as a Next.js dashboard around a SaaS idea.",
+      "tags": ["Next.js", "TypeScript", "Proxy", "Observability"]
+    },
+    {
+      "name": "FreshTrack",
+      "category": "ai",
+      "year": "2026",
+      "status": "PROTOTYPE",
+      "url": "",
+      "desc": "Mobile food-freshness tracker — point the camera at what's in the fridge and get a shelf-life estimate before it goes to waste.",
+      "tags": ["Mobile", "Computer Vision", "Product"]
+    },
+    {
+      "name": "Motion Graphics Pipeline",
+      "category": "motion",
+      "year": "2026",
+      "status": "SHIPPED",
+      "url": "",
+      "desc": "Vertical 9:16 explainer videos built in Remotion — code-driven scenes with sound effects timed frame-accurately to the animation rather than eyeballed in an editor.",
+      "tags": ["Remotion", "React", "Video", "Sound Design"]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "JUL 2026 —",
+      "role": "Front of House",
+      "org": "Natural Tucker Bakery · Carlton North",
+      "note": "Won the role from a cold-email outreach campaign I ran and tracked myself. High-volume morning service, weekly roster."
+    },
+    {
+      "when": "MAR 2026",
+      "role": "Team Lead & Project Coordinator",
+      "org": "CISSA Codebrew & Design Blitz",
+      "note": "Led teams of 4–6 to two consecutive 1st-place finishes under 48-hour deadlines, as a first-year against masters-level teams. Lead pitcher to the judging panel; covered design, frontend and backend on the first win."
+    },
+    {
+      "when": "FEB 2026",
+      "role": "O-Week Community Volunteer",
+      "org": "University of Melbourne",
+      "note": "Guided hundreds of domestic and international students through orientation. Awarded the UniMelb Community Badge for proactive service."
+    },
+    {
+      "when": "2026 —",
+      "role": "BSci, Data Science",
+      "org": "University of Melbourne",
+      "note": "Linear algebra, algorithms in C, and the statistics side of the major."
+    },
+    {
+      "when": "2022 —",
+      "role": "Independent living",
+      "org": "Surabaya → Melbourne",
+      "note": "Self-managed finances, household and schedule since 15, alongside full-time study."
+    }
+  ],
+  "awards": [
+    { "text": "1st Place ×2 — CISSA Codebrew & Design Blitz hackathons", "when": "2026" },
+    { "text": "UniMelb Community Badge — outstanding proactive service", "when": "2026" },
+    { "text": "Selected Delegate — World Youth Forum Asia, Future Economics Leadership Summit", "when": "2025" },
+    { "text": "1st Place — Taekwondo Kyorugi competition", "when": "2025" },
+    { "text": "Finisher — Standard Chartered Singapore Marathon 10K", "when": "2024" },
+    { "text": "Head Assistant, Cobra Cleanup Committee — 203.6kg of waste collected, orphanage donation drives, featured in Jawa Pos", "when": "2023" },
+    { "text": "Community Build 28 — built and painted housing for underprivileged families", "when": "2023" },
+    { "text": "Clean Water Access Outreach", "when": "2023" }
+  ],
+  "skills": [
+    "JavaScript", "TypeScript", "Python", "C", "React", "Next.js", "Node.js",
+    "HTML / CSS", "Tailwind", "Unity / C#", "Remotion", "Shopify / Liquid",
+    "Netlify", "REST APIs", "Figma", "Git", "Excel (advanced)"
+  ],
+  "certs": [
+    { "text": "IELTS Band 7.0 — British Council / IDP", "when": "2025" },
+    { "text": "First Aid Certified — APKI", "when": "2025" },
+    { "text": "International Certified Personal Trainer (ICPT) — NASM, theory", "when": "VALID TO 2027" },
+    { "text": "Advanced Microsoft Excel — Binus Bintaro", "when": "2025" },
+    { "text": "DoFoodSafely — Victorian Department of Health", "when": "2026" },
+    { "text": "Bilingual — native Indonesian, fluent English", "when": "—" }
+  ]
+}
