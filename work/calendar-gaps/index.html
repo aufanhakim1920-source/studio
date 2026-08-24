@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calendar — where the gaps are</title>
+<meta name="description" content="Fourteen days, and the free time is the bright part. Click a gap to fill it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking: a plain stylesheet link blocks SCRIPT EXECUTION until it
+     resolves, and a slow font host once stopped a build here from running. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="top">
+    <div>
+      <p class="kick">Next fortnight</p>
+      <h1>Where the gaps are</h1>
+    </div>
+    <button class="ghost quiet" id="clearBtn">Clear all</button>
+  </header>
+
+  <section class="stats" aria-label="Summary">
+    <div class="stat">
+      <p class="s-k">Free, next 14 days</p>
+      <p class="s-v" id="statFree">—</p>
+    </div>
+    <div class="stat wide">
+      <p class="s-k">Longest single stretch</p>
+      <p class="s-v" id="statBest">—</p>
+      <p class="s-sub" id="statWhen"></p>
+    </div>
+    <div class="stat ctrl">
+      <p class="s-k">Only count gaps of at least</p>
+      <div class="segs" role="group" aria-label="Minimum gap">
+        <button class="seg" data-min="30" aria-pressed="false">30m</button>
+        <button class="seg on" data-min="60" aria-pressed="true">1h</button>
+        <button class="seg" data-min="120" aria-pressed="false">2h</button>
+        <button class="seg" data-min="180" aria-pressed="false">3h</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="board">
+    <div class="scale" aria-hidden="true">
+      <span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span>
+    </div>
+    <ol class="rows" id="rows"></ol>
+    <ul class="key" aria-label="Key">
+      <li><i class="k-free"></i>Free — click to fill it</li>
+      <li><i class="k-busy"></i>Taken</li>
+    </ul>
+  </section>
+
+  <footer class="foot">
+    <p>Saved in this browser only. The bar runs 06:00 to midnight.</p>
+  </footer>
+
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Event" hidden>
+  <form class="form" id="form">
+    <div class="f-head">
+      <p class="f-title" id="formTitle">New event</p>
+      <p class="f-when" id="formWhen"></p>
+    </div>
+    <label class="f-row"><span>What</span>
+      <input id="fTitle" type="text" maxlength="60" placeholder="Shift, lecture, gym…" autocomplete="off"></label>
+    <div class="f-two">
+      <label class="f-row"><span>From</span><input id="fStart" type="time" step="300"></label>
+      <label class="f-row"><span>To</span><input id="fEnd" type="time" step="300"></label>
+    </div>
+    <label class="f-row"><span>Type</span>
+      <select id="fKind">
+        <option value="class">Class</option>
+        <option value="work">Work</option>
+        <option value="personal">Personal</option>
+      </select></label>
+    <p class="f-err" id="fErr" role="alert"></p>
+    <div class="f-acts">
+      <button type="submit" class="solid">Save</button>
+      <button type="button" class="ghost" id="fCancel">Cancel</button>
+      <button type="button" class="ghost danger" id="fDel" hidden>Delete</button>
+    </div>
+  </form>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

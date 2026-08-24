@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calendar — month</title>
+<meta name="description" content="A quiet month calendar. Click a day, add what's on, it stays put.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FFFFFF'/%3E%3Crect x='5' y='8' width='22' height='19' rx='3' fill='none' stroke='%231A1A1F' stroke-width='2'/%3E%3Cpath d='M5 14h22' stroke='%231A1A1F' stroke-width='2'/%3E%3Ccircle cx='12' cy='20' r='2' fill='%233E63DD'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking: a plain stylesheet link blocks SCRIPT EXECUTION until it
+     resolves, and a slow font host once stopped a build here from running. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="top">
+    <div class="t-left">
+      <h1 id="monthLabel">—</h1>
+      <div class="stepper">
+        <button id="prev" aria-label="Previous month">&lsaquo;</button>
+        <button id="next" aria-label="Next month">&rsaquo;</button>
+      </div>
+      <button class="ghost" id="todayBtn">Today</button>
+    </div>
+    <button class="ghost quiet" id="clearBtn">Clear all</button>
+  </header>
+
+  <main class="body">
+
+    <section class="cal" aria-label="Month">
+      <div class="dow" aria-hidden="true">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+      <div class="grid" id="grid" role="group" aria-label="Days"></div>
+      <ul class="legend" aria-label="Event types">
+        <li><i style="background:#3E63DD"></i>Class</li>
+        <li><i style="background:#C2410C"></i>Work</li>
+        <li><i style="background:#0F766E"></i>Personal</li>
+      </ul>
+    </section>
+
+    <aside class="day">
+      <div class="d-head">
+        <h2 id="dayLabel">—</h2>
+        <span class="tag" id="dayTag"></span>
+      </div>
+      <p class="d-meta" id="dayMeta"></p>
+
+      <ul class="list" id="list"></ul>
+
+      <button class="add" id="addBtn">+ Add event</button>
+
+      <form class="form" id="form" hidden>
+        <p class="f-title" id="formTitle">New event</p>
+        <label class="f-row">
+          <span>What</span>
+          <input id="fTitle" type="text" maxlength="60" placeholder="Shift, lecture, gym…" autocomplete="off">
+        </label>
+        <div class="f-two">
+          <label class="f-row"><span>From</span><input id="fStart" type="time" step="300"></label>
+          <label class="f-row"><span>To</span><input id="fEnd" type="time" step="300"></label>
+        </div>
+        <label class="f-row">
+          <span>Type</span>
+          <select id="fKind">
+            <option value="class">Class</option>
+            <option value="work">Work</option>
+            <option value="personal">Personal</option>
+          </select>
+        </label>
+        <p class="f-err" id="fErr" role="alert"></p>
+        <div class="f-acts">
+          <button type="submit" class="solid">Save</button>
+          <button type="button" class="ghost" id="fCancel">Cancel</button>
+        </div>
+      </form>
+    </aside>
+
+  </main>
+
+  <footer class="foot">
+    <p>Saved in this browser only. Arrow keys move the day.</p>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
