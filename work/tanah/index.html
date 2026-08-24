@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TANAH — hand-thrown stoneware</title>
+<meta name="description" content="Small-batch stoneware for everyday use. Three glazes, thrown and fired in Melbourne.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23EDE6DA'/%3E%3Cpath d='M7 13q9-2 18 0l-2 10q-7 3-14 0z' fill='%23B0705A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking: a plain stylesheet link blocks SCRIPT EXECUTION until it
+     resolves, and a slow font host once stopped a build here from running. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter+Tight:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter+Tight:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#grid">Skip to products</a>
+
+<p class="ann">Free shipping on orders over $80 &middot; Made in Melbourne</p>
+
+<header class="bar">
+  <a class="logo" href="#top">TANAH</a>
+  <nav class="nav" aria-label="Shop">
+    <a href="#grid">Shop</a>
+    <a href="#story">Our clay</a>
+    <a href="#care">Care</a>
+  </nav>
+  <button class="cart-btn" id="cartBtn" aria-haspopup="dialog" aria-controls="cart">
+    Cart<span class="count" id="cartCount">0</span>
+  </button>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Autumn firing &middot; 2026</p>
+      <h1>Stoneware for<br>every day.</h1>
+      <p class="lede">Thrown by hand in small batches, glazed in three colours, fired twice. Made to be used, chipped and kept.</p>
+      <a class="btn solid" href="#grid">Shop the firing</a>
+    </div>
+    <div class="hero-swatches" aria-hidden="true">
+      <span class="sw s-sand"></span><span class="sw s-ash"></span><span class="sw s-clay"></span>
+    </div>
+  </section>
+
+  <section class="shopbar" id="grid">
+    <h2>The firing <span id="count">6</span></h2>
+    <div class="filters" role="group" aria-label="Filter by glaze">
+      <button class="chip on" data-glaze="all">All glazes</button>
+      <button class="chip" data-glaze="sand">Sand</button>
+      <button class="chip" data-glaze="ash">Ash</button>
+      <button class="chip" data-glaze="clay">Clay</button>
+    </div>
+    <label class="sort">
+      Sort
+      <select id="sort">
+        <option value="feat">Featured</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+      </select>
+    </label>
+  </section>
+
+  <ul class="products" id="products"></ul>
+
+  <section class="band" id="story">
+    <div class="b-item"><h3>Thrown, not moulded</h3><p>Every piece is turned on a wheel, so no two are quite the same size. That is the point of it.</p></div>
+    <div class="b-item"><h3>Fired twice</h3><p>Bisque, then glaze at 1240&deg;C. Vitrified, so it holds heat and does not stain.</p></div>
+    <div class="b-item" id="care"><h3>Dishwasher fine</h3><p>All three glazes are food-safe and machine washable. Not for the microwave if it has a gold rim &mdash; ours do not.</p></div>
+  </section>
+
+  <section class="closer">
+    <h2>Kiln opens the first Friday of each month.</h2>
+    <p>Small batches sell out. Join the list and you will hear before the shop does.</p>
+    <form class="signup" id="signup">
+      <label class="vh" for="em">Email address</label>
+      <input id="em" type="email" placeholder="you@example.com" required>
+      <button class="btn solid" type="submit">Notify me</button>
+    </form>
+    <p class="note" id="signupNote"></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p><b>TANAH</b> &mdash; a concept storefront by Aufan Rachmad.</p>
+  <p>Not a real shop. Products, prices and stock are illustrative.</p>
+</footer>
+
+<!-- ── cart drawer ────────────────────────────────────────────────────── -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="cart" id="cart" role="dialog" aria-label="Your cart" aria-modal="true" hidden>
+  <header class="c-head">
+    <h2>Your cart</h2>
+    <button class="c-close" id="cartClose" aria-label="Close cart">&times;</button>
+  </header>
+  <div class="c-body" id="cartBody"></div>
+  <footer class="c-foot">
+    <div class="c-row"><span>Subtotal</span><b id="sub">$0</b></div>
+    <p class="c-ship" id="ship">Add $80 more for free shipping</p>
+    <button class="btn solid full" id="checkout">Checkout</button>
+    <p class="c-note">Concept storefront &mdash; checkout is not connected.</p>
+  </footer>
+</aside>
+
+<script src="app.js"></script>
+</body>
+</html>
