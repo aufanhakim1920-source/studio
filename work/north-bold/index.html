@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northbound — turn the cup</title>
+<meta name="description" content="A small café in Carlton North. Seasonal single origin, all-day eggs, open seven days.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0C'/%3E%3Cpath d='M8 11h13v8a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5z' fill='%23F5A524'/%3E%3Cpath d='M21 13h2a3 3 0 0 1 0 6h-2' fill='none' stroke='%23F5A524' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking: a plain stylesheet link blocks SCRIPT EXECUTION until it
+     resolves, and a slow font host once stopped a build here from running. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#menu">Skip to the menu</a>
+
+<header class="bar">
+  <a class="logo" href="#top"><span class="dot" aria-hidden="true"></span>Northbound</a>
+  <nav class="nav" aria-label="Sections">
+    <a href="#menu">Menu</a>
+    <a href="#beans">Beans</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <a class="bar-cta" href="#visit">Find us</a>
+</header>
+
+<main id="top">
+
+  <!-- ── hero: the cup ────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-type">
+      <p class="kicker" data-enter="1">Carlton North &middot; seven days</p>
+      <h1 data-enter="2"><span>Turn</span><span>the</span><span class="amber">cup.</span></h1>
+      <p class="lede" data-enter="3">
+        Seasonal single origin on the machine, something slower on filter,
+        and eggs until three. Drag it &mdash; it fills as you read.
+      </p>
+      <div class="cta-row" data-enter="4">
+        <a class="btn solid" href="#menu">The menu</a>
+        <a class="btn line" href="#visit">Hours &amp; place</a>
+      </div>
+    </div>
+
+    <div class="cup-stage" id="cupStage">
+      <canvas id="cup" aria-label="A coffee cup drawn in 3D. Drag left or right to turn it."></canvas>
+      <p class="cup-hint" id="cupHint">drag to turn</p>
+    </div>
+  </section>
+
+  <section class="ticker" aria-hidden="true">
+    <div class="track" id="track"></div>
+  </section>
+
+  <!-- ── menu ─────────────────────────────────────────────────────────── -->
+  <section class="wrap" id="menu">
+    <p class="eyebrow" data-rise>Menu</p>
+    <h2 data-rise>What&rsquo;s on<br>today.</h2>
+
+    <div class="cols">
+      <div class="col" data-rise>
+        <h3>Coffee</h3>
+        <ul class="items">
+          <li><span>Espresso</span><b>4.00</b></li>
+          <li><span>Long black</span><b>4.50</b></li>
+          <li><span>Flat white / latte / cap</span><b>5.00</b></li>
+          <li><span>Batch filter</span><b>4.50</b></li>
+          <li><span>Pour over, single origin</span><b>6.50</b></li>
+          <li><span>Hot chocolate</span><b>5.50</b></li>
+        </ul>
+        <p class="note">Oat, soy and lactose-free at no extra charge.</p>
+      </div>
+      <div class="col" data-rise>
+        <h3>Kitchen</h3>
+        <ul class="items">
+          <li><span>Sourdough, cultured butter</span><b>9.00</b></li>
+          <li><span>Eggs your way on toast</span><b>15.00</b></li>
+          <li><span>Mushrooms, thyme, ricotta</span><b>21.00</b></li>
+          <li><span>Bacon &amp; egg roll</span><b>13.50</b></li>
+          <li><span>Granola, yoghurt, poached fruit</span><b>16.00</b></li>
+          <li><span>Toastie of the week</span><b>14.00</b></li>
+        </ul>
+        <p class="note">Gluten-free bread available. Ask about today&rsquo;s pastry.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── beans ────────────────────────────────────────────────────────── -->
+  <section class="wrap beans" id="beans">
+    <p class="eyebrow" data-rise>Beans</p>
+    <h2 data-rise>On the grinder.</h2>
+    <div class="bean-grid">
+      <article class="bean" data-rise>
+        <p class="b-role">Espresso</p>
+        <h3>Kirinyaga AA</h3>
+        <p class="b-org">Kenya &middot; washed</p>
+        <p>Blackcurrant and a hard, clean acidity. Cuts straight through milk, which is why it stays on the machine.</p>
+      </article>
+      <article class="bean" data-rise>
+        <p class="b-role">Filter</p>
+        <h3>Huila</h3>
+        <p class="b-org">Colombia &middot; washed</p>
+        <p>Softer and rounder &mdash; red apple, brown sugar. The one to sit down with.</p>
+      </article>
+      <article class="bean" data-rise>
+        <p class="b-role">Retail</p>
+        <h3>250g bag</h3>
+        <p class="b-org">$22 &middot; roasted weekly</p>
+        <p>We&rsquo;ll grind it for whatever you brew on, if you tell us what that is.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── visit ────────────────────────────────────────────────────────── -->
+  <section class="wrap visit" id="visit">
+    <p class="eyebrow" data-rise>Visit</p>
+    <h2 data-rise>On the corner.</h2>
+    <div class="v-grid">
+      <div class="v-card" data-rise><b>Mon &ndash; Fri</b><span>7:00 &ndash; 15:00</span></div>
+      <div class="v-card" data-rise><b>Sat &ndash; Sun</b><span>8:00 &ndash; 15:00</span></div>
+      <div class="v-card" data-rise><b>Kitchen</b><span>until 14:30</span></div>
+      <div class="v-card" data-rise><b>Seats</b><span>18 in, 8 out</span></div>
+    </div>
+    <p class="v-note" data-rise>Two minutes off the tram. Walk-ins only &mdash; we don&rsquo;t take bookings.</p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p><b>Northbound</b> &mdash; a concept café site by Aufan Rachmad.</p>
+  <p>Not a real business. Menu, prices and hours are illustrative.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
