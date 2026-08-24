@@ -198,26 +198,39 @@ body{
 
 .part{ cursor:pointer; }
 .part:focus-visible{ outline:none; }
-.part:focus-visible .p-cut{ stroke:var(--signal); }
+.part:focus-visible .pocket{ stroke:var(--signal); stroke-width:2; opacity:.6; }
 
-.p-cut{ fill:var(--plastic); stroke:var(--plastic); stroke-width:11;
-        stroke-linejoin:round; }
-.p-fill{ fill:var(--tint,#EFE6F6); stroke:none; }
-.p-line{ fill:none; stroke:var(--plastic-deep); stroke-width:1.6; stroke-linejoin:round;
-         opacity:.55; }
-.p-hole{ fill:var(--ground); stroke:var(--plastic-deep); stroke-width:1.4; opacity:.9; }
-.p-code{ font-family:var(--mono); font-size:14px; text-anchor:middle;
-         fill:var(--ink); opacity:.34; letter-spacing:.1em; }
-.p-sheen{ fill:#fff; opacity:.0; }
+/* the tinted pocket each part sits in — this is the colourway axis. One
+   design in six colourways is what a real merch run looks like; inventing
+   six different artworks we do not have would not be. */
+.pocket{ opacity:.5; }
+
+/* the die-cut white acrylic/vinyl, generated from her artwork's own alpha */
+.p-cut-img{ pointer-events:none; }
+.p-art{ pointer-events:none; }
+
+/* punched hole + split ring, on the charm only */
+.p-hole{ fill:var(--ground); stroke:var(--plastic-deep); stroke-width:1.3; opacity:.92; }
+.p-ring{ fill:none; stroke:#8C7FA6; stroke-width:2.6; opacity:.85; }
+
+/* paper print and photocard stock */
+.p-paper{ fill:#FCFAFF; stroke:var(--plastic-edge); stroke-width:1; }
+.p-card{ fill:#FFFDFF; stroke:var(--plastic-edge); stroke-width:1; }
+.p-plate{ stroke:none; }
+.p-cap{ font-family:var(--mono); font-size:8.5px; text-anchor:middle;
+        fill:var(--ink); opacity:.5; letter-spacing:.09em; }
+
+.p-code{ font-family:var(--mono); font-size:13px; text-anchor:middle;
+         fill:var(--ink); opacity:.32; letter-spacing:.1em; }
+.p-sheen{ pointer-events:none; }
 
 @media (prefers-reduced-motion:no-preference){
   .part .p-body{ transition:transform .22s var(--ease); }
-  .p-sheen{ transition:transform .55s var(--ease), opacity .25s var(--ease); }
 }
 @media (hover:hover){
-  .part:hover .p-body{ transform:translateY(-4px); }
-  .part:hover .p-sheen{ opacity:.5; transform:translateX(300px); }
-  .part:hover .p-cut{ stroke:#fff; }
+  /* the part lifts off the runner slightly — the only hover motion */
+  .part:hover .p-body{ transform:translateY(-5px); }
+  .part:hover .pocket{ opacity:.68; }
 }
 
 /* gate: the little bar that holds a part on the runner */
@@ -229,7 +242,7 @@ body{
 .part.gone .p-body{ opacity:0; transform:translateY(10px) scale(.94); }
 .part.gone .p-ghost{ opacity:1; }
 .p-ghost{
-  fill:none; stroke:var(--plastic-deep); stroke-width:1.6; stroke-dasharray:5 7;
+  fill:none; stroke:var(--plastic-deep); stroke-width:1.5; stroke-dasharray:5 7;
   opacity:0; stroke-linejoin:round;
 }
 @media (prefers-reduced-motion:no-preference){
@@ -306,7 +319,7 @@ body{
   .tray-svg{ transition:transform .16s var(--ease); }
 }
 .tray .p-hole{ fill:#EFE9F8; }
-.tray .p-cut{ stroke-width:13; }
+/* .p-cut no longer exists — the die-cut is an image now, not a stroked path */
 .t-code{ font-family:var(--mono); font-size:11px; letter-spacing:.18em; color:var(--signal); }
 .t-name{ font-family:var(--sans); font-weight:800; font-size:clamp(21px,2vw,28px);
          letter-spacing:-.028em; line-height:1.02; }
@@ -418,12 +431,10 @@ body{
    white out and leaves the line art over whatever tint the part is — no
    cutout PNG and no image editing needed. Clipped to the silhouette, and
    drawn BEFORE .p-hole so the keyring hole still punches through it. */
-/* mascot.png has the white keyed to alpha, so no blend mode is needed. An
-   earlier version leaned on mix-blend-mode:multiply over the JPEG and rendered
-   nothing: the clipping group is its own stacking context, so the blend had no
-   backdrop to multiply against. A real alpha channel is the robust answer. */
-.p-art{ opacity:.97; pointer-events:none; }
-.part.gone .p-art{ opacity:0; }
+/* Her artwork carries its own alpha (white keyed out), so no blend mode is
+   involved. An earlier version used mix-blend-mode:multiply over a JPEG and
+   rendered nothing at all. A real alpha channel is the robust answer. */
+.part.gone .p-art, .part.gone .p-cut-img{ opacity:0; }
 
 /* ── card navigation: step through the six parts without going back ────── */
 .t-nav{ display:flex; align-items:center; gap:8px; margin-top:2px; }

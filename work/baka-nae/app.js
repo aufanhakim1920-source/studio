@@ -1,7 +1,22 @@
 /* baka nae. — THE SPRUE
-   One object: an injection-moulded parts runner.
-   Mechanic: nip a part off the runner -> it lands in the tray and tells you
-   what it is. The runner keeps the cut nubs, so it remembers what you took. */
+   One object: a parts runner. Nip a part off it and it lands in the tray.
+
+   ── what changed, and why ────────────────────────────────────────────────
+   The first pass drew six near-identical cat-shaped blanks with a small
+   picture floating in the middle of each. That did not look like anything
+   she actually sells, which is what "not executed correctly" meant.
+
+   Now the four runners are four REAL product forms, so switching A→B→C→D
+   visibly changes the object in your hands:
+
+     A  GANTUNGAN  acrylic charm  — die-cut, glossy, punched hole + split ring
+     B  STIKER     die-cut sticker — same cut line, matte, no hole
+     C  CETAK      art print       — paper sheet, white margin
+     D  KARTU      photocard       — rounded card, glossy, caption band
+
+   The die-cut outline is generated from her own artwork's alpha channel
+   (assets/charm-cut.png), so the cut follows the character the way a real
+   acrylic charm is cut — it is not a generic silhouette we invented. */
 
 const SHOPEE = "https://shopee.co.id/baka_nae";
 
@@ -13,7 +28,6 @@ const STR = {
     hint:   "Klik satu bagian untuk melepasnya.",
     buy:    "BELI DI SHOPEE",
     ink:    "LOLOS QC · 4,97★ dari 7.440 ulasan · 10.711 pengikut",
-    seri:   "Seri",
     format: "Format",
     shop:   "LIHAT DI SHOPEE",
     close:  "Tutup",
@@ -23,8 +37,8 @@ const STR = {
     runners: [
       { name: "GANTUNGAN", fmt: "Gantungan akrilik" },
       { name: "STIKER",    fmt: "Stiker die-cut"    },
-      { name: "CETAK",     fmt: "Art print"          },
-      { name: "KARTU",     fmt: "Kartu pos & photocard" },
+      { name: "CETAK",     fmt: "Art print"         },
+      { name: "KARTU",     fmt: "Photocard"         },
     ],
   },
   en: {
@@ -33,7 +47,6 @@ const STR = {
     hint:   "Click one part to snap it off.",
     buy:    "BUY ON SHOPEE",
     ink:    "QC PASS · 4.97★ from 7,440 reviews · 10,711 followers",
-    seri:   "Series",
     format: "Format",
     shop:   "VIEW ON SHOPEE",
     close:  "Close",
@@ -41,40 +54,39 @@ const STR = {
     prev:   "Previous part",
     next:   "Next part",
     runners: [
-      { name: "CHARMS",   fmt: "Acrylic charm"        },
-      { name: "STICKERS", fmt: "Die-cut sticker"      },
-      { name: "PRINTS",   fmt: "Art print"            },
-      { name: "CARDS",    fmt: "Postcard & photocard" },
+      { name: "CHARMS",   fmt: "Acrylic charm"   },
+      { name: "STICKERS", fmt: "Die-cut sticker" },
+      { name: "PRINTS",   fmt: "Art print"       },
+      { name: "CARDS",    fmt: "Photocard"       },
     ],
   },
 };
 
-/* Edition numbering, not series names. Her cat-eared line is really called
-   "Nya! ver."; WHICH series she draws could not be verified from the Shopee
-   API, and naming third-party anime on her shop page would be an invented
-   claim about her catalogue. Numbered editions say only what is true. */
+/* Edition numbering, not series names. Her cat-eared line really is called
+   "Nya! ver."; WHICH anime she draws could not be verified from the Shopee
+   API, and naming third-party series on her shop page would be an invented
+   claim about her catalogue. */
 const SERIES = ["01", "02", "03", "04", "05", "06"];
 
 const LETTERS = ["A", "B", "C", "D"];
-const TINTS = ["#F3D9E5", "#DCEBE4", "#F6E7CE", "#DCE3F5", "#EEDBF1", "#F1DCD2"];
 
-/* ── the six die-cut silhouettes (no likenesses — cat ears + a blank body) ── */
-const EARS =
-  '<path d="M-60,-44 L-40,-86 L-16,-42 Z"/><path d="M16,-42 L40,-86 L60,-44 Z"/>';
+/* six colourways — the pocket each part sits in is tinted, which is how one
+   design reads as a six-piece run without faking six designs we do not have */
+const TINTS = ["#F0CFE0", "#CFE6DA", "#F6E3C2", "#CFDAF2", "#E8CEF0", "#F2D5C6"];
 
-const BODIES = [
-  { s: '<ellipse cx="0" cy="0" rx="72" ry="62"/>',                                bot: 62 },
-  { s: '<rect x="-64" y="-62" width="128" height="126" rx="26"/>',                bot: 64 },
-  { s: '<ellipse cx="0" cy="2" rx="88" ry="52"/>',                                bot: 54 },
-  { s: '<rect x="-70" y="-54" width="140" height="112" rx="46"/>',                bot: 58 },
-  { s: '<path d="M0,-64 L62,-30 L62,32 L0,66 L-62,32 L-62,-30 Z"/>',              bot: 66 },
-  { s: '<rect x="-52" y="-66" width="104" height="132" rx="16"/>',                bot: 66 },
+const ART = "assets/charm-art.png";
+const CUT = "assets/charm-cut.png";
+
+/* ── the four product forms ──────────────────────────────────── */
+const FORMS = [
+  { kind: "diecut", w: 144, h: 144, hole: true,  gloss: 0.50 },  // A charm
+  { kind: "diecut", w: 144, h: 144, hole: false, gloss: 0.10 },  // B sticker
+  { kind: "paper",  w: 116, h: 150, hole: false, gloss: 0.06 },  // C print
+  { kind: "card",   w: 108, h: 152, hole: false, gloss: 0.34 },  // D photocard
 ];
-
-const shapes = (i) => BODIES[i].s + EARS;
-const K = 0.88, DY = 7;                       // part group: y' = K*y + DY
-const topOf = (i) => K * -86 + DY;            // every silhouette peaks at the ear tip
-const botOf = (i) => K * BODIES[i].bot + DY;
+const form = () => FORMS[runner];
+const topOf = () => -form().h / 2;
+const botOf = () =>  form().h / 2;
 
 /* six cells on the runner */
 const CELLS = [
@@ -90,24 +102,34 @@ const CELLS = [
 let lang = localStorage.getItem("bakanae-lang") || "id";
 let runner = 0;
 const snapped = [new Set(), new Set(), new Set(), new Set()];
-let open = null;                              // {r, i} currently in the tray
+let open = null;
 
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-/* ── build the static bits of the sprue ──────────────────────── */
+/* ── defs ────────────────────────────────────────────────────────
+   ⚠️ A <g> is NOT a legal child of <clipPath> or <mask> content in the way
+   it was used here before: a <g> inside <clipPath> is silently ignored,
+   which makes the clipPath EMPTY, and an empty clip path clips its target
+   away completely. That bug hid the printed artwork entirely. The mask
+   below uses an <image> directly, in part-local user space, so one mask
+   serves every part. */
 function buildDefs() {
-  /* ⚠️ A <g> is NOT a legal child of <clipPath>. The spec allows only shape
-     elements, <text> and <use> — a <g> is silently ignored, which makes the
-     clipPath EMPTY, and an empty clip path clips its target away completely.
-     That is why the printed artwork rendered nothing (and why the sheen layer
-     had never shown either). The transform belongs on <clipPath> itself. */
-  $("#clips").innerHTML = BODIES.map((_, i) =>
-    `<clipPath id="pc${i}" clipPathUnits="userSpaceOnUse" transform="translate(0,${DY}) scale(${K})">${shapes(i)}</clipPath>`
-  ).join("");
+  const f = FORMS[0];                       // die-cut geometry, shared
+  $("#clips").innerHTML = `
+    <mask id="m-diecut" maskUnits="userSpaceOnUse"
+          x="${-f.w / 2}" y="${-f.h / 2}" width="${f.w}" height="${f.h}">
+      <image href="${CUT}" x="${-f.w / 2}" y="${-f.h / 2}"
+             width="${f.w}" height="${f.h}"/>
+    </mask>
+    <linearGradient id="g-gloss" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0"    stop-color="#fff" stop-opacity=".95"/>
+      <stop offset=".38"  stop-color="#fff" stop-opacity=".18"/>
+      <stop offset=".55"  stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>`;
 }
 
-/* six emptied runners behind the live one — one for every year she has run the shop */
+/* six emptied runners behind the live one — one for every year of the shop */
 function buildSpent() {
   const now = 2026;
   let out = "";
@@ -116,51 +138,70 @@ function buildSpent() {
     out += `<g class="spent" transform="translate(${dx},${dy})" opacity="${(0.5 - i * 0.062).toFixed(2)}">
       <rect class="spent-fill" x="22" y="22" width="516" height="658"/>
       <rect class="spent-f" x="22" y="22" width="516" height="658"/>
-      <rect class="spent-f" x="22" y="114" width="516" height="0.1"/>
       <text class="yr" x="16" y="14">${now - 1 - i}</text>
     </g>`;
   }
   $("#spent").innerHTML = out;
 }
 
-/* ── parts ───────────────────────────────────────────────────── */
+/* ── one part, drawn in whichever form this runner is ─────────── */
+function formMarkup(i, big) {
+  const f = form();
+  const x = -f.w / 2, y = -f.h / 2;
+  const tint = TINTS[i];
+  let s = "";
+
+  if (f.kind === "diecut") {
+    // the white acrylic/vinyl cut, then her artwork registered on top of it
+    s += `<image class="p-cut-img" href="${CUT}" x="${x}" y="${y}" width="${f.w}" height="${f.h}"/>`;
+    s += `<image class="p-art" href="${ART}" x="${x}" y="${y}" width="${f.w}" height="${f.h}"/>`;
+    if (f.gloss > 0.2) {
+      s += `<g mask="url(#m-diecut)"><rect x="${x}" y="${y}" width="${f.w}" height="${f.h}"
+              fill="url(#g-gloss)" opacity="${f.gloss}"/></g>`;
+    }
+    if (f.hole) {
+      s += `<circle class="p-hole" cx="0" cy="${(y + 17).toFixed(0)}" r="6.4"/>`;
+      s += `<circle class="p-ring" cx="0" cy="${(y + 6).toFixed(0)}" r="10"/>`;
+    }
+  } else if (f.kind === "paper") {
+    s += `<rect class="p-paper" x="${x}" y="${y}" width="${f.w}" height="${f.h}"/>`;
+    s += `<rect class="p-plate" x="${x + 9}" y="${y + 9}" width="${f.w - 18}" height="${f.w - 18}" fill="${tint}" opacity=".5"/>`;
+    s += `<image class="p-art" href="${ART}" x="${x + 9}" y="${y + 7}" width="${f.w - 18}" height="${f.w - 18}"/>`;
+    s += `<text class="p-cap" x="0" y="${(y + f.h - 14).toFixed(0)}">NYA! VER. ${SERIES[i]}</text>`;
+  } else {
+    s += `<rect class="p-card" x="${x}" y="${y}" width="${f.w}" height="${f.h}" rx="7"/>`;
+    s += `<rect class="p-plate" x="${x + 7}" y="${y + 7}" width="${f.w - 14}" height="${f.h - 34}" rx="4" fill="${tint}" opacity=".62"/>`;
+    s += `<image class="p-art" href="${ART}" x="${x + 4}" y="${y + 2}" width="${f.w - 8}" height="${f.w - 8}"/>`;
+    s += `<text class="p-cap" x="0" y="${(y + f.h - 11).toFixed(0)}">NYA! VER. ${SERIES[i]}</text>`;
+    s += `<g mask="none"><rect class="p-sheen" x="${x}" y="${y}" width="${f.w}" height="${f.h}" rx="7"
+            fill="url(#g-gloss)" opacity="${f.gloss}"/></g>`;
+  }
+  return s;
+}
+
 function partMarkup(i) {
-  const c = CELLS[i];
-  const pt = c.cy + topOf(i), pb = c.cy + botOf(i);
-  const gx1 = c.cx - 34, gx2 = c.cx + 34;
+  const c = CELLS[i], f = form();
+  const pt = c.cy + topOf(), pb = c.cy + botOf();
+  const gx1 = c.cx - 4, gx2 = c.cx - 4;
   const isGone = snapped[runner].has(i);
 
   return `<g class="slot">
+    <rect class="pocket" x="${c.cx - 92}" y="${c.gt + 3}" width="184" height="${(c.gb - c.gt - 8).toFixed(0)}"
+          rx="6" fill="${TINTS[i]}"/>
     <rect class="gate" x="${gx1}" y="${c.gt}" width="8" height="${(pt - c.gt).toFixed(1)}"/>
     <rect class="gate" x="${gx2}" y="${pb.toFixed(1)}" width="8" height="${(c.gb - pb).toFixed(1)}"/>
     <rect class="gate-cut ${isGone ? "shown" : ""}" x="${gx1 - 1}" y="${(pt - 4.5).toFixed(1)}" width="10" height="4.5" rx="1.5"/>
     <rect class="gate-cut ${isGone ? "shown" : ""}" x="${gx2 - 1}" y="${pb.toFixed(1)}" width="10" height="4.5" rx="1.5"/>
 
     <g class="part ${isGone ? "gone" : ""}" data-i="${i}" role="button" tabindex="0"
-       transform="translate(${c.cx},${c.cy})" style="--tint:${TINTS[i]}"
+       transform="translate(${c.cx},${c.cy})"
        aria-label="${LETTERS[runner]}${i + 1}">
-      <rect class="hit" x="-104" y="-82" width="208" height="164" fill="transparent"/>
-      <g class="p-ghost-w" transform="translate(0,${DY}) scale(${K})">
-        <g class="p-ghost">${shapes(i)}</g>
+      <rect class="hit" x="-104" y="-84" width="208" height="168" fill="transparent"/>
+      <g class="p-ghost">
+        <rect x="${-f.w / 2}" y="${-f.h / 2}" width="${f.w}" height="${f.h}" rx="8"/>
       </g>
-      <g class="p-body">
-        <g transform="translate(0,${DY}) scale(${K})">
-          <g class="p-edge">${shapes(i)}</g>
-          <g class="p-cut">${shapes(i)}</g>
-          <g class="p-fill">${shapes(i)}</g>
-        </g>
-        <g clip-path="url(#pc${i})">
-          <image class="p-art" href="assets/mascot.png" x="-50" y="-40"
-                 width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
-        </g>
-        <g transform="translate(0,${DY}) scale(${K})">
-          <circle class="p-hole" cx="0" cy="-34" r="7.5"/>
-        </g>
-        <g clip-path="url(#pc${i})">
-          <rect class="p-sheen" x="-190" y="-130" width="52" height="260" transform="rotate(-16)"/>
-        </g>
-        <text class="p-code" x="0" y="${(botOf(i) - 14).toFixed(0)}">${LETTERS[runner]}${i + 1}</text>
-      </g>
+      <g class="p-body">${formMarkup(i, false)}</g>
+      <text class="p-code" x="0" y="${(botOf() + 15).toFixed(0)}">${LETTERS[runner]}${i + 1}</text>
     </g>
   </g>`;
 }
@@ -215,29 +256,13 @@ function fillTray(i) {
   open = { r: runner, i };
   const t = STR[lang], well = $("#well"), tray = $("#tray");
   const code = `${LETTERS[runner]}${i + 1}`;
+  const f = form();
+  const vb = `${-f.w / 2 - 16} ${-f.h / 2 - 16} ${f.w + 32} ${f.h + 32}`;
 
   tray.innerHTML = `
     <div class="tilt">
-      <svg class="tray-svg" viewBox="-112 -104 224 184" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <g style="--tint:${TINTS[i]}">
-          <rect class="gate-cut shown" x="-35" y="${(topOf(i) - 5).toFixed(1)}" width="10" height="5" rx="1.5"/>
-          <rect class="gate-cut shown" x="25" y="${botOf(i).toFixed(1)}" width="10" height="5" rx="1.5"/>
-          <g transform="translate(0,${DY}) scale(${K})">
-            <g class="p-cut">${shapes(i)}</g>
-            <g class="p-fill">${shapes(i)}</g>
-          </g>
-          <g clip-path="url(#pc${i})">
-            <image class="p-art" href="assets/mascot.png" x="-50" y="-40"
-                   width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
-          </g>
-          <g transform="translate(0,${DY}) scale(${K})">
-            <g class="p-line">${shapes(i)}</g>
-            <circle class="p-hole" cx="0" cy="-34" r="7.5"/>
-          </g>
-          <g clip-path="url(#pc${i})">
-            <rect class="p-sheen tray-sheen" x="-190" y="-130" width="46" height="260" transform="rotate(-16)"/>
-          </g>
-        </g>
+      <svg class="tray-svg" viewBox="${vb}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        ${formMarkup(i, true)}
       </svg>
     </div>
     <p class="t-code">${code}</p>
@@ -306,7 +331,6 @@ function closeTray() {
 /* the charm catches the light when you move over it — pointer driven only */
 function wireTilt(el) {
   if (!el || !matchMedia("(hover:hover)").matches) return;
-  const sheen = $(".tray-sheen", el);
   el.style.perspective = "700px";
   el.addEventListener("pointermove", (e) => {
     const r = el.getBoundingClientRect();
@@ -314,12 +338,10 @@ function wireTilt(el) {
     const y = (e.clientY - r.top) / r.height - 0.5;
     const svg = $(".tray-svg", el);
     svg.style.transform = `rotateY(${(x * 15).toFixed(2)}deg) rotateX(${(-y * 13).toFixed(2)}deg)`;
-    if (sheen) { sheen.style.opacity = 0.55; sheen.style.transform = `rotate(-16deg) translateX(${(150 + x * 220).toFixed(0)}px)`; }
   });
   el.addEventListener("pointerleave", () => {
     const svg = $(".tray-svg", el);
-    svg.style.transform = "";
-    if (sheen) { sheen.style.opacity = 0; sheen.style.transform = "rotate(-16deg)"; }
+    if (svg) svg.style.transform = "";
   });
 }
 
@@ -353,45 +375,28 @@ function wireQC() {
   });
 }
 
-/* ── the runner tilts toward the pointer ─────────────────────── */
-function wireBayTilt() {
-  const bay = $("#bay3d");
-  if (!matchMedia("(hover:hover)").matches) return;
-  bay.addEventListener("pointermove", (e) => {
-    const r = bay.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    bay.classList.add("live");
-    bay.style.setProperty("--ry", `${(x * 9).toFixed(2)}deg`);
-    bay.style.setProperty("--rx", `${(-y * 5).toFixed(2)}deg`);
-  });
-  bay.addEventListener("pointerleave", () => {
-    bay.classList.remove("live");
-    bay.style.setProperty("--ry", "0deg");
-    bay.style.setProperty("--rx", "0deg");
-  });
-}
-
 /* ── language ────────────────────────────────────────────────── */
 function applyLang() {
   const t = STR[lang];
   document.documentElement.lang = lang;
   $$("[data-i18n]").forEach((el) => { el.textContent = t[el.dataset.i18n]; });
-  $$(".lang-b").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  $$(".lang-b").forEach((b) => b.setAttribute("aria-current", b.dataset.lang === lang));
   drawTabs();
   if (open) fillTray(open.i);
-  localStorage.setItem("bakanae-lang", lang);
 }
 
-/* ── go ──────────────────────────────────────────────────────── */
-buildDefs();
-buildSpent();
-applyLang();
-drawParts(false);
-wireQC();
-wireBayTilt();
-$$(".lang-b").forEach((b) => b.addEventListener("click", () => {
-  if (b.dataset.lang === lang) return;
-  lang = b.dataset.lang;
+function init() {
+  buildDefs();
+  buildSpent();
+  drawTabs();
+  drawParts(false);
+  wireQC();
+  $$(".lang-b").forEach((b) => b.addEventListener("click", () => {
+    lang = b.dataset.lang;
+    localStorage.setItem("bakanae-lang", lang);
+    applyLang();
+  }));
   applyLang();
-}));
+}
+
+init();
