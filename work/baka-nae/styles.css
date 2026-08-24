@@ -411,3 +411,34 @@ body{
   .word{ font-size:30px; }
   .tag{ font-size:14px; }
 }
+
+/* ── her real artwork, printed on the part ───────────────────────────────
+   `assets/mascot.jpg` is baka nae's actual shop mascot, cropped from her own
+   Shopee shop portrait. It sits on a white field, so `multiply` drops the
+   white out and leaves the line art over whatever tint the part is — no
+   cutout PNG and no image editing needed. Clipped to the silhouette, and
+   drawn BEFORE .p-hole so the keyring hole still punches through it. */
+/* mascot.png has the white keyed to alpha, so no blend mode is needed. An
+   earlier version leaned on mix-blend-mode:multiply over the JPEG and rendered
+   nothing: the clipping group is its own stacking context, so the blend had no
+   backdrop to multiply against. A real alpha channel is the robust answer. */
+.p-art{ opacity:.97; pointer-events:none; }
+.part.gone .p-art{ opacity:0; }
+
+/* ── card navigation: step through the six parts without going back ────── */
+.t-nav{ display:flex; align-items:center; gap:8px; margin-top:2px; }
+.t-step{
+  min-width:44px; min-height:44px;
+  display:grid; place-items:center;
+  background:var(--plastic); color:var(--ink);
+  border:1.5px solid var(--plastic-edge); border-radius:var(--r-part);
+  font:500 15px/1 var(--mono); cursor:pointer;
+  transition:background .14s var(--ease), transform .14s var(--ease);
+}
+.t-step:hover{ background:#fff; }
+.t-step:active{ transform:translateY(1px); }
+.t-step:focus-visible{ outline:2px solid var(--signal); outline-offset:2px; }
+.t-of{
+  font:400 11.5px/1 var(--mono); letter-spacing:.08em;
+  color:var(--ink-2); margin-left:2px;
+}

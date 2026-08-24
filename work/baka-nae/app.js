@@ -18,6 +18,8 @@ const STR = {
     shop:   "LIHAT DI SHOPEE",
     close:  "Tutup",
     wellhint: "Bagian yang kamu lepas jatuh ke sini.",
+    prev:   "Bagian sebelumnya",
+    next:   "Bagian berikutnya",
     runners: [
       { name: "GANTUNGAN", fmt: "Gantungan akrilik" },
       { name: "STIKER",    fmt: "Stiker die-cut"    },
@@ -36,6 +38,8 @@ const STR = {
     shop:   "VIEW ON SHOPEE",
     close:  "Close",
     wellhint: "Parts you snap off land here.",
+    prev:   "Previous part",
+    next:   "Next part",
     runners: [
       { name: "CHARMS",   fmt: "Acrylic charm"        },
       { name: "STICKERS", fmt: "Die-cut sticker"      },
@@ -93,8 +97,13 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 /* ── build the static bits of the sprue ──────────────────────── */
 function buildDefs() {
+  /* ⚠️ A <g> is NOT a legal child of <clipPath>. The spec allows only shape
+     elements, <text> and <use> — a <g> is silently ignored, which makes the
+     clipPath EMPTY, and an empty clip path clips its target away completely.
+     That is why the printed artwork rendered nothing (and why the sheen layer
+     had never shown either). The transform belongs on <clipPath> itself. */
   $("#clips").innerHTML = BODIES.map((_, i) =>
-    `<clipPath id="pc${i}" clipPathUnits="userSpaceOnUse"><g transform="translate(0,${DY}) scale(${K})">${shapes(i)}</g></clipPath>`
+    `<clipPath id="pc${i}" clipPathUnits="userSpaceOnUse" transform="translate(0,${DY}) scale(${K})">${shapes(i)}</clipPath>`
   ).join("");
 }
 
@@ -139,6 +148,12 @@ function partMarkup(i) {
           <g class="p-edge">${shapes(i)}</g>
           <g class="p-cut">${shapes(i)}</g>
           <g class="p-fill">${shapes(i)}</g>
+        </g>
+        <g clip-path="url(#pc${i})">
+          <image class="p-art" href="assets/mascot.png" x="-50" y="-40"
+                 width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
+        </g>
+        <g transform="translate(0,${DY}) scale(${K})">
           <circle class="p-hole" cx="0" cy="-34" r="7.5"/>
         </g>
         <g clip-path="url(#pc${i})">
@@ -210,6 +225,12 @@ function fillTray(i) {
           <g transform="translate(0,${DY}) scale(${K})">
             <g class="p-cut">${shapes(i)}</g>
             <g class="p-fill">${shapes(i)}</g>
+          </g>
+          <g clip-path="url(#pc${i})">
+            <image class="p-art" href="assets/mascot.png" x="-50" y="-40"
+                   width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
+          </g>
+          <g transform="translate(0,${DY}) scale(${K})">
             <g class="p-line">${shapes(i)}</g>
             <circle class="p-hole" cx="0" cy="-34" r="7.5"/>
           </g>
@@ -225,6 +246,11 @@ function fillTray(i) {
     <dl class="t-rows">
       <div class="t-row"><dt>${t.format}</dt><dd>${t.runners[runner].fmt}</dd></div>
     </dl>
+    <div class="t-nav">
+      <button type="button" class="t-step" data-step="-1" aria-label="${t.prev}">&lsaquo;</button>
+      <button type="button" class="t-step" data-step="1" aria-label="${t.next}">&rsaquo;</button>
+      <span class="t-of">${i + 1} / 6</span>
+    </div>
     <div class="t-acts">
       <a class="t-shop" href="${SHOPEE}" target="_blank" rel="noopener">${t.shop}</a>
       <button class="t-close" type="button" aria-label="${t.close}">✕</button>
@@ -234,7 +260,41 @@ function fillTray(i) {
   well.classList.add("full");
   $(".t-close", tray).addEventListener("click", closeTray);
   wireTilt($(".tilt", tray));
+
+  /* step to the next/previous part without going back to the runner.
+     snap() already handles "not taken yet", so stepping onto an untaken part
+     nips it off too and the runner stays in sync with what you have seen. */
+  $$(".t-step", tray).forEach((b) =>
+    b.addEventListener("click", () => step(+b.dataset.step)));
+
+  wireSwipe(tray);
 }
+
+function step(d) {
+  if (!open) return;
+  snap((open.i + d + CELLS.length) % CELLS.length);
+}
+
+/* phones have no prev/next hover affordance, so the card is swipeable too.
+   Horizontal intent only — a vertical drag is the page scrolling. */
+function wireSwipe(el) {
+  let x0 = null, y0 = null;
+  el.addEventListener("pointerdown", (e) => { x0 = e.clientX; y0 = e.clientY; });
+  el.addEventListener("pointerup", (e) => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+  });
+  el.addEventListener("pointercancel", () => { x0 = null; });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (!open) return;
+  if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+  if (e.key === "ArrowLeft")  { e.preventDefault(); step(-1); }
+  if (e.key === "Escape")     { closeTray(); }
+});
 
 function closeTray() {
   open = null;

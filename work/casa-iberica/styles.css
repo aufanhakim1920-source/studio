@@ -1,606 +1,195 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   CASA IBERICA DELI — concept redesign
-   Palette "trastienda": cacao-brown ground, blue enamel machine, mint paper,
-   one pimentón red. Radius: three NAMED tiers, never one uniform value.
-   Motion: every transition is fired by the visitor. Nothing loops.
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* Casa Iberica Deli — simple concept site.
+   Brief was literally "just make it simple": no interactive object, no
+   machine, no 3D. Craft goes into type, colour and spacing.
+   No photography — we have no rights to theirs, and random web photos must
+   not go on a public page. An azulejo tile band drawn in CSS carries the
+   visual weight instead.
+   Motion: hover/focus feedback only. Ambient motion makes Aufan motion-sick. */
 
-:root {
-  /* ground — dark warm brown. not near-black, not oxblood, not cream. */
-  --cacao:    #2B211B;
-  --cacao-2:  #1E1712;
-  --cacao-3:  #37291F;
+:root{
+  /* pale sage ground — Iberian without defaulting to oxblood/terracotta,
+     and deliberately NOT the warm cream three earlier builds landed on. */
+  --sage:    #E7EDE6;
+  --sage-2:  #DBE4DA;
+  --olive:   #22301F;
+  --olive-2: #4A5B46;
+  --olive-3: #7C8B77;
+  --rule:    #C3D0C0;
+  --paprika: #C0442A;
+  --deep:    #2D4A2A;
 
-  /* stone counter */
-  --granite:   #3A332B;
-  --granite-2: #2A241E;
-  --granite-hi:#544B40;
-
-  /* the machine — enamel blue */
-  --azul:     #1D5C99;
-  --azul-hi:  #3F86C9;
-  --azul-lo:  #123F6B;
-  --azul-dk:  #0B2942;
-
-  /* paper */
-  --mint:     #CFE0D2;
-  --mint-hi:  #E4EFE4;
-  --mint-lo:  #A9BFAE;
-
-  /* type */
-  --bone:     #EFE6D6;
-  --bone-2:   #BCAE99;
-  --bone-3:   #8B7D6B;
-  --ink:      #241C16;
-
-  /* signals */
-  --piment:   #E0451C;
-  --brass:    #C08B3C;
-  --brass-hi: #E4BE79;
-
-  --tile:     #E8EEF2;
-
-  /* radius — three named tiers, three different jobs */
-  --r-none:   0px;    /* paper, tiles, the counter — anything cut or laid */
-  --r-soft:   5px;    /* pressed enamel corners, the brass window */
-  --r-round:  999px;  /* the roll, the spindle, the chrome throat cap */
-
-  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --sans:  "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --sans:  "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono:  "DM Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
 
-  /* object geometry — read by the dispenser faces */
-  --dw: 236px;   /* dispenser width  */
-  --dh: 300px;   /* dispenser height */
-  --dd: 44px;    /* dispenser depth  */
+  /* named radius scale — never a random assortment */
+  --r-none: 0px;
 }
 
-* { box-sizing: border-box; }
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
 
-html { -webkit-text-size-adjust: 100%; }
-
-body {
-  margin: 0;
-  min-height: 100%;
-  background: var(--cacao);
-  color: var(--bone);
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.45;
-  overflow-x: hidden;
+body{
+  margin:0;
+  background:var(--sage);
+  color:var(--olive);
+  font:400 16px/1.55 var(--sans);
+  -webkit-font-smoothing:antialiased;
 }
 
-/* second layer over the ground: grain + a vignette. positive stacking order,
-   never z-index:-1 — that pattern breaks behind any ancestor background. */
-.grain {
-  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+.page{
+  max-width:820px;
+  margin:0 auto;
+  padding:44px 28px 80px;
+}
+
+/* ── top rail ─────────────────────────────────────────────────────────── */
+.top{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:16px; flex-wrap:wrap;
+  padding-bottom:18px;
+}
+.brand{
+  margin:0;
+  font-family:var(--serif);
+  font-size:clamp(21px, 4.4vw, 26px);
+  letter-spacing:.005em;
+}
+.where{
+  margin:0;
+  font:400 11.5px/1 var(--mono);
+  letter-spacing:.13em; text-transform:uppercase;
+  color:var(--olive-3);
+}
+
+/* ── azulejo band ─────────────────────────────────────────────────────────
+   Four-point stars on a sage field, two colours, built from repeating
+   conic gradients. No image request, scales to any width. */
+.tiles{
+  height:46px;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  background-color:var(--sage-2);
+  /* Two interlocking diamond lattices, offset by half a tile. Conic gradients
+     read as arrows here; 45deg linear gradients give the diamond grid that
+     actually looks like azulejo. */
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: .13;
-  mix-blend-mode: overlay;
-}
-body::after {
-  content: ""; position: fixed; inset: 0; z-index: 55; pointer-events: none;
-  background: radial-gradient(120% 80% at 50% 22%, transparent 42%, rgba(12,8,6,.55) 100%);
+    linear-gradient(45deg, var(--deep) 25%, transparent 25% 75%, var(--deep) 75%),
+    linear-gradient(45deg, var(--paprika) 25%, transparent 25% 75%, var(--paprika) 75%);
+  background-size:34px 34px, 34px 34px;
+  background-position:0 0, 17px 17px;
+  opacity:.34;
 }
 
-/* ── top rail ──────────────────────────────────────────────────────────── */
-.rail {
-  position: relative; z-index: 3;
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 16px;
-  padding: 20px clamp(16px, 4vw, 46px) 0;
+/* ── hero ─────────────────────────────────────────────────────────────── */
+.hero{ padding:52px 0 0; }
+h1{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(33px, 7.4vw, 60px);
+  line-height:1.06;
+  letter-spacing:-.012em;
+  max-width:19ch;
 }
-.mark {
-  font-family: var(--serif);
-  font-size: 25px; letter-spacing: .01em; color: var(--bone);
-}
-.rail-r {
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: .13em; text-transform: uppercase;
-  color: var(--bone-3);
-}
-
-/* ── page ──────────────────────────────────────────────────────────────── */
-.page {
-  position: relative; z-index: 3;
-  max-width: 1040px; margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 46px) 40px;
+.lede{
+  margin:24px 0 0;
+  font-size:clamp(15.5px, 3.5vw, 18px);
+  line-height:1.5;
+  color:var(--olive-2);
+  max-width:42ch;
 }
 
-.kicker {
-  margin: 34px 0 10px;
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--piment);
-}
-.lead {
-  margin: 0 0 30px;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(31px, 4.6vw, 54px);
-  line-height: 1.06;
-  letter-spacing: -.005em;
-  max-width: 17ch;
-  color: var(--bone);
+/* ── section labels ───────────────────────────────────────────────────── */
+.lab{
+  margin:0 0 4px;
+  font:500 11.5px/1 var(--mono);
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--olive-3);
+  padding-bottom:14px;
+  border-bottom:1px solid var(--rule);
 }
 
-/* ═══ THE OBJECT ═══════════════════════════════════════════════════════════
-   .counter-stage is the whole apparatus: tiled wall on top, granite below.  */
-.counter-stage {
-  position: relative;
-  display: grid;
-  grid-template-rows: 356px 236px;
-  width: 100%;
-  margin: 0 0 64px;
-  border: 1px solid rgba(0,0,0,.5);
-  border-radius: var(--r-none);
+/* ── two places ───────────────────────────────────────────────────────── */
+.places{ margin-top:66px; }
+.grid{
+  display:grid;
+  /* an explicit two-column count, not auto-fit: two known cards must never
+     orphan onto a second row */
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  margin-top:26px;
+  background:var(--rule);
+  border:1px solid var(--rule);
+}
+.card{
+  background:var(--sage);
+  padding:26px 24px 28px;
+}
+.kind{
+  margin:0 0 12px;
+  font:500 11px/1 var(--mono);
+  letter-spacing:.13em; text-transform:uppercase;
+  color:var(--paprika);
+}
+.card h3{
+  margin:0;
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(21px, 4.6vw, 27px);
+  line-height:1.16;
+  letter-spacing:-.01em;
+}
+.txt{
+  margin:10px 0 0;
+  font-size:14.5px; line-height:1.55;
+  color:var(--olive-2);
+}
+.txt.wide{ max-width:46ch; margin-top:22px; }
+
+/* ── classes ──────────────────────────────────────────────────────────── */
+.classes{ margin-top:66px; }
+.cta{
+  display:inline-block;
+  margin-top:20px;
+  min-height:44px;                    /* thumb-sized tap target */
+  padding:0 22px;
+  font:500 clamp(14px, 3.2vw, 15.5px)/44px var(--mono);
+  letter-spacing:.02em;
+  color:var(--sage);
+  background:var(--paprika);
+  border-radius:var(--r-none);
+  text-decoration:none;
+  transition:background .16s ease, transform .16s ease;
+}
+.cta:hover{ background:#A9381F; }
+.cta:active{ transform:translateY(1px); }
+.cta:focus-visible{ outline:2px solid var(--olive); outline-offset:3px; }
+
+/* ── foot ─────────────────────────────────────────────────────────────── */
+.foot{
+  margin-top:72px;
+  padding-top:22px;
+  border-top:1px solid var(--rule);
+}
+.foot p{
+  margin:0;
+  font:400 12.5px/1.65 var(--mono);
+  color:var(--olive-3);
+  max-width:62ch;
 }
 
-/* — the tiled back wall — */
-.wall {
-  position: relative;
-  overflow: visible;
-  background-color: var(--cacao-3);
-  background-image:
-    linear-gradient(45deg, rgba(232,238,242,.055) 25%, transparent 25%, transparent 75%, rgba(232,238,242,.055) 75%),
-    linear-gradient(45deg, rgba(232,238,242,.055) 25%, transparent 25%, transparent 75%, rgba(232,238,242,.055) 75%),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.26) 0 1px, transparent 1px 52px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.26) 0 1px, transparent 1px 52px);
-  background-size: 52px 52px, 52px 52px, 100% 100%, 100% 100%;
-  background-position: 0 0, 26px 26px, 0 0, 0 0;
-  box-shadow: inset 0 -26px 40px -22px rgba(0,0,0,.75);
-  z-index: 2;
+/* ── phone ────────────────────────────────────────────────────────────────
+   The two location cards stack. Everything else already reflows, because the
+   page is a single column by design. */
+@media (max-width:600px){
+  .page{ padding:34px 20px 64px; }
+  .tiles{ height:34px; background-size:26px 26px, 26px 26px; background-position:0 0, 13px 13px; }
+  .hero{ padding-top:40px; }
+  .places, .classes{ margin-top:50px; }
+  .grid{ grid-template-columns:1fr; }
+  .foot{ margin-top:54px; }
 }
 
-/* NOW SERVING — a brass-framed window screwed to the tiles */
-.serving {
-  position: absolute; right: clamp(18px, 5vw, 60px); top: 62px;
-  display: grid; gap: 4px; justify-items: center;
-  padding: 12px 22px 10px;
-  background: linear-gradient(#171310, #0D0B09);
-  border: 3px solid var(--brass);
-  border-radius: var(--r-soft);
-  box-shadow: 0 10px 22px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.09);
-}
-.serving-k {
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--brass-hi); opacity: .8;
-}
-.serving-n {
-  font-family: var(--mono); font-weight: 500;
-  font-size: 46px; line-height: 1; letter-spacing: .04em;
-  color: var(--piment);
-  text-shadow: 0 0 18px rgba(224,69,28,.45);
-  transition: transform .18s cubic-bezier(.2,.9,.2,1);
-}
-.serving.knock .serving-n { transform: translateY(-7px); }
-
-/* — the dispenser: a real box in 3-space — */
-.disp-3d {
-  position: absolute; left: clamp(16px, 5vw, 58px); bottom: -34px;
-  width: var(--dw); height: var(--dh);
-  perspective: 1000px;
-}
-.dispenser {
-  position: absolute; inset: 0;
-  transform-style: preserve-3d;
-  transform: rotateX(var(--tx, 3deg)) rotateY(var(--ty, -13deg));
-  transition: transform .5s cubic-bezier(.2,.8,.2,1);
-}
-.dispenser.live { transition: transform .12s linear; }
-
-.face { position: absolute; left: 50%; top: 50%; }
-
-.f-front {
-  width: var(--dw); height: var(--dh);
-  margin-left: calc(var(--dw) / -2); margin-top: calc(var(--dh) / -2);
-  transform: translateZ(calc(var(--dd) / 2));
-  background:
-    linear-gradient(158deg, var(--azul-hi) 0%, var(--azul) 34%, var(--azul-lo) 100%);
-  border-radius: var(--r-soft);
-  box-shadow: inset 0 2px 0 rgba(255,255,255,.28), inset 0 -3px 10px rgba(0,0,0,.4);
-  padding: 16px 0 0;
-  display: grid; justify-items: center; align-content: start;
-}
-.f-right {
-  width: var(--dd); height: var(--dh);
-  margin-left: calc(var(--dd) / -2); margin-top: calc(var(--dh) / -2);
-  transform: rotateY(90deg) translateZ(calc(var(--dw) / 2));
-  background: linear-gradient(var(--azul-lo), var(--azul-dk));
-  border-radius: var(--r-soft);
-}
-.f-top {
-  width: var(--dw); height: var(--dd);
-  margin-left: calc(var(--dw) / -2); margin-top: calc(var(--dd) / -2);
-  transform: rotateX(90deg) translateZ(calc(var(--dh) / 2));
-  background: linear-gradient(var(--azul-hi), var(--azul));
-  border-radius: var(--r-soft);
-}
-
-/* enamel sign screwed to the front */
-.plate {
-  font-family: var(--serif); font-style: italic;
-  font-size: 20px; line-height: 1;
-  color: var(--tile);
-  padding: 5px 14px 7px;
-  border: 1px solid rgba(255,255,255,.4);
-  border-radius: var(--r-none);
-  text-shadow: 0 1px 0 rgba(0,0,0,.35);
-}
-
-/* the round window with the roll behind it */
-.window {
-  position: relative;
-  width: 124px; height: 124px; margin-top: 14px;
-  border-radius: var(--r-round);
-  background: #0C0A08;
-  box-shadow:
-    inset 0 3px 9px rgba(0,0,0,.9),
-    0 0 0 5px rgba(255,255,255,.16),
-    0 0 0 7px rgba(0,0,0,.28);
-}
-.roll-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.well     { fill: #0C0A08; }
-.rollg    { transform-box: view-box; transform-origin: 50px 50px;
-            transition: transform .6s cubic-bezier(.2,.8,.2,1); }
-.pap      { fill: var(--mint); }
-.lay      { fill: none; stroke: var(--mint-lo); stroke-width: 1.1; opacity: .8; }
-.edge     { fill: none; stroke: var(--mint-hi); stroke-width: 2.4; stroke-linecap: round; }
-.spindle  { fill: var(--brass); }
-.glass    { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 2; }
-
-/* chrome throat the paper comes out of */
-.throat {
-  position: absolute; left: 50%; bottom: 60px; transform: translateX(-50%);
-  width: 132px; height: 15px;
-  background: linear-gradient(#E4E7EA, #8E959C 46%, #3A3F45 52%, #6E757C);
-  border-radius: var(--r-round);
-  box-shadow: 0 3px 6px rgba(0,0,0,.5);
-  z-index: 3;
-}
-
-/* the paper tongue — the thing you actually grab */
-.tongue {
-  position: absolute; left: 50%; bottom: 60px;
-  transform: translateX(-50%) rotate(var(--sway, 0deg));
-  transform-origin: top center;
-  width: 108px;
-  height: calc(64px + var(--pull, 0px));
-  background:
-    linear-gradient(180deg, var(--mint-hi), var(--mint) 30%, var(--mint-lo));
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 91% 93%, 82% 100%, 73% 93%, 64% 100%, 55% 93%, 46% 100%, 37% 93%, 28% 100%, 19% 93%, 10% 100%, 0 93%);
-  cursor: grab;
-  touch-action: none;
-  z-index: 2;
-  box-shadow: 0 6px 14px rgba(0,0,0,.45);
-  transition: height .34s cubic-bezier(.2,.9,.2,1), opacity .16s linear;
-}
-.tongue:active { cursor: grabbing; }
-.tongue.dragging { transition: none; }
-.tongue.gone { opacity: 0; }
-.perf {
-  position: absolute; left: 6px; right: 6px; top: 26px; height: 2px;
-  background: repeating-linear-gradient(90deg, var(--mint-lo) 0 3px, transparent 3px 8px);
-  opacity: .85;
-}
-.tear-line {
-  position: absolute; left: 0; right: 0; top: 24px; height: 6px;
-  background: linear-gradient(var(--piment), transparent);
-  opacity: var(--strain, 0);
-}
-
-/* the chrome pull bar — the tap/keyboard route to the same action */
-.pull {
-  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
-  min-width: 116px; min-height: 44px;
-  font-family: var(--mono); font-size: 12px; font-weight: 500;
-  letter-spacing: .26em; text-transform: uppercase;
-  color: var(--azul-dk);
-  background: linear-gradient(#F2F4F6, #B9C0C7 52%, #98A0A8);
-  border: 0; border-radius: var(--r-soft);
-  box-shadow: 0 4px 0 #5D666E, 0 8px 14px rgba(0,0,0,.45);
-  cursor: pointer;
-  transition: transform .1s ease, box-shadow .1s ease;
-}
-.pull:hover { background: linear-gradient(#FFF, #C6CDD4 52%, #A4ACB4); }
-.pull:active { transform: translate(-50%, 4px); box-shadow: 0 0 0 #5D666E, 0 4px 8px rgba(0,0,0,.5); }
-.pull:focus-visible { outline: 3px solid var(--piment); outline-offset: 3px; }
-
-/* — the granite counter — */
-.shelf { position: relative; z-index: 1; }
-.slab {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(120% 90% at 20% 0%, rgba(255,255,255,.06), transparent 60%),
-    linear-gradient(178deg, var(--granite-hi) 0 3px, var(--granite) 3px, var(--granite-2));
-  background-color: var(--granite);
-  overflow: hidden;
-}
-.slab::after {   /* speckle — stone, not flat colour */
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    radial-gradient(rgba(255,255,255,.13) .9px, transparent 1.1px),
-    radial-gradient(rgba(0,0,0,.3) 1.1px, transparent 1.3px);
-  background-size: 23px 23px, 31px 29px;
-  background-position: 0 0, 11px 7px;
-  opacity: .55;
-}
-
-/* where a ticket lands */
-.drop {
-  position: absolute; left: 306px; right: 130px; top: 24px;
-  min-height: 156px;
-  perspective: 900px;
-}
-/* An unlabelled dashed rectangle reads as an unfinished placeholder. Saying
-   what will land here turns the same shape into an instruction. */
-.ghost {
-  position: absolute; inset: 0; height: 156px;
-  display: grid; place-items: center;
-  border: 1px dashed rgba(255,255,255,.13);
-  border-radius: var(--r-none);
-  transition: opacity .3s ease;
-}
-.ghost span {
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em;
-  color: rgba(255,255,255,.3);
-}
-.drop.has .ghost { opacity: 0; }
-
-/* the ticket itself */
-.ticket {
-  position: absolute; left: 0; top: 0; width: 100%;
-  transform-style: preserve-3d;
-  animation: fall .52s cubic-bezier(.16,.9,.28,1.02) both;
-}
-@keyframes fall {
-  0%   { transform: translate(-186px, -232px) rotate(-16deg) scale(.86); opacity: 0; }
-  55%  { opacity: 1; }
-  80%  { transform: translate(0, 6px) rotate(-.9deg) scale(1); }
-  100% { transform: translate(0, 0) rotate(-1.4deg) scale(1); }
-}
-.ticket.leaving { animation: sweep .18s ease-in forwards; }
-@keyframes sweep { to { transform: translate(34px, 26px) rotate(6deg); opacity: 0; } }
-
-.t-card {
-  position: relative;
-  min-height: 156px;
-  background: linear-gradient(160deg, var(--mint-hi), var(--mint) 55%, #BFD2C3);
-  color: var(--ink);
-  border-radius: var(--r-none);
-  box-shadow: 0 16px 26px rgba(0,0,0,.5);
-  padding: 16px 18px 16px 20px;
-  display: grid;
-  grid-template-columns: 1fr 74px;
-  align-content: space-between;
-  gap: 6px;
-  transform: translateZ(1px);
-}
-.t-card::before {  /* the torn top edge, matching the tongue */
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px;
-  background: linear-gradient(var(--mint-hi), var(--mint));
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 94% 100%, 88% 45%, 82% 100%, 76% 45%, 70% 100%, 64% 45%, 58% 100%, 52% 45%, 46% 100%, 40% 45%, 34% 100%, 28% 45%, 22% 100%, 16% 45%, 10% 100%, 4% 45%, 0 100%);
-}
-.t-no {
-  font-family: var(--mono); font-weight: 500;
-  font-size: 42px; line-height: .9; letter-spacing: .02em;
-  color: var(--piment);
-  grid-column: 1; align-self: start; margin-top: 6px;
-}
-.t-es {
-  font-family: var(--serif); font-style: italic;
-  font-size: 15px; color: #5E6B60;
-  grid-column: 1;
-}
-.t-label {
-  font-family: var(--serif);
-  font-size: 27px; line-height: 1.05;
-  grid-column: 1;
-}
-.t-icon {
-  grid-column: 2; grid-row: 1 / span 3; align-self: start; justify-self: end;
-  width: 74px; height: 74px;
-  --ink: #2A362D;
-}
-.t-icon svg { width: 100%; height: 100%; display: block; }
-
-/* the fold — the object's own "more" control. detail is printed under it. */
-.t-flap {
-  position: absolute; left: 0; top: 100%; width: 100%;
-  transform-origin: top center;
-  /* folded UNDER the card: rotate about the top edge, then push the panel to
-     negative global Z so the card (translateZ 1px) paints in front of it. */
-  transform: rotateX(-178deg) translateZ(3px);
-  transform-style: preserve-3d;
-  transition: transform .46s cubic-bezier(.3,.85,.3,1);
-}
-.ticket.open .t-flap { transform: rotateX(0deg) translateZ(0); }
-.t-detail {
-  background: linear-gradient(#C4D7C8, #B4CABA);
-  color: #24312A;
-  padding: 15px 20px 17px;
-  font-size: 15px; line-height: 1.42;
-  box-shadow: 0 16px 26px rgba(0,0,0,.45), inset 0 3px 8px rgba(0,0,0,.14);
-  backface-visibility: hidden;
-}
-.t-detail em { font-family: var(--serif); font-style: italic; font-size: 16px; }
-
-/* the crease you press */
-.t-more {
-  position: absolute; right: 14px; bottom: 7px;
-  min-height: 44px; min-width: 90px;
-  display: inline-flex; align-items: center; gap: 8px;
-  background: none; border: 0; padding: 0 2px;
-  font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
-  text-transform: uppercase; color: #52604F;
-  cursor: pointer;
-  z-index: 4;
-}
-.t-more::after {
-  content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg);
-  transition: transform .3s ease;
-}
-.ticket.open .t-more::after { transform: translateY(1px) rotate(225deg); }
-.t-more:hover { color: var(--piment); }
-.t-more:focus-visible { outline: 3px solid var(--piment); outline-offset: 2px; }
-
-/* the brass spike your stubs go on */
-.spike {
-  position: absolute; right: 34px; bottom: 20px;
-  width: 76px; height: 190px;
-  display: flex; flex-direction: column-reverse; align-items: center;
-  justify-content: flex-start; gap: 3px;
-  padding-bottom: 14px;
-}
-.needle {
-  position: absolute; left: 50%; bottom: 8px; width: 3px; height: 150px;
-  transform: translateX(-50%);
-  background: linear-gradient(var(--brass-hi), var(--brass));
-  border-radius: var(--r-round);
-}
-.foot-brass {
-  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
-  width: 62px; height: 12px;
-  background: linear-gradient(var(--brass-hi), #7A5720);
-  border-radius: var(--r-round);
-  box-shadow: 0 5px 12px rgba(0,0,0,.55);
-}
-.stub {
-  position: relative; z-index: 2;
-  width: 68px; min-height: 44px;
-  display: grid; place-items: center;
-  background: linear-gradient(var(--mint), #A9BFAE);
-  color: var(--ink);
-  font-family: var(--mono); font-weight: 500; font-size: 14px;
-  border: 0; border-radius: var(--r-none);
-  cursor: pointer;
-  box-shadow: 0 4px 9px rgba(0,0,0,.4);
-  transform: rotate(var(--rot, 0deg));
-  animation: spiked .3s cubic-bezier(.2,.9,.2,1) both;
-  transition: filter .15s ease, transform .15s ease;
-}
-.stub::before {  /* the hole the needle goes through */
-  content: ""; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-  width: 7px; height: 7px; border-radius: var(--r-round);
-  background: var(--granite-2);
-  box-shadow: inset 0 1px 2px rgba(0,0,0,.7);
-}
-@keyframes spiked { from { transform: translateY(-26px) rotate(var(--rot,0deg)); opacity: 0; } }
-.stub:hover { filter: brightness(1.1); transform: rotate(var(--rot,0deg)) translateX(-3px); }
-.stub[aria-current="true"] { box-shadow: 0 0 0 2px var(--piment), 0 4px 9px rgba(0,0,0,.4); }
-.stub:focus-visible { outline: 3px solid var(--piment); outline-offset: 2px; }
-
-/* ── the only other section: two painted tiles ─────────────────────────── */
-.tiles { margin: 0 0 8px; }
-.h2 {
-  margin: 0 0 16px;
-  font-family: var(--mono); font-weight: 400;
-  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--bone-3);
-}
-.tile-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.tile {
-  display: grid; gap: 6px; align-content: center;
-  min-height: 132px; padding: 22px 24px;
-  background: linear-gradient(168deg, var(--tile), #CFDDE6);
-  border-radius: var(--r-none);
-  box-shadow: inset 0 0 0 6px rgba(29,92,153,.14), 0 10px 20px rgba(0,0,0,.32);
-}
-.tile-n {
-  font-family: var(--serif); font-size: 27px; line-height: 1.05; color: var(--azul-lo);
-}
-.tile-s {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
-  text-transform: uppercase; color: #5C7791;
-}
-.bookings {
-  margin: 20px 0 0;
-  font-family: var(--mono); font-size: 12px; letter-spacing: .05em;
-  color: var(--bone-2);
-}
-.bk {
-  color: var(--bone-3); text-transform: uppercase; letter-spacing: .2em;
-  font-size: 11px; margin-right: 10px;
-}
-.bookings a { color: var(--piment); text-decoration-thickness: 1px; text-underline-offset: 4px; }
-.bookings a:hover { color: var(--brass-hi); }
-
-/* ── footer ────────────────────────────────────────────────────────────── */
-.foot {
-  position: relative; z-index: 3;
-  max-width: 1040px; margin: 0 auto;
-  padding: 26px clamp(16px, 4vw, 46px) 44px;
-  border-top: 1px solid rgba(255,255,255,.08);
-  font-family: var(--mono); font-size: 11px; line-height: 1.75;
-  color: var(--bone-3); max-width: 78ch;
-}
-
-.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
-
-/* ═══ PHONE — the object takes MORE of the screen, the words give way ═════ */
-@media (max-width: 760px) {
-  :root { --dw: 198px; --dh: 250px; --dd: 36px; }
-
-  .dsk { display: none; }
-
-  .mark { font-size: 21px; }
-  .kicker { margin-top: 26px; }
-  .lead { font-size: 30px; max-width: 15ch; margin-bottom: 22px; }
-
-  .counter-stage { grid-template-rows: 320px 364px; margin-bottom: 44px; }
-
-  .serving { right: 14px; top: 30px; padding: 9px 15px 8px; }
-  .serving-n { font-size: 33px; }
-
-  .disp-3d { left: 14px; bottom: -28px; }
-  .dispenser { transform: rotateX(2deg) rotateY(-11deg); }
-  .plate { font-size: 15px; padding: 4px 10px 6px; }
-  .window { width: 100px; height: 100px; margin-top: 10px; }
-  .throat { width: 112px; bottom: 54px; }
-  .tongue { width: 92px; bottom: 54px; height: calc(56px + var(--pull, 0px)); }
-  .pull { min-width: 104px; bottom: 9px; }
-
-  .drop { left: 14px; right: 14px; top: 14px; min-height: 138px; }
-  .ghost { height: 138px; }
-  .t-card {
-    min-height: 138px; padding: 13px 14px 13px 16px;
-    grid-template-columns: 1fr 58px;
-  }
-  .t-no { font-size: 34px; }
-  .t-label { font-size: 23px; }
-  .t-es { font-size: 14px; }
-  .t-icon { width: 58px; height: 58px; }
-  .t-detail { font-size: 14px; padding: 13px 16px 15px; }
-
-  .spike {
-    right: auto; left: 14px; bottom: 10px;
-    width: calc(100% - 28px); height: 56px;
-    flex-direction: row; align-items: flex-end; justify-content: flex-start;
-    gap: 6px; padding-bottom: 0;
-  }
-  .needle {
-    left: 0; bottom: 6px; width: 100%; height: 3px; transform: none;
-    background: linear-gradient(90deg, var(--brass-hi), var(--brass));
-  }
-  .foot-brass { left: 0; bottom: 0; transform: none; width: 14px; height: 10px; }
-  .stub { width: 46px; min-height: 46px; font-size: 13px; }
-  .stub::before { top: auto; bottom: 5px; }
-
-  .empty { left: 14px; right: 14px; top: 18px; }
-
-  .tile-row { grid-template-columns: 1fr; gap: 12px; }
-  .tile { min-height: 104px; padding: 17px 18px; }
-  .tile-n { font-size: 22px; }
-  .foot { font-size: 11px; padding-bottom: 34px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .001ms !important;
-  }
+@media (prefers-contrast:more){
+  :root{ --olive-2:#2E3B2B; --olive-3:#48563F; --rule:#93A48F; }
 }
