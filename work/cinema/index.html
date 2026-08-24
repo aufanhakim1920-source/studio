@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Merri — repertory cinema, Thornbury</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314151A'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%2317B398'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="masthead">
+  <h1 class="masthead__name">The Merri</h1>
+  <p class="masthead__sub mono">Repertory &middot; Thornbury</p>
+</header>
+
+<main class="bench">
+
+  <div class="deck">
+    <div class="deck__edge" aria-hidden="true"></div>
+
+    <!-- SUPPLY SPOOL -->
+    <div class="spool spool--supply" data-side="supply" role="presentation">
+      <div class="spool__well" aria-hidden="true"></div>
+      <div class="spool__spin">
+        <div class="spool__roll"></div>
+        <div class="spool__sheen"></div>
+        <svg class="spool__cage" viewBox="0 0 200 200" aria-hidden="true">
+          <g class="cage">
+            <circle class="cage__rim" cx="100" cy="100" r="93"/>
+            <circle class="cage__ring" cx="100" cy="100" r="37"/>
+            <g class="cage__spokes">
+              <rect x="92" y="12" width="16" height="56" rx="3"/>
+              <rect x="92" y="12" width="16" height="56" rx="3" transform="rotate(120 100 100)"/>
+              <rect x="92" y="12" width="16" height="56" rx="3" transform="rotate(240 100 100)"/>
+              <rect x="92" y="34" width="16" height="132" rx="4" transform="rotate(60 100 100)"/>
+              <rect x="92" y="34" width="16" height="132" rx="4" transform="rotate(180 100 100)"/>
+              <rect x="92" y="34" width="16" height="132" rx="4" transform="rotate(300 100 100)"/>
+            </g>
+            <circle class="cage__hub" cx="100" cy="100" r="19"/>
+            <rect class="cage__drive" x="93" y="93" width="14" height="14" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <span class="spool__tag mono">Supply</span>
+    </div>
+
+    <!-- FILM RUN -->
+    <div class="run" id="run" role="slider" tabindex="0"
+         aria-label="Wind the reel to choose a screening"
+         aria-valuemin="0" aria-valuemax="8" aria-valuenow="3" aria-valuetext="Paris, Texas">
+      <div class="run__lamp" id="lamp" aria-hidden="true"></div>
+      <div class="film" id="film" aria-hidden="true"></div>
+      <div class="scrim scrim--l" aria-hidden="true"></div>
+      <div class="scrim scrim--r" aria-hidden="true"></div>
+      <div class="throat throat--l" aria-hidden="true"></div>
+      <div class="throat throat--r" aria-hidden="true"></div>
+      <button class="gate" id="gate" type="button" aria-pressed="false" aria-label="Hold the framed film up to the lamp">
+        <span class="gate__rail gate__rail--t"></span>
+        <span class="gate__rail gate__rail--b"></span>
+        <span class="gate__claw gate__claw--l"></span>
+        <span class="gate__claw gate__claw--r"></span>
+      </button>
+    </div>
+
+    <!-- TAKE-UP SPOOL -->
+    <div class="spool spool--take" data-side="take" role="presentation">
+      <div class="spool__well" aria-hidden="true"></div>
+      <div class="spool__spin">
+        <div class="spool__roll"></div>
+        <div class="spool__sheen"></div>
+        <svg class="spool__cage" viewBox="0 0 200 200" aria-hidden="true">
+          <g class="cage">
+            <circle class="cage__rim" cx="100" cy="100" r="93"/>
+            <circle class="cage__ring" cx="100" cy="100" r="37"/>
+            <g class="cage__spokes">
+              <rect x="92" y="12" width="16" height="56" rx="3"/>
+              <rect x="92" y="12" width="16" height="56" rx="3" transform="rotate(120 100 100)"/>
+              <rect x="92" y="12" width="16" height="56" rx="3" transform="rotate(240 100 100)"/>
+              <rect x="92" y="34" width="16" height="132" rx="4" transform="rotate(60 100 100)"/>
+              <rect x="92" y="34" width="16" height="132" rx="4" transform="rotate(180 100 100)"/>
+              <rect x="92" y="34" width="16" height="132" rx="4" transform="rotate(300 100 100)"/>
+            </g>
+            <circle class="cage__hub" cx="100" cy="100" r="19"/>
+            <rect class="cage__drive" x="93" y="93" width="14" height="14" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <span class="spool__tag mono">Take&#8209;up</span>
+    </div>
+
+    <span class="deck__week mono">Week of 25 Aug</span>
+    <span class="deck__count mono" id="count">04/09</span>
+  </div>
+
+  <!-- READOUT -->
+  <div class="stage">
+    <div class="readout" id="readout">
+      <p class="readout__title" id="rTitle">Paris, Texas</p>
+      <p class="readout__when mono" id="rWhen">Thu 7:30pm</p>
+    </div>
+
+    <div class="detail" id="detail" aria-live="polite">
+      <p class="detail__meta mono" id="dMeta"></p>
+      <p class="detail__note" id="dNote"></p>
+      <a class="book" id="dBook" href="#book">Book</a>
+    </div>
+  </div>
+
+  <p class="hint mono" id="hint">Turn a spool</p>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
