@@ -1,0 +1,141 @@
+/* Slide Rule — a working logarithmic calculator.
+   Palette: graphite desk, celluloid ivory, vermilion hairline. Cool and
+   neutral, deliberately away from the petrol/brass of the music box and the
+   oxblood/maple of the bagatelle.
+   Motion: the slide and the cursor move only under your finger. */
+
+:root{
+  --desk:    #24272C;
+  --desk-2:  #2E323A;
+  --ivory:   #EFE7D6;
+  --ivory-2: #D8CFBB;
+  --graphite:#23262B;
+  --steel:   #9FB4C4;
+  --red:     #E2402C;
+  --line:    #3A3F48;
+  --dim:     #98A1AE;
+
+  --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --r-sm: 4px;
+  --ease: cubic-bezier(.2,.8,.24,1);
+}
+
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:linear-gradient(180deg, var(--desk-2), var(--desk) 60%);
+  color:var(--ivory);
+  font:400 16px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+.desk{ max-width:1040px; margin:0 auto; padding:38px 22px 52px; }
+
+.eyebrow{
+  margin:0 0 8px;
+  font:500 11.5px/1 var(--mono); letter-spacing:.3em; color:var(--steel);
+}
+h1{
+  margin:0;
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(26px, 5.4vw, 40px); line-height:1.08; letter-spacing:-.022em;
+}
+
+/* ── the sum you are asked to set ─────────────────────────────────────── */
+.task{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  margin-top:22px; padding:13px 16px;
+  border:1px solid var(--line); border-radius:var(--r-sm);
+  background:rgba(0,0,0,.22);
+}
+.t-k{ font:500 11px/1 var(--mono); letter-spacing:.2em; color:var(--dim); }
+.t-sum{
+  font:600 clamp(19px,4vw,26px)/1 var(--mono);
+  letter-spacing:.02em; color:var(--ivory);
+}
+.t-state{
+  margin-left:auto;
+  font:500 11.5px/1 var(--mono); letter-spacing:.14em; color:var(--dim);
+}
+.t-state.hit{ color:#7ED89B; }
+.t-state.near{ color:#E8C46A; }
+
+/* ── the rule ─────────────────────────────────────────────────────────── */
+.stage{
+  position:relative;
+  width:100%;
+  margin-top:16px;
+  aspect-ratio: 16 / 5;
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  background:rgba(0,0,0,.20);
+  overflow:hidden;
+  touch-action:none;
+  cursor:grab;
+}
+.stage.dragging{ cursor:grabbing; }
+#rule{ display:block; width:100%; height:100%; }
+
+.hint{
+  margin:12px 0 0;
+  font:400 12.5px/1.5 var(--mono); letter-spacing:.05em; color:var(--dim);
+  min-height:1.4em;
+}
+
+/* ── rack ─────────────────────────────────────────────────────────────── */
+.rack{
+  display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+  margin-top:16px; padding-top:15px; border-top:1px solid var(--line);
+}
+.readout{
+  display:flex; align-items:baseline; gap:8px;
+  padding:7px 12px; border:1px solid var(--line); border-radius:var(--r-sm);
+  background:rgba(0,0,0,.24);
+}
+.r-k{ font:500 11px/1 var(--mono); letter-spacing:.16em; color:var(--dim); }
+.r-v{
+  font:500 16px/1 var(--mono); color:var(--ivory);
+  font-variant-numeric:tabular-nums; min-width:4ch;
+}
+.spacer{ flex:1 1 auto; }
+
+.btn{
+  min-height:44px; padding:0 14px;
+  font:500 11.5px/44px var(--mono); letter-spacing:.13em;
+  color:var(--ivory); background:transparent;
+  border:1px solid var(--steel); border-radius:var(--r-sm);
+  cursor:pointer;
+  transition:background .15s var(--ease);
+}
+.btn:hover{ background:rgba(159,180,196,.14); }
+.btn:focus-visible{ outline:2px solid var(--red); outline-offset:2px; }
+
+.foot{ margin-top:26px; padding-top:14px; border-top:1px solid var(--line); }
+.foot p{
+  margin:0; font-size:12px; line-height:1.65; color:var(--dim); max-width:64ch;
+}
+.foot b{ color:var(--ivory); font-weight:600; }
+
+/* ── phone ────────────────────────────────────────────────────────────────
+   A slide rule is long and thin, so laid out horizontally it would be a
+   sliver on a phone. Below 700px the rule is drawn VERTICALLY instead and
+   the stage goes tall — the object keeps the screen, and dragging up and
+   down is just as natural as left and right. app.js reads the same
+   breakpoint to swap its axis. */
+@media (max-width:700px){
+  .desk{ padding:24px 13px 40px; }
+  .stage{ aspect-ratio: 5 / 8; }
+  .task{ gap:10px; padding:11px 13px; }
+  .t-state{ margin-left:0; }
+  .rack{ gap:7px; }
+  .btn{ padding:0 12px; letter-spacing:.1em; }
+}
+
+@media (prefers-contrast:more){
+  :root{ --dim:#C3CBD6; --line:#5A616D; }
+}

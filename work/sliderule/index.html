@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Slide Rule — the answer is an alignment</title>
+<meta name="description" content="A working slide rule. Drag the slide, drag the cursor, read the product. The answer exists only as a position.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2324272C'/%3E%3Crect x='2' y='9' width='28' height='14' fill='%23EFE7D6'/%3E%3Crect x='2' y='14' width='28' height='4' fill='%23D8CFBB'/%3E%3Crect x='19' y='6' width='2' height='20' fill='%23E2402C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking: a plain stylesheet link blocks SCRIPT EXECUTION until it
+     resolves. A slow font host once stopped a build in this folder from
+     running at all (4.7s, canvas never drew). -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap"></noscript>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="desk">
+
+  <header class="head">
+    <p class="eyebrow">SLIDE RULE</p>
+    <h1>The answer is a position.</h1>
+  </header>
+
+  <div class="task" id="task" aria-live="polite">
+    <span class="t-k">SET</span>
+    <span class="t-sum" id="tSum">3.4 &times; 2.6</span>
+    <span class="t-state" id="tState">&mdash;</span>
+  </div>
+
+  <div class="stage" id="stage">
+    <canvas id="rule" aria-label="A slide rule. Drag the middle slide to move the C scale; drag the cursor hairline to read a value."></canvas>
+  </div>
+
+  <p class="hint" id="hint">Drag the slide. Drag the hairline.</p>
+
+  <div class="rack">
+    <div class="readout"><span class="r-k">C</span><span class="r-v" id="rC">1.00</span></div>
+    <div class="readout"><span class="r-k">D</span><span class="r-v" id="rD">1.00</span></div>
+    <div class="readout"><span class="r-k">SOLVED</span><span class="r-v" id="rSolved">0</span></div>
+    <div class="spacer"></div>
+    <button type="button" class="btn" id="bSkip">NEW SUM</button>
+    <button type="button" class="btn" id="bHome">RESET</button>
+  </div>
+
+  <footer class="foot">
+    <p>Line the slide&rsquo;s <b>1</b> against the first number, then read under the second. Nothing is calculated in code &mdash; the scales are logarithmic, so sliding them adds the logs.</p>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

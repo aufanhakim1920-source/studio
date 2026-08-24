@@ -1,0 +1,117 @@
+/* Balance — a beam balance you load by hand.
+   Palette: deep indigo, polished nickel, aged brass, chalk. Cool-dark and
+   metallic, apart from the petrol/brass music box, the oxblood bagatelle
+   and the graphite slide rule.
+   Motion: the beam swings only because you loaded it; it settles and stops. */
+
+:root{
+  --ink:     #16203A;
+  --ink-2:   #1E2B4B;
+  --nickel:  #C6CDD6;
+  --nickel-2:#8C97A6;
+  --brass:   #CE9B4E;
+  --brass-hi:#EFC584;
+  --chalk:   #EFEFE9;
+  --dim:     #93A0B8;
+  --line:    #2B3A5E;
+  --good:    #6FD09A;
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --mono:  "DM Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --r-sm: 5px;
+  --ease: cubic-bezier(.2,.8,.24,1);
+}
+
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:radial-gradient(120% 85% at 50% 0%, var(--ink-2), var(--ink) 66%);
+  color:var(--chalk);
+  font:400 16px/1.5 var(--mono);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+.room{ max-width:920px; margin:0 auto; padding:38px 22px 52px; }
+
+.eyebrow{
+  margin:0 0 8px;
+  font:500 11.5px/1 var(--mono); letter-spacing:.3em; color:var(--brass);
+}
+h1{
+  margin:0;
+  font-family:var(--serif); font-weight:600;
+  font-size:clamp(27px, 5.6vw, 42px); line-height:1.08; letter-spacing:-.015em;
+}
+
+.stage{
+  position:relative;
+  width:100%;
+  margin-top:22px;
+  aspect-ratio: 16 / 11;
+  border:1px solid var(--line);
+  border-radius:var(--r-sm);
+  background:linear-gradient(180deg, rgba(43,58,94,.35), rgba(10,16,30,.55));
+  overflow:hidden;
+  touch-action:none;
+  cursor:default;
+}
+#scale{ display:block; width:100%; height:100%; }
+
+.hint{
+  margin:12px 0 0;
+  font:400 12.5px/1.5 var(--mono); letter-spacing:.05em; color:var(--dim);
+  min-height:1.4em;
+  transition:color .2s var(--ease);
+}
+.hint.good{ color:var(--good); }
+
+.rack{
+  display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+  margin-top:16px; padding-top:15px; border-top:1px solid var(--line);
+}
+.readout{
+  display:flex; align-items:baseline; gap:8px;
+  padding:7px 12px; border:1px solid var(--line); border-radius:var(--r-sm);
+  background:rgba(8,13,26,.5);
+}
+.r-k{ font:500 11px/1 var(--mono); letter-spacing:.16em; color:var(--dim); }
+.r-v{
+  font:500 16px/1 var(--mono); color:var(--brass-hi);
+  font-variant-numeric:tabular-nums; min-width:3ch;
+}
+.r-v i{ font-style:normal; font-size:11px; color:var(--dim); margin-left:1px; }
+.spacer{ flex:1 1 auto; }
+
+.btn{
+  min-height:44px; padding:0 14px;
+  font:500 11.5px/44px var(--mono); letter-spacing:.13em;
+  color:var(--chalk); background:transparent;
+  border:1px solid var(--nickel-2); border-radius:var(--r-sm);
+  cursor:pointer;
+  transition:background .15s var(--ease), border-color .15s var(--ease);
+}
+.btn:hover{ background:rgba(198,205,214,.13); border-color:var(--nickel); }
+.btn:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+
+.foot{ margin-top:26px; padding-top:14px; border-top:1px solid var(--line); }
+.foot p{ margin:0; font-size:12px; line-height:1.65; color:var(--dim); max-width:62ch; }
+
+/* ── phone ────────────────────────────────────────────────────────────────
+   The balance is wide by nature (a beam with two pans), so on a narrow
+   screen the stage goes squarer and the drawing scales to fit rather than
+   the object shrinking while the copy stays put. */
+@media (max-width:640px){
+  .room{ padding:24px 13px 40px; }
+  .stage{ aspect-ratio: 1 / 1.15; margin-top:16px; }
+  .rack{ gap:7px; }
+  .btn{ padding:0 12px; letter-spacing:.1em; }
+  .foot{ margin-top:20px; }
+}
+
+@media (prefers-contrast:more){
+  :root{ --dim:#BFC9DC; --line:#485980; }
+}
