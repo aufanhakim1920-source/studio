@@ -6,7 +6,15 @@
 <title>baka nae. — sprue</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- ⚠️ Fonts are loaded NON-BLOCKING on purpose.
+     A plain <link rel="stylesheet"> blocks SCRIPT EXECUTION until it
+     resolves, so a slow third-party stylesheet stops the page's own
+     JavaScript from ever running. Measured here: fonts.googleapis.com took
+     4.7s, and the app never started — document.readyState sat at "loading"
+     and the canvas stayed blank. media="print" + onload flips it to a
+     non-blocking fetch that upgrades itself once it lands. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap"></noscript>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
