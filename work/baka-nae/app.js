@@ -259,26 +259,36 @@ function fillTray(i) {
   const f = form();
   const vb = `${-f.w / 2 - 16} ${-f.h / 2 - 16} ${f.w + 32} ${f.h + 32}`;
 
+  const nxt = (n) => (i + n + CELLS.length) % CELLS.length;
+
   tray.innerHTML = `
-    <div class="tilt">
-      <svg class="tray-svg" viewBox="${vb}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        ${formMarkup(i, true)}
-      </svg>
-    </div>
-    <p class="t-code">${code}</p>
-    <h2 class="t-name">NYA! VER. ${SERIES[i]}</h2>
-    <span class="t-nya">Nya! ver.</span>
-    <dl class="t-rows">
-      <div class="t-row"><dt>${t.format}</dt><dd>${t.runners[runner].fmt}</dd></div>
-    </dl>
-    <div class="t-nav">
-      <button type="button" class="t-step" data-step="-1" aria-label="${t.prev}">&lsaquo;</button>
-      <button type="button" class="t-step" data-step="1" aria-label="${t.next}">&rsaquo;</button>
-      <span class="t-of">${i + 1} / 6</span>
-    </div>
-    <div class="t-acts">
-      <a class="t-shop" href="${SHOPEE}" target="_blank" rel="noopener">${t.shop}</a>
-      <button class="t-close" type="button" aria-label="${t.close}">✕</button>
+    <div class="deck">
+      <div class="dcard back b2" aria-hidden="true" style="--tint:${TINTS[nxt(2)]}"></div>
+      <div class="dcard back b1" aria-hidden="true" style="--tint:${TINTS[nxt(1)]}"></div>
+      <div class="dcard lead" id="dtop">
+        <span class="sw-tag l" aria-hidden="true">&lsaquo; ${t.prev}</span>
+        <span class="sw-tag r" aria-hidden="true">${t.next} &rsaquo;</span>
+        <div class="tilt">
+          <svg class="tray-svg" viewBox="${vb}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            ${formMarkup(i, true)}
+          </svg>
+        </div>
+        <p class="t-code">${code}</p>
+        <h2 class="t-name">NYA! VER. ${SERIES[i]}</h2>
+        <span class="t-nya">Nya! ver.</span>
+        <dl class="t-rows">
+          <div class="t-row"><dt>${t.format}</dt><dd>${t.runners[runner].fmt}</dd></div>
+        </dl>
+        <div class="t-nav">
+          <button type="button" class="t-step" data-step="-1" aria-label="${t.prev}">&lsaquo;</button>
+          <button type="button" class="t-step" data-step="1" aria-label="${t.next}">&rsaquo;</button>
+          <span class="t-of">${i + 1} / 6</span>
+        </div>
+        <div class="t-acts">
+          <a class="t-shop" href="${SHOPEE}" target="_blank" rel="noopener">${t.shop}</a>
+          <button class="t-close" type="button" aria-label="${t.close}">✕</button>
+        </div>
+      </div>
     </div>`;
 
   tray.hidden = false;
@@ -292,26 +302,75 @@ function fillTray(i) {
   $$(".t-step", tray).forEach((b) =>
     b.addEventListener("click", () => step(+b.dataset.step)));
 
-  wireSwipe(tray);
+  wireDrag($("#dtop", tray));
+}
+
+/* ── the card is a deck you actually drag ────────────────────────────────
+   The first version only *measured* the gesture on pointerup and jumped to
+   the next card. Nothing moved while your finger was down, so it felt dead —
+   "cant like swipe tinder". Now the card tracks the pointer live, tilts with
+   the throw, and either flies out past the threshold or springs back. */
+const THROW = 84;                  // px past which the card commits
+const DEAD  = 6;                   // px before a press counts as a drag, so
+                                   // taps on the buttons inside still work
+
+function wireDrag(card) {
+  if (!card) return;
+  let x0 = 0, y0 = 0, dx = 0, dy = 0, active = false, moved = false;
+  const tagL = $(".sw-tag.l", card), tagR = $(".sw-tag.r", card);
+
+  const paint = () => {
+    card.style.transform =
+      `translate(${dx.toFixed(1)}px, ${(dy * 0.22).toFixed(1)}px) rotate(${(dx * 0.055).toFixed(2)}deg)`;
+    const k = Math.min(Math.abs(dx) / THROW, 1);
+    if (tagR) tagR.style.opacity = dx > 0 ? k : 0;
+    if (tagL) tagL.style.opacity = dx < 0 ? k : 0;
+  };
+  const reset = () => {
+    card.style.transform = "";
+    if (tagR) tagR.style.opacity = 0;
+    if (tagL) tagL.style.opacity = 0;
+  };
+
+  card.addEventListener("pointerdown", (e) => {
+    if (e.target.closest("button, a")) return;      // let the controls be pressed
+    active = true; moved = false;
+    x0 = e.clientX; y0 = e.clientY; dx = 0; dy = 0;
+    try { card.setPointerCapture(e.pointerId); } catch { /* synthetic events have no live pointer */ }
+    card.classList.add("dragging");
+  });
+
+  card.addEventListener("pointermove", (e) => {
+    if (!active) return;
+    dx = e.clientX - x0; dy = e.clientY - y0;
+    if (!moved && Math.abs(dx) < DEAD && Math.abs(dy) < DEAD) return;
+    // a mostly-vertical drag is the page scrolling, not a swipe
+    if (!moved && Math.abs(dy) > Math.abs(dx) * 1.4) { active = false; card.classList.remove("dragging"); return; }
+    moved = true;
+    paint();
+  });
+
+  const release = () => {
+    if (!active) return;
+    active = false;
+    card.classList.remove("dragging");
+    if (moved && Math.abs(dx) > THROW) {
+      const dir = dx > 0 ? 1 : -1;
+      card.classList.add(dir > 0 ? "fly-r" : "fly-l");
+      // advance once the card has actually left, so the next one reads as
+      // coming up from the stack rather than teleporting in
+      setTimeout(() => step(dir), 190);
+    } else {
+      reset();
+    }
+  };
+  card.addEventListener("pointerup", release);
+  card.addEventListener("pointercancel", () => { active = false; card.classList.remove("dragging"); reset(); });
 }
 
 function step(d) {
   if (!open) return;
   snap((open.i + d + CELLS.length) % CELLS.length);
-}
-
-/* phones have no prev/next hover affordance, so the card is swipeable too.
-   Horizontal intent only — a vertical drag is the page scrolling. */
-function wireSwipe(el) {
-  let x0 = null, y0 = null;
-  el.addEventListener("pointerdown", (e) => { x0 = e.clientX; y0 = e.clientY; });
-  el.addEventListener("pointerup", (e) => {
-    if (x0 === null) return;
-    const dx = e.clientX - x0, dy = e.clientY - y0;
-    x0 = null;
-    if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
-  });
-  el.addEventListener("pointercancel", () => { x0 = null; });
 }
 
 document.addEventListener("keydown", (e) => {

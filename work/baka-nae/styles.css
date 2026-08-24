@@ -304,7 +304,55 @@ body{
 }
 .well.full .well-hint{ display:none; }
 
-.tray{ position:relative; z-index:2; display:flex; flex-direction:column; gap:12px; height:100%; }
+.tray{ position:relative; z-index:2; height:100%; }
+
+/* ── the deck ─────────────────────────────────────────────────────────────
+   Two cards sit behind the live one so the tray reads as a stack you can
+   throw — the affordance is the whole point. Only the top card is in normal
+   flow; it defines the height and the two behind are pinned to it. */
+.deck{ position:relative; height:100%; }
+.dcard{
+  background:linear-gradient(180deg,#FBF8FF,#F0EAF8);
+  border:1.5px solid var(--plastic-edge);
+  border-radius:var(--r-part);
+  box-shadow:0 6px 18px rgba(70,50,104,.13);
+  padding:14px;
+}
+.dcard.back{
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg,#FBF8FF,var(--tint,#F0EAF8));
+}
+.b1{ transform:translateY(9px) scale(.968); opacity:.85; z-index:1; }
+.b2{ transform:translateY(18px) scale(.936); opacity:.55; z-index:0; }
+
+.dcard.lead{
+  position:relative; z-index:2;
+  min-height:100%;
+  display:flex; flex-direction:column; gap:12px;
+  cursor:grab;
+  touch-action:pan-y;              /* vertical stays the page's, horizontal is ours */
+  will-change:transform;
+  user-select:none; -webkit-user-select:none;
+}
+.dcard.lead.dragging{ cursor:grabbing; }
+@media (prefers-reduced-motion:no-preference){
+  .dcard.lead{ transition:transform .3s var(--ease), opacity .3s var(--ease); }
+  .dcard.lead.dragging{ transition:none; }   /* must track the finger exactly */
+}
+.dcard.lead.fly-r{ transform:translateX(460px) rotate(19deg) !important; opacity:0; }
+.dcard.lead.fly-l{ transform:translateX(-460px) rotate(-19deg) !important; opacity:0; }
+
+/* the direction label that fades up as you throw */
+.sw-tag{
+  position:absolute; top:12px; z-index:3; pointer-events:none; opacity:0;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:6px 10px; border-radius:var(--r-pill);
+  border:1.5px solid var(--signal); color:var(--signal);
+  background:rgba(255,255,255,.9);
+}
+.sw-tag.l{ left:12px; }
+.sw-tag.r{ right:12px; }
 @media (prefers-reduced-motion:no-preference){
   .tray{ animation:drop .34s var(--ease); }
 }
@@ -411,6 +459,10 @@ body{
   .well.full{ display:block; }
   .well-lip{ display:none; }
   .tray-svg{ height:168px; }
+  .dcard.lead{ min-height:0; }
+  .dcard{ padding:12px; }
+  .b1{ transform:translateY(7px) scale(.975); }
+  .b2{ transform:translateY(14px) scale(.95); }
 
   .rail-foot{ position:fixed; left:0; right:0; bottom:0; z-index:30;
               border-top:1.5px solid var(--ink); padding:0; background:var(--ground); }
