@@ -4,6 +4,15 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 let s = readFileSync("index.html", "utf8");
 
+// Recount the ROOT too. Fixing only the generated file left the hand-edited
+// source with a typed total, which went stale on the very next build added.
+{
+  const n = (s.match(/<span class="n">\d+<\/span>/g) || []).length;
+  const fixed = s.replace(/<p class="meta">\d+ builds/, `<p class="meta">${n} builds`);
+  if (fixed !== s) { writeFileSync("index.html", fixed); console.log(`index.html count corrected to ${n}`); }
+  s = fixed;
+}
+
 s = s.replace(/href="work\//g, 'href="');                    // paths are relative to /work/
 s = s.replace("<title>Aufan Rachmad — Work</title>", "<title>Work — Aufan Rachmad</title>");
 s = s.replace(
