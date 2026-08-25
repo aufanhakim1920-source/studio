@@ -7,21 +7,24 @@
 :root {
   /* ground: near-black, so the bright sheet reads as a lit object.
      10 of 25 reference grounds are near-black; pure #FFF appears once. */
-  --void:      #0D0B12;
-  --void-lift: #16131D;
-  --paper:     #F2EFE6;   /* the sheet itself — warm, but it is an OBJECT not the ground */
-  --backing:   #DCD5C4;   /* revealed under a peeled sticker */
-  --ink:       #14121A;
-  --ink-soft:  #6D6678;
+  --void:      #D9634F;   /* warm clay ground — saturated, the identity colour */
+  --void-lift: #C4553F;
+  --paper:     #FBF4E6;   /* the sheet: a bright object lying ON the ground */
+  --backing:   #E4D9C2;   /* revealed under a peeled sticker */
+  --ink:       #2B1512;
+  --ink-soft:  #8A5347;
 
-  /* one saturated signal + one support. Not library defaults. */
-  --nya:       #FF3D7F;
-  --mint:      #58E0C4;
+  /* one saturated signal + one cool support against a warm field */
+  --nya:       #12100F;
+  --deep:      #0E6E63;
 
-  /* radius: a named two-tier system, never one uniform number */
-  --r-die:  16px;   /* die-cut sticker corners */
-  --r-pill: 999px;  /* tabs, buttons */
-  --r-none: 0px;    /* the sheet, the bars — sharp on purpose */
+  /* radius: five named tiers, the way a real shop's system reads.
+     One uniform value is the slop signature. */
+  --r-die:   18px;  /* die-cut sticker corners */
+  --r-card:  8px;   /* postcards, photocards */
+  --r-tiny:  3px;   /* micro chrome */
+  --r-pill:  999px; /* tabs, buttons */
+  --r-none:  0px;   /* the sheet edge — sharp on purpose */
 
   --sp-1: 6px; --sp-2: 12px; --sp-3: 20px; --sp-4: 32px; --sp-5: 56px; --sp-6: 88px;
 
@@ -37,7 +40,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--void);
-  color: var(--paper);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.55;
@@ -50,9 +53,9 @@ body {
 .grain {
   position: fixed; inset: 0; z-index: 9;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.32;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
+  mix-blend-mode: multiply;
 }
 
 .micro {
@@ -63,9 +66,9 @@ body {
   color: var(--ink-soft);
 }
 .link { color: var(--ink-soft); text-decoration: none; }
-.link:hover, .link:focus-visible { color: var(--nya); }
+.link:hover, .link:focus-visible { color: var(--deep); }
 
-:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--deep); outline-offset: 3px; }
 
 /* ---------------- bar ---------------- */
 .bar {
@@ -73,16 +76,16 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--sp-3);
   padding: var(--sp-2) var(--sp-4);
-  background: color-mix(in srgb, var(--void) 88%, transparent);
+  background: color-mix(in srgb, var(--void) 90%, transparent);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid #ffffff14;
+  border-bottom: 1px solid #2b151226;
   border-radius: var(--r-none);
 }
 .mark {
   font-family: var(--round); font-weight: 900; font-size: 1.05rem;
-  color: var(--paper); text-decoration: none; letter-spacing: -0.01em;
+  color: var(--ink); text-decoration: none; letter-spacing: -0.01em;
 }
-.mark .dot { color: var(--nya); }
+.mark .dot { color: var(--deep); }
 .bar__right { display: flex; align-items: center; gap: var(--sp-3); }
 
 /* ---------------- stage ---------------- */
@@ -101,16 +104,16 @@ h1 {
   font-size: clamp(2.5rem, 6vw, 4.2rem);
   line-height: 0.98; letter-spacing: -0.03em;
   margin: 0 0 var(--sp-3);
-  color: var(--paper);
+  color: var(--ink);
 }
 .lede {
   max-width: 34ch; margin: 0 0 var(--sp-3);
-  color: #C9C3D2; font-size: 0.98rem;
+  color: #4A2620; font-size: 1rem;
 }
 .hint { display: block; line-height: 2; }
 .hint__key {
-  font-family: var(--mono); color: var(--paper);
-  border: 1px solid #ffffff2e; border-radius: var(--r-pill);
+  font-family: var(--mono); color: var(--ink);
+  border: 1px solid #2b151240; border-radius: var(--r-pill);
   padding: 2px 9px; font-size: 0.6rem;
 }
 
@@ -122,7 +125,7 @@ h1 {
   content: ""; position: absolute; z-index: 0;
   left: 50%; top: 46%; width: 128%; aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, #ffffff1f 0%, #ffffff08 38%, transparent 68%);
+  background: radial-gradient(circle, #ffffff30 0%, #ffffff12 40%, transparent 70%);
   pointer-events: none;
 }
 
@@ -134,14 +137,14 @@ h1 {
 .tab {
   font-family: var(--mono); font-size: 0.62rem;
   letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-soft); background: #ffffff0d;
-  border: 1px solid #ffffff1f; border-radius: var(--r-pill);
+  color: #6B3A30; background: #ffffff40;
+  border: 1px solid #2b151226; border-radius: var(--r-pill);
   padding: 6px 13px; cursor: pointer;
   transition: color 0.18s, background-color 0.18s, border-color 0.18s;
 }
-.tab:hover { color: var(--paper); border-color: #ffffff45; }
+.tab:hover { color: var(--ink); border-color: #2b151259; background: #ffffff85; }
 .tab[aria-selected="true"] {
-  background: var(--nya); border-color: var(--nya); color: #1B0410;
+  background: var(--ink); border-color: var(--ink); color: var(--paper);
 }
 
 .sheet {
@@ -150,7 +153,7 @@ h1 {
   color: var(--ink);
   border-radius: var(--r-none);
   padding: var(--sp-3);
-  box-shadow: 0 40px 80px -30px #000000cc, 0 2px 0 #ffffff1a inset;
+  box-shadow: 0 34px 60px -26px #5c221a80, 0 2px 0 #ffffff9c inset;
   /* the sheet is a real piece of stock: a hairline edge + a faint deckle */
   background-image:
     repeating-linear-gradient(90deg, #00000008 0 1px, transparent 1px 5px);
@@ -159,13 +162,17 @@ h1 {
   display: flex; justify-content: space-between; align-items: center;
   gap: var(--sp-2);
 }
-.sheet__head { border-bottom: 1px dashed #14121a3d; padding-bottom: var(--sp-2); }
-.sheet__foot { border-top: 1px dashed #14121a3d; padding-top: var(--sp-2); }
-.sheet .micro { color: #6b6558; }
+.sheet__head { border-bottom: 1px dashed #2b15123d; padding-bottom: var(--sp-2); }
+.sheet__foot { border-top: 1px dashed #2b15123d; padding-top: var(--sp-2); }
+.sheet .micro { color: #8A5347; }
 
+/* A real sticker sheet packs mixed footprints, so formats claim different
+   cells and `dense` back-fills the gaps they leave. Four columns, not three. */
 .sheet__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  grid-auto-flow: row dense;
   gap: var(--sp-2);
   padding: var(--sp-3) 0;
 }
@@ -180,7 +187,13 @@ h1 {
      With it on the grid the rotateY rendered as a flat horizontal squash - the
      sticker never appeared to lift at all. */
   perspective: 900px;
+  /* --tilt comes from products.json. It shipped on every product and no build
+     had ever read it; a sheet where nothing is perfectly square reads as a real
+     object rather than a table. */
+  rotate: var(--tilt, 0deg);
 }
+.slot.s2x1 { grid-column: span 2; aspect-ratio: 3 / 2; }
+.slot.s2x2 { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
 
 /* the backing: what a kiss-cut sticker leaves behind.
    This is where the spec lives — disclosure BY the object. */
@@ -197,7 +210,7 @@ h1 {
 .backing__reg {
   display: flex; justify-content: space-between;
   font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.1em;
-  color: #6d6558; text-transform: uppercase;
+  color: #8A5347; text-transform: uppercase;
 }
 /* The spec is the payoff for peeling, so it must be UNREADABLE until the
    sticker actually lifts — otherwise the mechanic reveals nothing.
@@ -213,12 +226,12 @@ h1 {
 }
 .backing__line {
   font-family: var(--mono); font-size: 0.56rem;
-  letter-spacing: 0.08em; text-transform: uppercase; color: #5d5750;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #6B3A30;
 }
 .backing__take {
   font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--ink);
-  border-top: 1px dashed #14121a40; padding-top: 6px;
+  border-top: 1px dashed #2b151240; padding-top: 6px;
 }
 
 /* the sticker face — this is the part that peels */
@@ -269,8 +282,8 @@ h1 {
 
 /* ---------------- tray ---------------- */
 .tray {
-  border-top: 1px solid #ffffff14;
-  border-bottom: 1px solid #ffffff14;
+  border-top: 1px solid #2b151226;
+  border-bottom: 1px solid #2b151226;
   background: var(--void-lift);
   border-radius: var(--r-none);
 }
@@ -283,30 +296,30 @@ h1 {
 .tray__label { display: flex; align-items: baseline; gap: var(--sp-2); }
 .tray__label strong {
   font-family: var(--round); font-weight: 900; font-size: 1.6rem;
-  color: var(--nya); line-height: 1;
+  color: var(--paper); line-height: 1;
 }
 .tray__items { display: flex; flex-wrap: wrap; gap: var(--sp-1); min-height: 34px; align-items: center; }
 .tray__empty { opacity: 0.6; }
 .chip {
   display: inline-flex; align-items: center; gap: 7px;
-  border: 1px solid #ffffff26; border-radius: var(--r-pill);
+  border: 1px solid #2b151233; border-radius: var(--r-pill);
   padding: 4px 6px 4px 10px;
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--paper);
-  background: #ffffff0a;
+  text-transform: uppercase; color: var(--ink);
+  background: #ffffff59;
 }
 .chip__swatch { width: 9px; height: 9px; border-radius: var(--r-pill); }
 .chip__x {
   border: 0; background: transparent; color: var(--ink-soft);
   cursor: pointer; font-size: 0.85rem; line-height: 1; padding: 0 3px;
 }
-.chip__x:hover { color: var(--nya); }
+.chip__x:hover { color: var(--deep); }
 .tray__total { display: flex; align-items: center; gap: var(--sp-3); }
 .tray__total strong { font-family: var(--round); font-weight: 700; font-size: 1.05rem; }
 .btn {
   font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.12em;
   text-transform: uppercase; text-decoration: none;
-  background: var(--nya); color: #1B0410;
+  background: var(--ink); color: var(--paper);
   padding: 11px 18px; border-radius: var(--r-pill);
   transition: transform 0.16s, filter 0.16s;
 }
@@ -316,19 +329,19 @@ h1 {
 /* ---------------- proof ---------------- */
 .proof { max-width: 1240px; margin: 0 auto; padding: var(--sp-6) var(--sp-4) var(--sp-4); }
 .proof__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-3); }
-.proof__cell { border-left: 1px solid #ffffff1a; padding-left: var(--sp-3); }
+.proof__cell { border-left: 1px solid #2b151233; padding-left: var(--sp-3); }
 .proof__num {
   font-family: var(--round); font-weight: 900;
-  font-size: clamp(1.5rem, 3.4vw, 2.3rem); line-height: 1; color: var(--paper);
+  font-size: clamp(1.5rem, 3.4vw, 2.3rem); line-height: 1; color: var(--ink);
 }
-.proof__num em { font-style: normal; color: var(--mint); font-size: 0.5em; }
+.proof__num em { font-style: normal; color: var(--deep); font-size: 0.5em; }
 .proof__lab { margin-top: 5px; }
 .proof__note { display: block; margin-top: var(--sp-3); opacity: 0.7; }
 
 .foot {
   max-width: 1240px; margin: 0 auto;
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-2);
-  padding: var(--sp-4); border-top: 1px solid #ffffff14;
+  padding: var(--sp-4); border-top: 1px solid #2b151226;
 }
 
 /* ---------------- reveal ----------------
@@ -354,6 +367,7 @@ h1 {
 @media (max-width: 560px) {
   .bar { padding: var(--sp-2) var(--sp-3); }
   .sheet__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .slot.s2x2 { grid-row: span 1; aspect-ratio: 3 / 4; }
   .foot { padding: var(--sp-3); }
   .proof { padding: var(--sp-5) var(--sp-3) var(--sp-3); }
   h1 { font-size: clamp(2.1rem, 11vw, 3rem); }

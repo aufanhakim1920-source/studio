@@ -27,52 +27,72 @@
      This is also the first use of series_meta[].hue, which was
      dead data on the old build.
      --------------------------------------------------------- */
-  function formatMark(type) {
-    switch (type) {
-      case "Keychain":    return `<circle cx="50" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="3"/>`;
-      case "Phone Strap": return `<path d="M50 8 q14 10 0 20 q-14 10 0 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>`;
-      case "Sticker":     return `<path d="M28 26 h44 v30 h-44 z" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="5 4"/>`;
-      case "Postcard":    return `<rect x="26" y="28" width="48" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="3"/>`;
-      case "Photocard":   return `<rect x="36" y="22" width="28" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="3"/>`;
-      case "Art Print":   return `<rect x="24" y="24" width="52" height="38" rx="1" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 52 l14-12 10 9 12-14 16 17" fill="none" stroke="currentColor" stroke-width="3"/>`;
-      default:            return `<circle cx="50" cy="40" r="14" fill="none" stroke="currentColor" stroke-width="3"/>`;
+  /* Each product FORMAT gets its own die-cut silhouette and its own footprint
+     on the sheet, because a real sticker sheet is a mix of shapes and sizes —
+     not one outline repeated. Nine identical blobs was the flaw in the first
+     pass of this build. */
+  const FORMS = {
+    "Keychain":    { span: "s1x1", shape: "charm", box: "0 0 100 100" },
+    "Phone Strap": { span: "s1x1", shape: "strap", box: "0 0 100 100" },
+    "Sticker":     { span: "s1x1", shape: "wavy",  box: "0 0 100 100" },
+    "Photocard":   { span: "s1x1", shape: "tall",  box: "0 0 100 100" },
+    "Postcard":    { span: "s2x1", shape: "wide",  box: "0 0 100 68"  },
+    "Art Print":   { span: "s2x2", shape: "print", box: "0 0 100 100" },
+  };
+  const formOf = t => FORMS[t] || { span: "s1x1", shape: "charm", box: "0 0 100 100" };
+
+  /* die-cut outlines, drawn in a 0..100 x 0..100 box so every shape can share
+     one viewBox and the white kiss-cut border is just the same path, fatter. */
+  function outline(shape) {
+    switch (shape) {
+      case "charm":  // cat-eared blob with a punched hole
+        return "M26 36 L36 15 L48 32 Q50 31 52 32 L64 15 L74 36 Q90 50 90 68 Q90 92 50 97 Q10 92 10 68 Q10 50 26 36 Z";
+      case "strap":  // narrower blob, cord loop at the top
+        return "M30 40 L38 20 L48 34 Q50 33 52 34 L62 20 L70 40 Q84 52 84 68 Q84 88 50 93 Q16 88 16 68 Q16 52 30 40 Z";
+      case "wavy":   // irregular kiss-cut sticker
+        return "M18 30 Q34 18 50 24 Q68 16 82 30 Q94 46 88 64 Q92 84 72 90 Q52 100 34 90 Q12 84 12 62 Q8 44 18 30 Z";
+      case "tall":   // photocard
+        return "M20 10 h60 a6 6 0 0 1 6 6 v68 a6 6 0 0 1 -6 6 h-60 a6 6 0 0 1 -6 -6 v-68 a6 6 0 0 1 6 -6 Z";
+      case "wide":   // postcard, landscape (drawn in a 100x68 box)
+        return "M8 8 h84 a5 5 0 0 1 5 5 v42 a5 5 0 0 1 -5 5 h-84 a5 5 0 0 1 -5 -5 v-42 a5 5 0 0 1 5 -5 Z";
+      case "print":  // art print, biggest
+        return "M10 8 h80 a3 3 0 0 1 3 3 v78 a3 3 0 0 1 -3 3 h-80 a3 3 0 0 1 -3 -3 v-78 a3 3 0 0 1 3 -3 Z";
+      default:       return "M10 10 h80 v80 h-80 Z";
     }
   }
 
+  /* the cat face — placed where each shape has room for it */
+  function face(shape) {
+    const at = { charm: [50, 62, 1], strap: [50, 62, 0.86], wavy: [50, 58, 1],
+                 tall:  [50, 46, 0.78], wide: [50, 32, 0.62], print: [50, 46, 0.86] }[shape] || [50, 60, 1];
+    const [cx, cy, k] = at;
+    return `<g transform="translate(${cx},${cy}) scale(${k}) translate(${-cx},${-cy})">
+      <path d="M${cx - 17} ${cy - 22} L${cx - 11} ${cy - 34} L${cx - 3} ${cy - 24} Z" fill="#FBF9F3" opacity="0.6"/>
+      <path d="M${cx + 17} ${cy - 22} L${cx + 11} ${cy - 34} L${cx + 3} ${cy - 24} Z" fill="#FBF9F3" opacity="0.6"/>
+      <circle cx="${cx - 9}" cy="${cy}" r="3.4" fill="#241615"/>
+      <circle cx="${cx + 9}" cy="${cy}" r="3.4" fill="#241615"/>
+      <path d="M${cx - 4} ${cy + 9} q4 4.5 8 0" fill="none" stroke="#241615" stroke-width="2.4" stroke-linecap="round"/>
+    </g>`;
+  }
+
   function stickerSVG(p, hue, seriesTag) {
-    // die-cut: a white border offset around a cat-eared badge
+    const { shape, box } = formOf(p.type_en);
+    const d = outline(shape);
+    const uid = "cut-" + esc(p.id);
+    // default preserveAspectRatio (meet) — never "none", which distorted the
+    // face and ears when a 100x100 drawing was forced into a 3:2 cell
     return `
-    <svg viewBox="0 0 100 133" role="img" aria-label="${esc(p.name_id)}">
-      <defs>
-        <clipPath id="cut-${esc(p.id)}">
-          <path d="M22 34 L34 12 L48 30 Q50 29 52 30 L66 12 L78 34
-                   Q92 48 92 80 Q92 118 50 124 Q8 118 8 80 Q8 48 22 34 Z"/>
-        </clipPath>
-      </defs>
-      <!-- kiss-cut white border -->
-      <path d="M22 34 L34 12 L48 30 Q50 29 52 30 L66 12 L78 34
-               Q92 48 92 80 Q92 118 50 124 Q8 118 8 80 Q8 48 22 34 Z"
-            fill="#FBF9F3" stroke="#00000014" stroke-width="1"/>
-      <g clip-path="url(#cut-${esc(p.id)})">
-        <path d="M26 38 L36 19 L48 34 Q50 33 52 34 L64 19 L74 38
-                 Q87 51 87 80 Q87 113 50 119 Q13 113 13 80 Q13 51 26 38 Z"
-              fill="${esc(hue)}"/>
-        <!-- inner ear -->
-        <path d="M34 22 L40 33 L30 32 Z" fill="#FBF9F3" opacity="0.55"/>
-        <path d="M66 22 L60 33 L70 32 Z" fill="#FBF9F3" opacity="0.55"/>
-        <!-- face -->
-        <circle cx="40" cy="66" r="3.6" fill="#1B1620"/>
-        <circle cx="60" cy="66" r="3.6" fill="#1B1620"/>
-        <path d="M45 76 q5 5 10 0" fill="none" stroke="#1B1620" stroke-width="2.6" stroke-linecap="round"/>
-        <!-- format mark: sits BELOW the face, between mouth and tag.
-             Centres the mark's own (50,40) at (50,94) and shrinks it. -->
-        <g transform="translate(50,94) scale(0.30) translate(-50,-40)" color="#1B1620" opacity="0.45">
-          ${formatMark(p.type_en)}
-        </g>
-        <text x="50" y="112" text-anchor="middle"
-              font-family="'Space Mono', monospace" font-size="8"
-              letter-spacing="1.4" fill="#1B1620" opacity="0.62">${esc(seriesTag)}</text>
+    <svg viewBox="${box}" role="img" aria-label="${esc(p.name_id)}">
+      <defs><clipPath id="${uid}"><path d="${d}"/></clipPath></defs>
+      <!-- the white kiss-cut border: same outline, stroked wide, drawn under -->
+      <path d="${d}" fill="#FBF9F3" stroke="#FBF9F3" stroke-width="7" stroke-linejoin="round"/>
+      <g clip-path="url(#${uid})">
+        <path d="${d}" fill="${esc(hue)}"/>
+        ${face(shape)}
+        <text x="50" y="${shape === "wide" ? 60 : 93}" text-anchor="middle" font-family="'Space Mono', monospace"
+              font-size="7" letter-spacing="1.6" fill="#241615" opacity="0.6">${esc(seriesTag)}</text>
       </g>
+      <path d="${d}" fill="none" stroke="#00000018" stroke-width="1"/>
     </svg>`;
   }
 
@@ -115,7 +135,8 @@
       const hue = seriesHue(p.series);
       const taken = state.picked.has(p.id);
       return `
-      <div class="slot" data-id="${esc(p.id)}" data-picked="${taken}" style="--peel:0">
+      <div class="slot ${formOf(p.type_en).span}" data-id="${esc(p.id)}" data-picked="${taken}"
+           style="--peel:0; --tilt:${(p.tilt || 0).toFixed(2)}deg">
         <div class="backing">
           <div class="backing__reg"><span>+</span><span>${esc(shortTag(p.series))}</span><span>+</span></div>
           <div class="backing__spec">
