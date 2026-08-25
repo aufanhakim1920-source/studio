@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>baka nae. — lembar stiker Nya! ver.</title>
+<meta name="description" content="Ilustrasi fanart orisinal dari Indonesia. Kupas lembarnya, ambil yang kamu mau.">
+<meta name="theme-color" content="#0D0B12">
+
+<!-- non-blocking: a plain stylesheet link to Google Fonts blocks script execution
+     until it resolves (measured at 4.7s once, page never booted) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" media="print" onload="this.media='all'"
+  href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap">
+<noscript><link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap"></noscript>
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- grain: positive stacking order, pointer-events none. NEVER z-index:-1 -->
+<div class="grain" aria-hidden="true"></div>
+
+<header class="bar">
+  <a class="mark" href="#top">baka&nbsp;nae<span class="dot">.</span></a>
+  <div class="bar__right">
+    <span class="micro" id="bar-stat">—</span>
+    <a class="micro link" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">shopee ↗</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===================== THE SHEET ===================== -->
+  <section class="stage" aria-labelledby="stage-h">
+    <div class="stage__intro">
+      <p class="micro eyebrow">( lembar 01 &middot; kiss-cut )</p>
+      <h1 id="stage-h">Kupas<br>yang kamu<br>mau.</h1>
+      <p class="lede">
+        Stiker kiss-cut: yang terpotong cuma stikernya, alasnya utuh.
+        Kupas satu — keterangannya ada di bawahnya.
+      </p>
+      <p class="micro hint" id="hint">
+        <span class="hint__key">tarik</span> sudut stiker &nbsp;·&nbsp;
+        <span class="hint__key">klik</span> untuk mengintip &nbsp;·&nbsp;
+        kupas penuh untuk ambil
+      </p>
+    </div>
+
+    <div class="sheet-wrap">
+      <!-- series tabs = which stickers are on the sheet -->
+      <div class="tabs" id="tabs" role="tablist" aria-label="Pilih seri"></div>
+
+      <div class="sheet" id="sheet">
+        <div class="sheet__head">
+          <span class="micro">baka nae. &mdash; Nya! ver.</span>
+          <span class="micro" id="sheet-code">SHEET / ALL</span>
+        </div>
+        <div class="sheet__grid" id="grid"></div>
+        <div class="sheet__foot">
+          <span class="micro">dicetak &amp; digambar sendiri &middot; Indonesia</span>
+          <span class="micro" id="sheet-count">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== THE TRAY ===================== -->
+  <section class="tray" id="tray" aria-live="polite" aria-label="Stiker yang diambil">
+    <div class="tray__inner">
+      <div class="tray__label">
+        <span class="micro">diambil</span>
+        <strong id="tray-count">0</strong>
+      </div>
+      <div class="tray__items" id="tray-items">
+        <span class="tray__empty micro">belum ada yang dikupas</span>
+      </div>
+      <div class="tray__total">
+        <span class="micro">total</span>
+        <strong id="tray-total">Rp 0</strong>
+        <a class="btn" id="tray-go" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Bawa ke Shopee</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROOF (quiet) ===================== -->
+  <section class="proof" aria-label="Tentang toko">
+    <div class="proof__row" id="proof-row"></div>
+    <p class="proof__note micro">angka diambil langsung dari halaman Shopee toko &middot; 25 Agu 2026</p>
+  </section>
+
+  <footer class="foot">
+    <p class="micro">baka nae. &middot; fanart orisinal &middot; dikirim dari Indonesia</p>
+    <a class="micro link" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">shopee.co.id/baka_nae ↗</a>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
