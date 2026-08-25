@@ -1,0 +1,471 @@
+/* ============================================================
+   Figure Unboxing — CSS 3D collectible box
+   Design template: "Cardboard 3D Object Stage" (reference 01, Fig Mint)
+   vault: Claude Second Brain/Design Templates/Cardboard 3D Object Stage.md
+   ============================================================ */
+
+:root {
+  --beige-light: #F0EDE0;
+  --beige-main: #E0DCCF;
+  --beige-dark: #C4C0B3;
+  --cardboard-base: #d2b48c;
+  --cardboard-dark: #b89a6d;
+  --cardboard-lid: #e6ccab;
+  --ink-black: #0f0f0f;
+  --accent-blue: #2B6CB0;
+  --stamp-red: #8B0000;
+  --font-serif: 'EB Garamond', serif;
+  --font-mono: 'VT323', monospace;
+
+  /* figure palette, taken from the supplied photo */
+  --hair: #E4536A;
+  --hair-dark: #C93E55;
+  --hair-light: #F27A8C;
+  --knit: #A8DED6;
+  --knit-dark: #7FC5BC;
+  --skirt: #8C6157;
+  --skirt-dark: #744C44;
+  --shoe: #C98B4B;
+  --skin: #F7E0CC;
+  --glass: #7B5EA7;
+  --clip: #F2C14E;
+
+  /* box geometry — a figure box is tall, not a cube */
+  --bw: 280px;
+  --bh: 460px;
+  --bd: 190px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: #f4f1e6;
+  font-family: var(--font-serif);
+  color: var(--ink-black);
+  height: 100vh;
+  /* NOT 100vw — 100vw includes the scrollbar gutter, so the moment the page
+     scrolls vertically (mobile layout below) it overflows horizontally by
+     exactly the scrollbar width. 100% measures the containing block. */
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------- layout ---------------- */
+.main-container {
+  width: 100%;
+  max-width: 1400px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  padding: 4rem;
+}
+
+.content-col {
+  padding-right: 2rem;
+  padding-left: 4rem;
+  z-index: 10;
+}
+
+h1 {
+  font-size: 5rem;
+  line-height: 0.85;
+  margin: 0 0 2rem 0;
+  letter-spacing: -2px;
+  font-weight: 500;
+}
+h1 span { display: block; }
+h1 .italic { font-style: italic; }
+
+p.lead {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+  color: #444;
+}
+
+/* ---------------- setup card ---------------- */
+.setup-card {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--beige-dark);
+  padding: 2rem;
+  border-radius: 4px;
+  max-width: 400px;
+}
+
+.setup-card h3 {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.wizard-steps { list-style: none; margin-bottom: 2rem; }
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  transition: opacity 0.4s ease, font-weight 0.4s ease;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--ink-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.step.active { font-weight: 600; }
+.step.pending { opacity: 0.4; }
+.step.done { opacity: 0.55; }
+.step.done .step-num {
+  background: var(--ink-black);
+  color: var(--beige-light);
+  border-color: var(--ink-black);
+}
+
+.btn-setup {
+  background: var(--ink-black);
+  color: #f4f1e6;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-family: var(--font-serif);
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.btn-setup:hover { transform: translateY(-2px); }
+
+.hint {
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+/* ---------------- 3D stage ----------------
+   Three nested layers on purpose:
+     .box-col   → owns the perspective
+     .box-orbit → owns the drag rotation (JS writes transform here)
+     .box-scene → owns the float keyframes
+   If drag rotation and the float loop share one element, whichever writes
+   `transform` last wipes the other out. Splitting them is the fix.        */
+.box-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 2000px;
+  height: 100%;
+}
+
+.box-orbit {
+  transform-style: preserve-3d;
+  transform: rotateY(-25deg) rotateX(15deg);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: grab;
+}
+.box-orbit.is-dragging { transition: none; cursor: grabbing; }
+
+.box-scene {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-20px); }
+}
+
+.box {
+  position: relative;
+  width: var(--bw);
+  height: var(--bh);
+  transform-style: preserve-3d;
+}
+
+/* every face is centred, then pushed out to its wall */
+.box-face {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--cardboard-base);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backface-visibility: inherit;
+}
+
+.box-front  { width: var(--bw); height: var(--bh); transform: translate(-50%, -50%) translateZ(calc(var(--bd) / 2)); background: none; border: none; }
+.box-back   { width: var(--bw); height: var(--bh); transform: translate(-50%, -50%) rotateY(180deg) translateZ(calc(var(--bd) / 2)); background: var(--cardboard-dark); }
+.box-right  { width: var(--bd); height: var(--bh); transform: translate(-50%, -50%) rotateY(90deg)  translateZ(calc(var(--bw) / 2)); }
+.box-left   { width: var(--bd); height: var(--bh); transform: translate(-50%, -50%) rotateY(-90deg) translateZ(calc(var(--bw) / 2)); background: var(--cardboard-dark); }
+/* The top face is the OPENING — i.e. the inside of the box. The flaps are
+   the lid that covers it. If both are cardboard-coloured, opening the box
+   reads as nothing happening at all. */
+.box-top    { width: var(--bw); height: var(--bd); transform: translate(-50%, -50%) rotateX(90deg)  translateZ(calc(var(--bh) / 2));
+              background: #6f5539;
+              box-shadow: inset 0 0 34px rgba(0, 0, 0, 0.55);
+              transform-style: preserve-3d; }
+.box-bottom { width: var(--bw); height: var(--bd); transform: translate(-50%, -50%) rotateX(-90deg) translateZ(calc(var(--bh) / 2)); background: var(--cardboard-dark); }
+
+/* ---------------- front face: a frame, not a panel ----------------
+   The window has to be a real hole, so the front is four cardboard
+   panels around an open centre — you cannot punch a hole in a
+   background-color.                                                  */
+.panel {
+  position: absolute;
+  background: var(--cardboard-base);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.panel-top    { top: 0; left: 0; right: 0; height: 118px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 14px; }
+.panel-bottom { bottom: 0; left: 0; right: 0; height: 96px; padding: 12px 16px; }
+.panel-left   { top: 118px; bottom: 96px; left: 0; width: 26px; }
+.panel-right  { top: 118px; bottom: 96px; right: 0; width: 26px; }
+
+/* PVC sheen sitting in the opening */
+.window-pane {
+  position: absolute;
+  top: 118px;
+  bottom: 96px;
+  left: 26px;
+  right: 26px;
+  background: linear-gradient(115deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.05) 34%, rgba(255,255,255,0) 46%, rgba(255,255,255,0.16) 70%, rgba(255,255,255,0.03) 100%);
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  transform: translateZ(1px);
+  transition: opacity 0.7s ease;
+}
+.is-open .window-pane { opacity: 0.25; }
+
+.retro-brand {
+  border: 4px solid var(--ink-black);
+  padding: 10px 16px;
+  text-align: center;
+  background: var(--cardboard-lid);
+}
+.retro-brand h2 {
+  font-size: 2rem;
+  font-style: italic;
+  margin: 0;
+  line-height: 1;
+}
+.retro-brand p {
+  font-size: 0.62rem;
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+
+.box-specs {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  border-top: 2px solid var(--ink-black);
+  padding-top: 8px;
+  width: 100%;
+  line-height: 1.15;
+}
+.box-specs .row { display: flex; justify-content: space-between; }
+.box-specs .barcode-mini {
+  height: 22px;
+  margin-top: 8px;
+  background: repeating-linear-gradient(90deg, #000, #000 2px, transparent 2px, transparent 4px);
+  opacity: 0.85;
+}
+
+.fragile-stamp {
+  position: absolute;
+  top: 30px;
+  right: 8px;
+  border: 3px solid var(--stamp-red);
+  color: var(--stamp-red);
+  padding: 3px 7px;
+  font-weight: bold;
+  font-size: 0.7rem;
+  transform: rotate(15deg);
+  font-family: sans-serif;
+  text-transform: uppercase;
+  opacity: 0.7;
+  z-index: 3;
+}
+
+/* ---------------- side face dressing ---------------- */
+.shipping-label {
+  position: absolute;
+  background: white;
+  padding: 15px;
+  width: 120px;
+  height: 160px;
+  bottom: 40px;
+  left: 30px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  transform: rotate(-5deg);
+}
+.barcode {
+  width: 100%;
+  height: 30px;
+  background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px);
+  margin-top: 10px;
+}
+.address-lines { height: 4px; background: #eee; margin: 8px 0; width: 80%; }
+
+.side-mark {
+  position: absolute;
+  bottom: 20px;
+  right: 18px;
+  opacity: 0.3;
+}
+
+.side-caption {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+  transform-origin: center;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.55;
+}
+
+/* ---------------- lid flaps ---------------- */
+/* Two lid flaps meeting in the middle, with a strip of packing tape
+   across the seam. translateZ lifts them off the interior face —
+   coplanar siblings in preserve-3d z-fight and flicker. */
+.flap {
+  position: absolute;
+  width: var(--bw);
+  height: calc(var(--bd) / 2);
+  background: var(--cardboard-lid);
+  background-image: linear-gradient(to right, transparent 118px, #cbb287 118px, #cbb287 162px, transparent 162px);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  left: 0;
+  transition: transform 0.85s cubic-bezier(0.34, 1.32, 0.64, 1);
+  backface-visibility: hidden;
+}
+.flap-left  { top: 0; transform-origin: top;    transform: translateZ(0.6px) rotateX(0deg); }
+.flap-right { bottom: 0; top: auto; transform-origin: bottom; transform: translateZ(0.6px) rotateX(0deg); }
+
+.is-open .flap-left  { transform: translateZ(0.6px) rotateX(-142deg); }
+.is-open .flap-right { transform: translateZ(0.6px) rotateX(142deg); }
+
+.inner-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  transform: translateZ(10px);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.is-open .inner-glow { opacity: 0.5; }
+
+/* ---------------- the figure inside ---------------- */
+.insert-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--bw) - 54px);
+  height: calc(var(--bh) - 214px);
+  transform: translate(-50%, -50%) translateZ(calc(var(--bd) / -2 + 14px));
+  background:
+    radial-gradient(circle at 50% 32%, #fff6e8 0%, #efe2cd 55%, #dcc9ae 100%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.insert-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0 2px, transparent 2px 9px);
+}
+
+.figure {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 210px;
+  height: 300px;
+  transform: translate(-50%, -46%) translateZ(-18px) scale(0.94);
+  transition: transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(6px 12px 10px rgba(0, 0, 0, 0.22));
+}
+/* She lifts clear of the box — this is what sells "unboxed", not a steeper
+   camera angle. She must travel FORWARD in Z as well as up: the front panel
+   sits at +bd/2, so anything rising at a lower Z just slides up behind the
+   cardboard and gets occluded. */
+.is-open .figure {
+  transform: translate(-6%, -86%) translateZ(180px) scale(1.02);
+  filter: drop-shadow(10px 26px 18px rgba(0, 0, 0, 0.26));
+}
+
+/* ---------------- shadow on the ground ---------------- */
+.box-shadow-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--bw) + 40px);
+  height: calc(var(--bd) + 40px);
+  transform: translate(-50%, -50%) rotateX(90deg) translateZ(calc(var(--bh) / -2 - 30px));
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.24) 0%, transparent 68%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ---------------- corner microtype ---------------- */
+.corner {
+  position: fixed;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.4;
+  z-index: 20;
+}
+.corner-tl { top: 1.5rem; left: 2rem; }
+.corner-br { bottom: 1.5rem; right: 2rem; text-align: right; }
+
+/* ---------------- responsive ---------------- */
+@media (max-width: 1000px) {
+  body { overflow-y: auto; height: auto; min-height: 100vh; }
+  .main-container { grid-template-columns: 1fr; padding: 2rem; height: auto; gap: 2rem; }
+  .content-col { padding: 0; text-align: center; order: 2; }
+  .setup-card { margin: 0 auto; }
+  .box-col { order: 1; min-height: 62vh; }
+  .box-orbit { transform: scale(0.72) rotateY(-25deg) rotateX(15deg); }
+  h1 { font-size: 3.4rem; }
+  p.lead { font-size: 1.25rem; margin-inline: auto; }
+  .corner { display: none; }
+}
+
+@media (max-width: 560px) {
+  .main-container { padding: 2.5rem 1.25rem 1.25rem; }
+  h1 { font-size: 2.6rem; letter-spacing: -1px; }
+  .box-orbit { transform: scale(0.52) rotateY(-25deg) rotateX(15deg); }
+  .box-col { min-height: 46vh; }
+  .setup-card { padding: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box-scene { animation: none; }
+  .flap, .figure, .box-orbit, .window-pane, .inner-glow { transition-duration: 0.01ms; }
+}

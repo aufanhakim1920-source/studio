@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOCTURNE — Melbourne to Sydney, overnight</title>
+<!--
+  Direction A — "Paper you can pick up".
+  Material: Template 12 [[Paper Sheets on Void]]  — #F4F4F2 paper on a #030303 void,
+            two-part shadow, ±1° scatter, --radius-none, serif + mono, em-dash bullets,
+            zero icons, the CSS-only odometer.
+  Technique: Template 03 [[Cardboard 3D Object Stage]] — perspective on the parent,
+            preserve-3d, six-face construction, pointer-driven rotation, nested
+            transform layers so no two systems write the same transform.
+
+  The system-level move: a fare sheet is not a picture of paper, it is a slab, and
+  its THICKNESS IS ITS PRICE. Seat 6px, Berth 18px, Cabin 34px. Pick one up and the
+  top edge turns toward you with the class and fare printed along it like a spine —
+  which only the expensive tickets are thick enough to print legibly. The cheap one
+  has no spine to read.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- platform lamp: a light pool, positive stacking order (never z-index:-1) -->
+<div class="lamp" aria-hidden="true"></div>
+
+<main class="page">
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Nocturne &middot; service NT2 &middot; Southern Cross &rarr; Central</p>
+    <h1>Leave at 21:40.<br>Wake up in Sydney.</h1>
+    <p class="lead">Nine hundred and sixty&#8209;three kilometres of the Sydney line, run
+      overnight so you never have to look at it. Platform 4, Southern Cross, boarding from
+      21:10. One stop, at Albury, at 01:20 &mdash; you will almost certainly sleep through it.</p>
+
+    <ol class="run">
+      <li class="run-stop">
+        <span class="run-time">21:40</span>
+        <span class="run-name">Southern Cross</span>
+        <span class="run-note">Platform 4 &middot; boarding 21:10 &middot; doors close 21:36</span>
+      </li>
+      <li class="run-stop is-stop">
+        <span class="run-time">01:20</span>
+        <span class="run-name">Albury</span>
+        <span class="run-note">Crew change &middot; 11 minutes &middot; doors stay locked</span>
+      </li>
+      <li class="run-stop">
+        <span class="run-time">07:15</span>
+        <span class="run-name">Central</span>
+        <span class="run-note">Platform 1 &middot; 9h 35m elapsed &middot; 963 km behind you</span>
+      </li>
+    </ol>
+  </header>
+
+  <section class="fares" aria-label="Fares">
+
+    <!-- SEAT — 6px stock. No spine. That is the information. -->
+    <article class="fare" data-fare="seat" style="--sd:6px;  --rest:0px;  --down:0px; --lift:92px;  --scatter:-1deg;">
+      <div class="fare-cast" aria-hidden="true"></div>
+      <div class="fare-lift">
+        <div class="fare-tilt">
+          <div class="sheet">
+            <div class="s-edge s-edge-top" aria-hidden="true"><span class="spine"></span></div>
+            <div class="s-edge s-edge-bottom" aria-hidden="true"></div>
+            <div class="s-edge s-edge-left" aria-hidden="true"></div>
+            <div class="s-edge s-edge-right" aria-hidden="true"></div>
+            <div class="s-face">
+              <div class="s-head">
+                <p class="mono-label">Class C</p>
+                <h2 class="s-name">Seat</h2>
+                <p class="s-price">$79<span>one way</span></p>
+                <p class="s-blurb">A seat that leans back. You will sleep badly
+                  and arrive $110 richer.</p>
+              </div>
+              <ul class="features">
+                <li>Reclining seat, 112&deg; maximum</li>
+                <li>Shared carriage, 48 seats</li>
+                <li>Power outlet, reading light</li>
+                <li>Buffet car open until 23:30</li>
+                <li>No bedding provided</li>
+              </ul>
+              <a class="btn" href="#fares">Reserve seat</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- BERTH — the recommended one. Nearer, not bigger. -->
+    <article class="fare is-featured" data-fare="berth" style="--sd:18px; --rest:66px; --down:5px; --lift:118px; --scatter:0deg;">
+      <div class="fare-cast" aria-hidden="true"></div>
+      <div class="fare-lift">
+        <div class="fare-tilt">
+          <div class="sheet">
+            <div class="s-edge s-edge-top" aria-hidden="true"><span class="spine">Class B &middot; $189</span></div>
+            <div class="s-edge s-edge-bottom" aria-hidden="true"></div>
+            <div class="s-edge s-edge-left" aria-hidden="true"></div>
+            <div class="s-edge s-edge-right" aria-hidden="true"></div>
+            <div class="s-face">
+              <div class="s-head">
+                <p class="mono-label">Class B &mdash; recommended</p>
+                <h2 class="s-name">Berth</h2>
+                <p class="s-price">$189<span>one way</span></p>
+                <p class="s-blurb">A bunk, a door that locks, and a stranger
+                  above you who is also asleep.</p>
+              </div>
+              <ul class="features">
+                <li>Fold-down bunk, 1900 &times; 700 mm</li>
+                <li>Linen, pillow, wool blanket</li>
+                <li>Two berths per compartment</li>
+                <li>Shared bathroom, one per car</li>
+                <li>Door locks from the inside</li>
+              </ul>
+              <a class="btn" href="#fares">Reserve berth</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- CABIN — 26px stock, the only sheet thick enough for a full spine. -->
+    <article class="fare" data-fare="cabin" style="--sd:34px; --rest:2px;  --down:2px; --lift:92px;  --scatter:1deg;">
+      <div class="fare-cast" aria-hidden="true"></div>
+      <div class="fare-lift">
+        <div class="fare-tilt">
+          <div class="sheet">
+            <div class="s-edge s-edge-top" aria-hidden="true"><span class="spine">Nocturne &middot; Class A &middot; $349 &middot; one way</span></div>
+            <div class="s-edge s-edge-bottom" aria-hidden="true"></div>
+            <div class="s-edge s-edge-left" aria-hidden="true"></div>
+            <div class="s-edge s-edge-right" aria-hidden="true"></div>
+            <div class="s-face">
+              <div class="s-head">
+                <p class="mono-label">Class A</p>
+                <h2 class="s-name">Cabin</h2>
+                <p class="s-price">$349<span>one way</span></p>
+                <p class="s-blurb">A room. Someone turns the bed down while you
+                  are in the dining car.</p>
+              </div>
+              <ul class="features">
+                <li>Private compartment, sole use</li>
+                <li>Ensuite with shower</li>
+                <li>Turndown service from 22:00</li>
+                <li>Breakfast, 06:15 to 07:00</li>
+                <li>Priority boarding from 21:00</li>
+              </ul>
+              <a class="btn" href="#fares">Reserve cabin</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <p class="fare-foot">
+    <span class="ff-pointer">Card thickness is drawn to fare. Pick one up to read its edge.</span>
+    <span class="ff-touch">Card thickness is drawn to fare &mdash; the stripe down each card is that same measure.</span>
+  </p>
+
+  <section class="stats">
+    <div class="stats-head">
+      <h2>The line, in figures<br>the operator publishes.</h2>
+      <p>Nocturne has worked the Melbourne&ndash;Sydney corridor four nights a week
+         since 2019. Two of these are counted; two are simply the timetable.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <p class="stat-label">Kilometres</p>
+        <div class="odometer" data-value="963"></div>
+      </div>
+      <div class="stat">
+        <p class="stat-label">Scheduled run</p>
+        <p class="stat-static">9:35</p>
+      </div>
+      <div class="stat">
+        <p class="stat-label">Passengers, FY24</p>
+        <div class="odometer" data-value="148,320"></div>
+      </div>
+      <div class="stat">
+        <p class="stat-label">Services weekly</p>
+        <p class="stat-static">4</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Nocturne Rail &middot; NT2 &middot; nightly except Tue, Wed, Sun</span>
+    <span>Fares one way, inc. GST &middot; last revised 03/24</span>
+  </footer>
+
+</div>
+</main>
+
+<div class="grain" aria-hidden="true"></div>
+<script src="app.js"></script>
+</body>
+</html>

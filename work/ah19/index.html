@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AH-19 Portfolio Console — Muhammad Raufan Hakim Rachmad</title>
+<meta name="description" content="A hardware console you operate: turn the dial to select a channel, print the receipt, load a slide. The portfolio of Aufan — Melbourne / Surabaya.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23130A0B'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23FFB300' stroke-width='3' stroke-dasharray='2.6 2.6'/%3E%3Crect x='14.5' y='3.5' width='3' height='7' rx='1' fill='%23C9A227'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="room" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="bench">
+
+  <div class="bench__tag">
+    <span>RACHMAD INSTRUMENTS</span>
+    <span class="bench__tag-mid">SINGLE-UNIT BENCH CONSOLE · NOT FOR RESALE</span>
+    <span>MELBOURNE VIC / SURABAYA JI</span>
+  </div>
+
+  <!-- ═══════════════════════ THE MACHINE ═══════════════════════ -->
+  <section class="console" id="console" aria-label="AH-19 portfolio console">
+
+    <span class="screw screw--chassis" style="top:14px;left:14px"></span>
+    <span class="screw screw--chassis" style="top:14px;right:14px"></span>
+    <span class="screw screw--chassis" style="bottom:14px;left:14px"></span>
+    <span class="screw screw--chassis" style="bottom:14px;right:14px"></span>
+
+    <!-- ── top rail ───────────────────────────────────────────── -->
+    <header class="toprail">
+      <div class="plate">
+        <b>RACHMAD INSTRUMENTS</b>
+        <span>MODEL <em>AH&#8209;19</em> · PORTFOLIO CONSOLE</span>
+        <span>SER. 19·11·2006 &nbsp;·&nbsp; MADE IN SURABAYA</span>
+      </div>
+
+      <div class="nameplate">
+        <h1>MUHAMMAD RAUFAN HAKIM RACHMAD</h1>
+        <p>“AUFAN” — BSc DATA SCIENCE, UNIVERSITY OF MELBOURNE · FIRST YEAR</p>
+      </div>
+
+      <div class="statusblock">
+        <div class="statusline">
+          <span class="led led--pwr"></span>
+          <span class="mono" id="clock">--:--:-- AEST</span>
+        </div>
+        <div class="statusline statusline--dim mono">
+          <span class="led led--sig"></span> SIGNAL LOCKED · <span id="chanTotal">10</span> CH
+        </div>
+        <div class="vents" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- ── main deck ──────────────────────────────────────────── -->
+    <div class="deck">
+
+      <!-- SCREEN BAY -->
+      <div class="bay bay--screen">
+        <div class="bezel">
+          <span class="screw" style="top:9px;left:9px"></span>
+          <span class="screw" style="top:9px;right:9px"></span>
+          <span class="screw" style="bottom:9px;left:9px"></span>
+          <span class="screw" style="bottom:9px;right:9px"></span>
+
+          <div class="crt" id="crt" data-scan="1" data-ph="amber" data-verbose="1">
+            <div class="crt__flick" aria-hidden="true"></div>
+            <div class="crt__tear" id="crtTear" aria-hidden="true"></div>
+            <div class="crt__scan" aria-hidden="true"></div>
+            <div class="crt__vig" aria-hidden="true"></div>
+            <div class="crt__body" id="crtBody" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="bezel__strip">
+          <span class="mono">CRT · <span id="bezelPh">P3 AMBER</span> PHOSPHOR · 60 Hz · 40×24</span>
+          <span class="mono" id="bezelMode">MODE / PROJECTS</span>
+        </div>
+      </div>
+
+      <!-- CONTROL BAY -->
+      <aside class="bay bay--ctrl">
+
+        <!-- selector -->
+        <div class="panel panel--dial">
+          <p class="panel__cap mono">CHANNEL SELECT</p>
+
+          <div class="segwrap">
+            <div class="seg" data-ghost="88"><span id="chNum">01</span></div>
+            <div class="segside mono">
+              <span>OF <b id="chTot">10</b></span>
+              <span id="chName">FANNEST</span>
+            </div>
+          </div>
+
+          <div class="dialwrap">
+            <div class="detents" id="detents" aria-hidden="true"></div>
+            <div class="knob" id="knob" role="slider" tabindex="0"
+                 aria-label="Channel selector — drag to turn, or use arrow keys"
+                 aria-valuemin="1" aria-valuemax="10" aria-valuenow="1">
+              <div class="knob__knurl" id="knurl"></div>
+              <div class="knob__light"></div>
+              <div class="knob__hub"></div>
+              <div class="knob__grip"></div>
+            </div>
+          </div>
+          <p class="hint mono">▸ DRAG THE DIAL &nbsp;·&nbsp; ARROW KEYS</p>
+        </div>
+
+        <!-- slide viewer -->
+        <div class="panel panel--viewer">
+          <p class="panel__cap mono">SLIDE VIEWER · 24×36</p>
+
+          <div class="lightbox" id="lightbox">
+            <div class="mount" id="mount" data-orient="land">
+              <div class="mount__win">
+                <img id="slideImg" alt="" hidden>
+                <div class="testcard" id="testcard">
+                  <div class="testcard__bars" aria-hidden="true"></div>
+                  <p>NO SLIDE<br><b>TEST PATTERN</b></p>
+                </div>
+              </div>
+              <span class="mount__brand mono">AH-19</span>
+              <span class="mount__no mono" id="mountNo">— —</span>
+            </div>
+          </div>
+
+          <p class="slidecap mono" id="slideCap">NO SLIDE LOADED</p>
+
+          <button class="lever" id="lever" type="button">
+            <span class="lever__arm" aria-hidden="true"></span>
+            <span class="lever__txt">ADVANCE</span>
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ── control rail ───────────────────────────────────────── -->
+    <div class="ctrlrail">
+
+      <div class="panel panel--modes">
+        <p class="panel__cap mono">BANK SELECT</p>
+        <div class="modebank" id="modebank">
+          <button class="pbtn is-on" type="button" data-mode="projects">PROJECTS</button>
+          <button class="pbtn" type="button" data-mode="record">RECORD</button>
+          <button class="pbtn" type="button" data-mode="proof">PROOF</button>
+        </div>
+        <p class="panel__note mono" id="modeNote">TEN BUILDS. FOUR OF THEM ARE LIVE RIGHT NOW.</p>
+        <ul class="leaders mono">
+          <li><span>BANK A · PROJECTS</span><i></i><span>10 CH</span></li>
+          <li><span>BANK B · RECORD</span><i></i><span>10 CH</span></li>
+          <li><span>BANK C · PROOF</span><i></i><span>09 CH</span></li>
+        </ul>
+      </div>
+
+      <div class="panel panel--toggles">
+        <p class="panel__cap mono">TUBE</p>
+        <div class="togglebank">
+          <label class="sw sw--audio">
+            <input type="checkbox" id="tgAudio">
+            <span class="sw__body"><span class="sw__lever"></span></span>
+            <span class="sw__lbl mono">AUDIO</span>
+          </label>
+          <label class="sw">
+            <input type="checkbox" id="tgScan" checked>
+            <span class="sw__body"><span class="sw__lever"></span></span>
+            <span class="sw__lbl mono">SCANLINE</span>
+          </label>
+          <label class="sw">
+            <input type="checkbox" id="tgPh">
+            <span class="sw__body"><span class="sw__lever"></span></span>
+            <span class="sw__lbl mono">P1 GREEN</span>
+          </label>
+          <label class="sw">
+            <input type="checkbox" id="tgVerbose" checked>
+            <span class="sw__body"><span class="sw__lever"></span></span>
+            <span class="sw__lbl mono">VERBOSE</span>
+          </label>
+        </div>
+        <ul class="leaders mono">
+          <li><span>SCAN</span><i></i><span id="stScan">ON</span></li>
+          <li><span>PHOSPHOR</span><i></i><span id="stPh">P3 AMBER</span></li>
+          <li><span>DETAIL</span><i></i><span id="stVerbose">FULL</span></li>
+        </ul>
+      </div>
+
+      <div class="panel panel--meter">
+        <p class="panel__cap mono" id="meterCap">OUTPUT</p>
+        <div class="meter">
+          <div class="meter__face">
+            <div class="meter__ticks" id="meterTicks" aria-hidden="true"></div>
+            <div class="meter__needle" id="needle"></div>
+            <div class="meter__hub"></div>
+            <span class="meter__lo mono">0</span>
+            <span class="meter__hi mono">100</span>
+          </div>
+          <div class="meter__glass" aria-hidden="true"></div>
+        </div>
+        <p class="panel__note mono"><b id="meterVal">88</b> / 100</p>
+      </div>
+    </div>
+
+    <!-- ── gauges ─────────────────────────────────────────────── -->
+    <div class="gaugebank" id="gaugebank" aria-label="channel levels"></div>
+
+    <!-- ── printer deck ───────────────────────────────────────── -->
+    <div class="printer">
+      <div class="printer__ctrl">
+        <button class="pbtn pbtn--print" type="button" id="printBtn">PRINT</button>
+        <button class="pbtn pbtn--ghost" type="button" id="tearBtn">TEAR OFF</button>
+        <p class="panel__note mono" id="printNote">FEEDS THE SELECTED CHANNEL ONTO TAPE.</p>
+      </div>
+
+      <div class="printer__slotplate">
+        <p class="mono">PAPER TAPE · 40 COL · THERMAL</p>
+        <div class="slot" aria-hidden="true"><span></span></div>
+      </div>
+
+      <p class="silk mono">
+        aufanhakim1920@gmail.com &nbsp;·&nbsp; INDONESIAN (NATIVE) / ENGLISH IELTS 7.0
+        &nbsp;·&nbsp; MELBOURNE, AUSTRALIA
+      </p>
+    </div>
+  </section>
+
+  <!-- ── the tape hangs out of the slot ───────────────────────── -->
+  <div class="tapewell">
+    <div class="tape" id="tape">
+      <div class="tape__lip" aria-hidden="true"></div>
+      <div class="tape__inner" id="tapeInner"></div>
+    </div>
+  </div>
+
+  <footer class="bench__foot mono">
+    <span>AH-19 · BUILT BY HAND, NO FRAMEWORK</span>
+    <span>EVERY MOVEMENT ON THIS PAGE IS ONE YOU CAUSED</span>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

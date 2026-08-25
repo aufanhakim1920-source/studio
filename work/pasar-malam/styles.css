@@ -1,0 +1,375 @@
+/* ═══════════════════════════════════════════════════════════════
+   PASAR MALAM CARLTON — night market landing page
+
+   Deliberately NOT the warm-cream + saturated-block recipe used on the
+   last three portfolio builds. Ground system is ref 24 (Aether dark
+   bento): near-black, 12-col bento, pastel WHOLE cards with black text,
+   two radii doing different jobs (32px card / 100px pill), dot grid.
+   Schedule devices are ref 25 (paper planner), reskinned dark.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  --bg:#0C0C10;
+  --card:#151519;
+  --card-2:#1C1C22;
+  --border:#2A2A32;
+  --border-2:#3A3A45;
+  --text:#FFFFFF;
+  --text-2:#8E8E9A;
+
+  /* pastels are whole-card backgrounds, never small accents */
+  --mango:#F2C879;
+  --taro:#C4B2E8;
+  --pandan:#A9DCB4;
+  /* one high-saturation signal colour, used sparingly */
+  --ember:#FF7A3D;
+  --indigo:#7C8CE0;
+
+  --r-card:32px;
+  --r-pill:100px;
+  --r-sm:14px;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --pop:cubic-bezier(.22,1.4,.36,1);
+
+  --f-disp:"Syne","Trebuchet MS",sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--f-body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  padding:26px 26px 130px;
+}
+h1,h2,h3{font-family:var(--f-disp); margin:0; letter-spacing:-.03em; line-height:1.02}
+img,canvas,svg{display:block; max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ember); outline-offset:3px; border-radius:8px}
+
+.skip{position:absolute; left:-9999px; top:0; z-index:99;
+  background:var(--mango); color:#000; padding:10px 18px; border-radius:0 0 12px 0}
+.skip:focus{left:0}
+
+.dotgrid{position:fixed; inset:0; z-index:-1; opacity:.4; pointer-events:none;
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);
+  background-size:40px 40px}
+
+.mono{font-family:var(--f-mono)}
+
+/* ═══════ floating pill nav ═══════ */
+.pillnav{
+  position:fixed; top:22px; left:50%; transform:translateX(-50%); z-index:1000;
+  display:flex; gap:6px; padding:7px;
+  background:rgba(21,21,25,.82); backdrop-filter:blur(14px) saturate(1.3);
+  border:1px solid var(--border); border-radius:var(--r-pill);
+}
+.pillnav a{
+  font-size:13.5px; font-weight:500; text-decoration:none; color:var(--text-2);
+  padding:9px 20px; border-radius:var(--r-pill); transition:.2s var(--ease);
+  white-space:nowrap;
+}
+.pillnav a:hover:not(.is-active){color:var(--text); background:rgba(255,255,255,.05)}
+.pillnav a.is-active{background:var(--mango); color:#000; font-weight:600}
+
+/* ═══════ bento ═══════ */
+.bento{
+  max-width:1220px; margin:96px auto 0;
+  display:grid; grid-template-columns:repeat(12,1fr); gap:20px;
+}
+.card{
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--r-card); padding:30px; position:relative; overflow:hidden;
+}
+.card--mango{background:var(--mango); color:#000; border-color:transparent}
+.card--taro{background:var(--taro); color:#000; border-color:transparent}
+.card--pandan{background:var(--pandan); color:#000; border-color:transparent}
+
+.label{
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text-2); margin:0 0 22px;
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+}
+.card--mango .label,.card--taro .label,.card--pandan .label{color:rgba(0,0,0,.52)}
+.dot{width:8px; height:8px; border-radius:50%; flex:none; background:var(--ember);
+  box-shadow:0 0 12px var(--ember); animation:pulse 2.4s ease-in-out infinite; margin-right:9px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.label .dot + span{flex:1}
+
+.big{font-family:var(--f-disp); font-weight:700; font-size:60px; letter-spacing:-.045em;
+  line-height:.92; display:block; margin:6px 0 14px}
+.card__note{font-size:13.5px; line-height:1.55; color:var(--text-2); margin:0}
+.card--mango .card__note,.card--taro .card__note,.card--pandan .card__note{color:rgba(0,0,0,.66)}
+.card__note--tight{margin-top:12px; font-size:12px}
+
+.sec__h2{font-size:clamp(24px,3vw,34px); margin:0 0 20px}
+
+/* ═══════ hero ═══════ */
+.hero{display:flex; flex-direction:column; justify-content:space-between; min-height:430px}
+.hero__h1{font-size:clamp(32px,3.6vw,50px); font-weight:800; margin-bottom:20px; line-height:1.06}
+/* highlighter stroke, not a border — ref 25, reskinned to ember on dark.
+   NOT a z-index:-1 pseudo-element: that paints behind the card's own
+   background and disappears entirely. A gradient on the span works anywhere. */
+.hero__h1 .hl{
+  display:inline; padding:0 4px; box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+  background-image:linear-gradient(transparent 76%, rgba(255,122,61,.95) 76%, rgba(255,122,61,.95) 96%, transparent 96%);
+}
+.hero__lede{color:var(--text-2); max-width:46ch; margin:0; font-size:16.5px}
+.hero__cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:30px}
+
+/* brushed-metal button — ref 18, the best one in the library */
+.metal{
+  font-family:var(--f-body); font-weight:600; font-size:14.5px; text-decoration:none;
+  color:#111; padding:14px 26px; border-radius:var(--r-pill); border:1px solid #9A9AA6;
+  background:linear-gradient(180deg,#FDFDFF 0%,#DEDEE6 42%,#B9B9C6 58%,#EDEDF3 100%);
+  box-shadow:inset 0 1px 0 #fff, inset 0 -1px 0 rgba(0,0,0,.28),
+             0 2px 0 #6E6E7A, 0 10px 18px -8px rgba(0,0,0,.8);
+  transition:transform .12s var(--ease), box-shadow .12s var(--ease);
+}
+.metal:hover{transform:translateY(-2px);
+  box-shadow:inset 0 1px 0 #fff, inset 0 -1px 0 rgba(0,0,0,.28),
+             0 4px 0 #6E6E7A, 0 14px 22px -8px rgba(0,0,0,.8)}
+.metal:active{transform:translateY(2px);
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.4), 0 0 0 #6E6E7A}
+
+.pillbtn{
+  font-size:14px; font-weight:500; text-decoration:none; color:var(--text);
+  background:#232329; border:1px solid var(--border); border-radius:var(--r-pill);
+  padding:13px 24px; display:inline-flex; align-items:center; gap:8px;
+  transition:.2s var(--ease); cursor:pointer;
+}
+.pillbtn:hover{border-color:var(--border-2); background:#2B2B33}
+
+/* ═══════ side stats ═══════ */
+.sidestats{display:flex; flex-direction:column; gap:20px}
+.sidestats .card{flex:1}
+.avatars{display:flex; align-items:center; margin-top:20px}
+.avatars span{
+  width:38px; height:38px; border-radius:50%; margin-right:-11px; flex:none;
+  display:grid; place-items:center; border:2px solid var(--mango);
+  background:#141418; color:#fff;
+  font-family:var(--f-mono); font-size:11px; letter-spacing:.02em;
+}
+.avatars__more{font-style:normal; font-family:var(--f-mono); font-size:11px;
+  color:rgba(0,0,0,.6); margin-left:22px; white-space:nowrap}
+
+/* ═══════ the lantern ═══════ */
+.lanterncard{display:flex; flex-direction:column}
+.lantern{position:relative; flex:1; min-height:372px; touch-action:none; cursor:grab}
+.lantern:active{cursor:grabbing}
+.lantern canvas{width:100%; height:100%; position:absolute; inset:0}
+.lantern__svg{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
+.hud{position:absolute; max-width:132px; pointer-events:none; z-index:3}
+.hud b{display:block; font-family:var(--f-disp); font-weight:700; font-size:12.5px;
+  letter-spacing:.02em; text-transform:uppercase; color:rgba(255,255,255,.95)}
+.hud span{display:block; font-family:var(--f-mono); font-size:10px; line-height:1.45;
+  color:rgba(255,255,255,.55); margin-top:3px}
+.lantern__note{font-size:13px; color:var(--text-2); margin:18px 0 0; max-width:52ch}
+
+/* ═══════ donut ═══════ */
+.donutwrap{display:flex; gap:22px; align-items:center; flex-wrap:wrap}
+.donut{width:150px; height:150px; flex:none}
+.legend{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px; flex:1}
+.legend li{display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text-2)}
+.legend i{width:10px; height:10px; border-radius:3px; flex:none}
+.legend b{margin-left:auto; font-family:var(--f-mono); font-size:12px; color:var(--text)}
+.hashbox{
+  height:64px; width:100%; border-radius:18px; margin:22px 0 16px;
+  background:repeating-linear-gradient(45deg,
+    rgba(255,255,255,.055), rgba(255,255,255,.055) 10px, transparent 10px, transparent 20px);
+}
+
+/* ═══════ crowd chart ═══════ */
+.chart{display:flex; align-items:flex-end; gap:8px; height:118px; margin-top:24px}
+.chart b{
+  flex:1; display:block; height:0; min-height:18px; border-radius:var(--r-pill);
+  background:rgba(0,0,0,.16); transition:height .55s var(--ease), background .25s var(--ease);
+}
+.chart b.is-now{background:#000}
+.chart__axis{list-style:none; display:flex; gap:8px; padding:0; margin:10px 0 0}
+.chart__axis li{flex:1; text-align:center; font-family:var(--f-mono); font-size:10px;
+  color:rgba(0,0,0,.5)}
+
+/* ═══════ right now ═══════ */
+.now__title{font-size:32px; font-weight:700; margin-bottom:8px}
+.now__sub{color:var(--text-2); margin:0 0 20px; font-size:15px}
+.nowlist{list-style:none; padding:0; margin:0}
+.nowlist li{display:flex; justify-content:space-between; align-items:center; gap:14px;
+  padding:14px 0; border-bottom:1px solid var(--border); font-size:14.5px}
+.nowlist li:last-child{border-bottom:0}
+.nowlist .tag{font-family:var(--f-mono); font-size:11px; padding:4px 9px;
+  background:#232329; border-radius:6px; color:var(--mango); white-space:nowrap}
+.nowlist .tag--off{color:var(--text-2)}
+
+/* ═══════ programme (ref 25 hour rows, reskinned dark) ═══════ */
+.schedcard{padding-bottom:38px}
+.sched{position:relative; margin-top:6px}
+.hour{display:flex; height:52px; position:relative}
+.hour__lab{width:56px; flex:none; font-family:var(--f-mono); font-size:11px;
+  color:var(--text-2); padding-top:1px}
+.hour__rule{flex:1; border-top:1px solid var(--border); height:0}
+.ev{
+  position:absolute; left:70px; right:8px; padding:9px 14px;
+  background:#1E1E25; border-left:3px solid var(--taro); border-radius:0 12px 12px 0;
+  font-size:14px; cursor:default;
+  transition:transform .2s var(--ease), background .2s var(--ease);
+}
+.ev:hover{transform:translateX(5px); background:#25252E}
+.ev b{display:block; font-family:var(--f-mono); font-size:10.5px; letter-spacing:.05em;
+  color:var(--taro); margin-bottom:2px; font-weight:500}
+.ev.is-live{background:#2A2118; border-left-color:var(--ember)}
+.ev.is-live b{color:var(--ember)}
+.sched__line{position:absolute; left:50px; right:0; height:1px; background:var(--ember);
+  z-index:10; transition:top .18s linear; pointer-events:none}
+.sched__line::before{content:""; position:absolute; left:-5px; top:-4.5px;
+  width:10px; height:10px; border-radius:50%; background:var(--ember);
+  box-shadow:0 0 10px var(--ember)}
+
+/* page curl — ref 25, adjacent-sibling hover */
+.curl-target{position:absolute; right:0; bottom:0; width:96px; height:96px; z-index:6}
+.curl{position:absolute; right:0; bottom:0; width:0; height:0; pointer-events:none;
+  border-bottom-right-radius:var(--r-card); border-top-left-radius:12px;
+  background:linear-gradient(135deg, transparent 45%, #33333D 50%, #1A1A20 56%, transparent 60%);
+  box-shadow:-6px -6px 14px rgba(0,0,0,.5); transition:all .4s var(--pop)}
+.curl-target:hover + .curl{width:64px; height:64px}
+
+/* ═══════ stalls ═══════ */
+.filters{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}
+.filt{
+  font-family:var(--f-mono); font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;
+  background:#1E1E25; color:var(--text-2); border:1px solid var(--border);
+  border-radius:var(--r-pill); padding:9px 17px; cursor:pointer; transition:.18s var(--ease);
+}
+.filt:hover{color:var(--text); border-color:var(--border-2)}
+.filt.is-on{background:var(--taro); color:#000; border-color:transparent; font-weight:500}
+
+.stallgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:14px}
+.stall{
+  background:var(--card-2); border:1px solid var(--border); border-radius:20px;
+  padding:20px 18px 16px; position:relative;
+  transition:transform .2s var(--ease), border-color .2s var(--ease);
+}
+.stall:hover{transform:translateY(-3px); border-color:var(--border-2)}
+.stall.is-hidden{display:none}
+.stall__no{font-family:var(--f-mono); font-size:10px; color:var(--text-2); letter-spacing:.08em}
+.stall__name{font-family:var(--f-disp); font-weight:600; font-size:17px; margin:9px 0 5px;
+  line-height:1.15}
+.stall__dish{font-size:13.5px; color:var(--text-2); margin:0 0 16px; min-height:38px}
+.stall__foot{display:flex; justify-content:space-between; align-items:center; gap:10px}
+.stall__price{font-family:var(--f-mono); font-size:14px; font-weight:500}
+.stall__state{font-family:var(--f-mono); font-size:10px; letter-spacing:.08em;
+  padding:4px 9px; border-radius:6px; white-space:nowrap}
+.s-open{background:rgba(169,220,180,.16); color:var(--pandan)}
+.s-soon{background:rgba(255,255,255,.06); color:var(--text-2)}
+.s-out{background:rgba(255,122,61,.14); color:var(--ember)}
+.stall__kit{position:absolute; right:16px; top:16px; width:9px; height:9px; border-radius:3px}
+
+/* ═══════ facts + checks ═══════ */
+.facts{margin:0}
+.facts > div{display:flex; gap:18px; padding:14px 0; border-bottom:1px solid var(--border)}
+.facts > div:last-child{border-bottom:0}
+.facts dt{width:96px; flex:none; font-family:var(--f-mono); font-size:11.5px;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--text-2); padding-top:3px}
+.facts dd{margin:0; font-size:15px}
+
+.checks{list-style:none; padding:0; margin:0}
+.checks li{display:flex; align-items:flex-start; gap:12px; padding:11px 0;
+  border-bottom:1px solid rgba(0,0,0,.13); cursor:pointer; font-size:14.5px}
+.checks li:last-child{border-bottom:0}
+.checks .box{
+  width:19px; height:19px; flex:none; margin-top:2px; border-radius:50%;
+  border:1px solid rgba(0,0,0,.42); position:relative; transition:.2s var(--ease);
+}
+.checks li:hover .box{border-color:#000}
+.checks li.is-done .box{background:#000; border-color:#000}
+.checks li.is-done .box::after{
+  content:""; position:absolute; top:4px; left:7px; width:3px; height:7px;
+  border:solid var(--mango); border-width:0 1.5px 1.5px 0; transform:rotate(45deg);
+}
+.checks li.is-done span{text-decoration:line-through; opacity:.5}
+
+/* ═══════ footer pill ═══════ */
+.foot{
+  border-radius:var(--r-pill); padding:22px 34px;
+  display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+}
+.foot__mark{font-family:var(--f-disp); font-weight:700; font-size:15px; letter-spacing:.02em}
+.foot .mono{font-size:11px; color:var(--text-2); letter-spacing:.05em}
+
+/* ═══════ the clock bar — it drives the whole page ═══════ */
+.clockbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:900; padding:14px 26px 20px;
+  background:linear-gradient(rgba(12,12,16,0), rgba(12,12,16,.86) 34%, rgba(12,12,16,.97));
+}
+.clockbar__in{
+  max-width:1220px; margin:0 auto; display:flex; align-items:center; gap:22px;
+  background:rgba(21,21,25,.9); backdrop-filter:blur(14px);
+  border:1px solid var(--border); border-radius:var(--r-pill); padding:13px 26px;
+}
+.clockbar__lab{font-family:var(--f-mono); font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-2); white-space:nowrap}
+.scrubwrap{flex:1; position:relative; padding-bottom:14px}
+.clockbar__out{font-family:var(--f-disp); font-weight:700; font-size:22px;
+  letter-spacing:-.02em; min-width:74px; text-align:right}
+
+.scrub{
+  -webkit-appearance:none; appearance:none; width:100%; background:transparent;
+  margin:0; cursor:grab; display:block;
+}
+.scrub:active{cursor:grabbing}
+.scrub::-webkit-slider-runnable-track{
+  height:6px; border-radius:var(--r-pill);
+  background:linear-gradient(90deg,var(--indigo),var(--ember));
+}
+.scrub::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none; width:22px; height:22px; margin-top:-8px;
+  border-radius:50%; background:#fff; border:3px solid var(--bg);
+  box-shadow:0 0 0 1px var(--border-2), 0 4px 12px rgba(0,0,0,.7); cursor:grab;
+}
+.scrub::-moz-range-track{height:6px; border-radius:100px;
+  background:linear-gradient(90deg,var(--indigo),var(--ember))}
+.scrub::-moz-range-thumb{width:18px; height:18px; border-radius:50%; background:#fff;
+  border:3px solid var(--bg); box-shadow:0 0 0 1px var(--border-2)}
+.scrub__ticks{list-style:none; display:flex; justify-content:space-between;
+  padding:0; margin:6px 2px 0; position:absolute; left:0; right:0; bottom:0}
+.scrub__ticks li{font-family:var(--f-mono); font-size:9.5px; color:var(--text-2)}
+
+/* ═══════ scroll reveal, one-shot, JS-gated ═══════ */
+.js .rv{opacity:0; transform:translateY(16px);
+  transition:opacity .55s var(--ease), transform .55s var(--ease)}
+.js .rv.is-in{opacity:1; transform:none}
+
+/* ═══════ responsive ═══════ */
+@media (max-width:1000px){
+  .bento > *{grid-column:span 12 !important}
+  .sidestats{flex-direction:row}
+  .hero{min-height:0}
+  .pillnav a:nth-child(n+3){display:none}
+}
+@media (max-width:620px){
+  body{padding:16px 14px 132px}
+  .bento{margin-top:82px; gap:14px}
+  .card{padding:22px 18px; border-radius:26px}
+  .sidestats{flex-direction:column}
+  .big{font-size:46px}
+  .foot{border-radius:26px; justify-content:flex-start}
+  .facts > div{flex-direction:column; gap:3px}
+  .facts dt{width:auto}
+  .clockbar{padding:10px 12px 14px}
+  .clockbar__in{gap:12px; padding:11px 16px; border-radius:26px}
+  .clockbar__lab{display:none}
+  .ev{left:62px}
+  .hud{max-width:104px}
+  .hud span{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important}
+  .js .rv{opacity:1; transform:none}
+}
