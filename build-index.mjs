@@ -22,5 +22,10 @@ s = s.replace(
 .back a:hover{background:none;padding:0;text-decoration:underline}
 </style>`
 );
+// The build count is derived, not typed. It said "7 builds" while the page
+// listed 27 - a hardcoded total drifts the moment a build is added or retired.
+const n = (s.match(/<span class="n">\d+<\/span>/g) || []).length;   // recount
+s = s.replace(/<p class="meta">\d+ builds/, `<p class="meta">${n} builds`);
+
 writeFileSync("work/index.html", s);
 console.log("work/index.html generated from index.html");
