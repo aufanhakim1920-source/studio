@@ -1,26 +1,26 @@
 /* ============================================================
    baka nae. — lane 01 "atelier"
-   Ground: pale periwinkle · Ink: #1A1B2E · One signal: hot pink
+   Ground: pale periwinkle · Ink: #4A2233 · One signal: hot pink
    ============================================================ */
 
 :root{
   /* ---- ground family (periwinkle, never white / grey / cream) ---- */
-  --ground:      #ECEDF5;
-  --ground-deep: #DEE0EE;
-  --surface:     #F5F6FB;
-  --surface-2:   #E5E7F2;
+  --ground:      #F0D3DC;
+  --ground-deep: #FBEAD2;
+  --surface:     #FFFFFF;
+  --surface-2:   #F7E7EC;
 
   /* ---- ink ---- */
-  --ink:      #1A1B2E;
-  --ink-soft: #5B5D7A;
-  --ink-mute: #7B7D96;
-  --line:     #C7C9DC;
-  --line-soft:#D8DAE9;
+  --ink:      #4A2233;
+  --ink-soft: #84606E;
+  --ink-mute: #A58390;
+  --line:     #C2A1AD;
+  --line-soft:#D2B3BE;
 
   /* ---- the single signal ---- */
-  --signal:      #FF5C8A;
-  --signal-text: #C22A56;
-  --signal-wash: #FFE4EC;
+  --signal:      #A8446A;
+  --signal-text: #A8446A;
+  --signal-wash: #FBEAD2;
 
   /* ---- radius: a named two-tier system, never one number ---- */
   --radius-card: 16px;
@@ -372,9 +372,9 @@ h1 em,h2 em{ font-style:italic; color:var(--signal-text); font-variation-setting
 .cta{ background:var(--signal); border-top:2px solid var(--ink); padding:clamp(52px,7vw,92px) 0; }
 .cta-inner{ position:relative; display:grid; gap:clamp(24px,4vw,48px); grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); align-items:center; }
 .cta h2{ color:var(--ink); }
-.cta-copy p{ margin:16px 0 0; font-size:15.5px; color:#4A1E31; max-width:34ch; }
+.cta-copy p{ margin:16px 0 0; font-size:15.5px; color:#A8446A; max-width:34ch; }
 .cta-actions{ display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
-.cta-note{ margin:0; font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:#4A1E31; }
+.cta-note{ margin:0; font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:#A8446A; }
 .cta-mark{ position:absolute; right:-8px; top:50%; width:120px; transform:translateY(-50%) rotate(8deg); opacity:.35; pointer-events:none; }
 
 /* ============================ footer ============================ */

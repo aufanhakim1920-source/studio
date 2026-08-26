@@ -87,7 +87,7 @@
         no external image host. Every form carries the same
         "Nya! ver." cat-ear mark, tinted with the series hue.
      --------------------------------------------------------- */
-  var INK = "#5C3F12", PAPER = "#FFFFFF", GROUND = "#D2C3EA";
+  var INK = "#4A2233", PAPER = "#FFFFFF", GROUND = "#F0D3DC";
 
   function head(x, y, s) {
     return '<use href="#nya-head" transform="translate(' + x + ' ' + y + ') scale(' + s + ')"/>';
@@ -105,7 +105,7 @@
         '<rect x="38" y="53" width="124" height="162" rx="14" fill="none" stroke="' + INK + '" stroke-width="1.6" stroke-dasharray="6 6" opacity=".32"/>' +
         head(100, 124, 1.32) +
         '<path d="M74 176q26 17 52 0" fill="none" stroke="' + INK + '" stroke-width="4" stroke-linecap="round"/>' +
-        '<circle cx="100" cy="187" r="6" fill="#7A5518" stroke="' + INK + '" stroke-width="2.6"/>' +
+        '<circle cx="100" cy="187" r="6" fill="#A8446A" stroke="' + INK + '" stroke-width="2.6"/>' +
         '<path d="M44 212 72 52h12L56 212Z" fill="#fff" opacity=".3"/>');
     },
     "Phone Strap": function (hue) {
@@ -114,14 +114,14 @@
         '<path d="M100 23C84 42 84 70 100 88c16-18 16-46 0-65Z" fill="none" stroke="' + INK + '" stroke-width="4"/>' +
         '<path d="M91 36h18M89 52h22M91 68h18" stroke="' + INK + '" stroke-width="1.8" opacity=".38"/>' +
         '<rect x="88" y="86" width="24" height="13" rx="4" fill="' + hue + '" stroke="' + INK + '" stroke-width="3"/>' +
-        '<circle cx="100" cy="105" r="6.5" fill="#7A5518" stroke="' + INK + '" stroke-width="2.6"/>' +
+        '<circle cx="100" cy="105" r="6.5" fill="#A8446A" stroke="' + INK + '" stroke-width="2.6"/>' +
         '<rect x="52" y="110" width="96" height="112" rx="18" fill="' + PAPER + '" stroke="' + INK + '" stroke-width="4"/>' +
         head(100, 162, 1.02) +
         '<path d="M62 212 86 118h11L73 212Z" fill="#fff" opacity=".28"/>');
     },
     "Sticker": function (hue) {
       return wrap(hue,
-        '<rect x="16" y="26" width="168" height="188" rx="8" fill="#E4DBF3" stroke="' + INK + '" stroke-width="3.5"/>' +
+        '<rect x="16" y="26" width="168" height="188" rx="8" fill="#F7E7EC" stroke="' + INK + '" stroke-width="3.5"/>' +
         '<rect x="26" y="36" width="148" height="168" rx="5" fill="none" stroke="' + INK + '" stroke-width="1.6" stroke-dasharray="7 6" opacity=".38"/>' +
         // kiss-cut vinyl margin, drawn as a fill-only silhouette behind the mark
         '<g transform="translate(100 122) scale(1.62)" fill="#FFFFFF">' +
@@ -136,7 +136,7 @@
         '<rect x="14" y="34" width="172" height="172" rx="5" fill="' + PAPER + '" stroke="' + INK + '" stroke-width="4"/>' +
         '<rect x="26" y="46" width="148" height="106" fill="' + hue + '" opacity=".34"/>' +
         '<rect x="26" y="46" width="148" height="106" fill="none" stroke="' + INK + '" stroke-width="2.4"/>' +
-        '<circle cx="150" cy="70" r="12" fill="#7A5518" stroke="' + INK + '" stroke-width="2.4"/>' +
+        '<circle cx="150" cy="70" r="12" fill="#A8446A" stroke="' + INK + '" stroke-width="2.4"/>' +
         head(90, 112, 0.86) +
         '<path d="M26 152h148" stroke="' + INK + '" stroke-width="2.4"/>' +
         '<path d="M34 168h74M34 180h60M34 192h84" stroke="' + INK + '" stroke-width="2" opacity=".45" stroke-linecap="round"/>' +
@@ -158,7 +158,7 @@
         '<rect x="20" y="14" width="160" height="212" fill="' + PAPER + '" stroke="' + INK + '" stroke-width="4"/>' +
         '<rect x="34" y="28" width="132" height="156" fill="' + hue + '" opacity=".3"/>' +
         '<rect x="34" y="28" width="132" height="156" fill="none" stroke="' + INK + '" stroke-width="2.4"/>' +
-        '<circle cx="140" cy="58" r="16" fill="#7A5518" opacity=".85" stroke="' + INK + '" stroke-width="2.4"/>' +
+        '<circle cx="140" cy="58" r="16" fill="#A8446A" opacity=".85" stroke="' + INK + '" stroke-width="2.4"/>' +
         '<path d="M34 150q30-26 56-4t42-10v48H34Z" fill="' + GROUND + '" stroke="' + INK + '" stroke-width="2.4" stroke-linejoin="round"/>' +
         head(88, 112, 1.06) +
         '<path d="M44 202q10-9 18 0t18-2" fill="none" stroke="' + INK + '" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>' +
@@ -301,7 +301,7 @@
     var list = visible();
 
     grid.innerHTML = list.map(function (p, i) {
-      var s = DATA.series_meta[p.series] || { name_id: p.series, hue: "#7A5518" };
+      var s = DATA.series_meta[p.series] || { name_id: p.series, hue: "#A8446A" };
       return '<article class="card" data-rise style="--d:' + Math.min(i, 5) * 60 + 'ms">' +
         '<div class="card-art">' + artFor(p.type_id, s.hue) +
           '<span class="card-type">' + p.type_id + "</span>" +
@@ -357,7 +357,7 @@
      --------------------------------------------------------- */
   function renderQuotes() {
     $("#quoteGrid").innerHTML = QUOTES.quotes.map(function (q, i) {
-      var s = DATA.series_meta[q.series] || { hue: "#7A5518" };
+      var s = DATA.series_meta[q.series] || { hue: "#A8446A" };
       return '<figure class="quote" data-rise style="--d:' + (i * 70) + 'ms">' +
         "<p>" + q.text_id + "</p>" +
         "<footer>" +

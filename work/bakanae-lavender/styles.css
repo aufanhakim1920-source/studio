@@ -1,43 +1,28 @@
-/* =========================================================
-   baka nae. — "nae"
-   Palette chosen by Nae herself (the artist): white, lavender,
-   tan and cream. Measured before building: her four colours have
-   almost no value contrast — lavender 0.49 and tan 0.46 luminance
-   are 1.06:1 against each other, and EVERY pair of her colours
-   fails the 4.5:1 body-text threshold.
+/* ============================================================
+   baka nae. — lane 01 "atelier"
+   Ground: pale periwinkle · Ink: #3B2A46 · One signal: hot pink
+   ============================================================ */
 
-   So one colour was added that she did not give: --ink, a deep
-   plum pulled from her own lavender's hue family rather than an
-   imported black. 7.67:1 on lavender, 10.77:1 on cream.
-   Her palette sets every surface; the ink only makes it readable.
-   ========================================================= */
 :root{
-  /* ---- Nae's palette, verbatim ---- */
-  --lavender:    #C3B3DC;   /* the ground — her hero colour */
-  --lavender-lo: #B2A0CF;
-  --lavender-hi: #D6CAE8;
-  --white:       #FFFFFF;
-  --tan:         #E5A87C;
-  --cream:       #F9D6A2;
+  /* ---- ground family (periwinkle, never white / grey / cream) ---- */
+  --ground:      #C9BCE4;
+  --ground-deep: #F6D9B0;
+  --surface:     #FFFFFF;
+  --surface-2:   #E1DAF0;
 
-  --ground:      var(--lavender);
-  --ground-deep: var(--lavender-lo);
-  --surface:     var(--white);
-  --surface-2:   var(--lavender-hi);
+  /* ---- ink ---- */
+  --ink:      #3B2A46;
+  --ink-soft: #6D5D7D;
+  --ink-mute: #897A9D;
+  --line:     #A193B8;
+  --line-soft:#AFA2C8;
 
-  /* ---- the one colour ADDED, and why (see header) ---- */
-  --ink:      #2E2140;
-  --ink-soft: #574468;
-  --ink-mute: #6E5C80;
-  --line:     #A996C2;
-  --line-soft:#BCACD0;
+  /* ---- the single signal ---- */
+  --signal:      #9A5B2E;
+  --signal-text: #9A5B2E;
+  --signal-wash: #F6D9B0;
 
-  /* ---- signal: her tan, deepened enough to carry small text ---- */
-  --signal:      var(--tan);
-  --signal-text: #A85B22;
-  --signal-wash: var(--cream);
-
-  /* ---- radius: a named three-tier system, never one number ---- */
+  /* ---- radius: a named two-tier system, never one number ---- */
   --radius-card: 16px;
   --radius-pill: 999px;
   --radius-nib:  4px;
@@ -54,10 +39,6 @@
 
   --ease: cubic-bezier(.22,.61,.36,1);
 }
-
-/* ⚠️ NEVER place tan directly on lavender — 1.06:1, invisible.
-   They must always be separated by white, cream or ink. */
-
 
 *,*::before,*::after{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
@@ -391,9 +372,9 @@ h1 em,h2 em{ font-style:italic; color:var(--signal-text); font-variation-setting
 .cta{ background:var(--signal); border-top:2px solid var(--ink); padding:clamp(52px,7vw,92px) 0; }
 .cta-inner{ position:relative; display:grid; gap:clamp(24px,4vw,48px); grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr); align-items:center; }
 .cta h2{ color:var(--ink); }
-.cta-copy p{ margin:16px 0 0; font-size:15.5px; color:#A85B22; max-width:34ch; }
+.cta-copy p{ margin:16px 0 0; font-size:15.5px; color:#9A5B2E; max-width:34ch; }
 .cta-actions{ display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
-.cta-note{ margin:0; font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:#A85B22; }
+.cta-note{ margin:0; font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:#9A5B2E; }
 .cta-mark{ position:absolute; right:-8px; top:50%; width:120px; transform:translateY(-50%) rotate(8deg); opacity:.35; pointer-events:none; }
 
 /* ============================ footer ============================ */
