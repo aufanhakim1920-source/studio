@@ -1,0 +1,572 @@
+/* =========================================================================
+   baka nae — ALBUM KOLEKSI
+   The object: a collector's sticker album. 32 numbered pockets, 9 filled.
+   Palette is the artist's own four colours plus the ink. Nothing else.
+
+   ⚠ MEASURED CONSTRAINTS — do not "improve" these away:
+     purple / light-yellow  1.43:1   \
+     light-yellow / white   1.15:1    > never adjacent without ink or a border
+     purple / white         1.65:1   /
+     ink on dark-yellow     1.44:1   -> anything ON --dy must be white or --ly
+     ink reads everywhere:  5.86:1 purple · 8.37:1 light-yellow · 9.66:1 white
+   ========================================================================= */
+
+:root{
+  /* --- the four + the ink ------------------------------------------- */
+  --purple:      #D2C3EA;   /* her ground */
+  --ly:          #FBEFC0;   /* light yellow — the album paper */
+  --white:       #FFFFFF;   /* sticker backing only */
+  --dy:          #7A5518;   /* dark yellow "agak coklat" — the one signal */
+  --ink:         #5C3F12;   /* same hue at depth — all body text */
+  --ink-rgb:     92,63,18;
+
+  /* --- radius: a named multi-tier system, never one value ------------ */
+  --r-none:      0px;       /* album board, pages, spine — printed, cut square */
+  --r-pocket:    3px;       /* a printed slot on paper */
+  --r-sticker:   11px;      /* the die-cut sticker itself */
+  --r-stamp:     2px;       /* the rubber-stamp badge */
+  --r-pill:      999px;     /* controls only */
+
+  /* --- rules --------------------------------------------------------- */
+  --line:        2px solid var(--ink);
+  --line-thick:  3px solid var(--ink);
+  --hair:        1px solid rgba(var(--ink-rgb),.42);
+  --drop:        7px 7px 0 rgba(var(--ink-rgb),.92);
+  --drop-sm:     3px 3px 0 rgba(var(--ink-rgb),.85);
+
+  /* --- type: three families, the third is a mono ---------------------- */
+  --f-display: "Bricolage Grotesque", "Trebuchet MS", Verdana, sans-serif;
+  --f-body:    "Instrument Sans", system-ui, -apple-system, Segoe UI, sans-serif;
+  --f-mono:    "Space Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --shell: 1200px;
+  --gap:   clamp(6px, 1.1vw, 11px);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:var(--purple);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:13px;
+  line-height:1.55;
+  overflow-x:hidden;
+  /* a second layer on the ground: a faint ink hatch, purple stays the ground */
+  background-image:
+    repeating-linear-gradient(122deg,
+      rgba(var(--ink-rgb),.055) 0 1px,
+      transparent 1px 9px);
+}
+
+img,svg{ max-width:100%; display:block; }
+
+/* ---------- texture overlay: pointer-events none, POSITIVE z-index ------ */
+.grain{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:60;
+  opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='190'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='190' height='190' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ---------- focus ------------------------------------------------------ */
+:focus-visible{
+  outline:3px solid var(--dy);
+  outline-offset:2px;
+}
+
+/* =======================================================================
+   MASTHEAD  (chrome — deliberately tiny)
+   ===================================================================== */
+.mast{
+  max-width:var(--shell);
+  margin:0 auto;
+  padding:18px clamp(14px,3vw,30px) 0;
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+}
+.wordmark{
+  font-family:var(--f-display);
+  font-weight:700;
+  font-size:clamp(17px,2.4vw,21px);
+  letter-spacing:-.02em;
+  color:var(--ink);
+  text-decoration:none;
+}
+.wordmark span{ color:var(--dy); }
+.mast-link{
+  font-family:var(--f-mono);
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--ink);
+  text-decoration:none;
+  display:inline-flex; align-items:center;
+  min-height:44px;                        /* tap floor, even for a text link */
+  border-bottom:var(--hair);
+  padding:0 2px;
+}
+.mast-link:hover{ border-bottom-color:var(--dy); color:var(--dy); }
+
+/* =======================================================================
+   LEDE  (thing 1 of 3 on screen one)
+   ===================================================================== */
+main{ max-width:var(--shell); margin:0 auto; padding:0 clamp(14px,3vw,30px) 28px; }
+
+.lede{
+  display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+  gap:22px;
+  padding:clamp(26px,5vw,60px) 0 clamp(20px,3vw,30px);
+}
+.eyebrow{
+  margin:0 0 10px;
+  font-family:var(--f-mono);
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(var(--ink-rgb),.78);
+}
+h1{
+  margin:0;
+  font-family:var(--f-display);
+  font-weight:300;                       /* big goes lighter, not heavier */
+  font-size:clamp(46px,9.4vw,96px);
+  line-height:.86;
+  letter-spacing:-.035em;
+}
+
+/* the rubber stamp — the album's own readout */
+.stamp{
+  flex:0 0 auto;
+  min-width:172px;
+  background:var(--ly);
+  border:var(--line-thick);
+  border-radius:var(--r-stamp);
+  box-shadow:var(--drop-sm);
+  padding:12px 16px 11px;
+  transform:rotate(-2.2deg);
+  text-align:center;
+}
+.stamp-big{
+  font-family:var(--f-display);
+  font-weight:300;
+  line-height:1;
+  letter-spacing:-.04em;
+}
+.stamp-big b{ font-size:44px; font-weight:500; }
+.stamp-big i{ font-size:24px; font-style:normal; color:rgba(var(--ink-rgb),.7); }
+.stamp-cap{
+  margin:5px 0 0;
+  font-family:var(--f-mono);
+  font-size:10px; line-height:1.4; letter-spacing:.05em; text-transform:uppercase;
+  color:rgba(var(--ink-rgb),.82);
+}
+.stamp hr{
+  border:0; border-top:var(--hair);
+  margin:9px -6px 7px;
+}
+.stamp-sub{
+  margin:0;
+  font-family:var(--f-mono);
+  font-size:10px; letter-spacing:.05em; text-transform:uppercase;
+  color:rgba(var(--ink-rgb),.82);
+}
+.stamp-sub b{ font-weight:700; color:var(--ink); }
+.reset{
+  appearance:none; background:none; border:0;
+  font:inherit; color:rgba(var(--ink-rgb),.6);
+  text-decoration:underline; text-underline-offset:2px;
+  cursor:pointer;
+  display:inline-block; min-height:26px; padding:6px 4px 6px 8px;
+}
+.reset:hover{ color:var(--dy); }
+.reset[hidden]{ display:none; }
+
+/* =======================================================================
+   INDEX TABS — flipping to a section of the album
+   ===================================================================== */
+.tabs{
+  display:flex; flex-wrap:wrap; gap:5px;
+  padding:0 clamp(4px,1.4vw,16px);
+  margin-bottom:-3px;                     /* tabs bite into the album edge */
+  position:relative; z-index:3;
+}
+.tab{
+  appearance:none;
+  font-family:var(--f-mono);
+  font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink);
+  background:var(--white);
+  border:var(--line);
+  border-bottom:0;
+  border-radius:10px 10px var(--r-none) var(--r-none);
+  padding:8px 11px 9px;
+  min-height:34px;
+  cursor:pointer;
+  display:inline-flex; align-items:center; gap:7px;
+  /* an ink wash over white keeps six unselected dividers from out-shouting
+     the album page — still only palette colours, ink composited on white */
+  box-shadow:inset 0 0 0 999px rgba(var(--ink-rgb),.07);
+  transition:transform .16s ease, background-color .16s ease;
+}
+.tab em{
+  font-style:normal;
+  font-size:9px;
+  background:rgba(var(--ink-rgb),.14);
+  border-radius:var(--r-pill);
+  padding:1px 5px;
+}
+.tab:hover{ transform:translateY(-2px); }
+.tab[aria-selected="true"]{
+  background:var(--tabhue,var(--ly));
+  padding-bottom:12px;
+  transform:none;
+  box-shadow:none;
+}
+.tab[aria-selected="true"] em{ background:rgba(var(--ink-rgb),.2); }
+
+/* =======================================================================
+   THE BOARD: album + margin
+   ===================================================================== */
+.board{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 268px;
+  gap:26px;
+  align-items:start;
+}
+
+/* ---------- the album ---------------------------------------------- */
+.album{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  background:var(--ly);
+  border:var(--line-thick);
+  border-radius:var(--r-none);
+  box-shadow:var(--drop);
+  position:relative; z-index:2;
+  overflow:hidden;
+}
+.page{
+  padding:clamp(10px,1.5vw,18px);
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--gap);
+  align-content:start;
+}
+/* paper: a ruled hairline field baked into the page itself */
+.page::before{
+  content:"";
+  position:absolute; inset:0;
+  pointer-events:none;
+  background-image:repeating-linear-gradient(
+      to bottom, rgba(var(--ink-rgb),.05) 0 1px, transparent 1px 7px);
+}
+.page{ position:relative; }
+
+.spine{
+  width:26px;
+  background:var(--dy);
+  border-left:var(--line);
+  border-right:var(--line);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:26px;
+}
+.spine span{
+  width:9px; height:2px;
+  background:var(--ly);
+  opacity:.85;
+}
+
+/* ---------- a pocket ------------------------------------------------ */
+.slot{
+  appearance:none;
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4;
+  padding:0;
+  cursor:pointer;
+  background:transparent;
+  border:0;
+  border-radius:var(--r-pocket);
+  display:block;
+  transition:transform .18s ease;
+}
+.slot .pocket{
+  position:absolute; inset:0;
+  border-radius:var(--r-pocket);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.slot .num{
+  position:absolute; top:3px; left:4px;
+  font-family:var(--f-mono);
+  font-size:9.5px; font-weight:700; letter-spacing:.04em;
+  color:rgba(var(--ink-rgb),.85);
+  z-index:2;
+}
+.slot .art{ width:76%; height:auto; }
+
+/* empty: the album page itself, printed with a pocket and a ghost */
+.slot.is-empty .pocket{
+  border:1.5px dashed rgba(var(--ink-rgb),.55);
+  background:rgba(var(--ink-rgb),.035);
+}
+.slot.is-empty .art{ opacity:.55; }
+.slot.is-empty:hover .pocket{ border-color:var(--dy); background:rgba(var(--ink-rgb),.07); }
+.slot.is-empty:hover .art{ opacity:.8; }
+
+/* filled: a white sticker backing seated on the page */
+.slot.is-filled .pocket{
+  border:1.5px solid var(--ink);
+  background:var(--white);
+  box-shadow:inset 0 0 0 3px var(--ly), 2px 2px 0 rgba(var(--ink-rgb),.55);
+}
+.slot.is-filled .art{
+  width:84%;
+  transform:rotate(var(--tilt,0deg));
+  transition:transform .34s cubic-bezier(.34,1.56,.64,1);
+}
+.slot.is-filled:hover .art{ transform:rotate(0deg) scale(1.04); }
+
+/* the seat — pressed, settled into the page */
+.slot.is-seated{ transform:translateY(-3px) scale(1.05); z-index:4; }
+.slot.is-seated .pocket{
+  background:var(--white);
+  border-color:var(--ink);
+  box-shadow:inset 0 0 0 3px var(--dy), 4px 5px 0 rgba(var(--ink-rgb),.9);
+}
+.slot.is-seated .art{ transform:rotate(0deg) scale(1.06); }
+.slot.is-empty.is-seated .pocket{
+  background:var(--dy);
+  border:1.5px solid var(--ink);
+  border-style:solid;
+}
+.slot.is-empty.is-seated .art{ opacity:1; }
+.slot.is-empty.is-seated .num{ color:var(--ly); }
+/* ink on --dy is 1.44:1 — the ghost has to flip with the pocket */
+.slot.is-empty.is-seated .art-ghost g{ stroke:var(--ly); }
+
+/* opened — the thing you accumulate by going through the album */
+.slot.is-opened::after{
+  content:"";
+  position:absolute; top:4px; right:4px;
+  width:6px; height:6px; border-radius:var(--r-pill);
+  background:var(--dy);
+  z-index:3;
+}
+.slot.is-empty.is-seated::after{ background:var(--ly); }
+
+/* parked — a series is selected and this slot is not in it */
+.slot.is-parked{ opacity:.26; }
+.slot.is-parked .pocket{ box-shadow:none; }
+
+/* =======================================================================
+   THE MARGIN — the only text-heavy surface, and it starts empty
+   ===================================================================== */
+.margin{
+  position:sticky; top:20px;
+  background:var(--dy);
+  border:var(--line-thick);
+  border-radius:var(--r-none);
+  box-shadow:var(--drop);
+  color:var(--ly);                        /* ink on --dy is 1.44:1 — never */
+  padding:13px 18px 20px;
+  z-index:4;
+}
+.margin-head{
+  margin:0 0 12px;
+  padding-bottom:11px;
+  border-bottom:1px solid rgba(255,255,255,.3);
+  font-family:var(--f-mono);
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(255,255,255,.62);
+}
+.margin-inner{ display:flex; flex-direction:column; gap:9px; }
+
+.m-empty{
+  border:1.5px dashed rgba(255,255,255,.32);
+  border-radius:var(--r-pocket);
+  min-height:172px;
+  display:flex; align-items:center; justify-content:center;
+  padding:16px;
+}
+.m-hint{
+  margin:0;
+  font-family:var(--f-mono);
+  font-size:11px; line-height:1.7; letter-spacing:.03em;
+  text-align:center;
+  color:rgba(255,255,255,.66);
+}
+.m-slot{
+  margin:0;
+  font-family:var(--f-mono);
+  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ly); opacity:.72;
+}
+.m-tag{
+  align-self:flex-start;
+  font-family:var(--f-mono);
+  font-size:9.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink);
+  background:var(--taghue,var(--ly));
+  border-radius:var(--r-pill);
+  padding:4px 10px;
+}
+.m-name{
+  margin:0;
+  font-family:var(--f-display);
+  font-weight:500;
+  font-size:17px; line-height:1.18; letter-spacing:-.015em;
+  color:var(--white);
+}
+.m-price{
+  margin:2px 0 0;
+  font-family:var(--f-display);
+  font-weight:300;
+  font-size:32px; line-height:1; letter-spacing:-.03em;
+  color:var(--ly);
+}
+.m-meta{
+  margin:0;
+  font-family:var(--f-mono);
+  font-size:10.5px; letter-spacing:.05em;
+  color:rgba(255,255,255,.8);
+}
+.m-body{
+  margin:0;
+  font-size:12px; line-height:1.6;
+  color:rgba(255,255,255,.9);
+}
+.m-rule{ border:0; border-top:1px solid rgba(255,255,255,.28); margin:3px 0; width:100%; }
+
+/* =======================================================================
+   BUTTONS — the only pill radius on the page. 44px tall.
+   ===================================================================== */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height:44px;
+  padding:0 20px;
+  font-family:var(--f-mono);
+  font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  text-decoration:none;
+  color:var(--ink);
+  background:var(--ly);                   /* 8.37:1 — reads on the dark yellow */
+  border:var(--line);
+  border-radius:var(--r-pill);
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.btn:hover{ transform:translate(-1px,-2px); box-shadow:var(--drop-sm); }
+.btn:active{ transform:translate(0,0); box-shadow:none; }
+.btn-lg{ min-height:50px; padding:0 26px; font-size:12px; background:var(--dy); color:var(--ly); }
+.btn-lg:hover{ background:var(--ink); }
+
+/* =======================================================================
+   FALLBACK + FOOTER
+   ===================================================================== */
+.fallback{
+  background:var(--white);
+  border:var(--line-thick);
+  box-shadow:var(--drop);
+  padding:20px;
+  margin-top:20px;
+}
+.fallback p{ margin:0 0 12px; }
+
+.foot{
+  max-width:var(--shell);
+  margin:0 auto;
+  padding:clamp(30px,5vw,64px) clamp(14px,3vw,30px) 64px;
+  border-top:var(--hair);
+  display:flex; flex-wrap:wrap; align-items:flex-end; gap:24px 34px;
+}
+.figs{
+  list-style:none; margin:0; padding:0;
+  display:flex; flex-wrap:wrap; gap:10px 30px;
+}
+.figs li{ display:flex; flex-direction:column; }
+.figs b{
+  font-family:var(--f-display);
+  font-weight:300; font-size:26px; line-height:1; letter-spacing:-.03em;
+}
+.figs span{
+  font-family:var(--f-mono);
+  font-size:10px; letter-spacing:.07em; text-transform:uppercase;
+  color:rgba(var(--ink-rgb),.75);
+  margin-top:5px;
+}
+.figs i{ font-style:normal; }
+.note{
+  flex:1 1 100%;
+  margin:0;
+  max-width:60ch;
+  font-size:11.5px; line-height:1.65;
+  color:rgba(var(--ink-rgb),.78);
+}
+
+/* =======================================================================
+   RESPONSIVE
+   ===================================================================== */
+/* 1150, not 1040: below this the two-column board squeezes the album's pockets
+   under ~75px, which is where the drawings stop reading. Dock the caption
+   instead and give the whole width back to the object. */
+@media (max-width:1150px){
+  .board{ grid-template-columns:minmax(0,1fr); gap:0; }
+
+  /* the margin docks to the bottom of the viewport on small screens so the
+     caption is always where you can read it, whichever slot you press */
+  .margin{
+    position:fixed; left:0; right:0; bottom:0; top:auto;
+    min-height:0;
+    border-left:0; border-right:0; border-bottom:0;
+    border-top:var(--line-thick);
+    box-shadow:0 -6px 0 rgba(var(--ink-rgb),.18);
+    padding:12px clamp(14px,4vw,24px) 14px;
+    z-index:50;
+    max-height:44vh; overflow-y:auto;
+  }
+  .margin-head{ display:none; }
+  .margin-inner{ gap:6px; }
+  .m-empty{ min-height:0; border:0; padding:0; justify-content:flex-start; }
+  .m-hint{ text-align:left; }
+  .margin-inner .btn{ align-self:flex-start; min-width:min(100%,280px); }
+  .m-name{ font-size:15px; }
+  .m-price{ font-size:26px; }
+  .m-rule{ display:none; }
+  body{ padding-bottom:168px; }
+}
+
+@media (max-width:760px){
+  .album{ grid-template-columns:minmax(0,1fr); }
+  .spine{
+    width:auto; height:24px;
+    flex-direction:row;
+    border-left:0; border-right:0;
+    border-top:var(--line); border-bottom:var(--line);
+  }
+  .spine span{ width:2px; height:9px; }
+  .lede{ align-items:flex-start; }
+  .stamp{ min-width:154px; }
+  .stamp-big b{ font-size:36px; }
+}
+
+@media (max-width:430px){
+  .tabs{ gap:4px; padding:0 2px; }
+  .tab{ padding:7px 8px 8px; font-size:9.5px; gap:5px; }
+  .slot .num{ font-size:8.5px; top:2px; left:3px; }
+  .figs{ gap:10px 20px; }
+  .figs b{ font-size:22px; }
+}
+
+/* =======================================================================
+   REDUCED MOTION — nothing here loops, but transitions still go quiet
+   ===================================================================== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    transition-duration:.001ms !important;
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+  }
+}
