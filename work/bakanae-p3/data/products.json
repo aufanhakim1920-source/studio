@@ -154,32 +154,32 @@
     "aot": {
       "name_id": "Attack on Titan",
       "name_en": "Attack on Titan",
-      "hue": "#F0D3DC"
+      "hue": "#D2C3EA"
     },
     "haikyuu": {
       "name_id": "Haikyuu!!",
       "name_en": "Haikyuu!!",
-      "hue": "#F2D3D7"
+      "hue": "#E8C3ED"
     },
     "bnha": {
       "name_id": "Boku no Hero",
       "name_en": "My Hero Academia",
-      "hue": "#F4D4D3"
+      "hue": "#F1C2E0"
     },
     "mtp": {
       "name_id": "Moriarty the Patriot",
       "name_en": "Moriarty the Patriot",
-      "hue": "#F7DBD3"
+      "hue": "#F4C1CA"
     },
     "jjk": {
       "name_id": "Jujutsu Kaisen",
       "name_en": "Jujutsu Kaisen",
-      "hue": "#F9E2D2"
+      "hue": "#F8D2C1"
     },
     "drstone": {
       "name_id": "Dr. Stone",
       "name_en": "Dr. Stone",
-      "hue": "#FBEAD2"
+      "hue": "#FBEFC0"
     }
   },
   "type_filters": [

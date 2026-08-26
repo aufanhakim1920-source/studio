@@ -87,7 +87,7 @@
         no external image host. Every form carries the same
         "Nya! ver." cat-ear mark, tinted with the series hue.
      --------------------------------------------------------- */
-  var INK = "#5C3F12", PAPER = "#FFFFFF", GROUND = "#D2C3EA";
+  var INK = "#6B4A15", PAPER = "#FFFFFF", GROUND = "#FBEFC0";
 
   function head(x, y, s) {
     return '<use href="#nya-head" transform="translate(' + x + ' ' + y + ') scale(' + s + ')"/>';
@@ -121,7 +121,7 @@
     },
     "Sticker": function (hue) {
       return wrap(hue,
-        '<rect x="16" y="26" width="168" height="188" rx="8" fill="#E6DEF3" stroke="' + INK + '" stroke-width="3.5"/>' +
+        '<rect x="16" y="26" width="168" height="188" rx="8" fill="#FDF7E0" stroke="' + INK + '" stroke-width="3.5"/>' +
         '<rect x="26" y="36" width="148" height="168" rx="5" fill="none" stroke="' + INK + '" stroke-width="1.6" stroke-dasharray="7 6" opacity=".38"/>' +
         // kiss-cut vinyl margin, drawn as a fill-only silhouette behind the mark
         '<g transform="translate(100 122) scale(1.62)" fill="#FFFFFF">' +
