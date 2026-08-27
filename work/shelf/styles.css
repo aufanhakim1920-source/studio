@@ -1,0 +1,536 @@
+/* ============================================================
+   Raufan Hakim — "The Shelf"
+   Brief: interesting, playful, modern.
+   Assembled from the reference library:
+     · warm ground + saturated colour-block cards + glass  → mortgage dashboard
+     · CSS-3D book spines on a plank                       → Shelf Life
+     · named motion vocabulary (6 physics tiles)           → Motion Specimen
+     · sweeping-shine button, status pill, soft glow       → Drift Sea / London counsel
+   ============================================================ */
+
+:root {
+  --paper: #E8E5D8;
+  --paper-warm: #EFEDE3;
+  --ink: #1C1C1C;
+  --ink-soft: rgba(28, 28, 28, 0.58);
+  --glass: rgba(255, 255, 255, 0.45);
+  --glass-line: rgba(255, 255, 255, 0.6);
+
+  --acid: #E7F65E;
+  --orange: #F9A16C;
+  --teal: #619B8A;
+  --pink: #E0A7C2;
+  --gold: #D4A373;
+
+  --wood-front: #4a2c11;
+  --wood-top: #633f1f;
+  --wood-side: #3d230d;
+
+  --r-lg: 32px;
+  --r-md: 20px;
+  --r-pill: 100px;
+
+  --font: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+::selection { background: var(--acid); color: var(--ink); }
+
+.wrap { width: min(1180px, 100% - 3rem); margin-inline: auto; }
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---------------- floating playful shapes ---------------- */
+.shapes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.5;
+}
+.blob-1 { width: 420px; height: 420px; background: var(--acid);   top: -120px; left: -80px; }
+.blob-2 { width: 360px; height: 360px; background: var(--orange); top: 32%; right: -120px; opacity: 0.38; }
+.blob-3 { width: 300px; height: 300px; background: var(--teal);   bottom: 6%; left: 4%; opacity: 0.22; }
+
+.chip {
+  position: absolute;
+  border: 2px solid var(--ink);
+  background: var(--paper-warm);
+  animation: bob 7s ease-in-out infinite;
+}
+.chip-1 { width: 26px; height: 26px; border-radius: 50%; background: var(--pink);   top: 18%; left: 12%; }
+.chip-2 { width: 22px; height: 34px; border-radius: 12px; background: var(--teal);   top: 62%; left: 7%;  animation-delay: -2s; }
+.chip-3 { width: 30px; height: 30px; border-radius: 8px;  background: var(--acid);   top: 26%; right: 9%; animation-delay: -4s; transform: rotate(12deg); }
+.chip-4 { width: 20px; height: 20px; border-radius: 50%; background: var(--orange); bottom: 18%; right: 14%; animation-delay: -1s; }
+
+@keyframes bob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -18px; }
+}
+
+/* ---------------- nav ---------------- */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 14px 24px;
+  margin: 16px auto 0;
+  width: min(1180px, 100% - 3rem);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-pill);
+  box-shadow: 0 8px 32px rgba(28, 28, 28, 0.06);
+}
+
+.nav-name { font-weight: 600; font-size: 17px; letter-spacing: -0.01em; white-space: nowrap; text-decoration: none; }
+.nav-links { display: flex; gap: 22px; }
+.nav-links a { text-decoration: none; font-size: 14px; font-weight: 500; opacity: 0.7; transition: opacity 0.2s; }
+.nav-links a:hover { opacity: 1; }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: var(--acid);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #2f8f4a; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.35 } }
+
+/* ---------------- hero ---------------- */
+.hero { position: relative; z-index: 1; padding: 90px 0 40px; }
+
+.hero h1 {
+  font-size: clamp(3rem, 8.5vw, 6.6rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  max-width: 16ch;
+}
+.hero h1 em {
+  font-style: normal;
+  background: var(--acid);
+  padding: 0 0.14em;
+  border-radius: 10px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.hero-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+.hero-lede { font-size: 18px; line-height: 1.55; max-width: 46ch; color: var(--ink-soft); }
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border: none;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -120%;
+  width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform: skewX(-14deg);
+}
+.btn:hover::after { animation: sweep 0.9s ease-in-out; }
+@keyframes sweep { to { left: 160%; } }
+
+.btn--ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+
+/* ---------------- stat cards ---------------- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 3.5rem;
+}
+.stat {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  padding: 24px;
+  min-height: 168px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.stat:hover { transform: translateY(-6px) rotate(-1deg); }
+.stat--acid   { background: var(--acid); }
+.stat--orange { background: var(--orange); }
+.stat--teal   { background: var(--teal); color: #fff; }
+.stat--glass  { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-line); }
+
+/* content must sit above the pattern, or the dots/hatch print straight
+   through the label text */
+.stat b, .stat > span:not(.pattern) { position: relative; z-index: 1; }
+.stat b { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.stat > span:not(.pattern) { font-size: 13px; opacity: 0.78; max-width: 24ch; }
+
+.pattern {
+  position: absolute;
+  bottom: -24px; right: -24px;
+  width: 150px; height: 150px;
+  opacity: 0.18;
+  pointer-events: none;
+}
+.pattern--dots  { background-image: radial-gradient(currentColor 1.5px, transparent 1.5px); background-size: 10px 10px; }
+.pattern--hatch { background: repeating-linear-gradient(-45deg, currentColor, currentColor 1px, transparent 1px, transparent 10px); }
+
+/* ---------------- section shell ---------------- */
+section.block { position: relative; z-index: 1; padding: 84px 0; }
+.head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.head h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 600; letter-spacing: -0.035em; }
+
+/* ---------------- THE SHELF ---------------- */
+/* books stand ~160px ABOVE their plank, so the stage needs that much
+   headroom or the top row collides with the section heading */
+.shelf-stage {
+  perspective: 1400px;
+  perspective-origin: 50% 44%;
+  padding: 190px 0 0;
+}
+.shelf-room {
+  transform-style: preserve-3d;
+  transform: rotateX(6deg) rotateY(-14deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* sized to the books, not to the page — a full-width plank with 20% of it
+   occupied reads as a mistake, not as a shelf */
+.shelf {
+  position: relative;
+  transform-style: preserve-3d;
+  width: min(430px, 92%);
+  height: 20px;
+  margin-bottom: 260px;
+}
+.shelf:last-child { margin-bottom: 40px; }
+
+.shelf__glow {
+  position: absolute;
+  top: 10px; left: -6%;
+  width: 112%; height: 90px;
+  background: rgba(28, 28, 28, 0.22);
+  filter: blur(26px);
+}
+.shelf__top {
+  position: absolute;
+  bottom: 18px; left: -4%;
+  width: 108%; height: 96px;
+  background: var(--wood-top);
+  transform-origin: bottom;
+  transform: rotateX(90deg);
+  box-shadow: inset 0 20px 40px rgba(0,0,0,0.28);
+}
+.shelf__front {
+  position: absolute;
+  inset: 0;
+  left: -4%;
+  width: 108%;
+  background: var(--wood-front);
+  border-top: 1px solid rgba(255,255,255,0.14);
+  border-radius: 2px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+.shelf__side {
+  position: absolute;
+  top: 0; right: -4%;
+  width: 96px; height: 18px;
+  background: var(--wood-side);
+  transform-origin: right;
+  transform: rotateY(-90deg);
+}
+
+.books {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  transform-style: preserve-3d;
+}
+
+.book {
+  position: relative;
+  transform-style: preserve-3d;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.book:hover, .book.is-active { transform: translateZ(18px) translateY(-8px); }
+
+.book__spine {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px 0 0 3px;
+  border-right: 1px solid rgba(0,0,0,0.4);
+  box-shadow: inset 3px 0 6px rgba(255,255,255,0.12), inset -3px 0 6px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  gap: 8px;
+  z-index: 2;
+}
+.book__title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.book__rule { width: 62%; height: 2px; background: currentColor; opacity: 0.45; flex-shrink: 0; }
+
+.book__pages {
+  position: absolute;
+  top: 0; left: 2px;
+  width: calc(100% - 2px);
+  height: 78px;
+  background: #f0e8db;
+  border: 1px solid #cdbfa8;
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  background-image: repeating-linear-gradient(to right, transparent, transparent 1px, rgba(0,0,0,0.05) 1px, rgba(0,0,0,0.05) 2px);
+}
+.book__edge {
+  position: absolute;
+  top: 0; right: 0;
+  width: 78px; height: 100%;
+  transform-origin: right;
+  transform: rotateY(-90deg);
+  box-shadow: inset -10px 0 22px rgba(0,0,0,0.5);
+}
+
+/* the detail card that opens when a book is picked */
+.detail {
+  margin-top: 8px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  min-height: 132px;
+}
+.detail__name { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+.detail__desc { font-size: 15px; color: var(--ink-soft); margin-top: 6px; max-width: 62ch; }
+.detail__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: var(--r-pill);
+  background: rgba(28,28,28,0.07);
+}
+.detail__side { text-align: right; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+
+/* ---------------- motion specimens ---------------- */
+.specimens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.spec {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.spec__stage {
+  height: 150px;
+  border-radius: var(--r-md);
+  background: var(--paper-warm);
+  border: 1px solid rgba(28,28,28,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.spec h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+.spec p { font-size: 13.5px; color: var(--ink-soft); }
+
+/* the six behaviours, verbatim geometry from the Motion Specimen reference */
+.m-ball { width: 30px; height: 30px; border-radius: 50%; background: var(--pink); border: 2px solid var(--ink); animation: m-bounce 2s cubic-bezier(0.68,-0.55,0.265,1.55) infinite; }
+@keyframes m-bounce { 0%,100% { transform: translateY(42px) } 50% { transform: translateY(-42px) } }
+
+.m-box { width: 40px; height: 58px; background: var(--teal); border: 2px solid var(--ink); box-shadow: 9px 9px 0 var(--ink); animation: m-drift 3s ease-in-out infinite; }
+@keyframes m-drift {
+  0%   { transform: translateX(-38px) skewX(0deg); }
+  20%  { transform: translateX(20px) skewX(-15deg); }
+  40%  { transform: translateX(10px) skewX(5deg); }
+  100% { transform: translateX(-38px) skewX(0deg); }
+}
+
+.m-stem { width: 2px; height: 86px; background: var(--ink); transform-origin: top; animation: m-swing 1.5s ease-in-out infinite; position: relative; }
+.m-bob { width: 24px; height: 24px; border-radius: 50%; background: var(--gold); border: 2px solid var(--ink); position: absolute; bottom: -12px; left: -11px; }
+@keyframes m-swing { 0% { transform: rotate(45deg) } 50% { transform: rotate(-45deg) } 100% { transform: rotate(45deg) } }
+
+.m-band { width: 78px; height: 10px; background: var(--pink); border: 2px solid var(--ink); animation: m-stretch 1.4s infinite; }
+@keyframes m-stretch { 0%,100% { width: 78px; height: 10px } 50% { width: 20px; height: 78px } }
+
+.m-center { width: 10px; height: 10px; border-radius: 50%; background: var(--ink); position: relative; }
+.m-path { width: 82px; height: 82px; border: 1px dashed var(--ink); border-radius: 50%; position: absolute; top: -36px; left: -36px; animation: m-spin 4s linear infinite; }
+.m-sat { width: 15px; height: 15px; background: var(--teal); border: 2px solid var(--ink); position: absolute; top: -8px; left: 33px; }
+@keyframes m-spin { from { transform: rotate(0) } to { transform: rotate(360deg) } }
+
+.m-step { width: 15px; height: 15px; border: 2px solid var(--ink); background: var(--acid); position: absolute; opacity: 0; }
+.m-s1 { top: 34px; left: 34px; animation: m-blink 2s infinite 0s; }
+.m-s2 { top: 54px; left: 54px; animation: m-blink 2s infinite 0.2s; }
+.m-s3 { top: 74px; left: 74px; animation: m-blink 2s infinite 0.4s; }
+.m-s4 { top: 94px; left: 94px; animation: m-blink 2s infinite 0.6s; }
+@keyframes m-blink { 0%,100% { opacity: 0; transform: scale(0.5) } 50% { opacity: 1; transform: scale(1) } }
+
+/* ---------------- evidence ---------------- */
+.evidence { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ev {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--paper-warm);
+}
+.ev img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+.ev:hover img { transform: scale(1.06); }
+.ev figcaption {
+  position: absolute;
+  left: 14px; bottom: 14px;
+  padding: 7px 13px;
+  border-radius: var(--r-pill);
+  background: rgba(232, 229, 216, 0.92);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---------------- contact ---------------- */
+.contact-card {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--r-lg);
+  padding: clamp(2rem, 5vw, 3.6rem);
+  position: relative;
+  overflow: hidden;
+}
+.contact-card h2 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 600; letter-spacing: -0.035em; max-width: 18ch; }
+.contact-card p { color: rgba(232,229,216,0.66); margin-top: 14px; max-width: 46ch; }
+.contact-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn--acid { background: var(--acid); color: var(--ink); }
+.btn--outline { background: transparent; color: var(--paper); border: 2px solid rgba(232,229,216,0.4); }
+.contact-card .pattern { color: var(--acid); opacity: 0.16; width: 240px; height: 240px; }
+
+footer.foot {
+  position: relative;
+  z-index: 1;
+  padding: 34px 0 54px;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ---------------- reveal (safe by default) ---------------- */
+html.anim-ready .rise { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+html.anim-ready .rise.in { opacity: 1; transform: none; }
+
+/* ---------------- responsive ---------------- */
+@media (max-width: 1000px) {
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .specimens { grid-template-columns: repeat(2, 1fr); }
+  .evidence { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  nav { border-radius: var(--r-md); padding: 12px 16px; }
+  .nav-links { display: none; }
+  .hero { padding: 56px 0 24px; }
+  .shelf-room { transform: rotateX(5deg) rotateY(-10deg) scale(0.82); }
+  .specimens { grid-template-columns: 1fr; }
+  .detail { grid-template-columns: 1fr; }
+  .detail__side { text-align: left; align-items: flex-start; }
+  .blob { filter: blur(60px); opacity: 0.35; }
+}
+
+@media (max-width: 460px) {
+  .nav-name { font-size: 15px; }
+  .status-pill { font-size: 9px; padding: 5px 10px; }
+  .stat-row { grid-template-columns: 1fr; }
+  .shelf-room { transform: rotateX(4deg) rotateY(-8deg) scale(0.62); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip, .dot, .m-ball, .m-box, .m-stem, .m-band, .m-path, .m-step { animation: none; }
+  .book, .stat, .ev img, .btn { transition: none; }
+}

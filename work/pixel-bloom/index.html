@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0044CC">
+  <title>Raufan Hakim — Portfolio</title>
+  <meta name="description" content="Raufan (Aufan) Hakim — Data Science student at the University of Melbourne. Two-time CISSA Codebrew winner. Builds web, commerce, games and automation.">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="w-full relative selection:bg-yellow-400 selection:text-blue-900">
+
+  <!-- ================= FIXED BACKDROP ================= -->
+  <div class="fixed inset-0 z-0 bg-grid pointer-events-none"></div>
+
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" id="bg-flowers">
+
+    <div class="absolute top-[15%] left-[10%] w-8 h-8 animate-float-medium delay-100 opacity-90">
+      <svg viewBox="0 0 12 16" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="12" width="4" height="4" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+    <div class="absolute top-[8%] left-[25%] w-6 h-6 animate-float-slow delay-500 opacity-80">
+      <svg viewBox="0 0 12 16" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#8B4513"></rect>
+        <rect x="4" y="12" width="4" height="4" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+    <div class="absolute top-[20%] right-[15%] w-10 h-10 animate-float-fast delay-300 opacity-85">
+      <svg viewBox="0 0 12 20" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="12" width="4" height="8" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+    <div class="absolute bottom-[20%] left-[8%] w-7 h-7 animate-float-slow delay-700 opacity-80">
+      <svg viewBox="0 0 12 16" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#8B4513"></rect>
+        <rect x="4" y="12" width="4" height="4" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+    <div class="absolute bottom-[25%] right-[20%] w-9 h-9 animate-float-medium delay-1000 opacity-90">
+      <svg viewBox="0 0 12 20" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="12" width="4" height="8" fill="#228B22"></rect>
+        <rect x="8" y="14" width="2" height="2" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+    <div class="absolute top-[40%] left-[10%] w-4 h-4 animate-float-slow opacity-60">
+      <svg viewBox="0 0 12 16" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#8B4513"></rect>
+        <rect x="4" y="12" width="4" height="4" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+    <div class="absolute top-[60%] right-[8%] w-5 h-5 animate-float-slow delay-200 opacity-70">
+      <svg viewBox="0 0 12 16" class="w-full h-full drop-shadow-lg pixel-art">
+        <rect x="4" y="0" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="8" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="0" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="8" y="4" width="4" height="4" fill="#FF3333"></rect>
+        <rect x="4" y="4" width="4" height="4" fill="#FFD700"></rect>
+        <rect x="4" y="12" width="4" height="4" fill="#228B22"></rect>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 md:py-8 flex justify-between items-center transition-colors duration-300" id="site-nav">
+    <div class="hidden md:block">
+      <a href="#top" class="text-xs uppercase tracking-[0.2em] opacity-70 hover:opacity-100 transition-opacity">Portfolio 2026</a>
+    </div>
+
+    <div class="flex-1 flex justify-center items-center gap-6 md:gap-12 text-sm md:text-base font-bold tracking-wide">
+      <div class="group relative py-1">
+        <a href="#works" class="flex items-center gap-1">
+          <span class="relative z-10 group-hover:text-yellow-300 transition-colors duration-300">WORKS</span>
+          <span class="text-xs group-hover:text-yellow-300 transition-colors duration-300">▼</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-300 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        <div class="absolute top-full left-0 mt-2 bg-[#003399] border border-white/10 rounded-sm shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-[220px]">
+          <a href="#works" data-filter="all" class="nav-filter block px-5 py-3 hover:bg-yellow-300 hover:text-blue-900 transition-colors text-sm font-bold">ALL</a>
+          <a href="#works" data-filter="web" class="nav-filter block px-5 py-3 hover:bg-yellow-300 hover:text-blue-900 transition-colors text-sm font-bold">WEB &amp; COMMERCE</a>
+          <a href="#works" data-filter="game" class="nav-filter block px-5 py-3 hover:bg-yellow-300 hover:text-blue-900 transition-colors text-sm font-bold">GAMES</a>
+          <a href="#works" data-filter="ai" class="nav-filter block px-5 py-3 hover:bg-yellow-300 hover:text-blue-900 transition-colors text-sm font-bold">AI &amp; AUTOMATION</a>
+          <a href="#works" data-filter="motion" class="nav-filter block px-5 py-3 hover:bg-yellow-300 hover:text-blue-900 transition-colors text-sm font-bold">MOTION</a>
+        </div>
+      </div>
+      <a href="#about" class="group relative py-1">
+        <span class="relative z-10 group-hover:text-yellow-300 transition-colors duration-300">ABOUT</span>
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-300 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#contact" class="group relative py-1">
+        <span class="relative z-10 group-hover:text-yellow-300 transition-colors duration-300">CONTACT</span>
+        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-300 group-hover:w-full transition-all duration-300"></span>
+      </a>
+    </div>
+
+    <div class="hidden md:flex gap-4 opacity-70 text-sm font-bold">
+      <a href="https://instagram.com/aufan_mrpiggi" target="_blank" rel="noopener" class="hover:text-yellow-300 transition-colors">IG</a>
+      <a href="#contact" class="hover:text-yellow-300 transition-colors">LI</a>
+      <a href="mailto:aufanhakim1920@gmail.com" class="hover:text-yellow-300 transition-colors">EM</a>
+    </div>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header id="top" class="h-screen w-full relative flex flex-col z-20">
+    <main class="flex-grow flex flex-col items-center justify-center relative z-20 pb-20">
+
+      <div class="relative group cursor-default">
+        <h1 class="font-serif-italic text-[15vw] md:text-[16vw] leading-none text-white tracking-tighter flex items-end select-none drop-shadow-2xl" aria-label="aufan">
+          <span aria-hidden="true">auf</span>
+
+          <div class="relative flex flex-col justify-end items-center ml-[2vw] mr-[1vw] w-[5vw] h-[15vw]" aria-hidden="true">
+            <svg viewBox="0 0 24 60" class="w-full h-full pixel-art overflow-visible" preserveAspectRatio="xMidYMax">
+              <rect x="10" y="24" width="4" height="36" fill="#008000"></rect>
+
+              <rect x="6" y="44" width="4" height="4" fill="#006400"></rect>
+              <rect x="2" y="40" width="4" height="4" fill="#006400"></rect>
+
+              <rect x="14" y="36" width="4" height="4" fill="#006400"></rect>
+              <rect x="18" y="32" width="4" height="4" fill="#006400"></rect>
+
+              <rect x="8" y="8" width="8" height="8" fill="#5C3317"></rect>
+
+              <rect x="8" y="0" width="8" height="8" fill="#FFD700"></rect>
+              <rect x="8" y="16" width="8" height="8" fill="#FFD700"></rect>
+              <rect x="0" y="8" width="8" height="8" fill="#FFD700"></rect>
+              <rect x="16" y="8" width="8" height="8" fill="#FFD700"></rect>
+
+              <rect x="4" y="4" width="4" height="4" fill="#FFD700" opacity="0.8"></rect>
+              <rect x="16" y="4" width="4" height="4" fill="#FFD700" opacity="0.8"></rect>
+              <rect x="4" y="16" width="4" height="4" fill="#FFD700" opacity="0.8"></rect>
+              <rect x="16" y="16" width="4" height="4" fill="#FFD700" opacity="0.8"></rect>
+            </svg>
+          </div>
+          <span aria-hidden="true">n</span>
+        </h1>
+
+        <div class="hero-tag hero-tag--top absolute -top-8 left-4 md:left-12 text-xs md:text-sm font-bold tracking-widest opacity-0 animate-[fadeIn_1s_ease-out_1s_forwards]">
+          DATA SCIENCE @ UNIMELB
+        </div>
+
+        <div class="hero-tag hero-tag--bottom absolute -bottom-10 right-4 md:right-12 text-xs md:text-sm font-bold tracking-widest opacity-0 animate-[fadeIn_1s_ease-out_1.5s_forwards]">
+          BASED IN MELBOURNE
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="absolute bottom-0 left-0 w-full p-6 flex justify-between items-end z-30 text-xs font-bold tracking-wider opacity-60">
+      <div class="flex flex-col gap-2">
+        <span>OPEN TO INTERNSHIPS &amp; FREELANCE</span>
+        <span>AUG 2026</span>
+      </div>
+
+      <a href="#about" class="animate-bounce mb-2 hover:text-yellow-300 transition-colors">↓ SCROLL</a>
+
+      <div class="text-right flex flex-col gap-2">
+        <span>© 2026 RAUFAN HAKIM</span>
+        <span>ALL RIGHTS RESERVED</span>
+      </div>
+    </footer>
+  </header>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about" class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-index">01</span>
+        <h2 class="sec-title font-serif-italic">about</h2>
+      </div>
+
+      <div class="grid md:grid-cols-[1.4fr_1fr] gap-10 md:gap-16 items-start">
+        <div class="reveal">
+          <p class="lede">
+            I'm <strong>Muhammad Raufan Hakim Rachmad</strong> — Aufan. First-year Data Science student at the
+            University of Melbourne, originally from Surabaya, Indonesia. I've been running my own life since
+            15, and I build things constantly: storefronts, games, tools, motion graphics.
+          </p>
+          <p class="body-copy">
+            Most of what I make starts as a problem I actually have. A store that needed to look like a real
+            brand. A schedule nobody could read. A game I wanted to play. I ship them end to end — design,
+            frontend, backend, deploy — and I learn the stack on the way if I don't have it yet.
+          </p>
+          <p class="body-copy">
+            Away from the screen I'm front-of-house at a Carlton North bakery, I compete in Taekwondo, and
+            I've led hackathon teams to two consecutive first-place finishes as a first-year against
+            masters-level competition.
+          </p>
+        </div>
+
+        <div class="stat-grid reveal">
+          <div class="stat">
+            <div class="stat-num">2×</div>
+            <div class="stat-label">1st place<br>CISSA Codebrew</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">7.0</div>
+            <div class="stat-label">IELTS band<br>EN / ID bilingual</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">9+</div>
+            <div class="stat-label">shipped<br>projects</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">203<span class="text-[0.5em]">kg</span></div>
+            <div class="stat-label">waste cleared<br>Cobra Cleanup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WORKS ================= -->
+  <section id="works" class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-index">02</span>
+        <h2 class="sec-title font-serif-italic">works</h2>
+      </div>
+
+      <div class="filter-row reveal" id="filter-row">
+        <button class="filter-btn is-on" data-filter="all" type="button">ALL</button>
+        <button class="filter-btn" data-filter="web" type="button">WEB &amp; COMMERCE</button>
+        <button class="filter-btn" data-filter="game" type="button">GAMES</button>
+        <button class="filter-btn" data-filter="ai" type="button">AI &amp; AUTOMATION</button>
+        <button class="filter-btn" data-filter="motion" type="button">MOTION</button>
+      </div>
+
+      <div class="works-list" id="works-list"></div>
+    </div>
+  </section>
+
+  <!-- ================= TRACK RECORD ================= -->
+  <section id="record" class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-index">03</span>
+        <h2 class="sec-title font-serif-italic">track record</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10 md:gap-16">
+        <div class="reveal">
+          <h3 class="sub-head">Experience</h3>
+          <ul class="timeline" id="timeline"></ul>
+        </div>
+        <div class="reveal">
+          <h3 class="sub-head">Awards &amp; community</h3>
+          <ul class="award-list" id="awards"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOLKIT ================= -->
+  <section id="toolkit" class="section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-index">04</span>
+        <h2 class="sec-title font-serif-italic">toolkit</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-10 md:gap-16">
+        <div class="reveal">
+          <h3 class="sub-head">Build</h3>
+          <div class="tag-cloud" id="skills"></div>
+        </div>
+        <div class="reveal">
+          <h3 class="sub-head">Certified</h3>
+          <ul class="cert-list" id="certs"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="section section--last">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-index">05</span>
+        <h2 class="sec-title font-serif-italic">contact</h2>
+      </div>
+
+      <div class="reveal">
+        <p class="lede max-w-[46ch]">
+          Open to internships, freelance builds, and hackathon teams. Fastest way to reach me is email.
+        </p>
+
+        <div class="contact-grid">
+          <a class="contact-card" href="mailto:aufanhakim1920@gmail.com">
+            <span class="contact-key">EMAIL</span>
+            <span class="contact-val">aufanhakim1920@gmail.com</span>
+          </a>
+          <a class="contact-card" href="https://instagram.com/aufan_mrpiggi" target="_blank" rel="noopener">
+            <span class="contact-key">INSTAGRAM</span>
+            <span class="contact-val">@aufan_mrpiggi</span>
+          </a>
+          <div class="contact-card contact-card--static">
+            <span class="contact-key">BASED IN</span>
+            <span class="contact-val">Carlton, Melbourne VIC</span>
+          </div>
+          <div class="contact-card contact-card--static">
+            <span class="contact-key">AVAILABILITY</span>
+            <span class="contact-val">Flexible — no overnight shifts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-foot reveal">
+        <span>© <span id="year">2026</span> RAUFAN HAKIM</span>
+        <span class="opacity-60">BUILT FROM A PIXEL-BLOOM REFERENCE</span>
+        <a href="#top" class="hover:text-yellow-300 transition-colors">↑ BACK TO TOP</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 0.8; transform: translateY(0); }
+    }
+  </style>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+/* ============================================================================
+   AUFAN — THE DESK, IN 3D
+   Direction A of three explorers. The page IS a room: one preserve-3d tree
+   you drag to orbit, with the content sitting on the desk as real objects.
+
+   Borrowed, and from where:
+     · box primitive, three-tone material shading, "geometry does the shading"
+                                              → Cardboard 3D Object Stage
+     · depth replaces scale · lifting one presses the others flat ·
+       two-part shadow split across two z-planes · perspective-origin is what
+       makes an edge visible                   → nocturne-a-paper-lift addendum
+     · wall + spot light · stacked-shadow chassis · dotted leader rows ·
+       two corner brackets not four · "a stack needs bigger offsets than feels
+       right" · photo colour-grading stack      → Web Elements Catalogue
+     · one tactile thing you pick up            → Aufan Shelf Portfolio (frozen)
+
+   Palette deliberately unused by the last five builds: a painted terracotta
+   room, walnut desk, green baize, brass, one mint signal.
+   ========================================================================== */
+
+@property --x  { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --y  { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --z  { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --rz { syntax: '<angle>';  inherits: false; initial-value: 0deg; }
+@property --ry { syntax: '<angle>';  inherits: false; initial-value: 0deg; }
+@property --sh { syntax: '<number>'; inherits: false; initial-value: 1; }
+
+:root {
+  /* ── the room ───────────────────────────────────────── */
+  --wall:       #A94F33;
+  --wall-lit:   #C2664A;
+  --wall-hi:    #C2664A;
+  --wall-lo:    #7E3623;
+  --floor:      #5E2B1C;
+
+  /* ── materials ──────────────────────────────────────── */
+  --wood-top:   #5A3A22;
+  --wood-face:  #402716;
+  --wood-side:  #311D0F;
+  --felt:       #204A3C;
+  --felt-hi:    #2A5E4C;
+  --felt-lo:    #163429;
+
+  --paper:      #EFE3CB;
+  --paper-face: #D6C6A6;
+  --paper-side: #C0AE8B;
+  --card-ink:   #23180F;
+
+  --brass:      #C89A3F;
+  --brass-hi:   #E8C877;
+  --brass-lo:   #8E6A22;
+
+  --slate:      #241C17;
+  --slate-hi:   #35291F;
+
+  --signal:     #2FD8AE;     /* the one saturated signal */
+  --signal-dim: #1B8E73;
+
+  --ink:        #201009;
+  --ink-soft:   rgba(32,16,9,.6);
+  --cream:      #F2E7D2;
+
+  /* ── radius: a named two-tier system, never one number ─ */
+  --r-none:  0px;
+  --r-paper: 2px;
+  --r-obj:   7px;
+  --r-pill:  100px;
+
+  --f-disp: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --f-ui:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --f-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --ease: cubic-bezier(.22,.72,.24,1);
+  --ease-pop: cubic-bezier(.34,1.28,.5,1);
+
+  --zoom: .84;
+  --pitch: 62deg;
+  --yaw: -15deg;
+
+  /* lamp */
+  --warm: 1;                 /* 1 = lamp on, 0 = off */
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--wall);
+  color: var(--ink);
+  font-family: var(--f-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* the second layer over the ground — required, never optional */
+.grain {
+  position: fixed; inset: 0; z-index: 90; pointer-events: none;
+  mix-blend-mode: multiply; opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+}
+
+.mono {
+  font-family: var(--f-mono);
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+}
+
+/* ══════════════════════ CONTROL STRIP ══════════════════════ */
+.strip {
+  position: relative; z-index: 40;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  width: min(1320px, 100% - 2.6rem); margin: 0 auto;
+  padding: 20px 0 14px;
+}
+.strip__name {
+  font-family: var(--f-disp); font-weight: 900; font-size: 21px;
+  letter-spacing: -.01em; color: var(--cream);
+}
+.strip__name em { font-weight: 400; font-style: italic; opacity: .74; }
+.strip__dot { padding: 0 .45em; opacity: .5; }
+
+.strip__cams { display: flex; gap: 0; border: 1px solid rgba(242,231,210,.34); }
+.strip__cams .ctl + .ctl { border-left: 1px solid rgba(242,231,210,.24); }
+
+.ctl {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(242,231,210,.72);
+  background: transparent; border: 0; border-radius: var(--r-none);
+  padding: 8px 13px; cursor: pointer;
+  transition: background .18s var(--ease), color .18s var(--ease);
+}
+.ctl:hover { color: var(--cream); background: rgba(242,231,210,.11); }
+.ctl.is-on { color: var(--ink); background: var(--cream); }
+.ctl:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+.ctl--lamp {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(242,231,210,.34);
+}
+.ctl--lamp.is-on { background: transparent; color: var(--cream); }
+.ctl__led {
+  width: 7px; height: 7px; border-radius: var(--r-pill);
+  background: #5E2B1C; box-shadow: inset 0 0 0 1px rgba(0,0,0,.35);
+  transition: background .2s var(--ease), box-shadow .2s var(--ease);
+}
+.ctl--lamp.is-on .ctl__led {
+  background: var(--brass-hi);
+  box-shadow: 0 0 9px 2px rgba(232,200,119,.85);
+}
+
+.strip__hint {
+  margin-left: auto;
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em;
+  color: rgba(242,231,210,.6);
+}
+
+/* ══════════════════════ THE ROOM ══════════════════════ */
+.frame {
+  position: relative;
+  width: min(1320px, 100% - 2.6rem); margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(30,14,8,.4);
+  box-shadow: 0 40px 90px -50px rgba(20,8,3,.9);
+}
+
+.room {
+  position: relative;
+  height: clamp(520px, 74vh, 780px);
+  perspective: 2000px;
+  perspective-origin: 50% 30%;      /* ← the sightline that makes edges visible */
+  background:
+    radial-gradient(120% 90% at 50% 8%,  rgba(255,196,128,calc(.30 * var(--warm))) 0%, transparent 62%),
+    radial-gradient(90% 70% at 50% 100%, rgba(20,7,2,.55) 0%, transparent 70%),
+    linear-gradient(180deg, var(--wall-lo) 0%, var(--wall) 46%, #6B2C1B 100%);
+  cursor: grab;
+  touch-action: none;
+  transition: background .5s var(--ease);
+}
+.room.is-dragging { cursor: grabbing; }
+/* lamp-off grading. Must NOT be a filter on .world — see the note there. */
+.room::after {
+  content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: linear-gradient(178deg, rgba(30,46,70,.34) 0%, rgba(12,18,32,.48) 100%);
+  opacity: calc(1 - var(--warm));
+  transition: opacity .5s var(--ease);
+}
+
+.stage {
+  position: absolute; left: 50%; top: 50%;
+  width: 0; height: 0;
+  --panY: 0px; --dolly: 0px;
+  transform-style: preserve-3d;
+  transform: translate3d(0, var(--panY), var(--dolly)) rotateX(var(--pitch)) rotateY(var(--yaw));
+}
+.world {
+  position: absolute; left: 0; top: 0; width: 0; height: 0;
+  transform-style: preserve-3d;
+  transform: scale3d(var(--zoom), var(--zoom), var(--zoom)) translate3d(-700px, -380px, 0);
+}
+
+/* ── the shell of the room ───────────────────────────── */
+.floor {
+  position: absolute; left: -900px; top: -240px;
+  width: 3200px; height: 2400px;
+  transform: translateZ(-452px);
+  background:
+    radial-gradient(46% 34% at 44% 26%, rgba(255,200,138,calc(.22 * var(--warm))) 0%, transparent 76%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 1px, transparent 1px 190px),
+    linear-gradient(180deg, #4E2416 0%, #35180E 100%);
+  transition: background .5s var(--ease);
+}
+
+.wall {
+  position: absolute; left: -900px; top: -240px;
+  width: 3200px; height: 1520px;
+  transform-origin: 0 0;
+  transform: translateZ(900px) rotateX(-90deg);
+  background:
+    radial-gradient(46% 40% at 30% 34%, rgba(255,206,150,calc(.22 * var(--warm))) 0%, transparent 70%),
+    linear-gradient(178deg, var(--wall-hi) 0%, var(--wall) 44%, var(--wall-lo) 100%);
+  transition: background .5s var(--ease);
+}
+/* plaster mottle — the wall is painted, not filled */
+.wall::after {
+  content: ''; position: absolute; inset: 0; opacity: .5;
+  background:
+    radial-gradient(30% 24% at 18% 22%, rgba(255,255,255,.07), transparent 70%),
+    radial-gradient(24% 30% at 74% 62%, rgba(0,0,0,.12), transparent 72%),
+    radial-gradient(40% 18% at 52% 88%, rgba(0,0,0,.16), transparent 76%);
+}
+.wall__lamp {
+  position: absolute; left: 620px; top: 300px; width: 1120px; height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,208,146,.5) 0%, rgba(255,190,120,.16) 46%, transparent 72%);
+  opacity: var(--warm);
+  transition: opacity .5s var(--ease);
+}
+
+/* wall typography — net rotation is only −30°, so this reads */
+.wall__paint { position: absolute; left: 936px; top: 300px; width: 880px; }
+.wall__paint .kick {
+  white-space: nowrap;
+  font-family: var(--f-mono); font-size: 23px; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(255,236,210,.62);
+  margin-bottom: 26px;
+}
+.wall__paint h1 {
+  font-family: var(--f-disp); font-weight: 900; font-size: 168px;
+  line-height: .84; letter-spacing: -.05em;
+  color: rgba(255,238,214,.92);
+  text-shadow: 0 6px 0 rgba(90,32,16,.28);
+}
+.wall__full {
+  font-family: var(--f-disp); font-style: italic; font-weight: 600;
+  font-size: 42px; line-height: 1.1; margin-top: 16px;
+  color: rgba(255,236,210,.8);
+}
+.wall__line {
+  font-family: var(--f-ui); font-size: 27px; line-height: 1.44;
+  margin-top: 18px; max-width: 700px; color: rgba(255,232,206,.62);
+}
+
+/* the pinboard */
+.pin { position: absolute; background: var(--cream); padding: 14px 14px 0; box-shadow: 0 26px 34px -22px rgba(30,10,2,.8); }
+.pin img {
+  display: block; width: 100%; height: 200px; object-fit: cover;
+  filter: sepia(.16) grayscale(.08) contrast(1.04) saturate(1.02) brightness(1.1);
+}
+.pin__tint {
+  position: absolute; left: 14px; right: 14px; top: 14px; height: 200px;
+  background: var(--wall); opacity: .12; pointer-events: none;
+}
+.pin figcaption {
+  font-family: var(--f-mono); font-size: 17px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-soft);
+  padding: 12px 2px 14px;
+}
+.pin .tape {
+  position: absolute; left: 50%; top: -16px; width: 116px; height: 34px;
+  transform: translateX(-50%) rotate(-2.4deg);
+  background: rgba(240,226,196,.5);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
+}
+/* two corner brackets, never four — four in one gutter reads as noise */
+.pin::before, .pin::after {
+  content: ''; position: absolute; width: 26px; height: 26px;
+  border: 3px solid rgba(47,216,174,.55);
+}
+.pin::before { left: -9px; top: -9px; border-right: 0; border-bottom: 0; }
+.pin::after  { right: -9px; bottom: -9px; border-left: 0; border-top: 0; }
+
+.pin--a { left: 1832px; top: 258px; width: 292px; transform: rotate(-2.6deg); }
+.pin--b { left: 2162px; top: 236px; width: 264px; transform: rotate(3.4deg); }
+.pin--c { left: 1846px; top: 536px; width: 282px; transform: rotate(1.8deg); }
+
+.clip {
+  position: absolute; left: 2178px; top: 512px; width: 290px;
+  transform: rotate(-1.4deg);
+  background: #E9DFC6; padding: 20px 20px 22px;
+  box-shadow: 0 22px 30px -20px rgba(30,10,2,.8);
+  border-top: 5px solid var(--ink);
+}
+.clip__head { font-family: var(--f-mono); font-size: 16px; letter-spacing: .34em; }
+.clip__lede { font-family: var(--f-disp); font-weight: 600; font-size: 30px; margin-top: 8px; line-height: 1.1; }
+.clip__num  { font-family: var(--f-disp); font-weight: 900; font-size: 84px; line-height: 1; margin: 10px 0 6px; }
+.clip__num small { font-size: .32em; font-weight: 600; margin-left: .1em; }
+.clip__body { font-size: 19px; line-height: 1.42; color: var(--ink-soft); }
+
+.tack { position: absolute; width: 20px; height: 20px; border-radius: var(--r-pill);
+  background: radial-gradient(circle at 34% 30%, var(--signal), var(--signal-dim));
+  box-shadow: 0 3px 5px rgba(0,0,0,.4); }
+.tack--1 { left: 1968px; top: 248px; }
+.tack--2 { left: 1978px; top: 526px; }
+
+/* ══════════════════ THE BOX PRIMITIVE ══════════════════
+   Corner-origin, Z-is-up. Every object on the desk is one of these.
+   Faces are flat colour: the geometry does the shading, not gradients. */
+.props { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+
+.box {
+  position: absolute; transform-style: preserve-3d;
+  --x: 0px; --y: 0px; --z: 0px; --rz: 0deg;
+  transform: translate3d(var(--x), var(--y), var(--z)) rotateZ(var(--rz));
+}
+.f {
+  position: absolute; left: 0; top: 0;
+  transform-origin: 0 0;
+  overflow: hidden;
+}
+
+/* materials — lid lightest, front mid, sides darkest */
+.m-wood  .f--top { background: var(--wood-top); }
+.m-wood  .f--front, .m-wood .f--back { background: var(--wood-face); }
+.m-wood  .f--left, .m-wood .f--right { background: var(--wood-side); }
+
+.m-paper .f--top { background: var(--paper); }
+.m-paper .f--front, .m-paper .f--back { background: var(--paper-face); }
+.m-paper .f--left, .m-paper .f--right { background: var(--paper-side); }
+
+.m-brass .f--top { background: var(--brass-hi); }
+.m-brass .f--front, .m-brass .f--back { background: var(--brass); }
+.m-brass .f--left, .m-brass .f--right { background: var(--brass-lo); }
+
+.m-slate .f--top { background: var(--slate-hi); }
+.m-slate .f--front, .m-slate .f--back { background: var(--slate); }
+.m-slate .f--left, .m-slate .f--right { background: #150F0B; }
+
+.m-felt  .f--top { background: var(--felt); }
+.m-felt  .f--front, .m-felt .f--back { background: var(--felt-lo); }
+.m-felt  .f--left, .m-felt .f--right { background: var(--felt-lo); }
+
+.m-mint  .f--top { background: var(--signal); }
+.m-mint  .f--front, .m-mint .f--back { background: var(--signal-dim); }
+.m-mint  .f--left, .m-mint .f--right { background: #16705B; }
+
+/* the desk slab gets a real grain on its lid */
+.desk .f--top {
+  background:
+    repeating-linear-gradient(91deg, rgba(0,0,0,.16) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(91deg, rgba(255,214,160,.06) 0 1px, transparent 1px 26px),
+    radial-gradient(52% 60% at 34% 26%, rgba(255,206,150,calc(.24 * var(--warm))) 0%, transparent 72%),
+    var(--wood-top);
+  transition: background .5s var(--ease);
+}
+.desk .f--front {
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 2px, transparent 2px 10px), var(--wood-face);
+}
+
+/* the green baize inlay */
+.baize .f--top {
+  background:
+    radial-gradient(50% 62% at 40% 30%, rgba(255,214,164,calc(.2 * var(--warm))) 0%, transparent 74%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.03) 0 3px, transparent 3px 6px),
+    var(--felt);
+  box-shadow: inset 0 0 40px rgba(0,0,0,.35);
+  transition: background .5s var(--ease);
+}
+
+/* ── shadows: two parts on two z-planes ─────────────────
+   contact half rides on the object, ambient half lies on the desk. */
+.shade {
+  position: absolute; pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(18,6,2,.55) 0%, rgba(18,6,2,.28) 46%, transparent 72%);
+  --x: 0px; --y: 0px; --z: 1.4px; --sh: 1;
+  transform: translate3d(var(--x), var(--y), var(--z)) scale(var(--sh));
+  transition: --x .62s var(--ease), --y .62s var(--ease), --sh .62s var(--ease), opacity .62s var(--ease);
+}
+
+/* ══════════════════ OBJECTS ══════════════════ */
+.pick { cursor: pointer; }
+.pick .f--top { transition: box-shadow .3s var(--ease), filter .3s var(--ease); }
+.pick:hover .f--top { filter: brightness(1.1); }
+
+/* every movable object animates only its own custom properties.
+   ONE system writes each transform — the camera never touches these. */
+.mv {
+  transition: --x .62s var(--ease), --y .62s var(--ease),
+              --z .62s var(--ease-pop), --rz .62s var(--ease);
+}
+
+/* ── project cards ── */
+.card .f--top {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px rgba(90,60,30,.18);
+  padding: 0;
+}
+.card__band {
+  display: flex; align-items: baseline; gap: 14px;
+  height: 56px; padding: 0 18px;
+  background: var(--card-ink); color: var(--paper);
+}
+.card__band > .card__t { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.card__n  { font-family: var(--f-mono); font-size: 22px; color: var(--signal); letter-spacing: .06em; }
+.card__t  { font-family: var(--f-disp); font-weight: 900; font-size: 31px; letter-spacing: -.02em; line-height: 56px; white-space: nowrap; }
+.card__st {
+  flex: 0 0 auto; margin-left: auto; white-space: nowrap;
+  font-family: var(--f-mono); font-size: 13px; letter-spacing: .14em;
+  text-transform: uppercase; opacity: .62;
+}
+.card--live .card__st { color: var(--signal); opacity: 1; }
+.card__body { padding: 15px 18px 0; }
+.card__stack { font-family: var(--f-mono); font-size: 15.5px; letter-spacing: .06em; color: rgba(35,24,15,.62); }
+.card__metric { font-family: var(--f-disp); font-weight: 900; font-size: 32px; line-height: 1.1; margin: 9px 0 8px; letter-spacing: -.02em; }
+.card__note { font-size: 16.5px; line-height: 1.4; color: rgba(35,24,15,.72); }
+.card__rule { height: 1px; background: rgba(35,24,15,.2); margin: 14px 18px 0; }
+
+/* ── notebook ── */
+.book .f--top {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 33px, rgba(60,40,20,.14) 33px 34px),
+    var(--paper);
+}
+.book__page { padding: 20px 24px; }
+.book__page h4 { font-family: var(--f-disp); font-weight: 900; font-size: 29px; margin-bottom: 4px; }
+.book__page .sub { font-family: var(--f-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: rgba(35,24,15,.55); }
+.book__cols { display: flex; gap: 20px; margin-top: 14px; }
+.book__cols ul { list-style: none; }
+.book__cols li { font-size: 15.5px; line-height: 1.46; margin-bottom: 9px; color: rgba(35,24,15,.8); }
+.book__cols li b { font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--signal-dim); display: block; margin-bottom: 2px; }
+
+.cover {
+  position: absolute; left: 0; top: 0;
+  transform-origin: 0 50%;
+  --ry: 0deg;
+  transform: translateZ(var(--cz)) rotateY(var(--ry));
+  transition: --ry .8s var(--ease);
+  transform-style: preserve-3d;
+  background: linear-gradient(158deg, #7A2C3E 0%, #5E1F2E 60%, #4A1723 100%);
+  box-shadow: inset 0 0 0 2px rgba(255,220,190,.14), 0 8px 14px -6px rgba(0,0,0,.6);
+}
+.cover__mark {
+  backface-visibility: hidden;
+  position: absolute; left: 24px; bottom: 22px;
+  font-family: var(--f-mono); font-size: 18px; letter-spacing: .3em;
+  text-transform: uppercase; color: rgba(240,215,180,.62);
+}
+.cover__band { backface-visibility: hidden; position: absolute; left: 0; top: 0; width: 26px; height: 100%; background: rgba(0,0,0,.22); }
+.cover__inner {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  transform: rotateY(180deg) translateZ(.4px);
+  background: linear-gradient(200deg, #4A1723 0%, #3A121C 100%);
+  display: flex; align-items: flex-end; padding: 26px;
+  font-family: var(--f-disp); font-size: 20px; color: rgba(244,220,190,.52);
+}
+
+/* ── mug ── */
+.mug__wall { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.mug__brew {
+  position: absolute; border-radius: 50%;
+  background:
+    radial-gradient(circle at 46% 42%, rgba(255,246,232,.7) 0 9%, transparent 30%),
+    conic-gradient(from 200deg, rgba(255,240,220,.5), transparent 22%, rgba(255,240,220,.34) 40%, transparent 62%, rgba(255,240,220,.44) 80%, transparent),
+    radial-gradient(circle, #6B4326 0%, #4C2E18 74%);
+  box-shadow: inset 0 0 18px rgba(0,0,0,.5);
+}
+.mug__rim { position: absolute; border-radius: 50%; border: 5px solid var(--cream); }
+.mug__ear {
+  position: absolute; transform-origin: 0 0;
+  border: 13px solid var(--cream); border-radius: 50%;
+  background: transparent;
+}
+
+/* ── prints ── */
+.print .f--top { background: var(--cream); padding: 9px 9px 0; }
+.print img {
+  display: block; width: 100%; height: calc(100% - 34px); object-fit: cover;
+  filter: sepia(.16) grayscale(.08) contrast(1.04) saturate(1.02) brightness(1.12);
+}
+.print__cap {
+  font-family: var(--f-mono); font-size: 14px; letter-spacing: .08em;
+  text-transform: uppercase; color: rgba(35,24,15,.6);
+  padding-top: 8px; text-align: center;
+}
+.print .f--top::after {
+  content: ''; position: absolute; left: 9px; right: 9px; top: 9px; bottom: 34px;
+  background: var(--wall); opacity: .09; pointer-events: none;
+}
+
+/* ── phone ── */
+.phone .f--top {
+  background: #0D0A08; padding: 12px;
+  box-shadow: inset 0 0 0 3px #2A211A;
+}
+.phone__scr { height: 100%; background: #141010; padding: 16px 14px; }
+.phone__scr .t { font-family: var(--f-mono); font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: rgba(240,226,200,.45); }
+.phone__scr .m { font-family: var(--f-disp); font-weight: 600; font-size: 30px; line-height: 1.1; color: var(--cream); margin-top: 16px; letter-spacing: -.02em; }
+.phone__scr .e { font-family: var(--f-mono); font-size: 15px; line-height: 1.5; color: var(--signal); margin-top: 12px; }
+.phone__scr .s { font-family: var(--f-ui); font-size: 15px; line-height: 1.4; color: rgba(240,226,200,.5); margin-top: 12px; }
+.phone__scr .b { display: inline-block; margin-top: 16px; font-family: var(--f-mono); font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: #08251E; background: var(--signal); padding: 8px 12px; }
+
+/* ── sticky note ── */
+.sticky .f--top { background: var(--signal); }
+.sticky__t {
+  font-family: var(--f-disp); font-style: italic; font-weight: 600;
+  font-size: 21px; line-height: 1.24; color: #07281F; padding: 16px 14px;
+}
+
+/* ── trophy plaque ── */
+.plinth .f--front { display: flex; align-items: center; justify-content: center; }
+.plinth__plate {
+  font-family: var(--f-mono); font-size: 14px; letter-spacing: .14em;
+  text-transform: uppercase; color: #2A1A06;
+  background: var(--brass-hi); padding: 4px 10px; margin: auto;
+}
+
+/* ── the lamp ── */
+.lampArm { position: absolute; transform-origin: 0 0; transform-style: preserve-3d; }
+.shade .f--bottomlit {
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,232,186,calc(.2 + .8 * var(--warm))) 0%, rgba(255,196,122,calc(.1 + .6 * var(--warm))) 52%, rgba(90,50,20,.9) 100%);
+  transition: background .4s var(--ease);
+}
+.lampPool {
+  position: absolute; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255,216,160,.72) 0%, rgba(255,192,120,.3) 40%, transparent 68%);
+  opacity: var(--warm);
+  transition: opacity .5s var(--ease);
+}
+
+/* ══════════════════ THE PICK-UP TAG ══════════════════ */
+.tag {
+  position: absolute; left: 22px; bottom: 22px; z-index: 20;
+  max-width: 320px;
+  background: var(--cream); color: var(--ink);
+  border-left: 5px solid var(--signal);
+  padding: 13px 16px 14px;
+  box-shadow: 0 20px 40px -22px rgba(20,6,2,.9);
+}
+.tag__k { font-family: var(--f-mono); font-size: 10px; letter-spacing: .24em; color: var(--ink-soft); }
+.tag__t { font-family: var(--f-disp); font-weight: 900; font-size: 21px; line-height: 1.14; margin: 4px 0 9px; }
+.tag__x {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  background: var(--ink); color: var(--cream); border: 0; border-radius: var(--r-none);
+  padding: 7px 11px; cursor: pointer;
+}
+.tag__x:hover { background: var(--signal-dim); }
+
+/* ══════════════════ THE LEDGER ══════════════════ */
+.ledger {
+  width: min(1320px, 100% - 2.6rem); margin: 0 auto;
+  padding: 30px 0 64px;
+}
+.ledger__sheet {
+  background: var(--cream);
+  padding: clamp(26px, 4vw, 56px);
+  box-shadow: 0 40px 80px -50px rgba(20,8,3,.95);
+  position: relative;
+}
+.ledger__sheet::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(-45deg, rgba(160,120,70,.05) 0 2px, transparent 2px 7px);
+}
+.ledger__head { margin-bottom: 34px; }
+.ledger__head .mono { color: var(--ink-soft); }
+.ledger__head h2 {
+  font-family: var(--f-disp); font-weight: 900; font-size: clamp(38px, 6vw, 76px);
+  letter-spacing: -.035em; line-height: .96; margin-top: 8px;
+}
+.ledger__head h2 em { font-style: italic; font-weight: 400; color: var(--signal-dim); }
+
+.ledger__grid { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 40px; }
+.col__h {
+  font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  padding-bottom: 10px; border-bottom: 2px solid var(--ink);
+  display: flex; gap: 10px;
+}
+.col__h span { color: var(--signal-dim); }
+.rows { list-style: none; }
+.row {
+  position: relative; display: flex; align-items: baseline; gap: 8px;
+  padding: 11px 0 10px;
+  border-bottom: 1px solid rgba(35,24,15,.16);
+}
+.row__k { font-weight: 600; font-size: 15px; background: var(--cream); position: relative; z-index: 1; padding-right: 4px; }
+.row__v {
+  margin-left: auto; text-align: right;
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .04em;
+  color: var(--ink-soft); background: var(--cream); position: relative; z-index: 1; padding-left: 4px;
+}
+.row::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 15px;
+  border-bottom: 1px dotted rgba(35,24,15,.42);
+}
+.row--live .row__v { color: var(--signal-dim); }
+
+.ledger__foot {
+  margin-top: 40px; padding-top: 22px; border-top: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+}
+.ledger__foot .mono { color: var(--ink-soft); }
+.mailto {
+  font-family: var(--f-disp); font-weight: 900; font-size: clamp(20px, 3vw, 32px);
+  color: var(--ink); text-decoration: none; letter-spacing: -.02em;
+  position: relative;
+}
+.mailto span { display: block; height: 3px; background: var(--signal); transform: scaleX(.16); transform-origin: 0 50%; transition: transform .4s var(--ease); }
+.mailto:hover span { transform: scaleX(1); }
+
+/* ══════════════════ RESPONSIVE ══════════════════ */
+@media (max-width: 1080px) {
+  :root { --zoom: .6; }
+  .room { height: clamp(440px, 62vh, 620px); }
+  .ledger__grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+}
+@media (max-width: 720px) {
+  /* the whole room has to fit a 358px frame, so the scene becomes a diorama…
+     …and picking something up zooms the room in, because at diorama scale the
+     object's own face is unreadable. */
+  :root { --zoom: .29; }
+  :root.is-holding { --zoom: .78; }
+  .frame, .strip, .ledger { width: calc(100% - 1.6rem); }
+  .room { height: 430px; perspective: 1200px; }
+  .strip { gap: 10px; padding: 14px 0 10px; }
+  .strip__hint { margin-left: 0; flex-basis: 100%; order: 9; }
+  .ledger__grid { grid-template-columns: 1fr; gap: 26px; }
+  .tag { left: 12px; right: 12px; bottom: 12px; max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mv, .shade, .cover, .room, .world, .wall, .floor, .wall__lamp, .lampPool { transition-duration: .01ms !important; }
+  .mailto span { transition-duration: .01ms !important; }
+}
+
+
+/* ══════════════ pieces app.js builds ══════════════ */
+
+.pick:focus-visible { outline: none; }
+.pick:focus-visible .f--top { box-shadow: 0 0 0 4px var(--signal); }
+
+/* dockets — the paper that lives UNDER the mug and the trophy and comes up
+   with them, so those objects open into real content instead of a HUD panel */
+.card--docket { transition: --x .62s var(--ease), --y .62s var(--ease),
+                            --z .62s var(--ease-pop), --rz .62s var(--ease),
+                            opacity .34s var(--ease); }
+.card--docket .card__band { background: var(--felt); }
+.card--docket .card__n { color: var(--signal); font-size: 19px; letter-spacing: .08em; }
+.card--docket .card__st { color: var(--signal); opacity: 1; }
+.docket__list { list-style: none; padding: 16px 20px 0; }
+.docket__list li {
+  position: relative; padding-left: 20px; margin-bottom: 10px;
+  font-size: 18px; line-height: 1.38; color: rgba(35,24,15,.82);
+}
+.docket__list li::before {
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 8px; height: 8px; background: var(--signal-dim);
+}
+
+/* held object gets the CONTACT half of the shadow; the ambient half is a
+   separate plane lying on the desk that it lifts away from */
+.card.is-held .f--top { box-shadow: 0 0 0 1px rgba(90,60,30,.24), 0 18px 26px -14px rgba(20,8,2,.7); }
+
+/* trophy cup mouth */
+.cup__mouth {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle at 42% 36%, #4A3410 0%, #2C1E08 58%, #6B4E14 100%);
+  box-shadow: inset 0 0 0 4px var(--brass-hi);
+}
+
+/* the lamp head: only the underside is a light source */
+.lampHead .f--top { background: linear-gradient(158deg, #453629 0%, #2C221A 100%); }
+
+@media (max-width: 720px) {
+  /* the grab target is the whole room, so give the page its vertical scroll
+     back and let a horizontal drag do the turning */
+  .room { touch-action: pan-y; }
+}

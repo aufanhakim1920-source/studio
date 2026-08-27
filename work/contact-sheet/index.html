@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#EDE8DC">
+  <title>Raufan Hakim — Contact Sheet</title>
+  <meta name="description" content="Raufan (Aufan) Hakim — Data Science at the University of Melbourne. Nine shipped projects, two hackathon wins, and the receipts to go with them.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="ticker">
+    <span class="ticker__track" id="ticker"></span>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ============ MASTHEAD ============ -->
+    <header class="masthead">
+      <div>
+        <p class="mono" style="margin-bottom:14px">Roll 01 · Melbourne · 2026</p>
+        <h1>Everything looks the same until <mark>someone looks closely.</mark></h1>
+      </div>
+      <div class="masthead__meta">
+        <span class="stamp"><i></i><span id="clock">Open to work</span></span>
+        <p class="mono">Raufan Hakim<br>Data Science · UniMelb<br>9 frames exposed</p>
+      </div>
+    </header>
+
+    <!-- ============ CONTACT SHEET ============ -->
+    <section>
+      <div class="head">
+        <h2>The contact sheet</h2>
+        <p class="mono">Move the loupe · click a frame to read it</p>
+      </div>
+
+      <div class="sheet-shell" id="shell">
+        <div class="sheet" id="sheet"></div>
+        <div class="loupe" id="loupe"></div>
+        <div class="loupe-ring" id="ring"></div>
+      </div>
+
+      <div class="sheet-hint">
+        <p class="mono">9 frames · projects + proof</p>
+        <p class="mono"><button id="toggle-loupe" style="background:none;border:none;font:inherit;color:inherit;cursor:pointer;text-decoration:underline">Turn the loupe off</button></p>
+      </div>
+
+      <div class="readout" id="readout"></div>
+    </section>
+
+    <!-- ============ BLOCKS ============ -->
+    <section>
+      <div class="head">
+        <h2>What the frames add up to</h2>
+        <p class="mono">Verified, not claimed</p>
+      </div>
+
+      <div class="blocks">
+        <div class="block block--amber rise">
+          <b>2×</b>
+          <span>First place, CISSA Codebrew &amp; Design Blitz — as a first-year</span>
+          <span class="pat pat--dots"></span>
+        </div>
+        <div class="block block--acid rise">
+          <b>9</b>
+          <span>Projects shipped end to end, design through deploy</span>
+          <span class="pat pat--hatch"></span>
+        </div>
+        <div class="block block--teal rise">
+          <b>203.6<small style="font-size:.45em"> kg</small></b>
+          <span>Waste collected leading a youth environmental committee</span>
+          <span class="pat pat--dots"></span>
+        </div>
+        <div class="block block--rose rise">
+          <b>7.0</b>
+          <span>IELTS band · native Indonesian, fluent English</span>
+          <span class="pat pat--hatch"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SIGNAL ============ -->
+    <section>
+      <div class="head">
+        <h2>Signal check</h2>
+        <p class="mono">Where the hours actually go</p>
+      </div>
+
+      <div class="signal">
+        <div class="meter-card rise">
+          <span class="mono">Live · input stream</span>
+          <div class="meter-stage">
+            <canvas id="meter" width="520" height="520"></canvas>
+            <div class="meter-core">
+              <b id="meter-num">88</b>
+              <span>output index</span>
+            </div>
+          </div>
+          <span class="mono">44.1 kHz · nominal</span>
+        </div>
+
+        <div class="skill-rows" id="skills"></div>
+      </div>
+    </section>
+
+    <!-- ============ CLOSER ============ -->
+    <section>
+      <div class="closer rise">
+        <h2>Look closely at one and I'll walk you through it.</h2>
+        <p>Open to internships, freelance builds and hackathon teams. Email gets answered the same day.</p>
+        <div class="closer-actions">
+          <a class="btn btn--amber" href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a>
+          <a class="btn btn--ghost" href="https://instagram.com/aufan_mrpiggi" target="_blank" rel="noopener">Instagram ↗</a>
+          <button class="metal" id="dev-btn" aria-label="Develop all frames" title="Develop every frame">
+            <svg viewBox="0 0 24 24"><path d="M12 4v16m0-16l-4 4m4-4l4 4"></path></svg>
+          </button>
+          <span class="mono" style="color:rgba(237,232,220,0.55)">Develop all</span>
+        </div>
+        <span class="pat pat--dots"></span>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span class="mono">© 2026 Raufan Hakim · Carlton, Melbourne</span>
+      <span class="mono">Contact sheet — roll 01 of 01</span>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
