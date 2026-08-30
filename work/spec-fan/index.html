@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Spec Fan — fifteen findings, measured</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23B3A08C'/%3E%3Cg transform='translate(6 26)'%3E%3Crect width='4' height='17' rx='1.5' fill='%2317151A' transform='rotate(-72)'/%3E%3Crect width='4' height='19' rx='1.5' fill='%2317151A' transform='rotate(-54)'/%3E%3Crect width='4' height='16' rx='1.5' fill='%23C2410C' transform='rotate(-36)'/%3E%3Crect width='4' height='18' rx='1.5' fill='%2317151A' transform='rotate(-18)'/%3E%3C/g%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#deck">Skip to the deck</a>
+
+<header class="masthead">
+  <p class="stamp mono">SPEC FAN · REV 01 · <span id="stampCount">15</span> BLADES</p>
+  <h1>Fifteen things I<br><em>measured</em>, not guessed.</h1>
+  <p class="dek">
+    Every blade is one finding taken off a real shipping site. <strong>How far a blade
+    reaches is how much evidence sits behind it.</strong> Its colour is whether the
+    finding survived: three of them did not.
+  </p>
+</header>
+
+<!-- ── the object ─────────────────────────────────────────────────────── -->
+<section class="stage" id="deck" aria-label="The spec fan">
+
+  <div class="fan" id="fan" role="listbox" aria-label="Fifteen findings" tabindex="0">
+    <div class="fan__rivet" aria-hidden="true"></div>
+    <!-- blades injected -->
+  </div>
+
+  <div class="controls">
+    <button type="button" class="btn" id="spread" aria-pressed="false">Fan it open</button>
+    <div class="legend" aria-hidden="true">
+      <span class="key key--held">held</span>
+      <span class="key key--bent">bent</span>
+      <span class="key key--snapped">snapped</span>
+    </div>
+  </div>
+
+  <p class="hint mono" id="hint">DRAG ACROSS THE FAN &middot; OR USE &larr; &rarr;</p>
+</section>
+
+<!-- ── the blade you picked ───────────────────────────────────────────── -->
+<section class="readout" id="readout" aria-live="polite">
+  <div class="readout__inner">
+    <p class="readout__idle mono" id="idle">PICK A BLADE</p>
+
+    <article class="card" id="card" hidden>
+      <header class="card__top">
+        <span class="card__id mono" id="cId">00</span>
+        <span class="chip mono" id="cState">held</span>
+      </header>
+      <h2 class="card__rule" id="cRule">—</h2>
+      <p class="card__body" id="cBody">—</p>
+      <p class="card__do" id="cDo">—</p>
+      <footer class="card__foot">
+        <span class="mono" id="cFrom">—</span>
+        <span class="weight" id="cWeight" aria-hidden="true"></span>
+      </footer>
+    </article>
+  </div>
+</section>
+
+<footer class="colophon">
+  <p>
+    Built to see whether the measuring was worth anything. The type is
+    <strong>Bricolage Grotesque</strong> and <strong>Newsreader</strong> — paired,
+    because blade 11 says a single neutral sans is the tell on a page that sells.
+    The ground is a warm putty because the last two builds were near-black and cream.
+    Transitions run 0.12s because blade 01 says 0.3s is the slow end.
+  </p>
+  <p class="mono">
+    NOTHING MOVES UNTIL YOU MOVE IT &middot; <span id="rmNote">REDUCED MOTION RESPECTED</span>
+  </p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
