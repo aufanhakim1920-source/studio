@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ledger — invoicing that chases for you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111417'/%3E%3Crect x='8' y='9' width='16' height='2.5' rx='1.25' fill='%23F4F5F6'/%3E%3Crect x='8' y='15' width='11' height='2.5' rx='1.25' fill='%236B7280'/%3E%3Crect x='8' y='21' width='14' height='2.5' rx='1.25' fill='%232F6BFF'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <a class="nav__mark" href="#">Ledger</a>
+  <nav class="nav__links" aria-label="Main">
+    <a href="#how">How it works</a>
+    <a href="#price">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="nav__act">
+    <a class="btn btn--ghost" href="#">Sign in</a>
+    <a class="btn btn--solid" href="#price">Start free</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- hero -->
+  <section class="hero">
+    <p class="eyebrow mono">FOR PEOPLE WHO BILL BY THE HOUR</p>
+    <h1>Send the invoice.<br>We&rsquo;ll do the chasing.</h1>
+    <p class="hero__sub">
+      Ledger writes the polite second email, then the firmer third one, then tells you
+      who to stop working for. You do the work. It does the awkward part.
+    </p>
+    <div class="hero__act">
+      <a class="btn btn--solid btn--lg" href="#price">Start free &mdash; no card</a>
+      <a class="btn btn--ghost btn--lg" href="#how">See how it works</a>
+    </div>
+    <p class="hero__fine">Free under £2,000 invoiced a month. Cancel in two clicks.</p>
+
+    <!-- one honest proof block, not a wall of logos -->
+    <div class="proof">
+      <div class="proof__i">
+        <p class="proof__n">11 days</p>
+        <p class="proof__l">median time saved per invoice</p>
+      </div>
+      <div class="proof__i">
+        <p class="proof__n">£1.2m</p>
+        <p class="proof__l">recovered from late payers last year</p>
+      </div>
+      <div class="proof__i">
+        <p class="proof__n">2,400</p>
+        <p class="proof__l">freelancers, mostly by word of mouth</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- how -->
+  <section class="how" id="how">
+    <div class="how__head">
+      <h2>Three steps, then it&rsquo;s not your problem</h2>
+      <p>No workflow builder. No automations tab. It does one thing.</p>
+    </div>
+    <ol class="how__list">
+      <li>
+        <p class="step mono">01</p>
+        <h3>Send it</h3>
+        <p>Pick a client, pick your hours, send. It remembers your rate and your terms.</p>
+      </li>
+      <li>
+        <p class="step mono">02</p>
+        <h3>It waits, then nudges</h3>
+        <p>Day 3 after due: a friendly note. Day 10: a firmer one, cc&rsquo;ing nobody. Day 21: it tells you.</p>
+      </li>
+      <li>
+        <p class="step mono">03</p>
+        <h3>You see the pattern</h3>
+        <p>Which clients pay in four days and which take forty. You&rsquo;ll know who to drop.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- pricing -->
+  <section class="price" id="price">
+    <div class="price__head">
+      <h2>Two plans</h2>
+      <p>No seats, no tiers of the same thing. Priced on what you invoice.</p>
+    </div>
+    <div class="price__grid">
+      <article class="plan">
+        <p class="plan__n mono">FREE</p>
+        <p class="plan__p">£0<span>/month</span></p>
+        <p class="plan__d">Under £2,000 invoiced a month.</p>
+        <ul>
+          <li>Unlimited invoices</li>
+          <li>Automatic chasing</li>
+          <li>One bank account</li>
+        </ul>
+        <a class="btn btn--ghost btn--full" href="#">Start free</a>
+      </article>
+
+      <article class="plan plan--pick">
+        <p class="plan__n mono">STANDARD <span class="tag">most people</span></p>
+        <p class="plan__p">£9<span>/month</span></p>
+        <p class="plan__d">Everything, no limit, no upsell later.</p>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Late-payment interest, calculated</li>
+          <li>Client payment history</li>
+          <li>Export for your accountant</li>
+        </ul>
+        <a class="btn btn--solid btn--full" href="#">Start free for 30 days</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="faq" id="faq">
+    <h2>The questions we actually get</h2>
+    <dl>
+      <div><dt>Does it chase without asking me?</dt><dd>Only if you switch it on per client. Off by default, because some clients you would rather ring.</dd></div>
+      <div><dt>Can I write the emails myself?</dt><dd>Yes. The defaults are there because most people never change them, not because you can&rsquo;t.</dd></div>
+      <div><dt>What happens over £2,000?</dt><dd>Nothing, that month. We ask you to upgrade the month after, once.</dd></div>
+      <div><dt>Do you take a cut of payments?</dt><dd>No. We are not a payment processor and do not want to be.</dd></div>
+    </dl>
+  </section>
+
+  <section class="end">
+    <h2>Stop writing the polite second email.</h2>
+    <a class="btn btn--solid btn--lg" href="#">Start free &mdash; no card</a>
+  </section>
+</main>
+
+<footer class="foot">
+  <p class="mono">LEDGER &middot; MELBOURNE</p>
+  <p class="mono dim">Invoicing, and nothing else</p>
+</footer>
+
+</body>
+</html>
