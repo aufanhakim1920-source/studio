@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LITHIC — mineral specimens, catalogued</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23DCE0D8'/%3E%3Cpath d='M16 5 L27 13 L23 26 L9 26 L5 13 Z' fill='%232B3230'/%3E%3Cpath d='M16 5 L27 13 L16 16 Z' fill='%234A5450'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#catalogue">Skip to the catalogue</a>
+
+<!-- ── 1 · masthead — 12 columns, asymmetric ─────────────────────────── -->
+<header class="mast">
+  <p class="mast__mark mono">LITHIC</p>
+  <h1 class="mast__h">Nineteen specimens,<br>catalogued and<br><em>weighed.</em></h1>
+  <div class="mast__meta">
+    <p class="mono">CATALOGUE XI</p>
+    <p class="mono">VIEWING BY APPOINTMENT</p>
+    <p class="mono">CARLTON NORTH</p>
+  </div>
+  <p class="mast__note">
+    Each lot is photographed on the same grey card, at the same distance, under the
+    same north light. Nothing is retouched. What you see is the stone.
+  </p>
+</header>
+
+<!-- ── 2 · the lead lot — 2fr 1fr, the object left ───────────────────── -->
+<section class="lead" aria-labelledby="leadH">
+  <figure class="lead__stage">
+    <div class="rock rock--lead" data-rock="azurite" aria-hidden="true">
+      <span class="rock__face rock__face--a"></span>
+      <span class="rock__face rock__face--b"></span>
+      <span class="rock__face rock__face--c"></span>
+      <span class="rock__spec"></span>
+      <span class="rock__grain"></span>
+    </div>
+    <figcaption class="mono">LOT 01 &middot; PHOTOGRAPHED 9 APR</figcaption>
+  </figure>
+
+  <div class="lead__body">
+    <p class="rule mono">THE LEAD LOT</p>
+    <h2 id="leadH">Azurite on matrix</h2>
+    <p class="lead__d">
+      A tight druse of azurite crystals across a limonite matrix, the blue so
+      saturated it reads almost black until it is turned. Two faces are cleaved
+      clean; the third is as it came out.
+    </p>
+    <dl class="spec">
+      <div><dt class="mono">LOCALITY</dt><dd>Tsumeb, Namibia</dd></div>
+      <div><dt class="mono">DIMENSIONS</dt><dd>84 &times; 61 &times; 40 mm</dd></div>
+      <div><dt class="mono">WEIGHT</dt><dd>312 g</dd></div>
+      <div><dt class="mono">ACQUIRED</dt><dd>Sotheby&rsquo;s, 1998</dd></div>
+    </dl>
+    <p class="price"><span class="mono">ESTIMATE</span> <b>&pound;4,200</b></p>
+  </div>
+</section>
+
+<!-- ── 3 · the catalogue — 3 columns ─────────────────────────────────── -->
+<section class="cat" id="catalogue" aria-label="The catalogue">
+  <div class="cat__head">
+    <h2>The catalogue</h2>
+    <p class="mono">EIGHTEEN FURTHER LOTS &middot; SHOWING SIX</p>
+  </div>
+  <ol class="cat__grid" id="grid"></ol>
+</section>
+
+<!-- ── 4 · provenance — 12 columns, 1/8 and 9/13 ─────────────────────── -->
+<section class="prov">
+  <div class="prov__text">
+    <p class="rule mono">ON PROVENANCE</p>
+    <p>
+      A specimen without a locality is a rock. The label is half the object, and a
+      lost label cannot be recovered — which is why every lot here carries the
+      original collector&rsquo;s card where one survives, photographed alongside,
+      creases and all.
+    </p>
+    <p>
+      Where it does not survive, the entry says so. We would rather sell an
+      orphan honestly than invent a mine for it.
+    </p>
+  </div>
+  <aside class="prov__aside">
+    <p class="mono">CARDS SURVIVING</p>
+    <p class="prov__big">14<span>/19</span></p>
+    <p class="mono prov__fine">FIVE LOTS ARE ORPHANS AND SAY SO</p>
+  </aside>
+</section>
+
+<!-- ── 5 · terms — 4 columns ─────────────────────────────────────────── -->
+<footer class="terms">
+  <div><p class="mono">VIEWING</p><p>Thursday to Saturday, by appointment. Carlton North.</p></div>
+  <div><p class="mono">CONDITION</p><p>Reports on request. Assume none is perfect.</p></div>
+  <div><p class="mono">SHIPPING</p><p>Double-boxed, insured. We do not ship crystals in summer.</p></div>
+  <div><p class="mono">CATALOGUE XI</p><p>Compiled April. Prices in pounds, firm.</p></div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
