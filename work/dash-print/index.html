@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SUBSTRATE / Retail Culture Plate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E9EAEC'/%3E%3Ccircle cx='13' cy='14' r='8' fill='%230E1116'/%3E%3Ccircle cx='23' cy='22' r='3' fill='%230E1116'/%3E%3Ccircle cx='24' cy='9' r='2' fill='%230E1116'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hd">
+  <div class="hd__logo">Substrate</div>
+  <nav class="hd__nav">
+    <a href="#plate">Plate</a>
+    <a href="#specimens">Specimens</a>
+    <a href="#profile">Profile</a>
+    <a href="#findings">Findings</a>
+    <a href="#audit">Audit</a>
+  </nav>
+  <a class="btn" href="#audit">Read the method</a>
+</header>
+
+<main id="main">
+
+  <!-- ── 01 · the plate ─────────────────────────────────────────────────────
+       The object. A Gray–Scott culture seeded from the data: one colony per
+       market, spot COUNT ∝ share (see app.js — radius does not survive the
+       reaction, count does). It grows a bounded number of steps and then STOPS.
+       Nothing loops. -->
+  <section class="plate" id="plate">
+    <div class="plate__l">
+      <p class="cap">Plate 03 <span class="sep">/</span> Retail culture</p>
+
+      <h1>
+        Ten point six million<br>
+        pounds, cultured from<br>
+        <em>five hundred and forty-one<br>thousand rows.</em>
+      </h1>
+
+      <p class="lede">
+        Each colony is one market, and its share is the <em>number</em> of spots
+        it gets seeded with — seventy between them, the leader taking the middle.
+        Then the reaction is left alone. On revenue one market is a crowd and the
+        rest are specks; seed it from basket size instead and the plate turns
+        itself inside out. Read it for the gross difference — the table below
+        holds the decimals.
+      </p>
+
+      <div class="ctrl">
+        <p class="cap dim">Seed the plate from</p>
+        <div class="seg" id="seg" role="group" aria-label="Choose the metric that seeds the plate">
+          <button class="seg__b is-on" data-k="rev">Revenue</button>
+          <button class="seg__b" data-k="orders">Orders</button>
+          <button class="seg__b" data-k="aov">Basket size</button>
+        </div>
+        <button class="btn btn--wide" id="grow">Culture the plate</button>
+      </div>
+    </div>
+
+    <div class="plate__r">
+      <figure class="dish">
+        <div class="dish__box" id="dishBox">
+          <canvas id="sim"></canvas>
+          <canvas id="ring"></canvas>
+          <p class="dish__fail" id="dishFail" hidden></p>
+        </div>
+        <figcaption class="dish__meta">
+          <span class="cap" id="metaL">—</span>
+          <span class="cap" id="metaR">—</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 02 · specimens ───────────────────────────────────────────────────── -->
+  <section class="sec" id="specimens">
+    <div class="sec__hd">
+      <p class="cap">02 <span class="sep">/</span> Specimens</p>
+      <h2>Seven markets carry <em>96.0%</em> of it.</h2>
+      <p class="lede" id="spLede">—</p>
+    </div>
+    <table class="tbl" id="spTbl">
+      <caption class="vh">Top markets by revenue. Hover or focus a row to locate its colony on the plate.</caption>
+      <thead>
+        <tr><th scope="col">Colony</th><th scope="col">Market</th>
+            <th scope="col" class="n">Revenue</th><th scope="col" class="n">Orders</th>
+            <th scope="col" class="n">Share</th><th scope="col" class="w">&nbsp;</th></tr>
+      </thead>
+      <tbody id="spBody"></tbody>
+    </table>
+  </section>
+
+  <!-- ── 03 · the year, as a cross-section ────────────────────────────────── -->
+  <section class="sec" id="profile">
+    <div class="sec__hd">
+      <p class="cap">03 <span class="sep">/</span> Profile</p>
+      <h2>The year is not flat. It is a <em>ramp</em>.</h2>
+      <p class="lede" id="prLede">—</p>
+    </div>
+    <figure class="prof">
+      <div class="prof__plot">
+      <svg id="prSvg" viewBox="0 0 1200 300" preserveAspectRatio="none" role="img"
+           aria-labelledby="prTitle"><title id="prTitle">Monthly revenue, December 2010 to December 2011</title>
+        <defs>
+          <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="7" stroke="var(--ink)" stroke-width="2.4"/>
+          </pattern>
+        </defs>
+        <g id="prBody"></g>
+      </svg>
+      </div>
+      <figcaption class="prof__axis" id="prAxis"></figcaption>
+    </figure>
+  </section>
+
+  <!-- ── 04 · findings ─────────────────────────────────────────────────────── -->
+  <section class="sec" id="findings">
+    <div class="sec__hd">
+      <p class="cap">04 <span class="sep">/</span> Findings</p>
+      <h2>Four readings, each with its <em>weakness</em> attached.</h2>
+    </div>
+    <div class="fnds" id="fnds"></div>
+  </section>
+
+  <!-- ── 05 · audit ────────────────────────────────────────────────────────── -->
+  <section class="sec sec--audit" id="audit">
+    <div class="sec__hd">
+      <p class="cap">05 <span class="sep">/</span> Method</p>
+      <h2>Seventeen thousand rows were discarded. <em>Here they are.</em></h2>
+    </div>
+    <table class="tbl tbl--ex">
+      <caption class="vh">Rows removed from the source data before any figure above was computed.</caption>
+      <thead><tr><th scope="col">Removed</th><th scope="col" class="n">Rows</th><th scope="col">Reason</th></tr></thead>
+      <tbody id="exBody"></tbody>
+    </table>
+    <div class="lims">
+      <p class="cap dim">What these numbers cannot tell you</p>
+      <ol id="lims"></ol>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <span class="cap dim" id="ftSrc">—</span>
+  <span class="cap dim">Every figure recomputed from source</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

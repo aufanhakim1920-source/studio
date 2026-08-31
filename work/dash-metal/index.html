@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEDGER / RETAIL TELEMETRY</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Crect x='6' y='20' width='4' height='7' fill='%23555'/%3E%3Crect x='12' y='14' width='4' height='13' fill='%23999'/%3E%3Crect x='18' y='9' width='4' height='18' fill='%23fff'/%3E%3Crect x='24' y='17' width='3' height='10' fill='%23777'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<nav>
+  <div class="brand">
+    <span class="brand__n">LEDGER</span>
+    <span class="mono brand__s">Retail Telemetry</span>
+  </div>
+  <div class="nav__r">
+    <div class="nav__links">
+      <a class="mono" href="#verticals">01 Verticals</a>
+      <a class="mono" href="#trend">02 Trend</a>
+      <a class="mono" href="#audit">03 Audit</a>
+    </div>
+    <span class="pill mono" id="live"><i class="pulse"></i>LIVE</span>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ── hero: metal text + a live-looking stream card ─────────────────── -->
+  <section class="hero">
+    <p class="mono rule"><span class="dash"></span>Twelve months of transactions, cleaned</p>
+    <h1 class="metal">TEN POINT SIX<br>MILLION<br>ACROSS 19,960.</h1>
+
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p>
+          A UK gift wholesaler, December 2010 to December 2011. Five hundred and
+          forty-one thousand nine hundred and nine raw rows in; seventeen thousand
+          and thirty-one thrown away, each one counted and given a reason.
+        </p>
+        <div class="hero__act">
+          <a class="btn btn--solid" href="#audit">See what was thrown away</a>
+          <a class="btn btn--ghost" href="#trend">Read the trend</a>
+        </div>
+      </div>
+
+      <div class="card card--stream">
+        <div class="card__top">
+          <span class="mono dim">Top markets by revenue</span>
+          <i class="pulse"></i>
+        </div>
+        <ul class="stream" id="stream"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── three verticals, each with a big-number watermark ─────────────── -->
+  <section class="verticals" id="verticals">
+    <p class="mono dim lead">/ Where the revenue sits</p>
+    <div class="vgrid" id="vgrid"></div>
+  </section>
+
+  <!-- ── the trend: bar rows at varying opacity ────────────────────────── -->
+  <section class="trend" id="trend">
+    <div class="trend__l">
+      <h2>READ THE<br><span class="outline">TWELVE MONTHS.</span></h2>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="trend__r">
+      <div class="card">
+        <div class="card__top">
+          <span class="mono dim">Revenue by month</span>
+          <span class="badge mono" id="peak">—</span>
+        </div>
+        <div class="months" id="months"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── audit ─────────────────────────────────────────────────────────── -->
+  <section class="audit" id="audit">
+    <p class="mono dim lead">/ Every exclusion, counted</p>
+    <h2 class="metal audit__h">NOTHING WAS<br>DROPPED SILENTLY.</h2>
+    <div class="exgrid" id="exgrid"></div>
+    <ul class="limits" id="limits"></ul>
+  </section>
+</main>
+
+<footer>
+  <span class="mono dim" id="footSrc">—</span>
+  <span class="mono dim">FIGURES RECOMPUTED FROM SOURCE</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
