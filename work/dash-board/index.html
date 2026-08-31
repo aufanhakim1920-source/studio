@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retail Ops — Live Board</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2312161C'/%3E%3Crect x='5' y='18' width='5' height='8' fill='%237AA2F7'/%3E%3Crect x='13' y='12' width='5' height='14' fill='%237AA2F7'/%3E%3Crect x='21' y='6' width='5' height='20' fill='%233DD68C'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#board">Skip to board</a>
+
+<!-- ── chrome: identity, period, freshness. Nothing else. ─────────────────── -->
+<header class="bar">
+  <div class="bar__id">
+    <span class="mark" aria-hidden="true"></span>
+    <b>Retail Ops</b>
+    <span class="mut">Wholesale</span>
+  </div>
+
+  <div class="seg" role="group" aria-label="Reporting period">
+    <button class="seg__b" data-p="3">3M</button>
+    <button class="seg__b is-on" data-p="6">6M</button>
+    <button class="seg__b" data-p="12">12M</button>
+  </div>
+
+  <div class="bar__r">
+    <span class="mut" id="cmp">—</span>
+    <span class="fresh"><i class="dot"></i><span id="asof">—</span></span>
+  </div>
+</header>
+
+<main id="board" class="board">
+
+  <!-- ── KPI row. Label, value, change, shape. Nothing reads without all four. -->
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <!-- ── main row ──────────────────────────────────────────────────────────── -->
+  <section class="cell cell--wide">
+    <div class="cell__h">
+      <span class="lab">Revenue</span>
+      <span class="mut" id="revRead">—</span>
+    </div>
+    <div class="cell__b">
+      <svg id="revChart" viewBox="0 0 760 250" preserveAspectRatio="none" role="img"
+           aria-labelledby="revT"><title id="revT">Monthly revenue</title>
+        <defs>
+          <linearGradient id="revFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#7AA2F7" stop-opacity=".34"/>
+            <stop offset="100%" stop-color="#7AA2F7" stop-opacity="0"/>
+          </linearGradient>
+          <pattern id="part" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#7C8698" stroke-width="1.6"/>
+          </pattern>
+        </defs>
+        <g id="revGrid"></g><g id="revBody"></g><g id="revHit"></g>
+      </svg>
+      <div class="xaxis" id="revAxis"></div>
+    </div>
+  </section>
+
+  <section class="cell">
+    <div class="cell__h"><span class="lab">Markets</span><span class="mut" id="mktN">—</span></div>
+    <div class="cell__b"><svg id="mktChart" role="img" aria-labelledby="mktT">
+      <title id="mktT">Revenue by market</title></svg></div>
+  </section>
+
+  <!-- ── bottom row: four panels, so the board is 8 columns not 6 ────────── -->
+  <section class="cell">
+    <div class="cell__h"><span class="lab">Products</span><span class="mut" id="prdN">—</span></div>
+    <div class="cell__b"><svg id="prdChart" role="img" aria-labelledby="prdT">
+      <title id="prdT">Revenue by product line</title></svg></div>
+  </section>
+
+  <section class="cell">
+    <div class="cell__h"><span class="lab">Concentration</span><span class="mut" id="concN">—</span></div>
+    <div class="cell__b"><svg id="concChart" viewBox="0 0 340 120" preserveAspectRatio="none"
+      role="img" aria-labelledby="concT"><title id="concT">Home-market share of revenue by month</title>
+      <g id="concBody"></g></svg></div>
+  </section>
+
+  <section class="cell">
+    <div class="cell__h"><span class="lab">Data quality</span><span class="mut" id="dqN">—</span></div>
+    <div class="cell__b">
+      <svg id="dqBar" class="dqbar" viewBox="0 0 340 14" preserveAspectRatio="none" role="img"
+           aria-labelledby="dqT"><title id="dqT">Rows kept versus removed</title>
+        <g id="dqBody"></g></svg>
+      <ul class="dq" id="dq"></ul>
+    </div>
+  </section>
+
+  <section class="cell">
+    <div class="cell__h"><span class="lab">Flags</span><span class="mut" id="flagN">—</span></div>
+    <div class="cell__b"><ul class="flags" id="flags"></ul></div>
+  </section>
+</main>
+
+<p class="foot" id="foot">—</p>
+
+<script src="app.js"></script>
+</body>
+</html>

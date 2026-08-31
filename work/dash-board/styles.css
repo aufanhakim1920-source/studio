@@ -1,0 +1,192 @@
+/* RETAIL OPS — build 55, the OPERATIONAL dashboard
+   ---------------------------------------------------------------------------
+   Builds 52–54 were data *reports*: 366–625 visible words, 141–412 of them
+   prose, 2.9–4.8 screens tall, 0–3 charts. Measured against real dashboards
+   (Grafana Play, Plausible, Wikimedia Stats) that shape is wrong for the job:
+   they run 51–192 words, 0–16 prose words, 1.0–3.2 screens, and 7–30 charts.
+
+   So this one has no invented object and no register. Per the vault's own
+   carve-out in [[Invent a New Object Every Build]] — a screen whose job is to
+   be got in and out of fast wants CONVENTION, because convention is what makes
+   it usable. The discipline here is subtraction.
+
+   The one thing added beyond convention: every number carries its comparison.
+   A figure with nothing to compare it to is decoration.
+
+   Palette: dark slate. Builds 52/53/54 ran warm cream, pure black and cold
+   paper ([[Vary the Palette]]) — this is a fourth ground, not a repeat of 53. */
+
+:root {
+  --bg: #12161C;
+  --panel: #191E26;
+  --panel-2: #1F2530;
+  --line: #262D39;
+  --ink: #E6E9EE;
+  --mut: #7C8698;
+  --dim: #59626F;
+
+  --sig: #7AA2F7;          /* every chart. one hue, so hue never means value  */
+  --up: #3DD68C;           /* reserved: direction of change, nothing else     */
+  --down: #F2555A;
+  --warn: #E8B44A;
+
+  --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --num: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --r: 8px;
+  --gap: 10px;
+  --t: .12s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
+
+body {
+  background: var(--bg); color: var(--ink);
+  font: 400 13px/1.45 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  padding: var(--gap);
+  display: flex; flex-direction: column; gap: var(--gap);
+  min-height: 100vh;
+}
+
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
+.skip:focus { left: 10px; top: 10px; z-index: 9; background: var(--sig); color: #0B0E13;
+  padding: 0 18px; border-radius: var(--r); font-weight: 600; }
+:is(a, button):focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
+
+/* ── top bar ─────────────────────────────────────────────────────────────── */
+.bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 0 14px; height: 48px; flex: 0 0 auto;
+}
+.bar__id { display: flex; align-items: center; gap: 9px; font-size: 13px; }
+.bar__id b { font-weight: 650; letter-spacing: -.01em; }
+.mark { width: 15px; height: 15px; border-radius: 4px;
+  background: linear-gradient(140deg, var(--sig), var(--up)); }
+.mut { color: var(--mut); font-size: 11.5px; }
+.bar__r { display: flex; align-items: center; gap: 14px; }
+.fresh { display: flex; align-items: center; gap: 6px; color: var(--mut); font-size: 11.5px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--up); flex: 0 0 auto; }
+
+.seg { display: flex; gap: 2px; background: var(--panel-2); border-radius: 6px; padding: 2px; }
+.seg__b {
+  border: 0; background: transparent; color: var(--mut); cursor: pointer;
+  font: 600 11.5px/1 var(--ui); letter-spacing: .02em;
+  padding: 8px 13px; border-radius: 4px; min-height: 30px;
+  transition: background var(--t), color var(--t);
+}
+.seg__b:hover { color: var(--ink); }
+.seg__b.is-on { background: var(--sig); color: #0B0E13; }
+
+/* ── the board: one screen, three rows ───────────────────────────────────── */
+.board {
+  flex: 1 1 auto; min-height: 0;
+  display: grid; gap: var(--gap);
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: 100px minmax(0, 1.6fr) minmax(0, 1fr);
+}
+.kpis {
+  grid-column: 1 / -1;
+  display: grid; gap: var(--gap);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.cell, .kpi {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+  min-width: 0; min-height: 0; display: flex; flex-direction: column;
+}
+.cell { grid-column: span 2; }
+.cell--wide { grid-column: span 5; }
+.cell--wide + .cell { grid-column: span 3; }   /* markets, beside revenue */
+
+.cell__h {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 12px; border-bottom: 1px solid var(--line); flex: 0 0 auto;
+}
+.lab { font: 600 11px/1 var(--ui); letter-spacing: .07em; text-transform: uppercase; color: var(--mut); }
+.cell__b { flex: 1 1 auto; min-height: 0; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.cell__b svg { display: block; width: 100%; flex: 1 1 auto; min-height: 0; }
+/* the quality bar is a fixed-height readout, not a chart that should fill */
+.dqbar { flex: 0 0 auto !important; height: 14px; }
+
+/* ── KPI tile: label · value · change · shape ─────────────────────────────── */
+.kpi { padding: 11px 13px; justify-content: space-between; position: relative; overflow: hidden; }
+.kpi__t { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.kpi__v { font: 600 30px/1 var(--num); letter-spacing: -.02em; }
+.kpi__v small { font-size: 15px; font-weight: 500; color: var(--mut); margin-left: 1px; }
+.kpi__spark { height: 26px; width: 100%; display: block; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font: 600 11.5px/1 var(--num); padding: 3px 6px; border-radius: 4px;
+  background: var(--panel-2); color: var(--mut);
+}
+.chip--up { color: var(--up); background: rgba(61, 214, 140, .12); }
+.chip--down { color: var(--down); background: rgba(242, 85, 90, .12); }
+
+/* ── bar rows ────────────────────────────────────────────────────────────── */
+.brow__bg { fill: var(--panel-2); }
+.brow__f { fill: var(--sig); }
+.brow__n { fill: var(--ink); font: 500 11.5px var(--ui); }
+.brow__v { fill: var(--mut); font: 500 11.5px var(--num); }
+.brow g:hover .brow__f { fill: #9DBBF9; }
+
+/* ── revenue chart ───────────────────────────────────────────────────────── */
+.grid-l { stroke: var(--line); stroke-width: 1; }
+.rev-a { fill: url(#revFill); }
+.rev-l { fill: none; stroke: var(--sig); stroke-width: 2; stroke-linejoin: round; }
+.rev-p { fill: var(--sig); }
+.rev-hit { fill: transparent; cursor: crosshair; }
+.rev-hit:hover + .rev-mark, .rev-hit:focus + .rev-mark { opacity: 1; }
+.rev-mark { opacity: 0; stroke: var(--mut); stroke-width: 1; stroke-dasharray: 3 3; }
+.xaxis { display: flex; justify-content: space-between; flex: 0 0 auto; }
+.xaxis span { font: 500 11px/1 var(--ui); color: var(--dim); }
+
+/* ── concentration ───────────────────────────────────────────────────────── */
+/* the line is RED because every month of it is above the limit — the colour is
+   the state, not the series */
+.conc-l { fill: none; stroke: var(--down); stroke-width: 2; }
+.conc-p { fill: var(--down); }
+.conc-t { fill: var(--dim); font: 500 10.5px var(--num); }
+.conc-v { fill: var(--down); font: 600 10.5px var(--num); }
+
+/* ── data quality + flags ────────────────────────────────────────────────── */
+.dq, .flags { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.dq li { display: flex; justify-content: space-between; gap: 8px; font-size: 11.5px; color: var(--mut); }
+.dq li b { color: var(--ink); font: 500 11.5px var(--num); }
+.dq--t { border-top: 1px solid var(--line); padding-top: 5px; margin-top: 2px; color: var(--ink) !important; }
+
+.flags li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; line-height: 1.35; }
+.flags i { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex: 0 0 auto; }
+.f--high { background: var(--down); }
+.f--med { background: var(--warn); }
+.f--low { background: var(--mut); }
+.flags b { font-weight: 600; }
+
+.foot { flex: 0 0 auto; color: var(--dim); font-size: 11px; text-align: center; }
+
+/* ── narrow: a board becomes a stack. This is conventional and correct — the
+      one thing that must not happen is a tile shrinking below legibility. ── */
+@media (max-width: 1100px) {
+  body { min-height: 0; }
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cell, .cell--wide, .cell--wide + .cell { grid-column: 1 / -1; }
+  .cell__b { min-height: 210px; }
+  .cell--wide .cell__b { min-height: 280px; }
+  .seg__b { min-height: 44px; padding: 10px 16px; }
+}
+@media (max-width: 560px) {
+  .kpis { grid-template-columns: 1fr; }
+  .bar { height: auto; flex-wrap: wrap; padding: 10px 12px; gap: 10px; }
+  .seg__b { padding: 10px 16px; min-height: 44px; }
+}
+
+.conc-band { fill: rgba(242, 85, 90, .10); }
+.conc-thresh { stroke: rgba(242, 85, 90, .45); stroke-width: 1; stroke-dasharray: 4 4; }
