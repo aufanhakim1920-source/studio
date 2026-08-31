@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roster — post the shift you can't work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">Roster<span class="logo-tag">concept</span></a>
+    <nav class="nav-links" aria-label="Section links">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#limit">The catch</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ======================= HERO ======================= -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <p class="eyebrow">SHIFT SWAPPING FOR HOSPITALITY STAFF</p>
+      <h1>Can't work Thursday?<br>Tear it off.</h1>
+      <p class="hero-copy">Post the shift you can't work. Roster shows who's actually free — swap in two taps, manager approves in one. No more asking forty people in a group chat.</p>
+
+      <div class="ticket-stage">
+        <div class="ticket-hero" id="heroTicket">
+          <div class="ticket-half stub">
+            <span class="tk-id">NO. 00417</span>
+            <span class="tk-role">STUB — you keep this</span>
+            <span class="tk-line">THU · 6:00P–close</span>
+            <span class="tk-line">FLOOR · Front of House</span>
+          </div>
+          <div class="tear-seam" aria-hidden="true"></div>
+          <div class="ticket-half tag">
+            <span class="tk-id">NO. 00417</span>
+            <span class="tk-role">TAG — goes into the pool</span>
+            <span class="tk-line">THU · 6:00P–close</span>
+            <div class="stamp stamp-posted" aria-hidden="true">POSTED</div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary tear-btn" id="tearBtn" aria-pressed="false">
+          Post Thursday night
+        </button>
+
+        <div class="tear-result" id="tearResult" hidden>
+          <div class="compare">
+            <div class="compare-win">
+              <span class="compare-num">14 min</span>
+              <span class="compare-label">median time to a confirmed swap, on Roster</span>
+            </div>
+            <div class="compare-lose">
+              <span class="compare-num">2 days</span>
+              <span class="compare-label">same figure, over WhatsApp, measured</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= HOW IT WORKS ======================= -->
+  <section class="how" id="how">
+    <div class="section-inner">
+      <p class="eyebrow">POST — MATCH — APPROVE</p>
+      <h2>How a shift changes hands</h2>
+
+      <div class="rail" id="rail">
+        <div class="track" id="track">
+          <div class="rail-chip" id="railChip" aria-hidden="true">
+            <span class="tk-id">00417</span>
+          </div>
+        </div>
+
+        <div class="station" data-step="1">
+          <span class="station-num">01</span>
+          <span class="station-mark" aria-hidden="true">&#10003;</span>
+          <h3>Post</h3>
+          <p>You post the shift you can't work. It's out of your hands.</p>
+        </div>
+
+        <div class="station" data-step="2">
+          <span class="station-num">02</span>
+          <span class="station-mark" aria-hidden="true">&#10003;</span>
+          <h3>Match</h3>
+          <p>Roster shows who's actually free. You swap in two taps.</p>
+        </div>
+
+        <div class="station" data-step="3">
+          <span class="station-num">03</span>
+          <span class="station-mark" aria-hidden="true">&#10003;</span>
+          <h3>Approve</h3>
+          <p>Manager approves in one tap. The roster updates itself.</p>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-secondary" id="railBtn">Find who's free</button>
+    </div>
+  </section>
+
+  <!-- ======================= NUMBERS BAND ======================= -->
+  <section class="manifest-wrap">
+    <div class="section-inner">
+      <p class="eyebrow">ON THE BOARD RIGHT NOW</p>
+      <div class="manifest">
+        <div class="manifest-head">
+          <div class="compare compare-tight">
+            <div class="compare-win">
+              <span class="compare-num">14 min</span>
+              <span class="compare-label">to a confirmed swap</span>
+            </div>
+            <div class="compare-lose">
+              <span class="compare-num">2 days</span>
+              <span class="compare-label">the old way, over WhatsApp</span>
+            </div>
+          </div>
+        </div>
+        <ul class="manifest-list">
+          <li><span>Venues running Roster</span><span class="tk-mono">340</span></li>
+          <li><span>Workers on it</span><span class="tk-mono">11,200</span></li>
+          <li><span>Swaps completed</span><span class="tk-mono">48,900</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= PRICING ======================= -->
+  <section class="pricing" id="pricing">
+    <div class="section-inner">
+      <p class="eyebrow">PICK YOUR SIZE</p>
+      <h2>Pricing</h2>
+
+      <div class="plans">
+        <article class="plan">
+          <h3>Solo</h3>
+          <p class="plan-price">Free</p>
+          <p class="plan-for">One worker, unlimited swaps.</p>
+          <p class="plan-note">No card required.</p>
+          <a class="btn btn-secondary plan-cta" href="#" aria-label="Start free on the Solo plan">Start free</a>
+        </article>
+
+        <article class="plan">
+          <h3>Venue</h3>
+          <p class="plan-price">A$4<span>/worker/mo</span></p>
+          <p class="plan-for">One site, manager approvals, payroll export.</p>
+          <p class="plan-note">Billed monthly, cancel anytime.</p>
+          <a class="btn btn-secondary plan-cta" href="#" aria-label="Get Venue, the single-site plan">Get Venue</a>
+        </article>
+
+        <article class="plan">
+          <h3>Group</h3>
+          <p class="plan-price">A$3<span>/worker/mo</span></p>
+          <p class="plan-for">3+ sites, shared casual pool, one bill.</p>
+          <p class="plan-note">Billed monthly, cancel anytime.</p>
+          <a class="btn btn-secondary plan-cta" href="#" aria-label="Talk to us about the Group plan">Talk to us</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= HONEST LIMITATION ======================= -->
+  <section class="limit" id="limit">
+    <div class="section-inner">
+      <p class="eyebrow">WHAT ROSTER CAN'T DO</p>
+      <h2>Roster cannot make anyone pick up your shift.</h2>
+
+      <div class="limit-stage">
+        <div class="mini-ticket" id="stuckTicket">
+          <span class="tk-id">NO. 00512</span>
+          <span class="tk-role">TAG — unclaimed</span>
+          <span class="tk-line">SAT · 6:00P–close</span>
+        </div>
+
+        <button type="button" class="btn btn-secondary" id="claimBtn">Try to claim it</button>
+
+        <p class="limit-result" id="limitResult" hidden>
+          No one's free. This one stays on the rail — <strong>6% of swaps end here</strong>. The app just stops you finding that out on Thursday morning.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="section-inner footer-inner">
+    <p class="footer-label">Roster is a concept built for Company 24/7 — not a real company, not for sale.</p>
+    <p class="footer-meta">Spec work by Aufan Hakim.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

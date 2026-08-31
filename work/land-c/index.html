@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roster — shift swapping for hospitality staff (concept)</title>
+<meta name="description" content="Roster: post the shift you can't work, see who's actually free, swap in two taps. A concept landing page — not a real product.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23FBFAF5' stroke='%2315130F' stroke-width='6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="wordmark">ROSTER</span>
+  <span class="tag">Concept</span>
+</div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Shift swapping, for hospitality staff</p>
+        <h1>Post the shift<br>you can’t work.</h1>
+        <p class="lede">Median time to a confirmed swap: <strong>14 minutes</strong>.<br>
+        Over a WhatsApp group of 40 people, measured: <strong>2 days</strong>.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#pricing">See pricing</a>
+          <a class="btn btn-ghost" href="#how">How it works</a>
+        </div>
+      </div>
+
+      <div class="hero-dish">
+        <div class="dish-frame">
+          <canvas id="dish-canvas" width="100" height="100" aria-hidden="true"></canvas>
+          <div class="dish-rim" aria-hidden="true"></div>
+          <div class="dish-markers" id="dish-markers"></div>
+        </div>
+        <button class="btn btn-dark" id="dish-run" type="button">Post 50 shifts</button>
+        <p class="dish-caption" id="dish-caption" aria-live="polite">Press to post 50 shifts to the dish and watch who picks them up.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUMBERS STRIP -->
+  <section class="strip" aria-label="Roster in numbers">
+    <div class="strip-inner">
+      <span>340 venues</span>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>11,200 workers on it</span>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>48,900 swaps completed</span>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <p class="section-eyebrow">How it works</p>
+    <div class="how-grid">
+      <article class="how-cell">
+        <span class="cell-badge">01</span>
+        <h3>Post</h3>
+        <p>Say which shift you can’t work.</p>
+      </article>
+      <article class="how-cell">
+        <span class="cell-badge">02</span>
+        <h3>Match</h3>
+        <p>See who’s actually free. Swap in two taps.</p>
+      </article>
+      <article class="how-cell">
+        <span class="cell-badge">03</span>
+        <h3>Approve</h3>
+        <p>Manager approves in one tap. The roster updates itself.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <p class="section-eyebrow">Pricing</p>
+    <div class="pricing-grid">
+      <article class="tier">
+        <h3>Solo</h3>
+        <p class="tier-price">Free</p>
+        <p class="tier-for">One worker. Unlimited swaps. No card.</p>
+      </article>
+      <article class="tier tier-dark">
+        <span class="tier-flag">Recommended</span>
+        <h3>Venue</h3>
+        <p class="tier-price">A$4<span>/ worker / mo</span></p>
+        <p class="tier-for">One site. Manager approvals. Payroll export.</p>
+      </article>
+      <article class="tier">
+        <h3>Group</h3>
+        <p class="tier-price">A$3<span>/ worker / mo</span></p>
+        <p class="tier-for">3+ sites. Shared casual pool. One bill.</p>
+      </article>
+    </div>
+    <p class="pricing-note">Billed monthly. Cancel anytime.</p>
+  </section>
+
+  <!-- HONEST LIMITATION -->
+  <section class="limitation">
+    <p class="section-eyebrow">What the dish doesn’t hide</p>
+    <h2>Roster cannot make anyone pick up your shift.</h2>
+    <p>6% of swaps go unfilled. If nobody is free, nobody is free — the app just stops you finding that out on Thursday morning.</p>
+    <div class="dot-row" id="dot-row" aria-hidden="true"></div>
+    <p class="dot-caption">47 filled, 3 didn’t — every dish we grow, whatever order it grows in.</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>Roster is a concept, built for a design exercise — not a real company, not a real product. The numbers above are the brief’s, not measured revenue.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
