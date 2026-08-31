@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Twelve Markets, Thirteen Months</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F6F7F9'/%3E%3Cpath d='M3 22 L9 14 L14 18 L20 7 L26 12 L29 10' fill='none' stroke='%231F5EEB' stroke-width='2.4'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#grid">Skip to the grid</a>
+
+<header class="hd">
+  <div class="hd__l">
+    <h1>Twelve markets, thirteen months</h1>
+    <p class="sub" id="sub">—</p>
+  </div>
+
+  <div class="hd__r">
+    <div class="seg" role="group" aria-label="Vertical scale">
+      <button class="seg__b is-on" data-s="shared">Shared scale</button>
+      <button class="seg__b" data-s="own">Own scale</button>
+    </div>
+    <p class="hint" id="hint">—</p>
+  </div>
+</header>
+
+<main id="grid" class="grid" aria-label="Revenue by market, one panel per market"></main>
+
+<footer class="ft">
+  <span id="ftL">—</span>
+  <span class="ft__key"><i class="sw"></i>revenue <i class="sw sw--p"></i>partial month</span>
+  <span id="ftR">—</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
