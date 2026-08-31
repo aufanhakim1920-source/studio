@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Annual Skyline — Retail Operations</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0E1A'/%3E%3Crect x='5' y='20' width='4' height='7' fill='%23FFB238'/%3E%3Crect x='11' y='13' width='4' height='14' fill='%238891A8'/%3E%3Crect x='17' y='6' width='4' height='21' fill='%23FFB238'/%3E%3Crect x='23' y='16' width='4' height='11' fill='%238891A8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <span class="kicker">RETAIL OPERATIONS <span class="dim">·</span> UK GIFT WHOLESALER</span>
+  <span class="range">1 DEC 2010 &ndash; 9 DEC 2011</span>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="intro">
+      <h1>The annual<br>skyline</h1>
+      <p>Thirteen months of revenue, built as a city. Turn the dial or pick a tower &mdash; the block you land on is what it earned.</p>
+    </div>
+
+    <div class="instrument">
+
+      <div class="skyline-wrap">
+        <div class="skyline" id="skyline">
+          <div class="city" id="city" role="group" aria-label="Monthly revenue skyline, 13 buildings"></div>
+        </div>
+        <div class="floor-line" aria-hidden="true"></div>
+        <p class="plaque" id="plaque">38 MARKETS <span class="dim">·</span> UK 84.6% <span class="dim">/</span> REST OF WORLD 15.4% <span class="dim">·</span> &pound;10.64M TOTAL</p>
+      </div>
+
+      <div class="console">
+
+        <div class="dial-unit">
+          <!-- The stage exists purely to give .dial a positioning context the
+               size of the tick ring. Without it .dial's top/left:50% resolved
+               against <main> and the knob rendered 380px away, on the skyline. -->
+          <div class="dial-stage">
+            <div class="tick-ring" id="tickRing" aria-hidden="true"></div>
+            <div class="dial"
+                 id="dial"
+                 tabindex="0"
+                 role="slider"
+                 aria-label="Month scrubber"
+                 aria-valuemin="1"
+                 aria-valuemax="13"
+                 aria-valuenow="12">
+              <div class="dial-rotator" id="dialRotator">
+                <span class="dial-notch"></span>
+              </div>
+              <div class="dial-static-lighting" aria-hidden="true"></div>
+            </div>
+          </div>
+          <span class="dial-label">DRAG TO SCRUB</span>
+        </div>
+
+        <div class="readout" id="readout">
+          <div class="readout-top">
+            <span class="led" id="led" aria-hidden="true"></span>
+            <span class="readout-month" id="rMonth">&mdash;</span>
+            <span class="badge" id="rBadge" hidden></span>
+          </div>
+
+          <div class="readout-value">
+            <span class="value" id="rValue">&mdash;</span>
+            <span class="delta" id="rDelta"></span>
+          </div>
+
+          <div class="readout-row">
+            <div class="stat">
+              <span class="stat-label">ORDERS</span>
+              <span class="stat-value" id="rOrders">&mdash;</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">AVG ORDER</span>
+              <span class="stat-value" id="rAov">&mdash;</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="findings">
+    <span class="kicker">WHAT MOVED IT</span>
+    <div class="finding-grid" id="findingGrid"></div>
+  </section>
+</main>
+
+<footer>
+  <p>Source: UCI Online Retail &mdash; a UK gift wholesaler. 524,878 rows kept of 541,909 raw; 9,251 cancelled invoices removed, not netted, so revenue here is gross. Final month is partial (9 days) and is marked, not smoothed.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

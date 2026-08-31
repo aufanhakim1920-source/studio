@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audit Desk — Retail Ops, Show Your Work</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314110F'/%3E%3Cpath d='M7 22 L13 12 L18 18 L25 8' stroke='%23E0A030' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='25' cy='8' r='2.2' fill='%23E0A030'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to board</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand__mark" aria-hidden="true"></span>
+    <div class="brand__text">
+      <b>Audit Desk</b>
+      <span class="mut">Wholesale · UK gift retailer</span>
+    </div>
+  </div>
+
+  <div class="period" role="group" aria-label="Reporting window" id="period">
+    <button class="period__b" data-n="3">3M</button>
+    <button class="period__b" data-n="6">6M</button>
+    <button class="period__b is-on" data-n="12">12M</button>
+  </div>
+
+  <div class="asof">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="asofText">—</span>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ── three numbers, each with a comparison, each provable ─────────────── -->
+  <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+  <!-- ── the trend, with the unfinished month drawn honestly ──────────────── -->
+  <section class="panel panel--wide">
+    <div class="panel__head">
+      <div>
+        <span class="lab">Revenue by month</span>
+        <span class="mut" id="revSub">—</span>
+      </div>
+      <button class="proof" data-drill="lineage">Prove it <span aria-hidden="true">›</span></button>
+    </div>
+    <div class="chartwrap">
+      <svg id="revChart" viewBox="0 0 900 220" preserveAspectRatio="none" role="img" aria-labelledby="revChartT">
+        <title id="revChartT">Monthly revenue, thirteen months</title>
+        <defs>
+          <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="7" height="7" fill="transparent"></rect>
+            <line x1="0" y1="0" x2="0" y2="7" stroke="#6b6055" stroke-width="1.6"></line>
+          </pattern>
+        </defs>
+        <g id="revGrid"></g>
+        <g id="revBars"></g>
+      </svg>
+      <div class="xaxis" id="revAxis"></div>
+    </div>
+    <p class="note" id="partialNote"></p>
+  </section>
+
+  <!-- ── who buys, what sells — bar sits behind the label, not beside it ──── -->
+  <section class="grid2">
+    <div class="panel">
+      <div class="panel__head">
+        <span class="lab">Markets</span>
+        <span class="mut" id="mktSub">—</span>
+      </div>
+      <ul class="rowbars" id="markets"></ul>
+    </div>
+    <div class="panel">
+      <div class="panel__head">
+        <span class="lab">Top lines by revenue</span>
+        <span class="mut" id="prdSub">—</span>
+      </div>
+      <ul class="rowbars" id="products"></ul>
+    </div>
+  </section>
+
+  <!-- ── the four things the data actually says, ranked by how sure we are ── -->
+  <section class="panel panel--wide">
+    <div class="panel__head">
+      <span class="lab">What the data says</span>
+      <span class="mut">4 findings</span>
+    </div>
+    <div class="findings" id="findings"></div>
+  </section>
+
+  <!-- ── the chain: every row, kept or thrown out, with a reason ──────────── -->
+  <section class="panel panel--wide">
+    <div class="panel__head">
+      <span class="lab">Where the numbers come from</span>
+      <span class="mut" id="lineageSub">—</span>
+    </div>
+    <div class="lineage-bar" id="lineageBar" role="img" aria-label="Rows kept versus rows removed, by reason"></div>
+    <ul class="lineage-list" id="lineageList"></ul>
+    <p class="assert" id="assertLine">—</p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>UCI Online Retail, 1 Dec 2010 – 9 Dec 2011</span>
+  <span class="mut">Every figure on this page opens to the rows that produced it.</span>
+</footer>
+
+<!-- ── the mechanism: click any number, it opens here ──────────────────────── -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer__scrim" id="drawerScrim"></div>
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Provenance">
+    <div class="drawer__head">
+      <span class="lab">Show your work</span>
+      <button class="drawer__close" id="drawerClose" aria-label="Close">×</button>
+    </div>
+    <div class="drawer__body" id="drawerBody"></div>
+  </aside>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

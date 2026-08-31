@@ -1,0 +1,596 @@
+/* ============================================================
+   THE ANNUAL SKYLINE — dash-b, modern-creative lane
+   Object: a 13-tower CSS-3D skyline, one tower per month.
+   Height = that month's revenue. Turning the dial (or clicking
+   a tower) selects a month and rewrites the console readout.
+   ============================================================ */
+
+:root{
+  /* ground: deep indigo-black — distinct from the three retired
+     grounds (warm cream, brushed-metal black, cold paper) and
+     from dash-board's neutral slate */
+  --ground:      #0A0E1A;
+  --ground-2:    #0D1322;
+  --panel:       #10192E;
+  --line:        rgba(160,175,210,0.14);
+  --line-soft:   rgba(160,175,210,0.07);
+
+  --ink:         #EDEFF5;
+  --dim:         #8891A8;
+  --dimmer:      #545E76;
+
+  --amber:       #FFB238;
+  --amber-dim:   #6B4E20;
+  --amber-glow:  rgba(255,178,56,0.45);
+
+  --up:          #6FE3A6;
+  --down:        #FF6E6E;
+
+  --tower-top:   #4A5A82;
+  --tower-front-a: #232E4A;
+  --tower-front-b: #161E33;
+  --tower-side:  #0F1526;
+
+  --r-sm:   3px;
+  --r-pill: 999px;
+
+  --display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body{
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+::selection{ background: var(--amber); color: #1a1200; }
+
+/* ---------- texture: a fixed grain layer, never optional ---------- */
+.grain{
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::before{
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 900px 500px at 50% 0%, rgba(74,90,130,0.16), transparent 60%),
+    radial-gradient(ellipse 1000px 700px at 50% 100%, rgba(0,0,0,0.5), transparent 60%);
+}
+
+/* ---------- layout shell ---------- */
+main, header, footer{ position: relative; z-index: 1; }
+
+.topbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 20px clamp(20px, 4vw, 56px);
+  border-bottom: 1px solid var(--line-soft);
+  flex-wrap: wrap;
+}
+.kicker{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+.range{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--dimmer);
+}
+.dim{ color: var(--dimmer); }
+
+main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
+
+.hero{ max-width: 1180px; margin: 0 auto; }
+
+.intro{ max-width: 620px; margin-bottom: clamp(28px, 4vw, 44px); }
+.intro h1{
+  font-size: clamp(34px, 5.4vw, 58px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+.intro p{
+  margin: 0;
+  font-size: 14px;
+  color: var(--dim);
+  max-width: 46ch;
+}
+
+/* ---------- the instrument: skyline + console ---------- */
+.instrument{
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.9fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: stretch;
+}
+
+.skyline-wrap{
+  background: linear-gradient(180deg, var(--ground-2), var(--ground));
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: clamp(20px, 3vw, 34px) clamp(16px, 3vw, 30px) 18px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.skyline{
+  perspective: 1300px;
+  height: clamp(200px, 30vw, 280px);
+  display: flex;
+  align-items: flex-end;
+}
+
+.city{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(3px, 0.9vw, 10px);
+  transform-style: preserve-3d;
+  transform: rotateX(52deg) rotateY(-16deg);
+  transform-origin: 50% 100%;
+}
+
+.plot{
+  --w: 100%;
+  --d: clamp(7px, 1.6vw, 16px);
+  flex: 1 1 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.building{
+  position: relative;
+  width: 100%;
+  max-width: 46px;
+  height: var(--h, 20%);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+.building:focus-visible{ outline: 2px solid var(--amber); outline-offset: 4px; }
+
+/* Invisible expanded tap target. The tower stays exactly the size it is —
+   this pseudo-element only grows the touch region. It lives in the same 3D
+   space as the faces, so the local height has to be ~1/cos(rotateX) larger
+   than the on-screen target it projects to; see the mobile block below. */
+.building::after{
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.face{ position: absolute; }
+
+.face.front{
+  inset: 0;
+  background: linear-gradient(180deg, var(--tower-front-a), var(--tower-front-b));
+  border: 1px solid rgba(160,175,210,0.16);
+  border-bottom: none;
+  transition: background 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  overflow: hidden;
+}
+.face.front::before{
+  /* dim window bands — always present */
+  content: '';
+  position: absolute; inset: 3px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(200,212,255,0.10) 0px, rgba(200,212,255,0.10) 2px,
+    transparent 2px, transparent 6px
+  );
+  opacity: 0.7;
+}
+.face.front::after{
+  /* amber window bands — fades in when selected */
+  content: '';
+  position: absolute; inset: 3px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--amber) 0px, var(--amber) 2px,
+    transparent 2px, transparent 6px
+  );
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+
+.face.top{
+  top: 0; left: 0;
+  width: 100%; height: var(--d);
+  background: var(--tower-top);
+  transform-origin: top;
+  transform: rotateX(90deg);
+  transition: background 0.35s var(--ease);
+}
+.face.side{
+  top: 0; right: 0;
+  width: var(--d); height: 100%;
+  background: var(--tower-side);
+  transform-origin: right;
+  transform: rotateY(-90deg);
+}
+
+.building.selected .face.front{
+  border-color: var(--amber-dim);
+  box-shadow: 0 0 22px var(--amber-glow), inset 0 0 0 1px rgba(255,178,56,0.25);
+}
+.building.selected .face.front::after{ opacity: 0.9; }
+.building.selected .face.top{ background: #7A6636; }
+
+.building.partial .face.front{
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,178,56,0.16) 0 6px,
+    rgba(255,178,56,0.02) 6px 12px
+  );
+}
+
+.floor-line{
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+  margin-top: 54px;
+}
+
+.plaque{
+  margin: 14px 2px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* ---------- console: dial + readout ---------- */
+.console{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.dial-unit{
+  background: linear-gradient(180deg, var(--ground-2), var(--ground));
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Positioning context for .dial, sized to the ring so the knob centres on it.
+   .dial is absolutely positioned; as a bare sibling of .tick-ring it had no
+   positioned ancestor and resolved against <main>, putting the knob 380px away
+   on top of the skyline (where it also swallowed tower clicks). */
+.dial-stage{
+  position: relative;
+  width: 128px; height: 128px;
+}
+
+.tick-ring{
+  position: absolute;
+  inset: 0;
+}
+.tick-ring .t{
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 2px; height: 56px;
+  margin-left: -1px;
+  transform-origin: top center;
+  background: linear-gradient(to bottom,
+    transparent 0, transparent 44px,
+    var(--dimmer) 44px, var(--dimmer) 54px,
+    transparent 54px, transparent 56px);
+}
+.tick-ring .t.lit{
+  background: linear-gradient(to bottom,
+    transparent 0, transparent 40px,
+    var(--amber) 40px, var(--amber) 54px,
+    transparent 54px, transparent 56px);
+  filter: drop-shadow(0 0 4px var(--amber-glow));
+}
+
+.dial{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 78px; height: 78px;
+  border-radius: var(--r-pill);
+  cursor: grab;
+  touch-action: none;
+}
+.dial:active{ cursor: grabbing; }
+.dial:focus-visible{ outline: 2px solid var(--amber); outline-offset: 4px; }
+
+.dial-rotator{
+  position: absolute; inset: 0;
+  border-radius: var(--r-pill);
+  transform: rotate(var(--rotation, 0deg));
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      #2C3854 0deg 2deg,
+      #1A2338 2deg 4deg
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(160,175,210,0.2),
+    0 6px 18px rgba(0,0,0,0.55);
+}
+.dial-notch{
+  position: absolute;
+  top: 6px; left: 50%;
+  width: 3px; height: 14px;
+  margin-left: -1.5px;
+  background: var(--amber);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--amber-glow);
+}
+
+.dial-static-lighting{
+  position: absolute; inset: 4px;
+  border-radius: var(--r-pill);
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 42%, rgba(0,0,0,0.5) 100%),
+    conic-gradient(from 180deg at 50% 50%,
+      rgba(255,255,255,0) 0deg, rgba(255,255,255,0.28) 45deg,
+      rgba(255,255,255,0) 90deg, rgba(255,255,255,0.14) 180deg,
+      rgba(255,255,255,0) 270deg, rgba(255,255,255,0.28) 315deg, rgba(255,255,255,0) 360deg);
+  mix-blend-mode: overlay;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);
+}
+
+.dial-label{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  color: var(--dimmer);
+}
+
+.readout{
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 20px 22px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+.readout-top{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.led{
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #2A2010;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.4);
+  flex-shrink: 0;
+}
+.led.pulse{ animation: ledpulse 0.55s var(--ease); }
+@keyframes ledpulse{
+  0%{ background: var(--amber); box-shadow: 0 0 10px var(--amber-glow); }
+  100%{ background: #2A2010; box-shadow: none; }
+}
+
+.readout-month{
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.badge{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #1a1200;
+  background: var(--amber);
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  text-transform: uppercase;
+}
+.badge.low{ background: var(--dim); color: #0A0E1A; }
+.badge.partial{ background: transparent; color: var(--amber); border: 1px solid var(--amber-dim); }
+
+.readout-value{
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.value{
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.delta{
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.delta.up{ color: var(--up); background: rgba(111,227,166,0.12); }
+.delta.down{ color: var(--down); background: rgba(255,110,110,0.12); }
+.delta.flat{ color: var(--dim); background: rgba(136,145,168,0.12); }
+
+.readout-row{
+  display: flex;
+  gap: 22px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+.stat{ display: flex; flex-direction: column; gap: 4px; }
+.stat-label{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.11em;
+  color: var(--dimmer);
+}
+.stat-value{
+  font-family: var(--mono);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ---------- findings ---------- */
+.findings{
+  max-width: 1180px;
+  margin: clamp(48px, 7vw, 80px) auto 0;
+  padding-bottom: 8px;
+}
+.finding-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  margin-top: 16px;
+}
+.finding{
+  background: var(--ground-2);
+  padding: clamp(20px, 3vw, 30px);
+}
+.finding h2{
+  margin: 0 0 8px;
+  font-size: clamp(30px, 3.4vw, 42px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--amber);
+}
+.finding p{
+  margin: 0;
+  font-size: 13px;
+  color: var(--dim);
+  max-width: 42ch;
+}
+
+footer{
+  max-width: 1180px;
+  margin: clamp(36px, 6vw, 60px) auto 0;
+  padding: 18px clamp(20px, 4vw, 56px) 40px;
+}
+footer p{
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--dimmer);
+  max-width: 74ch;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px){
+  .instrument{ grid-template-columns: 1fr; }
+  .city{ transform: rotateX(48deg) rotateY(-10deg); }
+  /* B2: "pick a tower" is the primary interaction, so the touch region has to
+     clear 44px even though the visible tower must stay narrow enough that all
+     13 fit a phone. The tower itself is untouched; only this invisible box
+     grows — downward (toward the viewer in the rotated plane) so short towers
+     get a target too, and just into the plot gutters so neighbours never
+     overlap. Measured at 375/390/768: 34px tall before, 67px+ after. */
+  .building::after{
+    width: calc(100% + 3px);
+    bottom: -46px;
+    height: calc(100% + 46px);
+    min-height: 92px;
+  }
+}
+
+@media (max-width: 480px){
+  .topbar{ padding: 16px 18px; }
+  main{ padding: 24px 18px 8px; }
+  .skyline-wrap{ padding: 18px 14px 16px; }
+  .skyline{ height: clamp(160px, 42vw, 200px); }
+  .city{ gap: 3px; transform: rotateX(46deg) rotateY(-8deg); }
+  .plot{ --d: 6px; }
+  .building{ max-width: 26px; }
+  .value{ font-size: 28px; }
+  .finding-grid{ grid-template-columns: 1fr; }
+  .dial-unit{ padding: 16px; }
+  /* The stage carries the size now; .tick-ring fills it via inset:0. */
+  .dial-stage{ width: 104px; height: 104px; }
+  .tick-ring .t{
+    height: 46px;
+    background: linear-gradient(to bottom,
+      transparent 0, transparent 34px,
+      var(--dimmer) 34px, var(--dimmer) 44px,
+      transparent 44px, transparent 46px);
+  }
+  .tick-ring .t.lit{
+    background: linear-gradient(to bottom,
+      transparent 0, transparent 30px,
+      var(--amber) 30px, var(--amber) 44px,
+      transparent 44px, transparent 46px);
+  }
+  .dial{ width: 60px; height: 60px; }
+  .dial-unit{ gap: 20px; }
+  .dial-rotator{ box-shadow: inset 0 0 0 1px rgba(160,175,210,0.2), 0 3px 6px rgba(0,0,0,0.45); }
+  .tick-ring{ margin-bottom: 2px; }
+}
+
+/* ---------- motion discipline ---------- */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

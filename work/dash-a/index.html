@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wholesale Performance — Retail Ops</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23F1F2EA'/%3E%3Crect x='6' y='17' width='4' height='9' fill='%232B5F8A'/%3E%3Crect x='14' y='11' width='4' height='15' fill='%232B5F8A'/%3E%3Crect x='22' y='6' width='4' height='20' fill='%232B5F8A'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to dashboard</a>
+
+<div class="wrap">
+
+  <header class="topbar">
+    <div class="topbar__id">
+      <span class="mark" aria-hidden="true"></span>
+      <h1>Wholesale Performance</h1>
+      <span class="range">Dec 2010 – Dec 2011</span>
+    </div>
+    <div class="seg" role="group" aria-label="Trailing period">
+      <button class="seg__b" data-p="3">3M</button>
+      <button class="seg__b is-on" data-p="6" aria-pressed="true">6M</button>
+      <button class="seg__b" data-p="12">12M</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="kpis" id="kpis" aria-label="Key figures">
+      <!-- populated by app.js -->
+    </section>
+
+    <section class="panel panel--wide" aria-label="Monthly revenue">
+      <div class="panel__head">
+        <h2>Monthly revenue</h2>
+        <span class="panel__hint" id="barHint">hover a bar</span>
+      </div>
+      <div class="barchart" id="barchart"></div>
+      <div class="barchart__axis" id="barchartAxis"></div>
+      <p class="panel__foot" id="barFoot"></p>
+    </section>
+
+    <section class="lists">
+      <div class="panel" aria-label="Top markets">
+        <div class="panel__head">
+          <h2>Top markets</h2>
+          <span class="panel__hint" id="countryCount">—</span>
+        </div>
+        <div class="ranklist" id="countryList"></div>
+        <p class="panel__foot" id="countryFoot"></p>
+      </div>
+
+      <div class="panel" aria-label="Top products">
+        <div class="panel__head">
+          <h2>Top products</h2>
+          <span class="panel__hint" id="productCount">—</span>
+        </div>
+        <div class="ranklist" id="productList"></div>
+        <p class="panel__foot" id="productFoot"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <span id="footStats">—</span>
+  </footer>
+
+</div>
+
+<div class="tip" id="tip" role="status" aria-live="polite" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

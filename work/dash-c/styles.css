@@ -1,0 +1,418 @@
+/* AUDIT DESK — dash-c, "claude's pick"
+   ---------------------------------------------------------------------------
+   The angle: dash-a answers "what does the data say" from a light, conventional
+   analyst tool. dash-b answers it from a dark showcase built around an invented
+   object. Neither, per the AI Product Patterns note, answers "should I trust
+   this number" — almost nothing in the reference library does. So every figure
+   here opens to the rows behind it: raw count, each cleaning rule that removed
+   rows, and an assertion that the parts sum to the whole. That IS the object;
+   dashboards are the one build type the object rule explicitly does not force
+   a metaphor onto (Invent a New Object Every Build's own carve-out).
+
+   Ground: warm ink #14110F — a fourth-plus ground, not cream (dash-chroma,
+   deleted), not brushed black (dash-metal, deleted), not cold paper
+   (dash-print, deleted), not dash-board's blue-slate #12161C. One signal hue:
+   ochre #E0A030, used for "this is real / this is provable" — never for value,
+   only ever green/red for direction of change, same discipline as build 55.
+
+   Type does two jobs on purpose. The dashboard chrome (labels, KPI values,
+   table rows) runs sans + mono at the "work" size band (13–14px, §41 of What
+   the References Have in Common) — this is a screen you SCAN. The moment you
+   open the drawer and ask "why", the register switches to a serif at the
+   "read" band (15–16px) — this is prose you READ once, closely. The typeface
+   change is not decoration; it is the same scan/read split the library
+   documents, made visible as the interaction that reveals it. */
+
+:root {
+  --bg:      #14110F;
+  --bg-2:    #191510;
+  --panel:   #1D1812;
+  --panel-2: #241D15;
+  --line:    rgba(243, 233, 210, .07);
+  --line-2:  rgba(243, 233, 210, .12);
+
+  --ink:     #F1E9DA;
+  --mut:     #A79785;
+  --dim:     #756757;
+  --dim-2:   #55493C;
+
+  --sig:     #E0A030;   /* the one signal hue: "this is real" */
+  --sig-dim: rgba(224, 160, 48, .14);
+  --up:      #4FAE72;
+  --down:    #D9694F;
+  --up-dim:  rgba(79, 174, 114, .14);
+  --down-dim:rgba(217, 105, 79, .14);
+
+  --ui:   ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --num:  ui-monospace, "SF Mono", "IBM Plex Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --read: ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+
+  --r-sm:   4px;
+  --r-md:   6px;
+  --r-pill: 999px;
+
+  --gap: 12px;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --t-fast: .12s;
+  --t-med: .22s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+html { background: var(--bg); }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(1100px 500px at 12% -8%, rgba(224,160,48,.05), transparent 60%),
+    radial-gradient(circle, rgba(243,233,210,.05) 1px, transparent 1px);
+  background-size: auto, 26px 26px;
+  background-position: 0 0, 0 0;
+  color: var(--ink);
+  font: 400 13.5px/1.5 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 50;
+  background: var(--sig); color: #16110A; font-weight: 700;
+  padding: 0 16px; min-height: 44px; display: inline-flex; align-items: center;
+  border-radius: var(--r-md);
+}
+.skip:focus { left: 10px; top: 10px; }
+
+:is(a, button):focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
+
+/* C1 — the drawer's other four trigger types are not <button>s, so they need
+   their own focus ring. Ochre, same as the chrome. Where the element sits
+   inside an overflow:hidden parent the ring is drawn INSIDE the box
+   (offset -2px) or it would be clipped away and effectively invisible. */
+.rowbar:focus-visible,
+.finding__head:focus-visible,
+.lineage-row:focus-visible {
+  outline: 2px solid var(--sig);
+  outline-offset: -2px;
+}
+.lineage-row:focus-visible { outline-offset: 0; background: var(--panel-2); }
+/* the segments ARE ochre (kept) and red-hatched (cut), so an ochre ring
+   disappears into the 96.9% "Kept" block — cream reads against both. */
+.lineage-seg:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+/* ── topbar ─────────────────────────────────────────────────────────────── */
+
+.topbar {
+  display: flex; align-items: center; gap: 20px;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.brand__mark {
+  width: 26px; height: 26px; flex: none; border-radius: var(--r-sm);
+  background: var(--panel-2); border: 1px solid var(--line-2);
+  background-image:
+    linear-gradient(155deg, rgba(224,160,48,0) 40%, rgba(224,160,48,.5) 100%);
+  position: relative;
+}
+.brand__mark::after {
+  content: ''; position: absolute; inset: 6px 5px;
+  background:
+    linear-gradient(115deg, transparent 46%, var(--sig) 46%, var(--sig) 54%, transparent 54%);
+  opacity: .9;
+}
+.brand__text { display: flex; flex-direction: column; line-height: 1.25; }
+.brand__text b { font-size: 13.5px; letter-spacing: -.01em; }
+.mut { color: var(--mut); font-size: 12px; }
+
+.period {
+  display: inline-flex; gap: 2px; padding: 3px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-pill);
+}
+.period__b {
+  font: 600 12px/1 var(--num); letter-spacing: .04em;
+  color: var(--mut); background: transparent; border: 0;
+  padding: 0 14px; height: 30px; border-radius: var(--r-pill);
+  cursor: pointer; transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.period__b:hover { color: var(--ink); }
+.period__b.is-on { background: var(--sig); color: #16110A; }
+
+.asof { display: flex; align-items: center; gap: 8px; font: 500 11.5px/1 var(--num); color: var(--mut); letter-spacing: .03em; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--up); box-shadow: 0 0 6px var(--up); flex: none; }
+
+/* ── layout ─────────────────────────────────────────────────────────────── */
+
+main {
+  max-width: 1240px; margin: 0 auto;
+  padding: 22px; display: flex; flex-direction: column; gap: var(--gap);
+}
+
+.panel {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 16px 18px;
+}
+.panel--wide { width: 100%; }
+
+.panel__head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.lab {
+  font: 700 11px/1 var(--num); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--dim); margin-right: 8px;
+}
+
+.grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--gap); }
+
+/* ── KPIs — three, each with a comparison, each provable ──────────────────── */
+
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap); }
+
+.kpi {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 16px 18px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color var(--t-fast) var(--ease);
+}
+.kpi:hover { border-color: var(--line-2); }
+
+.kpi__top { display: flex; align-items: center; justify-content: space-between; }
+.kpi__label { font: 700 11px/1 var(--num); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+
+.kpi__value { font: 300 34px/1 var(--num); letter-spacing: -.02em; }
+.kpi__value small { font: 400 13px var(--ui); color: var(--dim); margin-left: 4px; letter-spacing: 0; }
+
+.kpi__delta { display: inline-flex; align-items: center; gap: 5px; font: 600 12px/1 var(--num); letter-spacing: .01em; width: fit-content; padding: 4px 8px; border-radius: var(--r-pill); }
+.kpi__delta.up   { color: var(--up);   background: var(--up-dim); }
+.kpi__delta.down { color: var(--down); background: var(--down-dim); }
+.kpi__delta.flat { color: var(--mut);  background: rgba(243,233,210,.06); }
+
+.kpi__spark { width: 100%; height: 34px; display: block; }
+.kpi__spark path.fill { fill: var(--sig-dim); }
+.kpi__spark path.line { fill: none; stroke: var(--sig); stroke-width: 1.6; }
+
+.proof {
+  font: 600 11px/1 var(--num); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--sig); background: transparent; border: 1px solid rgba(224,160,48,.35);
+  border-radius: var(--r-pill); padding: 0 12px; height: 30px; min-height: 30px;
+  cursor: pointer; transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.proof:hover { background: var(--sig-dim); }
+.kpi .proof { align-self: flex-start; }
+
+/* ── revenue chart ──────────────────────────────────────────────────────── */
+
+.chartwrap { position: relative; }
+#revChart { width: 100%; height: 220px; display: block; }
+.bar { cursor: pointer; }
+.bar rect.fill { transition: opacity var(--t-fast) var(--ease); }
+.bar:hover rect.fill { opacity: 1 !important; }
+.bar rect.hatch { pointer-events: none; }
+/* focus ring for the SVG bars: a real rect, because `outline` on an SVG <g>
+   is not painted. Cream rather than ochre so it reads against an ochre bar. */
+.bar rect.focusring { fill: none; stroke: none; pointer-events: none; }
+.bar:focus { outline: none; }
+.bar:focus-visible { outline: none; }
+.bar:focus-visible rect.focusring { stroke: var(--ink); stroke-width: 2; }
+.bar:focus-visible { opacity: 1 !important; }
+
+.xaxis { display: flex; margin-top: 6px; }
+.xaxis span {
+  flex: 1 1 0; text-align: center; font: 600 11px/1 var(--num);
+  letter-spacing: -.01em; color: var(--dim); text-transform: uppercase;
+}
+
+.note { margin-top: 10px; font-size: 12px; color: var(--dim); line-height: 1.5; max-width: 62ch; }
+
+/* ── row-bar lists — the bar sits BEHIND the label, not beside it ─────────── */
+
+.rowbars { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.rowbar {
+  position: relative; overflow: hidden;
+  border-radius: var(--r-sm);
+  cursor: pointer; background: var(--panel-2);
+  transition: background var(--t-fast) var(--ease);
+}
+.rowbar:hover { background: var(--panel-2); }
+.rowbar__fill {
+  position: absolute; inset: 0; width: 0%;
+  background: linear-gradient(90deg, rgba(224,160,48,.30), rgba(224,160,48,.05));
+  border-right: 1px solid rgba(224,160,48,.55);
+  transition: width var(--t-med) var(--ease);
+}
+.rowbar--other .rowbar__fill { background: linear-gradient(90deg, rgba(243,233,210,.08), rgba(243,233,210,.02)); border-right-color: rgba(243,233,210,.2); }
+.rowbar__row {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; font-size: 13px;
+}
+.rowbar__name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rowbar__tag {
+  font: 700 11px/1 var(--num); letter-spacing: .02em; text-transform: uppercase;
+  color: var(--down); background: var(--down-dim); border-radius: var(--r-sm);
+  padding: 3px 6px; flex: none;
+}
+.rowbar__num { font: 600 12.5px var(--num); color: var(--mut); flex: none; }
+.rowbar__share { font: 600 12.5px var(--num); color: var(--ink); flex: none; width: 4.2em; text-align: right; }
+.rowbar--other .rowbar__row { color: var(--dim); }
+.rowbar--other { border: 1px dashed var(--line-2); background: transparent; }
+
+/* ── findings ───────────────────────────────────────────────────────────── */
+
+.findings { display: flex; flex-direction: column; gap: 10px; }
+.finding {
+  border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
+  background: var(--panel-2);
+}
+.finding__head {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 13px 14px; cursor: pointer;
+}
+.finding__conf {
+  flex: none; margin-top: 2px;
+  font: 700 11px/1 var(--num); letter-spacing: .06em;
+  padding: 5px 9px; border-radius: var(--r-pill); text-transform: uppercase;
+}
+.finding__conf.high   { color: var(--sig); border: 1px solid rgba(224,160,48,.4); }
+.finding__conf.medium { color: var(--dim); border: 1px solid var(--line-2); }
+
+.finding__text { flex: 1 1 auto; min-width: 0; }
+.finding__headline { font-size: 14px; font-weight: 600; letter-spacing: -.005em; }
+.finding__detail { font-size: 12.5px; color: var(--mut); margin-top: 3px; line-height: 1.5; }
+.finding__toggle { flex: none; font: 600 11px var(--num); color: var(--dim); align-self: center; transition: transform var(--t-fast) var(--ease); }
+.finding.is-open .finding__toggle { transform: rotate(90deg); color: var(--sig); }
+
+.finding__why {
+  max-height: 0; overflow: hidden; transition: max-height var(--t-med) var(--ease);
+  border-top: 1px solid var(--line);
+}
+.finding.is-open .finding__why { max-height: 220px; }
+.finding__why-in { padding: 14px; }
+.finding__why-in p {
+  font: 400 15.5px/1.6 var(--read); color: var(--ink); max-width: 68ch;
+}
+.finding__why-in .basis {
+  margin-top: 10px; font: 600 11px var(--num); letter-spacing: .04em; text-transform: uppercase; color: var(--dim);
+}
+
+/* ── lineage ────────────────────────────────────────────────────────────── */
+
+.lineage-bar {
+  display: flex; height: 30px; border-radius: var(--r-sm); overflow: hidden;
+  border: 1px solid var(--line-2); margin-bottom: 10px;
+}
+.lineage-seg { height: 100%; cursor: pointer; transition: filter var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease); position: relative; }
+.lineage-seg:hover { filter: brightness(1.25); }
+.lineage-seg.kept { background: var(--sig); }
+.lineage-seg.cut  { background: repeating-linear-gradient(45deg, var(--down), var(--down) 5px, rgba(217,105,79,.6) 5px, rgba(217,105,79,.6) 10px); }
+
+.lineage-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.lineage-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: var(--r-sm); cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+}
+.lineage-row:hover { background: var(--panel-2); }
+.lineage-row__sw { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.lineage-row__sw.kept { background: var(--sig); }
+.lineage-row__sw.cut { background: var(--down); }
+.lineage-row__label { flex: 1 1 auto; font-size: 12.5px; }
+.lineage-row__n { font: 600 12.5px var(--num); color: var(--mut); }
+.lineage-row__pct { font: 600 12.5px var(--num); color: var(--ink); width: 4.6em; text-align: right; }
+
+.assert {
+  margin-top: 10px; font: 600 11.5px var(--num); color: var(--dim);
+  padding-top: 10px; border-top: 1px solid var(--line);
+}
+.assert .ok { color: var(--up); }
+
+/* ── footer ─────────────────────────────────────────────────────────────── */
+
+.foot {
+  max-width: 1240px; margin: 6px auto 30px; padding: 0 22px;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font: 500 11.5px var(--num); color: var(--dim); letter-spacing: .02em;
+}
+
+/* ── drawer — the mechanism ─────────────────────────────────────────────── */
+
+.drawer { position: fixed; inset: 0; z-index: 60; visibility: hidden; }
+.drawer.is-open { visibility: visible; }
+
+.drawer__scrim {
+  position: absolute; inset: 0; background: rgba(10,8,6,.55);
+  opacity: 0; transition: opacity var(--t-med) var(--ease);
+}
+.drawer.is-open .drawer__scrim { opacity: 1; }
+
+.drawer__panel {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: min(440px, 100vw);
+  background: var(--bg-2); border-left: 1px solid var(--line-2);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform var(--t-med) var(--ease);
+  box-shadow: -20px 0 60px rgba(0,0,0,.4);
+}
+.drawer.is-open .drawer__panel { transform: translateX(0); }
+
+.drawer__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px; border-bottom: 1px solid var(--line);
+}
+.drawer__close {
+  width: 32px; height: 32px; border-radius: var(--r-sm);
+  background: var(--panel); border: 1px solid var(--line-2); color: var(--mut);
+  font-size: 18px; line-height: 1; cursor: pointer;
+}
+.drawer__close:hover { color: var(--ink); }
+
+.drawer__body { padding: 18px; overflow-y: auto; flex: 1 1 auto; }
+.drawer__body h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; letter-spacing: -.005em; }
+.drawer__body .kicker { font: 700 11px var(--num); letter-spacing: .1em; text-transform: uppercase; color: var(--sig); margin-bottom: 8px; display: block; }
+.drawer__body p.lede { font: 400 15.5px/1.65 var(--read); color: var(--ink); margin: 10px 0 16px; max-width: 46ch; }
+.drawer__body .chain { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.chain-row {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 12px; border-radius: var(--r-sm); background: var(--panel);
+  border: 1px solid var(--line);
+}
+.chain-row.hi { border-color: rgba(224,160,48,.5); background: var(--sig-dim); }
+.chain-row__n { font: 600 13px var(--num); flex: none; min-width: 5.2em; }
+.chain-row__t { font-size: 12.5px; }
+.chain-row__t b { display: block; font-size: 12.5px; margin-bottom: 2px; }
+.chain-row__t span { color: var(--mut); font-size: 12px; line-height: 1.45; display: block; }
+.drawer__body .sum {
+  font: 600 12.5px var(--num); color: var(--dim); margin-top: 4px; padding-top: 12px; border-top: 1px dashed var(--line-2);
+}
+.drawer__body .sum .ok { color: var(--up); }
+
+/* ── responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .kpis { grid-template-columns: minmax(0,1fr); }
+  .grid2 { grid-template-columns: minmax(0,1fr); }
+  .kpi__value { font-size: 30px; }
+}
+
+@media (max-width: 560px) {
+  .topbar { padding: 12px 14px; gap: 10px; }
+  main { padding: 14px; gap: 10px; }
+  .foot { padding: 0 14px; flex-direction: column; gap: 4px; }
+  .period__b { height: 44px; min-height: 44px; padding: 0 12px; }
+  .proof { height: 44px; min-height: 44px; }
+  .drawer__close { width: 44px; height: 44px; }
+  .lineage-row, .rowbar__row, .finding__head { min-height: 44px; }
+  .drawer__panel { width: 100vw; }
+  .kpi__value { font-size: 26px; }
+  .brand__text b { font-size: 12.5px; }
+}
