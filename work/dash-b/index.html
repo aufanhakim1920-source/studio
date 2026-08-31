@@ -23,7 +23,10 @@
   <section class="hero">
     <div class="intro">
       <h1>The annual<br>skyline</h1>
-      <p>Thirteen months of revenue, built as a city. Turn the dial or pick a tower &mdash; the block you land on is what it earned.</p>
+      <!-- was a paragraph explaining the object. A daily reader does not need
+           telling what a dial is; three totals, each with the shape that made
+           it, do more work in a quarter of the space. -->
+      <div class="yearstats" id="yearStats"></div>
     </div>
 
     <div class="instrument">
@@ -33,7 +36,7 @@
           <div class="city" id="city" role="group" aria-label="Monthly revenue skyline, 13 buildings"></div>
         </div>
         <div class="floor-line" aria-hidden="true"></div>
-        <p class="plaque" id="plaque">38 MARKETS <span class="dim">·</span> UK 84.6% <span class="dim">/</span> REST OF WORLD 15.4% <span class="dim">·</span> &pound;10.64M TOTAL</p>
+        <div class="plaque" id="plaque"></div>
       </div>
 
       <div class="console">
@@ -79,7 +82,7 @@
               <span class="stat-value" id="rOrders">&mdash;</span>
             </div>
             <div class="stat">
-              <span class="stat-label">AVG ORDER</span>
+              <span class="stat-label" title="Average order value">AOV</span>
               <span class="stat-value" id="rAov">&mdash;</span>
             </div>
           </div>
@@ -90,14 +93,14 @@
   </section>
 
   <section class="findings">
-    <span class="kicker">WHAT MOVED IT</span>
+    <span class="kicker">FINDINGS</span>
     <div class="finding-grid" id="findingGrid"></div>
   </section>
 </main>
 
-<footer>
-  <p>Source: UCI Online Retail &mdash; a UK gift wholesaler. 524,878 rows kept of 541,909 raw; 9,251 cancelled invoices removed, not netted, so revenue here is gross. Final month is partial (9 days) and is marked, not smoothed.</p>
-</footer>
+<!-- The source note used to be four sentences. It is now the cleaning chain
+     drawn as one bar with three chips; the sentences live on in aria-label. -->
+<footer id="prov"></footer>
 
 <script src="app.js"></script>
 </body>

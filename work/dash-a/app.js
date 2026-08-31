@@ -69,6 +69,28 @@
     );
   }
 
+  // ── marks: the pictures that replaced the panel footnotes ─────────────
+  //    A dashboard's reader already knows what the numbers mean, so a
+  //    sentence explaining a ratio is dead weight — the ratio itself is the
+  //    mark. Every one of these carries the full sentence in aria-label, so
+  //    nothing is lost to a screen reader; only the on-screen prose goes.
+  function markBar(pct, aria, mod) {
+    return (
+      '<div class="mark__bar' + (mod ? " " + mod : "") + '" role="img" aria-label="' + esc(aria) + '">' +
+      '<span class="mark__seg" style="width:' + Math.min(pct, 100).toFixed(1) + '%"></span>' +
+      "</div>"
+    );
+  }
+  function markTrack(label, pct, valueText, aria) {
+    return (
+      '<div class="mark__track">' +
+      '<span class="mark__lab">' + esc(label) + "</span>" +
+      markBar(pct, aria) +
+      '<span class="mark__n">' + esc(valueText) + "</span>" +
+      "</div>"
+    );
+  }
+
   // ── tooltip ─────────────────────────────────────────────────────────
   const tip = $("#tip");
   let tipPinned = false;
@@ -212,11 +234,21 @@
         }) +
         kpiCard({
           label: "Home share", tag: "ALL-TIME", value: fmtPct(data.homeShare),
-          compare: homeRatio + "× next — " + esc(nextCountry.name) + " " + fmtPct(nextCountry.share),
+          chip: '<span class="kpi__chip flat">' + homeRatio + "×</span>",
+          mark: markBar(
+            data.homeShare,
+            "United Kingdom is " + fmtPct(data.homeShare) + " of revenue — " + homeRatio +
+            " times the next market, " + nextCountry.name + " at " + fmtPct(nextCountry.share),
+            "mark__bar--tall"
+          ),
         }) +
         kpiCard({
           label: "Repeat revenue", tag: "ALL-TIME", value: fmtPct(repeatRevenueShare),
-          compare: "vs " + fmtPct(repeatCustomerShare) + " of customers repeat",
+          mark:
+            markTrack("Rev", repeatRevenueShare, fmtPct(repeatRevenueShare),
+              "Repeat customers produce " + fmtPct(repeatRevenueShare) + " of attributable revenue") +
+            markTrack("Cust", repeatCustomerShare, fmtPct(repeatCustomerShare),
+              "Repeat customers are " + fmtPct(repeatCustomerShare) + " of identifiable customers"),
           limit: "25.2% rows unattributed",
         });
     }
@@ -224,7 +256,7 @@
     function kpiCard(cfg) {
       const rowInner = cfg.spark
         ? (cfg.chip || "") + '<span class="kpi__spark">' + cfg.spark + "</span>"
-        : '<span class="kpi__compare">' + (cfg.compare || "") + "</span>";
+        : (cfg.chip || "") + '<span class="kpi__mark">' + (cfg.mark || "") + "</span>";
       return (
         '<article class="kpi">' +
         '<div class="kpi__top"><span class="kpi__label">' + esc(cfg.label) + "</span>" +
@@ -264,8 +296,6 @@
       lab.textContent = monthShort(m.m);
       axisEl.appendChild(lab);
     });
-
-    $("#barFoot").textContent = "Shaded bar is the current period · hatched bar is partial, cut short by the data itself";
 
     function highlightWindow() {
       const cols = $$(".barcol", barEl);
@@ -312,7 +342,12 @@
     });
     renderRankList($("#countryList"), countryRows, { key: "country" });
     $("#countryCount").textContent = data.kpi.countries + " markets";
-    $("#countryFoot").textContent = "Top 7 = " + fmtPct(countrySum) + " of revenue · one market carries the page";
+    // was: "Top 7 = 96.0% of revenue · one market carries the page"
+    $("#countryFoot").innerHTML = markTrack(
+      "Top 7", countrySum, fmtPct(countrySum),
+      "The top seven markets are " + fmtPct(countrySum) + " of revenue; the remaining " +
+      (data.kpi.countries - topCountries.length) + " markets are " + fmtPct(restShare)
+    );
 
     const products = data.products.slice(0, 8);
     const productRows = products.map((p) => ({
@@ -322,12 +357,29 @@
     renderRankList($("#productList"), productRows, { key: "product" });
     // 230 of 4,026 SKUs / 50% — data.findings[0].detail
     $("#productCount").textContent = "4,026 SKUs";
-    $("#productFoot").textContent = "230 of 4,026 SKUs (5.7%) earn half of revenue";
+    // was: "230 of 4,026 SKUs (5.7%) earn half of revenue" — two tracks say it
+    // in one glance: a fifth of a bar's worth of catalogue against half a bar
+    // of revenue.
+    $("#productFoot").innerHTML =
+      markTrack("SKUs", 5.7, "5.7%", "230 of 4,026 stock lines — 5.7% of the catalogue") +
+      markTrack("Rev", 50, "50%", "Those 230 lines earn 50% of revenue");
 
-    // ── footer ──────────────────────────────────────────────────────
-    $("#footStats").textContent =
-      fmtInt(data.keptRows) + " rows kept of " + fmtInt(data.rawRows) +
-      " · gross revenue, cancellations excluded · data runs through " + partial.m + " (partial)";
+    // ── footer: the cleaning chain as one bar, not a sentence ──────────
+    const keptPct = (data.keptRows / data.rawRows) * 100;
+    $("#foot").innerHTML =
+      '<span class="mark__lab">Rows</span>' +
+      markBar(
+        keptPct,
+        fmtInt(data.keptRows) + " of " + fmtInt(data.rawRows) + " raw rows kept — " +
+        fmtInt(data.rawRows - data.keptRows) + " removed as duplicates, cancellations, " +
+        "non-positive quantity or non-positive price. Revenue is gross of returns and the " +
+        "data stops mid-" + partial.m + ", so the last month is partial.",
+        "mark__bar--wide"
+      ) +
+      // one wrapping unit, so a narrow phone never orphans the raw count on
+      // its own line under the bar
+      '<span class="foot__nums"><span class="mark__n">' + fmtInt(data.keptRows) + "</span>" +
+      '<span class="mark__n mark__n--raw">' + fmtInt(data.rawRows) + "</span></span>";
 
     // ── period control ─────────────────────────────────────────────
     $$(".seg__b").forEach((btn) => {

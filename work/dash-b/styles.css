@@ -121,12 +121,45 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   line-height: 1.02;
   margin: 0 0 14px;
 }
-.intro p{
-  margin: 0;
-  font-size: 14px;
-  color: var(--dim);
+/* ---------- year totals: three numbers, each with its own shape ----------
+   This block replaced the intro paragraph. Same slot, same width, no prose:
+   the label is one word, the value is the number, and the row of micro
+   towers is the month-by-month shape that produced it. */
+.yearstats{
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 38px);
   max-width: 46ch;
 }
+.ystat{ display: flex; flex-direction: column; gap: 5px; min-width: 96px; }
+.ystat__lab{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--dimmer);
+}
+.ystat__val{
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.microbars{
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 22px;
+  margin-top: 2px;
+}
+.microbars__b{
+  flex: 1 1 0;
+  min-width: 2px;
+  background: var(--tower-top);
+  border-radius: 1px 1px 0 0;
+}
+.microbars__b:last-child{ background: var(--amber-dim); }
 
 /* ---------- the instrument: skyline + console ---------- */
 .instrument{
@@ -276,6 +309,8 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   margin-top: 54px;
 }
 
+/* The plaque was a line of type listing 38 markets and a share. It is now
+   the share itself — one bar, two segments, a two-item key. */
 .plaque{
   margin: 14px 2px 0;
   font-family: var(--mono);
@@ -284,6 +319,29 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   color: var(--dim);
   text-transform: uppercase;
 }
+.sharebar{
+  display: flex;
+  height: 10px;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: var(--ground-2);
+  border: 1px solid var(--line);
+}
+.sharebar__seg{ display: block; height: 100%; }
+.sharebar__seg.is-home{ background: var(--amber); }
+.sharebar__seg.is-rest{ background: var(--tower-top); }
+.sharekey{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+.sharekey__i{ display: inline-flex; align-items: center; gap: 6px; }
+.sharekey .sw{
+  width: 9px; height: 9px; border-radius: 2px; flex: none;
+}
+.sharekey .sw.is-home{ background: var(--amber); }
+.sharekey .sw.is-rest{ background: var(--tower-top); }
 
 /* ---------- console: dial + readout ---------- */
 .console{
@@ -515,26 +573,79 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   letter-spacing: -0.02em;
   color: var(--amber);
 }
-.finding p{
-  margin: 0;
-  font-size: 13px;
+/* Each finding used to carry a sentence under its stat. It now carries the
+   bars the sentence was describing — same information, no reading. */
+.fbars{ display: flex; flex-direction: column; gap: 7px; max-width: 42ch; }
+.fbar{ display: flex; align-items: center; gap: 10px; }
+.fbar__lab{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
   color: var(--dim);
-  max-width: 42ch;
+  flex: 0 0 auto;
+  width: 3.6em;
+}
+.fbar__track{
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 9px;
+  border-radius: var(--r-pill);
+  background: var(--ground);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.fbar__fill{
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: block;
+  background: var(--amber);
+  border-radius: var(--r-pill);
+}
+.fbar--low .fbar__fill{ background: var(--tower-top); }
+.fbar__n{
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+  width: 5.2em;
+  text-align: right;
 }
 
+/* ---------- provenance strip: the source note, drawn ---------- */
 footer{
   max-width: 1180px;
   margin: clamp(36px, 6vw, 60px) auto 0;
   padding: 18px clamp(20px, 4vw, 56px) 40px;
-}
-footer p{
-  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
   font-family: var(--mono);
   font-size: 11px;
-  line-height: 1.6;
+  letter-spacing: 0.06em;
   color: var(--dimmer);
-  max-width: 74ch;
 }
+.prov__src{ color: var(--dim); }
+.prov__bar{
+  flex: 1 1 180px;
+  max-width: 320px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--ground-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.prov__kept{ display: block; height: 100%; background: var(--tower-top); }
+.prov__chip{
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 3px 9px;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.prov__chip--warn{ color: var(--amber); border-color: var(--amber-dim); }
 
 /* ---------- responsive ---------- */
 @media (max-width: 860px){

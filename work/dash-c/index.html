@@ -16,7 +16,7 @@
     <span class="brand__mark" aria-hidden="true"></span>
     <div class="brand__text">
       <b>Audit Desk</b>
-      <span class="mut">Wholesale · UK gift retailer</span>
+      <span class="mut" title="UK gift wholesaler">Wholesale</span>
     </div>
   </div>
 
@@ -41,10 +41,10 @@
   <section class="panel panel--wide">
     <div class="panel__head">
       <div>
-        <span class="lab">Revenue by month</span>
+        <span class="lab">Revenue</span>
         <span class="mut" id="revSub">—</span>
       </div>
-      <button class="proof" data-drill="lineage">Prove it <span aria-hidden="true">›</span></button>
+      <button class="proof" data-drill="lineage" aria-label="Prove it — open the full cleaning chain">›</button>
     </div>
     <div class="chartwrap">
       <svg id="revChart" viewBox="0 0 900 220" preserveAspectRatio="none" role="img" aria-labelledby="revChartT">
@@ -60,7 +60,9 @@
       </svg>
       <div class="xaxis" id="revAxis"></div>
     </div>
-    <p class="note" id="partialNote"></p>
+    <!-- was a 38-word note explaining the hatched bar. A swatch and the number
+         say the same thing; the sentence lives in the bar's own drawer. -->
+    <div class="legend" id="partialNote"></div>
   </section>
 
   <!-- ── who buys, what sells — bar sits behind the label, not beside it ──── -->
@@ -74,7 +76,7 @@
     </div>
     <div class="panel">
       <div class="panel__head">
-        <span class="lab">Top lines by revenue</span>
+        <span class="lab">Products</span>
         <span class="mut" id="prdSub">—</span>
       </div>
       <ul class="rowbars" id="products"></ul>
@@ -84,8 +86,7 @@
   <!-- ── the four things the data actually says, ranked by how sure we are ── -->
   <section class="panel panel--wide">
     <div class="panel__head">
-      <span class="lab">What the data says</span>
-      <span class="mut">4 findings</span>
+      <span class="lab">Findings</span>
     </div>
     <div class="findings" id="findings"></div>
   </section>
@@ -93,7 +94,7 @@
   <!-- ── the chain: every row, kept or thrown out, with a reason ──────────── -->
   <section class="panel panel--wide">
     <div class="panel__head">
-      <span class="lab">Where the numbers come from</span>
+      <span class="lab">Lineage</span>
       <span class="mut" id="lineageSub">—</span>
     </div>
     <div class="lineage-bar" id="lineageBar" role="img" aria-label="Rows kept versus rows removed, by reason"></div>
@@ -104,8 +105,7 @@
 </main>
 
 <footer class="foot">
-  <span>UCI Online Retail, 1 Dec 2010 – 9 Dec 2011</span>
-  <span class="mut">Every figure on this page opens to the rows that produced it.</span>
+  <span title="UCI Online Retail, 1 Dec 2010 – 9 Dec 2011">UCI ONLINE RETAIL</span>
 </footer>
 
 <!-- ── the mechanism: click any number, it opens here ──────────────────────── -->

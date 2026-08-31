@@ -24,6 +24,15 @@ function gbpAbbr(n) {
   return gbp(n);
 }
 function intFmt(n) { return Math.round(n).toLocaleString("en-GB"); }
+function attr(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+// Short rule names for the lineage list — one token each. The full label is
+// still what the drawer, the tooltip and the aria-label use.
+const SHORT_RULE = {
+  "Exact duplicate rows": "Duplicates",
+  "Cancelled invoices": "Cancelled",
+  "Non-positive quantity": "Qty≤0",
+  "Zero or negative price": "Price≤0"
+};
 function pct1(n) { return (n >= 0 ? "" : "") + n.toFixed(1) + "%"; }
 function sum(arr, key) { return arr.reduce((a, m) => a + m[key], 0); }
 
@@ -168,12 +177,12 @@ function init(data) {
       wrap.innerHTML = `
         <div class="kpi__top">
           <span class="kpi__label">${def.label}</span>
-          <button class="proof" data-kpi="${def.key}">Prove it <span aria-hidden="true">›</span></button>
+          <button class="proof" data-kpi="${def.key}" aria-label="Prove it — show the rows behind ${def.label}">›</button>
         </div>
         <div class="kpi__value">${def.fmt(curVal)}</div>
         ${delta === null
-          ? `<span class="kpi__delta flat">no prior ${currentN}M window</span>`
-          : `<span class="kpi__delta ${delta >= 0 ? "up" : "down"}">${delta >= 0 ? "▲" : "▼"} ${pct1(Math.abs(delta))} vs prior ${currentN}M</span>`}
+          ? `<span class="kpi__delta flat" role="img" aria-label="No prior ${currentN}-month window exists in this data">no prior</span>`
+          : `<span class="kpi__delta ${delta >= 0 ? "up" : "down"}" role="img" aria-label="${delta >= 0 ? "Up" : "Down"} ${pct1(Math.abs(delta))} versus the prior ${currentN} months">${delta >= 0 ? "▲" : "▼"} ${pct1(Math.abs(delta))}</span>`}
         <svg class="kpi__spark" viewBox="0 0 120 34" preserveAspectRatio="none">
           <path class="fill" d="${spark.fill}"></path>
           <path class="line" d="${spark.line}"></path>
@@ -237,10 +246,13 @@ function init(data) {
 
     revAxis.innerHTML = months.map(m => `<span>${monthLabelShort(m.m)}</span>`).join("");
 
+    // Sub-label and legend, not sentences. The full explanation of the hatched
+    // bar is one click away — every bar opens its own month detail.
     document.getElementById("revSub").textContent =
-      `${monthLabel(months[0].m)} – ${monthLabel(months[months.length - 1].m)} · last month drawn hatched, stops 9 Dec`;
-    document.getElementById("partialNote").textContent =
-      `${monthLabel(partial.m)} stops on 9 Dec — only ${gbpAbbr(partial.rev)} across ${intFmt(partial.orders)} orders in 9 days. It is excluded from every KPI above and drawn hatched here so the fall at the right edge doesn't read as a collapse.`;
+      `${monthLabelShort(months[0].m)}${months[0].m.slice(2, 4)}–${monthLabelShort(partial.m)}${partial.m.slice(2, 4)}`;
+    document.getElementById("partialNote").innerHTML =
+      `<span class="legend__i" role="img" aria-label="The hatched bar is ${monthLabel(partial.m)}, which stops on 9 December — only ${gbpAbbr(partial.rev)} across ${intFmt(partial.orders)} orders in nine days. It is excluded from every KPI above and drawn hatched so the fall at the right edge does not read as a collapse.">` +
+      `<i class="legend__sw" aria-hidden="true"></i>Partial <b>${gbpAbbr(partial.rev)}</b></span>`;
 
     revBars.querySelectorAll(".bar").forEach(el => {
       const bm = months.find(mm => mm.m === el.dataset.m);
@@ -292,15 +304,16 @@ function init(data) {
     const otherCount = data.kpi.countries - countries.length;
     const rows = [
       ...countries.map(c => ({ ...c, name: c.name })),
-      { name: `${otherCount} other markets`, rev: otherRev, orders: otherOrders, share: (otherRev / data.kpi.revenue) * 100, other: true }
+      { name: `${otherCount} others`, rev: otherRev, orders: otherOrders, share: (otherRev / data.kpi.revenue) * 100, other: true }
     ];
     renderRowbars(document.getElementById("markets"), rows, {
-      sub: r => intFmt(r.orders) + " ord",
+      // the unit word moved to the column header — printed once, not eight times
+      sub: r => intFmt(r.orders),
       label: r => `${r.name} — ${r.share.toFixed(1)}% of revenue, open market detail`,
       drawer: r => r.other ? `
         <span class="kicker">Remainder</span>
         <h3>${r.name}</h3>
-        <p class="lede">${data.kpi.countries} markets are served in total. The 7 named above are shown individually; everything else is summed here so the list stays short without hiding the total.</p>
+        <p class="lede">${otherCount} markets outside the seven named above. ${data.kpi.countries} markets are served in total; everything unnamed is summed here so the list stays short without hiding the total.</p>
         <div class="chain">
           <div class="chain-row"><div class="chain-row__n">${gbp(data.kpi.revenue)}</div><div class="chain-row__t"><b>All markets</b><span>Total clean revenue, 38 countries.</span></div></div>
           <div class="chain-row"><div class="chain-row__n">−${gbp(listedRev)}</div><div class="chain-row__t"><b>7 named markets</b><span>United Kingdom down to Spain, listed above by revenue.</span></div></div>
@@ -311,7 +324,8 @@ function init(data) {
         <p class="lede">${gbp(r.rev)} across ${intFmt(r.orders)} orders — ${r.share.toFixed(1)}% of all revenue.
         ${r.name === "United Kingdom" ? " This single market is 84.6% of the business; see the findings section for what that concentration means." : ` Home market (United Kingdom) alone is ${data.homeShare}% by comparison.`}</p>`
     });
-    document.getElementById("mktSub").textContent = `${data.kpi.countries} markets served`;
+    document.getElementById("mktSub").innerHTML =
+      `${data.kpi.countries} markets<span class="unit">Orders</span>`;
   }
 
   function renderProducts() {
@@ -319,10 +333,10 @@ function init(data) {
     const rows = products.map(p => ({
       name: p.name, rev: p.rev, orders: p.units, share: p.share,
       units: p.units,
-      tag: /postage/i.test(p.name) ? "FEE, NOT GOODS" : null
+      tag: /postage/i.test(p.name) ? "FEE" : null
     }));
     renderRowbars(document.getElementById("products"), rows, {
-      sub: r => intFmt(r.units) + " units",
+      sub: r => intFmt(r.units),
       label: r => `${r.name} — ${r.share.toFixed(1)}% of revenue, open product detail`,
       drawer: r => r.tag ? `
         <span class="kicker">Flagged line</span>
@@ -336,35 +350,92 @@ function init(data) {
         <h3>${r.name}</h3>
         <p class="lede">${gbp(r.rev)} from ${intFmt(r.units)} units sold — ${r.share.toFixed(1)}% of all revenue. 5.7% of the catalogue earns half of takings; this is one line inside that top slice.</p>`
     });
-    document.getElementById("prdSub").textContent = "top 8 lines, goods and fees";
+    document.getElementById("prdSub").innerHTML =
+      `<span title="top 8 lines, goods and fees">Top 8</span><span class="unit">Units</span>`;
   }
 
-  // ── findings ─────────────────────────────────────────────────────────
+  // ── findings: a stat and a mark on the board, the sentence in the drawer ──
+  //    A finding used to print its headline AND its detail AND its reasoning
+  //    AND its basis AND its action, all at rest — 278 words for four rows.
+  //    The board now shows what the finding IS (a number and the two bars that
+  //    make it); everything you'd READ is built the moment you open it. Same
+  //    information, and the collapsed page is scannable in a second.
   function renderFindings() {
     const el = document.getElementById("findings");
-    el.innerHTML = data.findings.map((f, i) => `
+    const pcts = s => (String(s).match(/[\d.]+(?=%)/g) || []).map(Number);
+
+    function markFor(f) {
+      // catalogue concentration — 5.7% of SKUs against 50% of revenue
+      if (/catalogue/i.test(f.headline)) {
+        const skuPct = pcts(f.headline)[0];
+        const revPct = pcts(f.detail)[0];
+        return { stat: skuPct + "%", bars: [
+          ["SKUs", skuPct, skuPct + "%", `230 of 4,026 stock lines — ${skuPct}% of the catalogue`],
+          ["Rev", revPct, revPct + "%", `Those ${skuPct}% of lines earn ${revPct}% of revenue`]
+        ]};
+      }
+      // market concentration — home market against the next one down
+      if (/one country/i.test(f.headline)) {
+        const home = data.countries[0], next = data.countries[1];
+        return { stat: home.share.toFixed(1) + "%", bars: [
+          ["UK", home.share, home.share.toFixed(1) + "%", `${home.name}: ${home.share}% of revenue, across ${data.kpi.countries} markets served`],
+          ["NL", next.share, next.share.toFixed(1) + "%", `${next.name}, the next market down: ${next.share}% of revenue`]
+        ]};
+      }
+      // repeat business — share of revenue against share of headcount
+      if (/repeat/i.test(f.headline)) {
+        const revPct = pcts(f.headline)[0];
+        const custPct = pcts(f.detail)[0];
+        return { stat: revPct + "%", bars: [
+          ["Rev", revPct, revPct + "%", `Repeat customers produce ${revPct}% of attributable revenue`],
+          ["Cust", custPct, custPct + "%", `Repeat customers are ${custPct}% of identifiable customers`]
+        ]};
+      }
+      // seasonality — best complete month against the worst
+      const peak = complete.reduce((a, b) => (b.rev > a.rev ? b : a));
+      const low = complete.reduce((a, b) => (b.rev < a.rev ? b : a));
+      return { stat: (peak.rev / low.rev).toFixed(1) + "×", bars: [
+        [monthLabelShort(peak.m), 100, gbpAbbr(peak.rev), `Peak month ${monthLabel(peak.m)} at ${gbp(peak.rev)}`],
+        [monthLabelShort(low.m), (low.rev / peak.rev) * 100, gbpAbbr(low.rev), `Lowest month ${monthLabel(low.m)} at ${gbp(low.rev)} — a hard autumn run-up into Christmas`]
+      ]};
+    }
+
+    el.innerHTML = data.findings.map((f, i) => {
+      const m = markFor(f);
+      return `
       <div class="finding" data-i="${i}">
         <div class="finding__head">
           <span class="finding__conf ${f.confidence}">${f.confidence}</span>
-          <div class="finding__text">
-            <div class="finding__headline">${f.headline}</div>
-            <div class="finding__detail">${f.detail}</div>
+          <span class="finding__stat">${m.stat}</span>
+          <div class="finding__mark">
+            ${m.bars.map(b => `
+              <div class="fbar">
+                <span class="fbar__lab">${b[0]}</span>
+                <span class="fbar__track" role="img" aria-label="${attr(b[3])}"><span class="fbar__fill" style="width:${Math.max(b[1], 2).toFixed(1)}%"></span></span>
+                <span class="fbar__n">${b[2]}</span>
+              </div>`).join("")}
           </div>
-          <span class="finding__toggle">▸</span>
+          <span class="finding__toggle" aria-hidden="true">▸</span>
         </div>
-        <div class="finding__why">
-          <div class="finding__why-in">
-            <p>${f.why}</p>
-            <div class="basis">Basis — ${f.basis}</div>
-            <div class="basis" style="color:var(--sig)">Action — ${f.action}</div>
-          </div>
-        </div>
-      </div>
-    `).join("");
+        <div class="finding__why"><div class="finding__why-in"></div></div>
+      </div>`;
+    }).join("");
+
     el.querySelectorAll(".finding").forEach((card, i) => {
+      const f = data.findings[i];
       const head = card.querySelector(".finding__head");
+      const body = card.querySelector(".finding__why-in");
       head.setAttribute("aria-expanded", "false");
-      makeActivatable(head, `Why: ${data.findings[i].headline}`, () => {
+      makeActivatable(head, `${f.headline}. ${f.detail} Open the reasoning.`, () => {
+        if (!body.dataset.built) {
+          body.innerHTML =
+            `<h4>${f.headline}</h4>` +
+            `<p class="detail">${f.detail}</p>` +
+            `<p>${f.why}</p>` +
+            `<div class="basis">Basis — ${f.basis}</div>` +
+            `<div class="basis basis--act">Action — ${f.action}</div>`;
+          body.dataset.built = "1";
+        }
         card.classList.toggle("is-open");
         head.setAttribute("aria-expanded", card.classList.contains("is-open") ? "true" : "false");
       });
@@ -390,10 +461,10 @@ function init(data) {
       <div class="lineage-seg ${s.kept ? "kept" : "cut"}" style="width:${(s.rows / total) * 100}%" data-label="${s.label}" title="${s.label}: ${intFmt(s.rows)} rows"></div>
     `).join("");
     list.innerHTML = segs.map(s => `
-      <li class="lineage-row" data-label="${s.label}">
+      <li class="lineage-row" data-label="${s.label}" title="${attr(s.label)}">
         <span class="lineage-row__sw ${s.kept ? "kept" : "cut"}"></span>
-        <span class="lineage-row__label">${s.label}</span>
-        <span class="lineage-row__n">${intFmt(s.rows)} rows</span>
+        <span class="lineage-row__label">${SHORT_RULE[s.label] || s.label}</span>
+        <span class="lineage-row__n">${intFmt(s.rows)}</span>
         <span class="lineage-row__pct">${((s.rows / total) * 100).toFixed(1)}%</span>
       </li>
     `).join("");
@@ -422,10 +493,14 @@ function init(data) {
       });
     });
 
-    document.getElementById("lineageSub").textContent =
-      `${intFmt(data.rawRows)} raw → ${intFmt(data.keptRows)} kept · ${intFmt(data.excludedTotal)} removed across 4 rules`;
+    const assertAria =
+      `${data.excluded.map(e => intFmt(e.rows)).join(" plus ")} equals ${intFmt(data.excludedTotal)}; ` +
+      `and ${intFmt(data.rawRows)} minus ${intFmt(data.keptRows)} also equals ${intFmt(data.excludedTotal)}. ` +
+      `The parts sum to the whole.`;
+    document.getElementById("lineageSub").innerHTML =
+      `<span title="${attr(intFmt(data.rawRows))} raw rows in, ${attr(intFmt(data.keptRows))} kept, ${attr(intFmt(data.excludedTotal))} removed across ${data.excluded.length} rules">${intFmt(data.rawRows)} → ${intFmt(data.keptRows)}</span>`;
     document.getElementById("assertLine").innerHTML =
-      `${data.excluded.map(e => intFmt(e.rows)).join(" + ")} = ${intFmt(data.excludedTotal)} &nbsp;·&nbsp; ${intFmt(data.rawRows)} − ${intFmt(data.keptRows)} = ${intFmt(data.excludedTotal)} <span class="ok">✓ the parts sum to the whole</span>`;
+      `<span role="img" aria-label="${attr(assertAria)}">${intFmt(data.excludedTotal)} = ${intFmt(data.excludedTotal)}</span> <span class="ok" aria-hidden="true">✓</span>`;
   }
 
   // ── revenue chart's own "prove it" button ──────────────────────────────
@@ -446,8 +521,9 @@ function init(data) {
   periodEl.querySelector('[data-n="12"]').classList.add("is-on");
 
   // ── header meta ──────────────────────────────────────────────────────
-  document.getElementById("asofText").textContent =
-    `as of 9 ${monthLabel(partial.m)} · ${months.length} months of data`;
+  const asof = document.getElementById("asofText");
+  asof.textContent = `9 ${monthLabel(partial.m)}`;
+  asof.setAttribute("title", `As of 9 ${monthLabel(partial.m)} · ${months.length} months of data`);
 
   // ── initial render ───────────────────────────────────────────────────
   renderKPIs();

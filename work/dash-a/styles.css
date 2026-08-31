@@ -175,7 +175,7 @@ body::before {
 .kpi__chip.flat { color: var(--mut); background: var(--panel-2); }
 .kpi__spark { flex: 1 1 auto; min-width: 0; height: 26px; }
 .kpi__spark svg { display: block; width: 100%; height: 100%; }
-.kpi__compare { font-size: 11px; color: var(--mut); }
+.kpi__mark { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .kpi__limit {
   font-size: 11px; color: var(--warn); background: #F4EAD8; border-radius: var(--r-pill);
   padding: 2px 7px; align-self: flex-start; white-space: nowrap;
@@ -190,7 +190,50 @@ body::before {
 .panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
 .panel__head h2 { font-size: 12px; font-weight: 600; margin: 0; letter-spacing: -0.005em; }
 .panel__hint { font-size: 11px; color: var(--dim); font-family: var(--mono); white-space: nowrap; }
-.panel__foot { font-size: 11px; color: var(--mut); margin: 8px 0 0; }
+
+/* ── marks: bars that replaced the panel footnotes ──────────────────────
+   Every sentence that used to sit under a panel is now the shape it was
+   describing. The words survive in aria-label, so the mark is not a
+   downgrade for anyone reading with a screen reader — it is only the
+   on-screen prose that goes. */
+.mark { margin-top: 9px; display: flex; flex-direction: column; gap: 5px; }
+.mark__track { display: flex; align-items: center; gap: 8px; }
+.mark__lab {
+  font: 600 11px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--dim); flex: 0 0 auto; min-width: 3.4em;
+}
+.mark__bar {
+  position: relative; flex: 1 1 auto; min-width: 0;
+  height: 8px; border-radius: var(--r-pill);
+  background: var(--bg-2); border: 1px solid var(--line);
+  overflow: hidden;
+}
+.mark__bar--tall { height: 12px; }
+.mark__bar--wide { max-width: 240px; }
+.mark__seg {
+  position: absolute; inset: 0 auto 0 0; display: block;
+  background: var(--acc); border-radius: var(--r-pill);
+}
+.mark__n {
+  font: 600 11px/1 var(--mono); color: var(--ink); flex: 0 0 auto;
+  min-width: 3.6em; text-align: right;
+}
+.mark__n--raw { color: var(--dim); font-weight: 400; }
+
+/* legend: two swatches instead of "shaded bar is the current period …" */
+.legend { display: flex; gap: 14px; margin-top: 8px; }
+.legend__item {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 600 11px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--dim);
+}
+.legend__sw { width: 11px; height: 11px; border-radius: 2px; flex: 0 0 auto; }
+.legend__sw--win { background: var(--acc); }
+.legend__sw--part {
+  background-color: var(--dim);
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 3px, transparent 3px 6px);
+  border: 1px dashed var(--mut);
+}
 
 /* ── bar chart: plain divs, height = %, texture on the partial bar ─────── */
 .barchart {
@@ -277,8 +320,13 @@ body::before {
 /* ── footer ──────────────────────────────────────────────────────────── */
 .foot {
   margin-top: var(--gap);
-  font-size: 11px; color: var(--dim); text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex-wrap: wrap;
+  font-size: 11px; color: var(--dim);
 }
+.foot .mark__bar { flex: 0 1 240px; }
+.foot__nums { display: inline-flex; align-items: center; gap: 8px; }
+.foot .mark__n { min-width: 0; text-align: left; }
 
 /* ── tooltip ─────────────────────────────────────────────────────────── */
 .tip {

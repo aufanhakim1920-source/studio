@@ -39,7 +39,10 @@
       </div>
       <div class="barchart" id="barchart"></div>
       <div class="barchart__axis" id="barchartAxis"></div>
-      <p class="panel__foot" id="barFoot"></p>
+      <div class="legend">
+        <span class="legend__item"><i class="legend__sw legend__sw--win" aria-hidden="true"></i>Period</span>
+        <span class="legend__item"><i class="legend__sw legend__sw--part" aria-hidden="true"></i>Partial</span>
+      </div>
     </section>
 
     <section class="lists">
@@ -49,7 +52,7 @@
           <span class="panel__hint" id="countryCount">—</span>
         </div>
         <div class="ranklist" id="countryList"></div>
-        <p class="panel__foot" id="countryFoot"></p>
+        <div class="mark" id="countryFoot"></div>
       </div>
 
       <div class="panel" aria-label="Top products">
@@ -58,15 +61,13 @@
           <span class="panel__hint" id="productCount">—</span>
         </div>
         <div class="ranklist" id="productList"></div>
-        <p class="panel__foot" id="productFoot"></p>
+        <div class="mark" id="productFoot"></div>
       </div>
     </section>
 
   </main>
 
-  <footer class="foot">
-    <span id="footStats">—</span>
-  </footer>
+  <footer class="foot" id="foot"></footer>
 
 </div>
 

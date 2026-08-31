@@ -199,12 +199,14 @@ main {
 .kpi__spark path.fill { fill: var(--sig-dim); }
 .kpi__spark path.line { fill: none; stroke: var(--sig); stroke-width: 1.6; }
 
+/* "Prove it" is now the affordance without the words: a chevron disc. The
+   phrase survives as the button's accessible name. */
 .proof {
-  font: 600 11px/1 var(--num); letter-spacing: .06em; text-transform: uppercase;
+  font: 600 15px/1 var(--num);
   color: var(--sig); background: transparent; border: 1px solid rgba(224,160,48,.35);
-  border-radius: var(--r-pill); padding: 0 12px; height: 30px; min-height: 30px;
+  border-radius: var(--r-pill); padding: 0; width: 30px; height: 30px; min-height: 30px;
   cursor: pointer; transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
-  display: inline-flex; align-items: center; gap: 4px;
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
 }
 .proof:hover { background: var(--sig-dim); }
 .kpi .proof { align-self: flex-start; }
@@ -231,7 +233,26 @@ main {
   letter-spacing: -.01em; color: var(--dim); text-transform: uppercase;
 }
 
-.note { margin-top: 10px; font-size: 12px; color: var(--dim); line-height: 1.5; max-width: 62ch; }
+/* legend replaces the 38-word note under the chart */
+.legend { margin-top: 10px; display: flex; gap: 14px; }
+.legend__i {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: 600 11px/1 var(--num); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim);
+}
+.legend__i b { color: var(--mut); font-weight: 700; }
+.legend__sw {
+  width: 11px; height: 11px; border-radius: 2px; flex: none;
+  background-color: #3a332a;
+  background-image: repeating-linear-gradient(45deg, transparent 0 2px, #6b6055 2px 3.4px);
+}
+
+/* the unit word printed once, as a column header, instead of on every row */
+.unit {
+  margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--line);
+  font: 600 11px/1 var(--num); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim-2);
+}
 
 /* ── row-bar lists — the bar sits BEHIND the label, not beside it ─────────── */
 
@@ -285,24 +306,55 @@ main {
 .finding__conf.high   { color: var(--sig); border: 1px solid rgba(224,160,48,.4); }
 .finding__conf.medium { color: var(--dim); border: 1px solid var(--line-2); }
 
-.finding__text { flex: 1 1 auto; min-width: 0; }
-.finding__headline { font-size: 14px; font-weight: 600; letter-spacing: -.005em; }
-.finding__detail { font-size: 12.5px; color: var(--mut); margin-top: 3px; line-height: 1.5; }
+/* the stat and the mark — what the collapsed card shows instead of a sentence */
+.finding__head { align-items: center; }
+.finding__stat {
+  flex: none; width: 4.4em;
+  font: 300 26px/1 var(--num); letter-spacing: -.02em; color: var(--ink);
+}
+.finding__mark { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.fbar { display: flex; align-items: center; gap: 10px; }
+.fbar__lab {
+  flex: none; width: 3.6em;
+  font: 600 11px/1 var(--num); letter-spacing: .1em; text-transform: uppercase; color: var(--dim);
+}
+.fbar__track {
+  position: relative; flex: 1 1 auto; min-width: 60px;
+  height: 9px; border-radius: var(--r-pill);
+  background: var(--bg-2); border: 1px solid var(--line); overflow: hidden;
+}
+.fbar__fill {
+  position: absolute; inset: 0 auto 0 0; display: block;
+  background: var(--sig); border-radius: var(--r-pill);
+}
+.fbar:last-child .fbar__fill { background: var(--dim); }
+.fbar__n {
+  flex: none; width: 5em; text-align: right;
+  font: 600 12.5px var(--num); color: var(--ink);
+}
+
 .finding__toggle { flex: none; font: 600 11px var(--num); color: var(--dim); align-self: center; transition: transform var(--t-fast) var(--ease); }
 .finding.is-open .finding__toggle { transform: rotate(90deg); color: var(--sig); }
 
+/* The read-mode surface. Its contents are built on first open, so the board
+   itself carries none of this text at rest. */
 .finding__why {
   max-height: 0; overflow: hidden; transition: max-height var(--t-med) var(--ease);
   border-top: 1px solid var(--line);
 }
-.finding.is-open .finding__why { max-height: 220px; }
+.finding.is-open .finding__why { max-height: 640px; }
 .finding__why-in { padding: 14px; }
-.finding__why-in p {
-  font: 400 15.5px/1.6 var(--read); color: var(--ink); max-width: 68ch;
+.finding__why-in h4 {
+  font: 600 15px/1.35 var(--ui); color: var(--ink); margin-bottom: 6px; letter-spacing: -.005em;
 }
+.finding__why-in p {
+  font: 400 15.5px/1.6 var(--read); color: var(--ink); max-width: 68ch; margin-top: 8px;
+}
+.finding__why-in p.detail { color: var(--mut); font-size: 14.5px; margin-top: 0; }
 .finding__why-in .basis {
   margin-top: 10px; font: 600 11px var(--num); letter-spacing: .04em; text-transform: uppercase; color: var(--dim);
 }
+.finding__why-in .basis--act { color: var(--sig); }
 
 /* ── lineage ────────────────────────────────────────────────────────────── */
 
@@ -404,12 +456,25 @@ main {
   .kpi__value { font-size: 30px; }
 }
 
+/* Narrow: the mark drops to its own full-width row under the stat. Squeezed
+   into the same line, a 60px track can't show a 2.7% bar at all — which is
+   exactly the information the card exists to carry. */
+@media (max-width: 760px) {
+  .finding__head { flex-wrap: wrap; row-gap: 10px; }
+  .finding__stat { width: auto; }
+  .finding__mark { flex: 1 1 100%; order: 3; }
+  .finding__toggle { order: 2; margin-left: auto; }
+}
+
 @media (max-width: 560px) {
   .topbar { padding: 12px 14px; gap: 10px; }
   main { padding: 14px; gap: 10px; }
   .foot { padding: 0 14px; flex-direction: column; gap: 4px; }
   .period__b { height: 44px; min-height: 44px; padding: 0 12px; }
-  .proof { height: 44px; min-height: 44px; }
+  .proof { width: 44px; height: 44px; min-height: 44px; }
+  .finding__stat { width: 3.6em; font-size: 22px; }
+  .fbar__lab { width: 3em; }
+  .fbar__n { width: 4.4em; font-size: 12px; }
   .drawer__close { width: 44px; height: 44px; }
   .lineage-row, .rowbar__row, .finding__head { min-height: 44px; }
   .drawer__panel { width: 100vw; }

@@ -12,6 +12,35 @@
   const fmtAov = (n) => `£${Math.round(n).toLocaleString('en-GB')}`;
 
   const $ = (sel) => document.querySelector(sel);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // Short market codes so a bar's label stays one token. The full name always
+  // survives in the mark's aria-label.
+  const SHORT = { 'United Kingdom': 'UK', 'Netherlands': 'NL', 'Germany': 'DE', 'France': 'FR', 'Australia': 'AU', 'Spain': 'ES' };
+  const shortName = (n) => SHORT[n] || n;
+
+  // A row of tiny towers — the same object as the skyline, shrunk to a mark.
+  // Used wherever a sentence used to describe a shape.
+  function microBars(vals, aria) {
+    const max = Math.max(...vals);
+    return (
+      '<div class="microbars" role="img" aria-label="' + esc(aria) + '">' +
+      vals.map((v) => '<span class="microbars__b" style="height:' + Math.max((v / max) * 100, 7).toFixed(1) + '%"></span>').join('') +
+      '</div>'
+    );
+  }
+
+  // A labelled comparison bar: label · track · value. Replaces a clause.
+  function compareBar(label, pctOfMax, valueText, aria, mod) {
+    return (
+      '<div class="fbar' + (mod ? ' ' + mod : '') + '">' +
+      '<span class="fbar__lab">' + esc(label) + '</span>' +
+      '<span class="fbar__track" role="img" aria-label="' + esc(aria) + '">' +
+      '<span class="fbar__fill" style="width:' + Math.max(pctOfMax, 2).toFixed(1) + '%"></span></span>' +
+      '<span class="fbar__n">' + esc(valueText) + '</span>' +
+      '</div>'
+    );
+  }
 
   fetch('data.json')
     .then((r) => r.json())
@@ -149,16 +178,22 @@
         rBadge.hidden = true;
       }
 
+      // The chip is read as an image so the words it dropped ("vs prior month")
+      // are still announced — they just are not printed.
+      rDelta.setAttribute('role', 'img');
       if (m.partial) {
-        rDelta.textContent = `9 days only — not comparable`;
+        rDelta.textContent = `9 DAYS`;
+        rDelta.setAttribute('aria-label', 'Nine days of data only — not comparable to a full month');
         rDelta.className = 'delta flat';
       } else if (m.first) {
-        rDelta.textContent = `first month on record`;
+        rDelta.textContent = `FIRST`;
+        rDelta.setAttribute('aria-label', 'First month on record — no prior month to compare against');
         rDelta.className = 'delta flat';
       } else {
         const d = m.deltaPct;
         const arrow = d >= 0 ? '▲' : '▼';
-        rDelta.textContent = `${arrow} ${Math.abs(d).toFixed(1)}% vs prior month`;
+        rDelta.textContent = `${arrow} ${Math.abs(d).toFixed(1)}%`;
+        rDelta.setAttribute('aria-label', `${d >= 0 ? 'Up' : 'Down'} ${Math.abs(d).toFixed(1)} percent versus the prior month`);
         rDelta.className = 'delta ' + (d > 0.4 ? 'up' : d < -0.4 ? 'down' : 'flat');
       }
 
@@ -223,36 +258,91 @@
     setRotatorAngle(rotation, false);
     selectMonth(peakIndex, { snap: false });
 
-    // ---- plaque ----
-    const plaque = $('#plaque');
-    if (plaque) {
-      const rest = (100 - data.homeShare).toFixed(1);
-      plaque.innerHTML =
-        `${data.kpi.countries} MARKETS <span class="dim">·</span> ` +
-        `UK ${data.homeShare}% <span class="dim">/</span> REST OF WORLD ${rest}% ` +
-        `<span class="dim">·</span> ${fmtRevenue(data.kpi.revenue)} TOTAL`;
+    // ---- year totals: three numbers, each with the 13-month shape ----
+    const yearStats = $('#yearStats');
+    if (yearStats) {
+      const rows = [
+        { lab: 'TOTAL', val: fmtRevenue(data.kpi.revenue), series: months.map((m) => m.rev),
+          aria: `Total revenue ${fmtRevenue(data.kpi.revenue)} across thirteen months, month by month` },
+        { lab: 'ORDERS', val: fmtOrders(data.kpi.orders), series: months.map((m) => m.orders),
+          aria: `${fmtOrders(data.kpi.orders)} orders across thirteen months, month by month` },
+        { lab: 'AOV', val: fmtAov(data.kpi.aov), series: months.map((m) => m.aov),
+          aria: `Average order value ${fmtAov(data.kpi.aov)} across thirteen months, month by month` },
+      ];
+      yearStats.innerHTML = rows.map((r) =>
+        `<div class="ystat"><span class="ystat__lab">${r.lab}</span>` +
+        `<span class="ystat__val">${r.val}</span>${microBars(r.series, r.aria)}</div>`
+      ).join('');
     }
 
-    // ---- findings: pulled verbatim from the data, not invented ----
+    // ---- plaque: the concentration finding, drawn instead of written ----
+    const plaque = $('#plaque');
+    if (plaque) {
+      const rest = +(100 - data.homeShare).toFixed(1);
+      const others = data.kpi.countries - 1;
+      plaque.innerHTML =
+        `<div class="sharebar" role="img" aria-label="United Kingdom is ${data.homeShare} percent of revenue; the other ${others} markets together are ${rest} percent; ${data.kpi.countries} markets served; ${fmtRevenue(data.kpi.revenue)} total">` +
+        `<span class="sharebar__seg is-home" style="width:${data.homeShare}%"></span>` +
+        `<span class="sharebar__seg is-rest" style="width:${rest}%"></span></div>` +
+        `<div class="sharekey">` +
+        `<span class="sharekey__i"><i class="sw is-home" aria-hidden="true"></i>UK ${data.homeShare}%</span>` +
+        `<span class="sharekey__i"><i class="sw is-rest" aria-hidden="true"></i>${data.kpi.countries} markets ${rest}%</span>` +
+        `</div>`;
+    }
+
+    // ---- findings: a stat and a mark, never a paragraph ----
     const grid = $('#findingGrid');
-    if (grid && Array.isArray(data.findings)) {
-      const wanted = [
-        (f) => /one country/i.test(f.headline),
-        (f) => /2\.9x/i.test(f.headline),
-      ];
-      wanted.forEach((match) => {
-        const f = data.findings.find(match);
-        if (!f) return;
-        const card = document.createElement('article');
-        card.className = 'finding';
-        const stat = f.headline.match(/[\d.]+[x%]/i);
-        const h2 = document.createElement('h2');
-        h2.textContent = stat ? stat[0].toUpperCase() : f.headline;
-        const p = document.createElement('p');
-        p.textContent = f.detail;
-        card.append(h2, p);
-        grid.appendChild(card);
-      });
+    if (grid) {
+      const top3 = data.countries.slice(0, 3);
+      const concentration =
+        `<article class="finding">` +
+        `<h2>${data.homeShare}%</h2>` +
+        `<div class="fbars">` +
+        top3.map((c) => compareBar(
+          shortName(c.name),
+          (c.share / top3[0].share) * 100,
+          c.share.toFixed(1) + '%',
+          `${c.name}: ${c.share.toFixed(1)} percent of revenue`
+        )).join('') +
+        `</div></article>`;
+
+      const full = months.filter((m) => !m.partial);
+      const peak = full.reduce((a, b) => (b.rev > a.rev ? b : a));
+      const low = full.reduce((a, b) => (b.rev < a.rev ? b : a));
+      const ratio = (peak.rev / low.rev).toFixed(1);
+      const seasonality =
+        `<article class="finding">` +
+        `<h2>${ratio}&times;</h2>` +
+        `<div class="fbars">` +
+        compareBar(fmtMonth(peak.m).split(' ')[0], 100, fmtRevenue(peak.rev),
+          `Peak month ${fmtMonth(peak.m)} at ${fmtRevenue(peak.rev)}`) +
+        compareBar(fmtMonth(low.m).split(' ')[0], (low.rev / peak.rev) * 100, fmtRevenue(low.rev),
+          `Lowest month ${fmtMonth(low.m)} at ${fmtRevenue(low.rev)} — the peak is ${ratio} times it, a hard autumn run-up into Christmas`,
+          'fbar--low') +
+        `</div></article>`;
+
+      grid.innerHTML = concentration + seasonality;
+    }
+
+    // ---- provenance: the cleaning chain as a bar, not four sentences ----
+    const prov = $('#prov');
+    if (prov) {
+      const keptPct = (data.keptRows / data.rawRows) * 100;
+      const cancelled = (data.excluded.find((e) => /cancel/i.test(e.label)) || { rows: 0 }).rows;
+      const provAria =
+        `${fmtOrders(data.keptRows)} of ${fmtOrders(data.rawRows)} raw rows kept; ` +
+        `${fmtOrders(data.excludedTotal)} removed — ` +
+        data.excluded.map((e) => `${fmtOrders(e.rows)} ${e.label.toLowerCase()}`).join(', ') +
+        `. Cancelled invoices were removed rather than netted off, so revenue here is gross. ` +
+        `The final month is nine days and is drawn hatched, not smoothed. ` +
+        `Source: UCI Online Retail, a UK gift wholesaler.`;
+      prov.innerHTML =
+        `<span class="prov__src">UCI ONLINE RETAIL</span>` +
+        `<div class="prov__bar" role="img" aria-label="${esc(provAria)}">` +
+        `<span class="prov__kept" style="width:${keptPct.toFixed(1)}%"></span></div>` +
+        `<span class="prov__chip">${fmtOrders(data.keptRows)} KEPT</span>` +
+        `<span class="prov__chip">${fmtOrders(cancelled)} CANCELLED</span>` +
+        `<span class="prov__chip prov__chip--warn">GROSS</span>`;
     }
   }
 })();
