@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fathom — tide and swell for people who get in</title>
+<meta name="description" content="Concept forecasting product. Swim, dive or fish — the same physics, scored three different ways.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="has-mobile-sheet">
+
+<header class="site">
+  <div class="wrap header-row">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 10c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+      </span>
+      <span class="brand-name">FATHOM</span>
+      <span class="brand-tag">CONCEPT</span>
+    </div>
+    <nav class="nav-pills" aria-label="Section">
+      <button class="nav-pill is-active" data-scroll="#forecast">Forecast</button>
+      <button class="nav-pill" data-scroll="#pricing">Pricing</button>
+    </nav>
+    <button class="btn-get" data-scroll="#pricing">Get Fathom</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================ HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top" data-rise>
+        <span class="spot-tag"><span class="dot"></span> Bondi Beach, NSW · today</span>
+      </div>
+
+      <h1 data-rise data-stagger style="--stagger-delay:40ms"><span class="hero-clip" data-rise>Know when<br>the water is calm</span></h1>
+
+      <div class="hero-sub" data-rise data-stagger style="--stagger-delay:90ms">
+        Tide and swell forecasting for people who get in the water — swim, dive or fish, scored separately from the same physics
+      </div>
+
+      <div class="hero-actions" data-rise data-stagger style="--stagger-delay:140ms">
+        <button class="btn-primary" data-scroll="#scores">See today's scores</button>
+        <button class="btn-ghost" data-scroll="#numbers">The numbers</button>
+      </div>
+
+      <div class="tide-panel" data-rise data-stagger style="--stagger-delay:180ms">
+        <div class="tide-panel-head">
+          <h2>Tide, next 24 hours</h2>
+          <span class="tide-now-readout">5:40 AM · falling</span>
+        </div>
+        <div class="tide-chart-wrap">
+          <svg class="tide-chart" viewBox="0 0 720 124" preserveAspectRatio="none" role="img" aria-label="Tide height over the next 24 hours: high around 3:00 AM, low around 10:30 AM, high again around 3:30 PM within about 4 minutes of the official tables, now falling at 5:40 AM">
+            <defs>
+              <linearGradient id="tideGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0FB88A" stop-opacity=".35"/>
+                <stop offset="100%" stop-color="#0FB88A" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path class="tide-fill" d="M 6 87.5 L 20.8 73 L 35.5 57.2 L 50.3 42 L 65 29.4 L 79.8 20.9 L 94.5 17.3 L 109.3 18.7 L 124 24.5 L 138.8 33.4 L 153.5 43.8 L 168.3 54.5 L 183 64.3 L 197.8 72.7 L 212.5 80 L 227.3 86.4 L 242 92.5 L 256.8 98.6 L 271.5 104.8 L 286.3 110.4 L 301 114.6 L 315.8 116.1 L 330.5 113.9 L 345.3 107.4 L 360 96.8 L 374.8 82.7 L 389.5 66.8 L 404.3 50.8 L 419 36.9 L 433.8 26.5 L 448.5 20.7 L 463.3 19.8 L 478 23.1 L 492.8 29.6 L 507.5 37.9 L 522.3 46.8 L 537 55.3 L 551.8 63.1 L 566.5 70.2 L 581.3 77.2 L 596 84.4 L 610.8 92.2 L 625.5 100.4 L 640.3 108.4 L 655 115 L 669.8 118.9 L 684.5 118.9 L 699.3 114.4 L 714 105.2 L 714 124 L 6 124 Z"/>
+            <path id="tideLine" class="tide-line" d="M 6 87.5 L 20.8 73 L 35.5 57.2 L 50.3 42 L 65 29.4 L 79.8 20.9 L 94.5 17.3 L 109.3 18.7 L 124 24.5 L 138.8 33.4 L 153.5 43.8 L 168.3 54.5 L 183 64.3 L 197.8 72.7 L 212.5 80 L 227.3 86.4 L 242 92.5 L 256.8 98.6 L 271.5 104.8 L 286.3 110.4 L 301 114.6 L 315.8 116.1 L 330.5 113.9 L 345.3 107.4 L 360 96.8 L 374.8 82.7 L 389.5 66.8 L 404.3 50.8 L 419 36.9 L 433.8 26.5 L 448.5 20.7 L 463.3 19.8 L 478 23.1 L 492.8 29.6 L 507.5 37.9 L 522.3 46.8 L 537 55.3 L 551.8 63.1 L 566.5 70.2 L 581.3 77.2 L 596 84.4 L 610.8 92.2 L 625.5 100.4 L 640.3 108.4 L 655 115 L 669.8 118.9 L 684.5 118.9 L 699.3 114.4 L 714 105.2"/>
+            <circle class="tide-mark-dot" cx="94.5" cy="17.3" r="2.6"/>
+            <circle class="tide-mark-dot" cx="315.8" cy="116.1" r="2.6"/>
+            <circle class="tide-mark-dot" cx="463.3" cy="19.8" r="2.6"/>
+            <circle class="tide-now-ring" cx="173.2" cy="57.8" r="6"/>
+            <circle class="tide-now-dot" cx="173.2" cy="57.8" r="3"/>
+          </svg>
+          <!-- labels as real HTML, positioned from the same computed points, so
+               they stay true CSS pixels at every width instead of scaling with
+               the viewBox (a 9px SVG <text> shrinks well under 11px on a phone) -->
+          <div class="tide-marks" aria-hidden="true">
+            <span class="tide-label" style="left:13.1%; top:14%">HIGH 3:00 AM</span>
+            <span class="tide-label below" style="left:43.9%; top:93.6%">LOW 10:30 AM</span>
+            <span class="tide-label" style="left:64.3%; top:16%">HIGH 3:30 PM</span>
+            <span class="tide-bracket-label" style="left:64.3%; top:16%">±4 MIN VS OFFICIAL TABLES</span>
+            <span class="tide-label now" style="left:24.1%; top:46.6%">NOW</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ THE THREE SCORES -->
+  <section id="scores">
+    <div class="wrap">
+      <div class="section-head" data-rise>
+        <span class="eyebrow">One forecast, three readings</span>
+        <h2 class="section-title">Same physics, different verdicts</h2>
+        <div class="section-sub">A surfer wants wave height — you don't, so Fathom reads the same model for what you're actually doing</div>
+      </div>
+
+      <div class="activity-toggle" role="group" aria-label="Choose activity" data-rise>
+        <button class="activity-btn" data-activity="swim" aria-pressed="true">Swim</button>
+        <button class="activity-btn" data-activity="dive" aria-pressed="false">Dive</button>
+        <button class="activity-btn" data-activity="fish" aria-pressed="false">Fish</button>
+      </div>
+
+      <div class="score-grid" data-rise data-reveal="scores">
+        <div class="score-card" data-score-card="swim">
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 76 76">
+              <circle class="score-ring-track" cx="38" cy="38" r="32"/>
+              <circle class="score-ring-val" data-final="36.2" cx="38" cy="38" r="32" stroke="#0FB88A" stroke-dasharray="201.1" stroke-dashoffset="36.2"/>
+            </svg>
+            <span class="score-ring-num">82</span>
+          </div>
+          <div class="score-body">
+            <span class="score-activity">Swim</span>
+            <div class="score-band b-good">Calm</div>
+            <div class="score-reason">Low chop, slack tide near 7am</div>
+          </div>
+        </div>
+
+        <div class="score-card" data-score-card="dive">
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 76 76">
+              <circle class="score-ring-track" cx="38" cy="38" r="32"/>
+              <circle class="score-ring-val" data-final="72.4" cx="38" cy="38" r="32" stroke="#C68A2E" stroke-dasharray="201.1" stroke-dashoffset="72.4"/>
+            </svg>
+            <span class="score-ring-num">64</span>
+          </div>
+          <div class="score-body">
+            <span class="score-activity">Dive</span>
+            <div class="score-band b-mid">Marginal</div>
+            <div class="score-reason">Vis dropping, moderate groundswell</div>
+          </div>
+        </div>
+
+        <div class="score-card" data-score-card="fish">
+          <div class="score-ring-wrap">
+            <svg viewBox="0 0 76 76">
+              <circle class="score-ring-track" cx="38" cy="38" r="32"/>
+              <circle class="score-ring-val" data-final="18.1" cx="38" cy="38" r="32" stroke="#0FB88A" stroke-dasharray="201.1" stroke-dashoffset="18.1"/>
+            </svg>
+            <span class="score-ring-num">91</span>
+          </div>
+          <div class="score-body">
+            <span class="score-activity">Fish</span>
+            <div class="score-band b-good">Strong bite window</div>
+            <div class="score-reason">Light wind, tide turning at dawn</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ 7-DAY FORECAST -->
+  <section id="forecast">
+    <div class="wrap">
+      <div class="section-head" data-rise>
+        <span class="eyebrow">Next 7 days</span>
+        <h2 class="section-title">This week, at a glance</h2>
+        <div class="section-sub" id="forecastSub">Swim score, one bar per day — tap Dive or Fish above to switch it</div>
+      </div>
+
+      <div class="forecast-scroll" data-rise data-reveal="forecast" id="forecastRow">
+        <div class="day-chip is-today"><span class="day-label">Today</span><div class="day-bar-track"><div class="forecast-bar" style="height:43.7px; background:#0FB88A"></div></div><span class="day-score">82</span></div>
+        <div class="day-chip"><span class="day-label">Tomorrow</span><div class="day-bar-track"><div class="forecast-bar" style="height:40.5px; background:#0FB88A"></div></div><span class="day-score">75</span></div>
+        <div class="day-chip"><span class="day-label">Wed</span><div class="day-bar-track"><div class="forecast-bar" style="height:24.4px; background:#B2543D"></div></div><span class="day-score">40</span></div>
+        <div class="day-chip"><span class="day-label">Thu</span><div class="day-bar-track"><div class="forecast-bar" style="height:31.3px; background:#C68A2E"></div></div><span class="day-score">55</span></div>
+        <div class="day-chip"><span class="day-label">Fri</span><div class="day-bar-track"><div class="forecast-bar" style="height:47.4px; background:#0FB88A"></div></div><span class="day-score">90</span></div>
+        <div class="day-chip"><span class="day-label">Sat</span><div class="day-bar-track"><div class="forecast-bar" style="height:37.3px; background:#C68A2E"></div></div><span class="day-score">68</span></div>
+        <div class="day-chip"><span class="day-label">Sun</span><div class="day-bar-track"><div class="forecast-bar" style="height:46.5px; background:#0FB88A"></div></div><span class="day-score">88</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ NUMBERS BAND -->
+  <section id="numbers" class="numbers">
+    <div class="wrap">
+      <div class="section-head" data-rise>
+        <span class="eyebrow">What's under the hood</span>
+        <h2 class="section-title">The numbers, and what they're checked against</h2>
+      </div>
+
+      <div class="stat-grid" data-rise data-reveal="numbers">
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="1,840"></div>
+          <span class="stat-cmp">Beaches covered · <b>vs 1</b> on the free tier</span>
+        </div>
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="7"></div>
+          <span class="stat-cmp">Day forecast horizon</span>
+          <div class="ratio-bar" style="max-width:110px"><span class="ratio-bar-fill" data-ratio="42.8" style="width:42.8%"></span></div>
+          <span class="stat-cmp">Tide gets 3 · Fathom gets 7</span>
+        </div>
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="15"></div>
+          <span class="stat-cmp">Minute update interval · <b>96</b> refreshes a day</span>
+        </div>
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="4"></div>
+          <span class="stat-cmp">Data sources blended</span>
+          <div class="ratio-bar" style="display:flex; gap:2px; background:none; max-width:140px">
+            <span class="ratio-bar-fill" style="width:24.5%; opacity:.9"></span>
+            <span class="ratio-bar-fill" style="width:24.5%; opacity:.7"></span>
+            <span class="ratio-bar-fill" style="width:24.5%; opacity:.5"></span>
+            <span class="ratio-bar-fill" style="width:24.5%; opacity:.3"></span>
+          </div>
+          <span class="stat-cmp">Tide · swell · wind · water temp</span>
+        </div>
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="±4"></div>
+          <span class="stat-cmp">Minutes, tide accuracy · <b>vs official</b> tide tables</span>
+        </div>
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="23,400"></div>
+          <span class="stat-cmp">Swimmers using it · <b>~13</b> per beach tracked</span>
+        </div>
+
+        <div class="stat-tile">
+          <div class="stat-figure" data-figure="61"></div>
+          <span class="stat-cmp">Mornings it said don't, last year</span>
+          <div class="ratio-bar"><span class="ratio-bar-fill" data-ratio="16.7" style="width:16.7%; background:#C68A2E"></span></div>
+          <span class="stat-cmp">Of 365 mornings</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head" data-rise>
+        <span class="eyebrow">Plans</span>
+        <h2 class="section-title">Start free — upgrade for dive, fish and alerts</h2>
+      </div>
+
+      <div class="pricing-scroll">
+        <div class="plan-card" data-rise data-reveal="pricing" data-stagger style="--stagger-delay:0ms">
+          <span class="plan-badge">Tide</span>
+          <div class="plan-name">Free</div>
+          <div class="plan-price">A$0</div>
+          <div class="plan-desc">One beach, 3-day forecast</div>
+          <div class="plan-features">
+            <div class="plan-feature">One beach</div>
+            <div class="plan-feature">3-day forecast</div>
+            <div class="plan-feature">Tide times</div>
+          </div>
+          <button class="plan-cta">Start free</button>
+        </div>
+
+        <div class="plan-card is-reco" data-rise data-reveal="pricing" data-stagger style="--stagger-delay:70ms">
+          <span class="plan-badge">Fathom · recommended</span>
+          <div class="plan-name">Fathom</div>
+          <div class="plan-price">A$6 <sub>/ month</sub></div>
+          <div class="plan-desc">Unlimited beaches, all three scores</div>
+          <div class="plan-features">
+            <div class="plan-feature">Unlimited beaches</div>
+            <div class="plan-feature">7-day forecast</div>
+            <div class="plan-feature">Swim, dive and fish scores</div>
+            <div class="plan-feature">Alerts</div>
+          </div>
+          <button class="plan-cta">Get Fathom</button>
+        </div>
+
+        <div class="plan-card" data-rise data-reveal="pricing" data-stagger style="--stagger-delay:140ms">
+          <span class="plan-badge">Club</span>
+          <div class="plan-name">Club</div>
+          <div class="plan-price">A$40 <sub>/ month</sub></div>
+          <div class="plan-desc">Up to 30 members, one bill</div>
+          <div class="plan-features">
+            <div class="plan-feature">Up to 30 members</div>
+            <div class="plan-feature">Shared spots</div>
+            <div class="plan-feature">One bill</div>
+          </div>
+          <button class="plan-cta">Set up Club</button>
+        </div>
+      </div>
+
+      <div class="pricing-note">Billed monthly, cancel anytime — no card for Tide</div>
+    </div>
+  </section>
+
+  <!-- ============================================ HONEST LIMITATION -->
+  <section class="limitation">
+    <div class="wrap">
+      <div class="limitation-card" data-rise-slow>
+        <span class="eyebrow">The honest part</span>
+        <div class="limitation-title">A forecast is not a lifeguard</div>
+        <p>Fathom models tide, swell, wind and water temperature. It does not see rips forming, it does not know the sandbank moved last week, and it has never been in the water.</p>
+        <p>61 mornings last year it said "don't" — and it will have been wrong on some of them, in both directions.</p>
+        <div class="limitation-figure">
+          <span class="n">61 / 365</span>
+          <span class="lbl">called "don't" — some of those calls were wrong</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap footer-row">
+    <div class="footer-concept">Fathom is a design concept built for a study — not a real forecasting service or a safety device</div>
+    <div class="footer-links">
+      <a href="#scores">Scores</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#" data-scroll="#">Top</a>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-sheet" aria-hidden="false">
+  <div class="mobile-sheet-info">
+    <div class="mobile-sheet-label">Today · Swim</div>
+    <div class="mobile-sheet-value" id="sheetScore">82 · Calm</div>
+  </div>
+  <button class="mobile-sheet-btn" data-scroll="#forecast">7-day forecast</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

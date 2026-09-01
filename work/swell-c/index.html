@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fathom — tide &amp; swell forecasting, honestly</title>
+<meta name="description" content="Fathom scores seven days for swim, dive and fish — the same physics, three readings — and shows you when its four sources disagree. Concept product.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<header class="chrome">
+  <span class="chrome-mark">FATHOM</span>
+  <span class="chrome-meta">TIDE · SWELL · CONCEPT INSTRUMENT</span>
+</header>
+
+<main>
+
+  <!-- 01 — HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+
+      <div class="hero-copy">
+        <div class="eyebrow">FOR PEOPLE WHO SWIM IN THE SEA</div>
+        <h1 class="hero-title">Fathom reads the water<br>before you get in it</h1>
+        <p class="hero-sub">Pick a spot — get seven days, scored for what you actually do, not wave height</p>
+        <div class="activity-row" role="group" aria-label="What do you do in the water">
+          <button class="chip" type="button" data-activity="swim">SWIM</button>
+          <button class="chip" type="button" data-activity="dive">DIVE</button>
+          <button class="chip" type="button" data-activity="fish">FISH</button>
+        </div>
+        <div class="hero-hint">Turn the dial — one instrument, four sources</div>
+      </div>
+
+      <div class="instrument" data-enter="rise">
+
+        <div class="compass-unit">
+          <div class="compass-glass">
+            <canvas id="compassCanvas" width="360" height="252"
+              role="img" aria-label="Confluence compass: four needles show tide, swell, wind and water-temperature readings for the selected day, and how far apart they sit"></canvas>
+          </div>
+          <div class="compass-readout">
+            <span class="verdict-pill" id="verdictPill" data-state="dont">DON'T</span>
+            <span class="agreement-line">SOURCES SPLIT BY <b id="agreementValue">58</b> PTS</span>
+          </div>
+          <div class="compass-legend">
+            <span><i class="dot dot-tide" aria-hidden="true"></i>TIDE</span>
+            <span><i class="dot dot-swell" aria-hidden="true"></i>SWELL</span>
+            <span><i class="dot dot-wind" aria-hidden="true"></i>WIND</span>
+            <span><i class="dot dot-water" aria-hidden="true"></i>WATER TEMP</span>
+          </div>
+        </div>
+
+        <div class="day-select">
+          <div class="dial-well" id="dayDialWell" role="slider" tabindex="0"
+               aria-label="Select forecast day" aria-valuemin="0" aria-valuemax="6"
+               aria-valuenow="4" aria-valuetext="Friday">
+            <div class="dial-rotator" id="dayDialRotator"><div class="dial-indicator"></div></div>
+            <div class="dial-static-lighting"></div>
+          </div>
+          <div class="day-buttons" role="group" aria-label="Forecast day, seven days">
+            <button class="day-btn" type="button" data-day="0">MON</button>
+            <button class="day-btn" type="button" data-day="1">TUE</button>
+            <button class="day-btn" type="button" data-day="2">WED</button>
+            <button class="day-btn" type="button" data-day="3">THU</button>
+            <button class="day-btn is-active" type="button" data-day="4">FRI</button>
+            <button class="day-btn" type="button" data-day="5">SAT</button>
+            <button class="day-btn" type="button" data-day="6">SUN</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — THE THREE SCORES -->
+  <section class="scores" id="scores" data-enter="section">
+    <div class="kicker">02 — SAME PHYSICS, THREE READINGS <span class="kicker-day" id="scoresDayLabel">FRIDAY</span></div>
+
+    <div class="score-rows">
+      <div class="score-row" data-score="swim" data-enter="bar">
+        <span class="score-name">SWIM</span>
+        <div class="score-track"><div class="score-fill" id="fillSwim"></div></div>
+        <span class="score-num" id="numSwim">—</span>
+      </div>
+      <div class="score-row" data-score="dive" data-enter="bar">
+        <span class="score-name">DIVE</span>
+        <div class="score-track"><div class="score-fill" id="fillDive"></div></div>
+        <span class="score-num" id="numDive">—</span>
+      </div>
+      <div class="score-row" data-score="fish" data-enter="bar">
+        <span class="score-name">FISH</span>
+        <div class="score-track"><div class="score-fill" id="fillFish"></div></div>
+        <span class="score-num" id="numFish">—</span>
+      </div>
+    </div>
+
+    <p class="scores-note">One reading, reweighted per activity — divers lean on swell, anglers lean on the turn of the tide</p>
+  </section>
+
+  <!-- 03 — THE NUMBERS BAND -->
+  <section class="numbers" id="numbers" data-enter="section">
+    <div class="kicker">03 — THE INSTRUMENT PANEL</div>
+
+    <div class="numbers-grid">
+      <div class="readout" data-enter="count">
+        <span class="readout-label">BEACHES COVERED</span>
+        <span class="readout-value"><b data-count="1840">1,840</b></span>
+      </div>
+
+      <div class="readout" data-enter="count">
+        <span class="readout-label">FORECAST HORIZON</span>
+        <span class="readout-value"><b data-count="7">7</b><i>DAYS</i></span>
+        <span class="readout-compare">3 on Tide, free</span>
+      </div>
+
+      <div class="readout readout--wide" data-enter="draw">
+        <span class="readout-label">UPDATE INTERVAL</span>
+        <div class="interval-chart chart" id="intervalChart" aria-hidden="true"></div>
+        <span class="readout-value">15 <i>MIN · 4/HR</i></span>
+      </div>
+
+      <div class="readout" data-enter="count">
+        <span class="readout-label">SOURCES BLENDED</span>
+        <span class="readout-value"><b data-count="4">4</b></span>
+        <span class="readout-compare">tide · swell · wind · water</span>
+      </div>
+
+      <div class="readout readout--wide" data-enter="draw">
+        <span class="readout-label">TIDE ACCURACY</span>
+        <div class="accuracy-chart chart" id="accuracyChart" aria-hidden="true"></div>
+        <span class="readout-value">±4 <i>MIN vs OFFICIAL TABLES</i></span>
+      </div>
+
+      <div class="readout" data-enter="count">
+        <span class="readout-label">SWIMMERS READING FATHOM</span>
+        <span class="readout-value"><b data-count="23400">23,400</b></span>
+      </div>
+    </div>
+
+    <div class="dont-strip" data-enter="grid">
+      <div class="kicker-sub">61 MORNINGS IT SAID “DON’T” <span>— last 12 months</span></div>
+      <div class="heat-chart chart" id="heatChart" aria-hidden="true"></div>
+      <div class="dont-legend"><i class="sq sq-on" aria-hidden="true"></i> don't <i class="sq sq-off" aria-hidden="true"></i> everything else</div>
+    </div>
+  </section>
+
+  <!-- 04 — PRICING -->
+  <section class="pricing" id="pricing" data-enter="section">
+    <div class="kicker">04 — PRICING</div>
+
+    <div class="price-cards">
+      <article class="price-card" data-enter="card-left">
+        <h3>Tide</h3>
+        <p class="price">Free</p>
+        <div class="price-for">One beach · 3-day forecast · tide times</div>
+        <div class="cap-row">
+          <span class="cap-label">BEACHES</span>
+          <div class="cap-dots chart" data-fill="1" data-of="8" aria-hidden="true"></div>
+          <span class="cap-num">1</span>
+        </div>
+        <div class="cap-row">
+          <span class="cap-label">DAYS</span>
+          <div class="cap-dots chart" data-fill="3" data-of="7" aria-hidden="true"></div>
+          <span class="cap-num">3</span>
+        </div>
+        <button class="btn" type="button">Start free</button>
+      </article>
+
+      <article class="price-card price-card--main" data-enter="card-center">
+        <span class="price-card-flag">FULL INSTRUMENT</span>
+        <h3>Fathom</h3>
+        <p class="price">A$6<i>/mo</i></p>
+        <div class="price-for">Unlimited beaches · 7 days · all three scores · alerts</div>
+        <div class="cap-row">
+          <span class="cap-label">BEACHES</span>
+          <div class="cap-dots cap-dots--full chart" aria-hidden="true"></div>
+          <span class="cap-num">∞</span>
+        </div>
+        <div class="cap-row">
+          <span class="cap-label">DAYS</span>
+          <div class="cap-dots chart" data-fill="7" data-of="7" aria-hidden="true"></div>
+          <span class="cap-num">7</span>
+        </div>
+        <button class="btn btn--solid" type="button">Get Fathom</button>
+      </article>
+
+      <article class="price-card" data-enter="card-right">
+        <h3>Club</h3>
+        <p class="price">A$40<i>/mo</i></p>
+        <div class="price-for">Up to 30 members · shared spots · one bill</div>
+        <div class="cap-row cap-row--members">
+          <span class="cap-label">MEMBERS</span>
+          <div class="cap-dots cap-dots--30 chart" id="clubDots" aria-hidden="true"></div>
+          <span class="cap-num">30</span>
+        </div>
+        <button class="btn" type="button">Start a club</button>
+      </article>
+    </div>
+
+    <p class="pricing-fine">Billed monthly · cancel anytime · no card for Tide</p>
+  </section>
+
+  <!-- 05 — ONE HONEST LIMITATION -->
+  <section class="limitation" id="limitation" data-enter="type">
+    <div class="kicker kicker--onlight">05 — ONE HONEST LIMITATION</div>
+    <p class="limitation-text" id="limitationText" data-full="A forecast is not a lifeguard. Fathom models tide, swell, wind and water temperature. It does not see rips forming, it does not know the sandbank moved last week, and it has never been in the water. Sixty-one mornings last year it said don't — and it will have been wrong on some of them, in both directions.">A forecast is not a lifeguard. Fathom models tide, swell, wind and water temperature. It does not see rips forming, it does not know the sandbank moved last week, and it has never been in the water. Sixty-one mornings last year it said don't — and it will have been wrong on some of them, in both directions.</p>
+  </section>
+
+</main>
+
+<!-- 06 — FOOTER -->
+<footer class="site-footer">
+  <p class="footer-concept">Fathom is a concept — spec work exploring forecast design, not a real product</p>
+  <div class="footer-meta">06 · CONCEPT LABEL <span aria-hidden="true">·</span> DESIGN EXERCISE ONLY</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
