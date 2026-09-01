@@ -222,6 +222,22 @@ button:focus-visible,
   gap: 20px;
 }
 
+/* On a wide screen the chart sits BESIDE the ticket rather than under it —
+   the ticket is the object, the chart is the argument, and they belong on the
+   same eye-line. Also keeps the hero to one screen. */
+@media (min-width: 900px) {
+  .ticket-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 28px;
+    row-gap: 20px;
+    align-items: start;
+  }
+  .ticket-hero { grid-column: 1; grid-row: 1; }
+  .tear-btn { grid-column: 1; grid-row: 2; justify-self: start; }
+  .ratio-chart { grid-column: 2; grid-row: 1 / span 2; max-width: none; margin-top: 0; }
+}
+
 /* --- the ticket object --- */
 .ticket-hero {
   display: flex;
@@ -312,8 +328,106 @@ button:focus-visible,
   opacity: 1;
 }
 
-.tear-result {
+/* --------------------------------------------------------------------------
+   THE RATIO CHART — 14 min vs 2 days, drawn on ONE linear 48h scale.
+   Construction borrowed from ref 31 Chroma: the `.ui-viz` graph-paper made of
+   two crossed repeating-linear-gradients, and an SVG axis on a fixed viewBox
+   with preserveAspectRatio="none" so tick coordinates never need recomputing.
+   The bar itself is ref 16's percentage-width div (Instruments §2a) with its
+   2px leading edge (§2b/§2c) so the 0.486% sliver is still findable.
+   -------------------------------------------------------------------------- */
+.ratio-chart {
   width: 100%;
+  max-width: 560px;
+  margin: 4px 0 0;
+  padding: 18px 20px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--bg-raised);
+}
+.ratio-cap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: 16px;
+}
+/* the ratio must never wrap to "1 :" / "206" — it is one token */
+.ratio-cap-val { color: var(--stamp); font-weight: 500; white-space: nowrap; }
+
+.ratio-row {
+  display: grid;
+  grid-template-columns: 84px 1fr 62px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.ratio-key {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.ratio-track {
+  position: relative;
+  display: block;
+  height: 22px;
+  border-radius: 2px;
+  /* ref 31 `.ui-viz` — graph paper, two crossed gradients, no image */
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 10px, rgba(241,231,211,0.06) 10px, rgba(241,231,211,0.06) 11px),
+    repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(241,231,211,0.06) 10px, rgba(241,231,211,0.06) 11px);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  overflow: hidden;
+}
+.ratio-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  border-radius: 1px;
+}
+.ratio-bar-lose {
+  background: repeating-linear-gradient(90deg, rgba(241,233,220,0.16) 0 6px, rgba(241,233,220,0.09) 6px 12px);
+  box-shadow: inset 0 0 0 1px rgba(241,233,220,0.18);
+}
+.ratio-bar-win {
+  min-width: 3px;
+  background: var(--matched);
+  border-right: 2px solid var(--stamp);
+}
+.ratio-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+  color: var(--text-faint);
+}
+.ratio-val-win { color: var(--matched); font-weight: 500; }
+
+.ratio-axis-wrap { margin: 4px 0 0 96px; margin-right: 74px; }
+.ratio-axis { width: 100%; height: 8px; display: block; }
+.ax-rule { stroke: var(--line-soft); stroke-width: 1; }
+.ax-tick { stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ratio-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 3px;
+}
+
+@media (max-width: 640px) {
+  .ratio-row { grid-template-columns: 1fr auto; gap: 4px 10px; }
+  .ratio-key { grid-column: 1; grid-row: 1; }
+  .ratio-val { grid-column: 2; grid-row: 1; }
+  .ratio-track { grid-column: 1 / -1; grid-row: 2; }
+  .ratio-axis-wrap { margin-left: 0; margin-right: 0; }
 }
 
 /* comparison device: reused in hero + numbers band */
@@ -411,6 +525,24 @@ button:focus-visible,
 .station.reached { border-color: var(--matched); }
 .station.reached .station-mark { transform: scale(1); opacity: 1; }
 
+/* the taps each step actually costs — the copy says it, now it is a mark */
+.taps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-soft);
+}
+.taps-bar { height: 10px; width: auto; }
+.taps-bar rect { fill: var(--stamp); }
+.station.reached .taps-bar rect { fill: var(--matched); }
+.taps-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+
 .how #railBtn { margin-top: 32px; }
 
 @media (max-width: 720px) {
@@ -453,7 +585,13 @@ button:focus-visible,
 .manifest::before { top: -7px; }
 .manifest::after { bottom: -7px; }
 
-.manifest-head .compare-tight { gap: clamp(24px, 5vw, 64px); }
+/* two columns of EQUAL width, so both 48h rules really are one shared scale */
+.manifest-head .compare-tight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 5vw, 64px);
+  align-items: start;
+}
 .manifest-head .compare-win .compare-num,
 .manifest-head .compare-lose .compare-num { color: var(--ink); }
 .manifest-head .compare-lose .compare-num { color: rgba(33,26,21,0.35); }
@@ -468,13 +606,95 @@ button:focus-visible,
   flex-direction: column;
   gap: 10px;
 }
+/* --- the printed ledger rule ---------------------------------------------
+   Instruments §2g: the value bar is a fill BEHIND/BESIDE the row's own text
+   in normal flow — the row IS the chart, no separate bar element to lay out.
+   Length is log-scaled (100 -> 100,000) because the three counts differ by
+   two orders of magnitude and a linear rule would render 340 as a dot.
+   ------------------------------------------------------------------------- */
 .manifest-list li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  /* the value column is a FIXED width, not `auto` — with `auto` the widest
+     number ("11,200") sized its own row's column and the three rules started
+     at three different x positions, which is a broken shared scale. */
+  grid-template-columns: minmax(120px, 1fr) minmax(90px, 1.6fr) 62px;
+  align-items: center;
+  gap: 14px;
   font-size: 14px;
 }
-.manifest-list li span:first-child { color: var(--ink-soft); }
+.ledger-key { color: var(--ink-soft); }
+.ledger-rule {
+  position: relative;
+  display: block;
+  height: 10px;
+  border-bottom: 1px solid rgba(33, 26, 21, 0.22);
+  background: repeating-linear-gradient(90deg, rgba(33,26,21,0.1) 0 1px, transparent 1px 6px);
+  background-position: 0 100%;
+  background-size: 100% 3px;
+  background-repeat: repeat-x;
+}
+.ledger-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 6px;
+  display: block;
+  background: var(--ink);
+  border-right: 2px solid var(--stamp);
+}
+.ledger-val { text-align: right; }
 .manifest-list li .tk-mono { font-size: 14px; font-weight: 500; }
+
+.ledger-axis-row { margin-top: 2px; }
+.ledger-axis-wrap { display: block; }
+.ledger-axis { width: 100%; height: 8px; display: block; }
+.lax-rule { stroke: rgba(33, 26, 21, 0.2); stroke-width: 1; }
+.lax-tick { stroke: rgba(33, 26, 21, 0.32); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ledger-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(33, 26, 21, 0.45);
+  margin-top: 2px;
+}
+
+.compare-rule {
+  position: relative;
+  display: block;
+  height: 8px;
+  margin: 8px 0 6px;
+  border-bottom: 1px solid rgba(33, 26, 21, 0.22);
+}
+.compare-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 5px;
+  min-width: 3px;
+  display: block;
+  background: rgba(33, 26, 21, 0.3);
+}
+.compare-win .compare-bar { background: var(--stamp); }
+
+.rule-cap {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(33, 26, 21, 0.42);
+  margin-top: 10px;
+}
+.manifest-head .rule-cap { margin-top: 4px; }
+
+@media (max-width: 640px) {
+  .manifest-list li {
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+  }
+  .ledger-key { grid-column: 1; grid-row: 1; }
+  .ledger-val { grid-column: 2; grid-row: 1; }
+  .ledger-rule { grid-column: 1 / -1; grid-row: 2; }
+  .ledger-axis-row .ledger-axis-wrap { grid-column: 1 / -1; grid-row: 1; }
+  .ledger-axis-row span:empty { display: none; }
+}
 
 /* ==========================================================================
    PRICING
@@ -485,7 +705,9 @@ button:focus-visible,
 .plans {
   margin-top: 36px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  /* 340px min needed 1060px of track inside a 1040px content column, so the
+     three tiers broke to 2 + 1 with a hole in the row. 300px fits all three. */
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 20px;
 }
 .plan {
@@ -561,6 +783,37 @@ button:focus-visible,
 }
 .mini-ticket.shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97); }
 
+/* --------------------------------------------------------------------------
+   THE STRIP OF 50 — the 6% drawn in the ticket's own idiom.
+   Deliberately NOT land-c's dot grid: this is a perforated run of ticket cells
+   built from one SVG <pattern> (50 cells x 20 units = the 1000 viewBox), with
+   the 3 unfilled ones stamped VOID over a hatch pattern. No library, no loop.
+   -------------------------------------------------------------------------- */
+.roll-chart {
+  margin: 0;
+  width: 100%;
+  max-width: 560px;
+}
+.roll-bar { width: 100%; height: auto; display: block; }
+.roll-paper { fill: var(--paper-dim); }
+.roll-perf { stroke: var(--bg); stroke-width: 1.5; }
+.roll-hatch { stroke: var(--stamp); stroke-width: 2.4; }
+.roll-void {
+  fill: url(#voidHatch);
+  stroke: var(--stamp);
+  stroke-width: 1.5;
+  opacity: 0.85;
+  transition: opacity 0.15s var(--ease-out), stroke-width 0.15s var(--ease-out);
+}
+.roll-chart.lit .roll-void { opacity: 1; stroke-width: 3; }
+.roll-cap {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+.roll-chart.lit .roll-cap { color: var(--stamp); }
+
 .limit-result {
   max-width: 52ch;
   font-size: 15px;
@@ -587,14 +840,132 @@ button:focus-visible,
   .btn { min-height: 44px; }
   /* grow the tap region only — the type scale is untouched */
   .logo { min-height: 44px; }
+  /* height alone is not a tap target — measured at 375px the three nav links
+     were squeezed to 37-43px WIDE while reporting a correct 44px height, so
+     the floor has to be set on both axes and the row has to stop competing
+     with the logo for width. */
+  .nav-inner { flex-wrap: wrap; row-gap: 2px; }
+  .nav-links { width: 100%; gap: 18px; }
   .nav-links a {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     min-height: 44px;
+    min-width: 44px;
+    white-space: nowrap;
     padding: 0;
   }
   .plan { -webkit-tap-highlight-color: transparent; }
   .plan-cta { -webkit-tap-highlight-color: transparent; }
+}
+
+/* ==========================================================================
+   ENTRANCES — one vocabulary per section, all of it paper and print.
+
+   ⚠️ Every hiding rule below is scoped to `.motion`, which JavaScript adds to
+   <html> at runtime. No JS -> no `.motion` -> nothing is hidden and the page
+   renders complete. (How to Animate a Page Without Breaking It, rule 1.)
+   Reveal is driven by a rAF scroll sweep, not IntersectionObserver (rule 2).
+   Durations sit in the measured 0.1-0.3s band; only things that physically
+   travel go to 0.3s. (What the References Have in Common §12.)
+   ========================================================================== */
+
+/* 1 · STAMP STRIKE — the hero headline. Each word lands from above its own
+      size, slightly askew, and squares up. An ink stamp, not a fade-up. */
+.motion [data-enter="stamp"] .w {
+  display: inline-block;
+  opacity: 0;
+  transform: scale(1.16) rotate(-2.6deg);
+  transition: opacity 0.12s linear, transform 0.18s var(--ease-overshoot);
+}
+.motion [data-enter="stamp"].in .w { opacity: 1; transform: none; }
+
+/* 2 · PRESS ROLL — every h2. The word rises out of its own line box, masked,
+      with no opacity change at all: type coming up in a press. */
+.motion [data-enter="press"] .wl {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  vertical-align: bottom;
+}
+.motion [data-enter="press"] .wl > i {
+  display: inline-block;
+  font-style: normal;
+  transform: translateY(108%);
+  transition: transform 0.2s var(--ease-out);
+}
+.motion [data-enter="press"].in .wl > i { transform: none; }
+
+/* 3 · WIPE — section labels print left to right, like a label printer. */
+.motion [data-enter="wipe"] {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.22s var(--ease-out);
+}
+.motion [data-enter="wipe"].in { clip-path: inset(0 0 0 0); }
+
+/* 4 · LAY — the ticket is put down on the stage. */
+.motion [data-enter="lay"] {
+  opacity: 0;
+  transform: translateY(-12px) rotate(-1.4deg);
+  transition: opacity 0.14s linear, transform 0.24s var(--ease-out);
+}
+.motion [data-enter="lay"].in { opacity: 1; transform: none; }
+
+/* 5 · DRAW — every rule and bar is drawn out from its own origin. The bar
+      arriving IS the measurement being taken, so this one is load-bearing. */
+.motion [data-enter="draw"] .ratio-bar,
+.motion [data-enter="draw"] .ledger-bar,
+.motion [data-enter="draw"] .compare-bar {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s var(--ease-out);
+}
+.motion [data-enter="draw"].in .ratio-bar,
+.motion [data-enter="draw"].in .ledger-bar,
+.motion [data-enter="draw"].in .compare-bar { transform: scaleX(1); }
+
+/* 6 · DEAL — cards put down one at a time, alternating tilt. */
+.motion [data-enter="deal"] > .station,
+.motion [data-enter="deal"] > .plan {
+  opacity: 0;
+  transform: translateY(14px) rotate(0.8deg);
+  transition: opacity 0.13s linear, transform 0.2s var(--ease-out);
+}
+.motion [data-enter="deal"] > .station:nth-of-type(even),
+.motion [data-enter="deal"] > .plan:nth-of-type(even) { transform: translateY(14px) rotate(-0.8deg); }
+.motion [data-enter="deal"].in > .station,
+.motion [data-enter="deal"].in > .plan { opacity: 1; transform: none; }
+
+/* 7 · PRINT — the receipt comes out of the band top-down, like a till roll. */
+.motion [data-enter="print"] {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.3s var(--ease-out);
+}
+.motion [data-enter="print"].in { clip-path: inset(0 0 0 0); }
+
+/* 8 · STRIP — the run of 50 tickets feeds through left to right, then the
+      three unclaimed cells stamp in behind it. */
+.motion [data-enter="strip"] .roll-bar {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.3s linear;
+}
+.motion [data-enter="strip"].in .roll-bar { clip-path: inset(0 0 0 0); }
+.motion [data-enter="strip"] .roll-void {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(1.6);
+  transition: opacity 0.1s linear 0.28s, transform 0.16s var(--ease-overshoot) 0.28s;
+}
+.motion .roll-chart.in .roll-void { opacity: 0.85; transform: none; }
+.motion .roll-chart.in.lit .roll-void { opacity: 1; stroke-width: 3; }
+
+/* the plan price resolves character by character on arrival (JS drum walk) */
+.plan-price .flap {
+  display: inline-block;
+  min-width: 0.62em;
+  text-align: center;
 }
 
 /* ==========================================================================

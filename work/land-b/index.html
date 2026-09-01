@@ -29,12 +29,12 @@
   <!-- ======================= HERO ======================= -->
   <section class="hero" id="top">
     <div class="hero-inner">
-      <p class="eyebrow">SHIFT SWAPPING FOR HOSPITALITY STAFF</p>
-      <h1>Can't work Thursday?<br>Tear it off.</h1>
+      <p class="eyebrow" data-enter="wipe">SHIFT SWAPPING FOR HOSPITALITY STAFF</p>
+      <h1 data-enter="stamp">Can't work Thursday?<br>Tear it off.</h1>
       <p class="hero-copy">Post the shift you can't work. Roster shows who's actually free — swap in two taps, manager approves in one. No more asking forty people in a group chat.</p>
 
       <div class="ticket-stage">
-        <div class="ticket-hero" id="heroTicket">
+        <div class="ticket-hero" id="heroTicket" data-enter="lay">
           <div class="ticket-half stub">
             <span class="tk-id">NO. 00417</span>
             <span class="tk-role">STUB — you keep this</span>
@@ -54,18 +54,42 @@
           Post Thursday night
         </button>
 
-        <div class="tear-result" id="tearResult" hidden>
-          <div class="compare">
-            <div class="compare-win">
-              <span class="compare-num">14 min</span>
-              <span class="compare-label">median time to a confirmed swap, on Roster</span>
-            </div>
-            <div class="compare-lose">
-              <span class="compare-num">2 days</span>
-              <span class="compare-label">same figure, over WhatsApp, measured</span>
+        <figure class="ratio-chart" id="ratioChart" data-enter="draw" aria-label="Median time to a confirmed swap: 14 minutes on Roster against 2 days over WhatsApp, both bars drawn on one linear 48-hour scale">
+          <figcaption class="ratio-cap">
+            <span class="ratio-cap-key">MEDIAN TIME TO A CONFIRMED SWAP</span>
+            <span class="ratio-cap-val">1 : 206</span>
+          </figcaption>
+
+          <div class="ratio-row">
+            <span class="ratio-key">Roster</span>
+            <span class="ratio-track">
+              <span class="ratio-bar ratio-bar-win" style="width:0.486%"></span>
+            </span>
+            <span class="ratio-val ratio-val-win">14 min</span>
+          </div>
+
+          <div class="ratio-row">
+            <span class="ratio-key">WhatsApp</span>
+            <span class="ratio-track">
+              <span class="ratio-bar ratio-bar-lose" style="width:100%"></span>
+            </span>
+            <span class="ratio-val">2 days</span>
+          </div>
+
+          <div class="ratio-axis-wrap" aria-hidden="true">
+            <svg class="ratio-axis" viewBox="0 0 1000 8" preserveAspectRatio="none" focusable="false">
+              <line class="ax-rule" x1="0" y1="0.5" x2="1000" y2="0.5"></line>
+              <line class="ax-tick" x1="0.5" y1="0" x2="0.5" y2="8"></line>
+              <line class="ax-tick" x1="250" y1="0" x2="250" y2="8"></line>
+              <line class="ax-tick" x1="500" y1="0" x2="500" y2="8"></line>
+              <line class="ax-tick" x1="750" y1="0" x2="750" y2="8"></line>
+              <line class="ax-tick" x1="999.5" y1="0" x2="999.5" y2="8"></line>
+            </svg>
+            <div class="ratio-ticks tk-mono">
+              <span>0</span><span>12h</span><span>24h</span><span>36h</span><span>48h</span>
             </div>
           </div>
-        </div>
+        </figure>
       </div>
     </div>
   </section>
@@ -73,10 +97,10 @@
   <!-- ======================= HOW IT WORKS ======================= -->
   <section class="how" id="how">
     <div class="section-inner">
-      <p class="eyebrow">POST — MATCH — APPROVE</p>
-      <h2>How a shift changes hands</h2>
+      <p class="eyebrow" data-enter="wipe">POST — MATCH — APPROVE</p>
+      <h2 data-enter="press">How a shift changes hands</h2>
 
-      <div class="rail" id="rail">
+      <div class="rail" id="rail" data-enter="deal">
         <div class="track" id="track">
           <div class="rail-chip" id="railChip" aria-hidden="true">
             <span class="tk-id">00417</span>
@@ -88,6 +112,10 @@
           <span class="station-mark" aria-hidden="true">&#10003;</span>
           <h3>Post</h3>
           <p>You post the shift you can't work. It's out of your hands.</p>
+          <div class="taps" aria-hidden="true">
+            <svg class="taps-bar" viewBox="0 0 10 10" focusable="false"><rect x="0" y="0" width="10" height="10" rx="1.5"></rect></svg>
+            <span class="taps-label tk-mono">1 TAP</span>
+          </div>
         </div>
 
         <div class="station" data-step="2">
@@ -95,6 +123,10 @@
           <span class="station-mark" aria-hidden="true">&#10003;</span>
           <h3>Match</h3>
           <p>Roster shows who's actually free. You swap in two taps.</p>
+          <div class="taps" aria-hidden="true">
+            <svg class="taps-bar" viewBox="0 0 24 10" focusable="false"><rect x="0" y="0" width="10" height="10" rx="1.5"></rect><rect x="14" y="0" width="10" height="10" rx="1.5"></rect></svg>
+            <span class="taps-label tk-mono">2 TAPS</span>
+          </div>
         </div>
 
         <div class="station" data-step="3">
@@ -102,6 +134,10 @@
           <span class="station-mark" aria-hidden="true">&#10003;</span>
           <h3>Approve</h3>
           <p>Manager approves in one tap. The roster updates itself.</p>
+          <div class="taps" aria-hidden="true">
+            <svg class="taps-bar" viewBox="0 0 10 10" focusable="false"><rect x="0" y="0" width="10" height="10" rx="1.5"></rect></svg>
+            <span class="taps-label tk-mono">1 TAP</span>
+          </div>
         </div>
       </div>
 
@@ -112,25 +148,57 @@
   <!-- ======================= NUMBERS BAND ======================= -->
   <section class="manifest-wrap">
     <div class="section-inner">
-      <p class="eyebrow">ON THE BOARD RIGHT NOW</p>
-      <div class="manifest">
+      <p class="eyebrow" data-enter="wipe">ON THE BOARD RIGHT NOW</p>
+      <div class="manifest" id="manifest" data-enter="print">
         <div class="manifest-head">
-          <div class="compare compare-tight">
+          <div class="compare compare-tight" data-enter="draw" data-delay="300">
             <div class="compare-win">
-              <span class="compare-num">14 min</span>
+              <span class="compare-num" data-count="14" data-suffix=" min">14 min</span>
+              <span class="compare-rule" aria-hidden="true"><i class="compare-bar" style="width:0.486%"></i></span>
               <span class="compare-label">to a confirmed swap</span>
             </div>
             <div class="compare-lose">
               <span class="compare-num">2 days</span>
+              <span class="compare-rule" aria-hidden="true"><i class="compare-bar" style="width:100%"></i></span>
               <span class="compare-label">the old way, over WhatsApp</span>
             </div>
           </div>
+          <p class="rule-cap tk-mono">both rules — one 48h scale</p>
         </div>
-        <ul class="manifest-list">
-          <li><span>Venues running Roster</span><span class="tk-mono">340</span></li>
-          <li><span>Workers on it</span><span class="tk-mono">11,200</span></li>
-          <li><span>Swaps completed</span><span class="tk-mono">48,900</span></li>
+        <ul class="manifest-list" data-enter="draw" data-delay="300">
+          <li class="ledger-row">
+            <span class="ledger-key">Venues running Roster</span>
+            <span class="ledger-rule" aria-hidden="true"><i class="ledger-bar" style="width:17.7%"></i></span>
+            <span class="tk-mono ledger-val" data-count="340">340</span>
+          </li>
+          <li class="ledger-row">
+            <span class="ledger-key">Workers on it</span>
+            <span class="ledger-rule" aria-hidden="true"><i class="ledger-bar" style="width:68.3%"></i></span>
+            <span class="tk-mono ledger-val" data-count="11200">11,200</span>
+          </li>
+          <li class="ledger-row">
+            <span class="ledger-key">Swaps completed</span>
+            <span class="ledger-rule" aria-hidden="true"><i class="ledger-bar" style="width:89.6%"></i></span>
+            <span class="tk-mono ledger-val" data-count="48900">48,900</span>
+          </li>
+          <li class="ledger-axis-row" aria-hidden="true">
+            <span></span>
+            <span class="ledger-axis-wrap">
+              <svg class="ledger-axis" viewBox="0 0 1000 8" preserveAspectRatio="none" focusable="false">
+                <line class="lax-rule" x1="0" y1="0.5" x2="1000" y2="0.5"></line>
+                <line class="lax-tick" x1="0.5" y1="0" x2="0.5" y2="8"></line>
+                <line class="lax-tick" x1="333" y1="0" x2="333" y2="8"></line>
+                <line class="lax-tick" x1="667" y1="0" x2="667" y2="8"></line>
+                <line class="lax-tick" x1="999.5" y1="0" x2="999.5" y2="8"></line>
+              </svg>
+              <span class="ledger-ticks tk-mono">
+                <span>100</span><span>1k</span><span>10k</span><span>100k</span>
+              </span>
+            </span>
+            <span></span>
+          </li>
         </ul>
+        <p class="rule-cap tk-mono">rule length = log scale</p>
       </div>
     </div>
   </section>
@@ -138,10 +206,10 @@
   <!-- ======================= PRICING ======================= -->
   <section class="pricing" id="pricing">
     <div class="section-inner">
-      <p class="eyebrow">PICK YOUR SIZE</p>
-      <h2>Pricing</h2>
+      <p class="eyebrow" data-enter="wipe">PICK YOUR SIZE</p>
+      <h2 data-enter="press">Pricing</h2>
 
-      <div class="plans">
+      <div class="plans" data-enter="deal">
         <article class="plan">
           <h3>Solo</h3>
           <p class="plan-price">Free</p>
@@ -172,15 +240,34 @@
   <!-- ======================= HONEST LIMITATION ======================= -->
   <section class="limit" id="limit">
     <div class="section-inner">
-      <p class="eyebrow">WHAT ROSTER CAN'T DO</p>
-      <h2>Roster cannot make anyone pick up your shift.</h2>
+      <p class="eyebrow" data-enter="wipe">WHAT ROSTER CAN'T DO</p>
+      <h2 data-enter="press">Roster cannot make anyone pick up your shift.</h2>
 
       <div class="limit-stage">
-        <div class="mini-ticket" id="stuckTicket">
+        <div class="mini-ticket" id="stuckTicket" data-enter="lay">
           <span class="tk-id">NO. 00512</span>
           <span class="tk-role">TAG — unclaimed</span>
           <span class="tk-line">SAT · 6:00P–close</span>
         </div>
+
+        <figure class="roll-chart" id="rollChart" data-enter="strip" aria-label="A strip of 50 posted shifts: 47 get picked up, 3 do not. That is the 6 percent.">
+          <svg class="roll-bar" viewBox="0 0 1000 92" focusable="false" aria-hidden="true">
+            <defs>
+              <pattern id="rollCell" x="0" y="0" width="20" height="92" patternUnits="userSpaceOnUse">
+                <rect class="roll-paper" x="1.5" y="6" width="17" height="80" rx="1.5"></rect>
+                <line class="roll-perf" x1="19.5" y1="10" x2="19.5" y2="82"></line>
+              </pattern>
+              <pattern id="voidHatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line class="roll-hatch" x1="0" y1="0" x2="0" y2="7"></line>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="1000" height="92" fill="url(#rollCell)"></rect>
+            <rect class="roll-void" x="221.5" y="6" width="17" height="80" rx="1.5"></rect>
+            <rect class="roll-void" x="541.5" y="6" width="17" height="80" rx="1.5"></rect>
+            <rect class="roll-void" x="841.5" y="6" width="17" height="80" rx="1.5"></rect>
+          </svg>
+          <figcaption class="roll-cap tk-mono">ONE STRIP OF 50 · 47 PICKED UP · 3 NOT</figcaption>
+        </figure>
 
         <button type="button" class="btn btn-secondary" id="claimBtn">Try to claim it</button>
 
