@@ -13,110 +13,277 @@
 </head>
 <body>
 
-<div class="topbar">
-  <span class="wordmark">ROSTER</span>
-  <span class="tag">Concept</span>
-</div>
+<div class="sheet">
 
-<main>
+  <!-- ========== TOPBAR ========== -->
+  <header class="row topbar">
+    <span class="wordmark">ROSTER</span>
+    <span class="tag">Concept</span>
+  </header>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow">Shift swapping, for hospitality staff</p>
-        <h1>Post the shift<br>you can’t work.</h1>
-        <p class="lede">Median time to a confirmed swap: <strong>14 minutes</strong>.<br>
-        Over a WhatsApp group of 40 people, measured: <strong>2 days</strong>.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#pricing">See pricing</a>
-          <a class="btn btn-ghost" href="#how">How it works</a>
+  <!-- ========== HERO ========== -->
+  <section class="row hero" id="top">
+
+    <div class="cell hero-copy">
+      <p class="eyebrow">Shift swapping, for hospitality staff</p>
+      <h1 data-resolve>Post the shift<br>you can’t work.</h1>
+      <p class="lede" data-rise>Median time to a confirmed swap: <strong>14 minutes</strong>.<br>
+      Over a WhatsApp group of 40 people, measured: <strong>2 days</strong>.</p>
+
+      <figure class="compare" data-rise>
+        <div class="compare-row">
+          <span class="mk-name">Roster</span>
+          <svg class="mk mk-compare" viewBox="0 0 400 14" role="img"
+               aria-label="14 minutes, plotted where the full width of the axis is 2 days">
+            <rect class="mk-track" x="0" y="5" width="400" height="4"/>
+            <rect class="mk-fill" data-draw x="0" y="5" width="1.94" height="4"/>
+            <line class="mk-caret" data-mark x1="1.94" y1="0" x2="1.94" y2="14"/>
+          </svg>
+          <span class="mk-val">14 min</span>
         </div>
+        <div class="compare-row">
+          <span class="mk-name">WhatsApp</span>
+          <svg class="mk mk-compare" viewBox="0 0 400 14" role="img"
+               aria-label="2 days, the full width of the axis">
+            <rect class="mk-track" x="0" y="5" width="400" height="4"/>
+            <rect class="mk-fill" data-draw x="0" y="5" width="400" height="4"/>
+            <line class="mk-caret" data-mark x1="1.94" y1="0" x2="1.94" y2="14"/>
+          </svg>
+          <span class="mk-val">2 days</span>
+        </div>
+        <figcaption>One axis · full width = 2 days</figcaption>
+      </figure>
+
+      <div class="hero-actions" data-rise>
+        <a class="btn btn-primary" href="#pricing">See pricing</a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
+      </div>
+    </div>
+
+    <div class="cell hero-dish">
+      <span class="cell-badge" data-stamp>Plate 01</span>
+
+      <div class="dish-frame">
+        <canvas id="dish-canvas" width="100" height="100" aria-hidden="true"></canvas>
+        <svg class="dish-grat" viewBox="0 0 200 200" aria-hidden="true">
+          <g class="grat-rings">
+            <circle cx="100" cy="100" r="94"/>
+            <circle cx="100" cy="100" r="70"/>
+            <circle cx="100" cy="100" r="46"/>
+            <circle cx="100" cy="100" r="22"/>
+          </g>
+          <g class="grat-cross">
+            <line x1="100" y1="8" x2="100" y2="192"/>
+            <line x1="8" y1="100" x2="192" y2="100"/>
+          </g>
+          <g class="grat-ticks" id="grat-ticks"></g>
+          <g class="grat-seeds" id="grat-seeds"></g>
+        </svg>
+        <div class="dish-rim" aria-hidden="true"></div>
+        <div class="dish-markers" id="dish-markers"></div>
       </div>
 
-      <div class="hero-dish">
-        <div class="dish-frame">
-          <canvas id="dish-canvas" width="100" height="100" aria-hidden="true"></canvas>
-          <div class="dish-rim" aria-hidden="true"></div>
-          <div class="dish-markers" id="dish-markers"></div>
-        </div>
-        <button class="btn btn-dark" id="dish-run" type="button">Post 50 shifts</button>
-        <p class="dish-caption" id="dish-caption" aria-live="polite">Press to post 50 shifts to the dish and watch who picks them up.</p>
-      </div>
+      <p class="plate-label" data-rise>50 shifts posted · F 0.0545 K 0.062</p>
+      <button class="btn btn-dark" id="dish-run" type="button">Post 50 shifts</button>
+      <p class="dish-caption" id="dish-caption" aria-live="polite">Press to post 50 shifts to the dish and watch who picks them up.</p>
+    </div>
+
+  </section>
+
+  <!-- ========== NUMBERS BAND ========== -->
+  <section class="row band" aria-label="Roster in numbers">
+    <div class="row-head" data-rule>
+      <span class="head-label">Roster in numbers</span>
+      <span class="head-meta">Log rule 100–100K</span>
+    </div>
+    <div class="band-grid">
+
+      <article class="cell stat">
+        <span class="cell-badge" data-stamp>01</span>
+        <p class="stat-value" data-count="340">340</p>
+        <p class="stat-name">venues</p>
+        <svg class="mk mk-gauge" viewBox="0 0 200 26" role="img" aria-label="340 venues, plotted on a logarithmic rule from 100 to 100,000">
+          <line class="g-axis" x1="4" y1="18" x2="196" y2="18"/>
+          <g class="g-minor">
+            <line x1="23.3" y1="18" x2="23.3" y2="21"/><line x1="34.5" y1="18" x2="34.5" y2="21"/><line x1="48.7" y1="18" x2="48.7" y2="21"/>
+            <line x1="87.3" y1="18" x2="87.3" y2="21"/><line x1="98.5" y1="18" x2="98.5" y2="21"/><line x1="112.7" y1="18" x2="112.7" y2="21"/>
+            <line x1="151.3" y1="18" x2="151.3" y2="21"/><line x1="162.5" y1="18" x2="162.5" y2="21"/><line x1="176.7" y1="18" x2="176.7" y2="21"/>
+          </g>
+          <g class="g-major">
+            <line x1="4" y1="18" x2="4" y2="25"/><line x1="68" y1="18" x2="68" y2="25"/>
+            <line x1="132" y1="18" x2="132" y2="25"/><line x1="196" y1="18" x2="196" y2="25"/>
+          </g>
+          <rect class="g-fill" data-draw x="4" y="15.5" width="34" height="3"/>
+          <line class="g-stem" data-mark x1="38" y1="7" x2="38" y2="18"/>
+          <rect class="g-knob" data-mark x="34.5" y="3.5" width="7" height="7"/>
+        </svg>
+        <div class="g-legend" data-rise><span>100</span><span>1K</span><span>10K</span><span>100K</span></div>
+      </article>
+
+      <article class="cell stat">
+        <span class="cell-badge" data-stamp>02</span>
+        <p class="stat-value" data-count="11200">11,200</p>
+        <p class="stat-name">workers on it</p>
+        <svg class="mk mk-gauge" viewBox="0 0 200 26" role="img" aria-label="11,200 workers, plotted on a logarithmic rule from 100 to 100,000">
+          <line class="g-axis" x1="4" y1="18" x2="196" y2="18"/>
+          <g class="g-minor">
+            <line x1="23.3" y1="18" x2="23.3" y2="21"/><line x1="34.5" y1="18" x2="34.5" y2="21"/><line x1="48.7" y1="18" x2="48.7" y2="21"/>
+            <line x1="87.3" y1="18" x2="87.3" y2="21"/><line x1="98.5" y1="18" x2="98.5" y2="21"/><line x1="112.7" y1="18" x2="112.7" y2="21"/>
+            <line x1="151.3" y1="18" x2="151.3" y2="21"/><line x1="162.5" y1="18" x2="162.5" y2="21"/><line x1="176.7" y1="18" x2="176.7" y2="21"/>
+          </g>
+          <g class="g-major">
+            <line x1="4" y1="18" x2="4" y2="25"/><line x1="68" y1="18" x2="68" y2="25"/>
+            <line x1="132" y1="18" x2="132" y2="25"/><line x1="196" y1="18" x2="196" y2="25"/>
+          </g>
+          <rect class="g-fill" data-draw x="4" y="15.5" width="131.1" height="3"/>
+          <line class="g-stem" data-mark x1="135.1" y1="7" x2="135.1" y2="18"/>
+          <rect class="g-knob" data-mark x="131.6" y="3.5" width="7" height="7"/>
+        </svg>
+        <div class="g-legend" data-rise><span>100</span><span>1K</span><span>10K</span><span>100K</span></div>
+      </article>
+
+      <article class="cell stat">
+        <span class="cell-badge" data-stamp>03</span>
+        <p class="stat-value" data-count="48900">48,900</p>
+        <p class="stat-name">swaps completed</p>
+        <svg class="mk mk-gauge" viewBox="0 0 200 26" role="img" aria-label="48,900 swaps, plotted on a logarithmic rule from 100 to 100,000">
+          <line class="g-axis" x1="4" y1="18" x2="196" y2="18"/>
+          <g class="g-minor">
+            <line x1="23.3" y1="18" x2="23.3" y2="21"/><line x1="34.5" y1="18" x2="34.5" y2="21"/><line x1="48.7" y1="18" x2="48.7" y2="21"/>
+            <line x1="87.3" y1="18" x2="87.3" y2="21"/><line x1="98.5" y1="18" x2="98.5" y2="21"/><line x1="112.7" y1="18" x2="112.7" y2="21"/>
+            <line x1="151.3" y1="18" x2="151.3" y2="21"/><line x1="162.5" y1="18" x2="162.5" y2="21"/><line x1="176.7" y1="18" x2="176.7" y2="21"/>
+          </g>
+          <g class="g-major">
+            <line x1="4" y1="18" x2="4" y2="25"/><line x1="68" y1="18" x2="68" y2="25"/>
+            <line x1="132" y1="18" x2="132" y2="25"/><line x1="196" y1="18" x2="196" y2="25"/>
+          </g>
+          <rect class="g-fill" data-draw x="4" y="15.5" width="172.1" height="3"/>
+          <line class="g-stem" data-mark x1="176.1" y1="7" x2="176.1" y2="18"/>
+          <rect class="g-knob" data-mark x="172.6" y="3.5" width="7" height="7"/>
+        </svg>
+        <div class="g-legend" data-rise><span>100</span><span>1K</span><span>10K</span><span>100K</span></div>
+      </article>
+
     </div>
   </section>
 
-  <!-- NUMBERS STRIP -->
-  <section class="strip" aria-label="Roster in numbers">
-    <div class="strip-inner">
-      <span>340 venues</span>
-      <span class="dot" aria-hidden="true">·</span>
-      <span>11,200 workers on it</span>
-      <span class="dot" aria-hidden="true">·</span>
-      <span>48,900 swaps completed</span>
+  <!-- ========== HOW IT WORKS ========== -->
+  <section class="row how" id="how">
+    <div class="row-head" data-rule>
+      <span class="head-label">How it works</span>
+      <span class="head-meta">3 steps</span>
     </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="how" id="how">
-    <p class="section-eyebrow">How it works</p>
     <div class="how-grid">
-      <article class="how-cell">
-        <span class="cell-badge">01</span>
-        <h3>Post</h3>
-        <p>Say which shift you can’t work.</p>
+      <article class="cell how-cell">
+        <span class="cell-badge" data-stamp>01</span>
+        <h3 data-rise>Post</h3>
+        <p data-rise>Say which shift you can’t work.</p>
       </article>
-      <article class="how-cell">
-        <span class="cell-badge">02</span>
-        <h3>Match</h3>
-        <p>See who’s actually free. Swap in two taps.</p>
+      <article class="cell how-cell">
+        <span class="cell-badge" data-stamp>02</span>
+        <h3 data-rise>Match</h3>
+        <p data-rise>See who’s actually free. Swap in two taps.</p>
       </article>
-      <article class="how-cell">
-        <span class="cell-badge">03</span>
-        <h3>Approve</h3>
-        <p>Manager approves in one tap. The roster updates itself.</p>
+      <article class="cell how-cell">
+        <span class="cell-badge" data-stamp>03</span>
+        <h3 data-rise>Approve</h3>
+        <p data-rise>Manager approves in one tap. The roster updates itself.</p>
       </article>
     </div>
   </section>
 
-  <!-- PRICING -->
-  <section class="pricing" id="pricing">
-    <p class="section-eyebrow">Pricing</p>
+  <!-- ========== PRICING ========== -->
+  <section class="row pricing" id="pricing">
+    <div class="row-head" data-rule>
+      <span class="head-label">Pricing</span>
+      <span class="head-meta">Billed monthly · cancel anytime</span>
+    </div>
     <div class="pricing-grid">
-      <article class="tier">
-        <h3>Solo</h3>
-        <p class="tier-price">Free</p>
-        <p class="tier-for">One worker. Unlimited swaps. No card.</p>
+
+      <article class="cell tier">
+        <h3 data-rise>Solo</h3>
+        <p class="tier-price" data-rise>Free</p>
+        <svg class="mk mk-rule" viewBox="0 0 200 22" role="img" aria-label="A$0 per worker per month, on a rule from A$0 to A$5">
+          <line class="g-axis" x1="4" y1="14" x2="196" y2="14"/>
+          <g class="g-major">
+            <line x1="4" y1="14" x2="4" y2="21"/><line x1="42.4" y1="14" x2="42.4" y2="21"/><line x1="80.8" y1="14" x2="80.8" y2="21"/>
+            <line x1="119.2" y1="14" x2="119.2" y2="21"/><line x1="157.6" y1="14" x2="157.6" y2="21"/><line x1="196" y1="14" x2="196" y2="21"/>
+          </g>
+          <rect class="g-knob g-knob-hollow" data-mark x="0.5" y="4" width="7" height="7"/>
+        </svg>
+        <div class="g-legend g-legend-ends"><span>A$0</span><span>A$5</span></div>
+        <p class="tier-for" data-rise>One worker. Unlimited swaps. No card.</p>
       </article>
-      <article class="tier tier-dark">
-        <span class="tier-flag">Recommended</span>
-        <h3>Venue</h3>
-        <p class="tier-price">A$4<span>/ worker / mo</span></p>
-        <p class="tier-for">One site. Manager approvals. Payroll export.</p>
+
+      <article class="cell tier tier-dark">
+        <span class="tier-flag" data-stamp>Recommended</span>
+        <h3 data-rise>Venue</h3>
+        <p class="tier-price" data-rise>A$4<span>/ worker / mo</span></p>
+        <svg class="mk mk-rule" viewBox="0 0 200 22" role="img" aria-label="A$4 per worker per month, on a rule from A$0 to A$5">
+          <line class="g-axis" x1="4" y1="14" x2="196" y2="14"/>
+          <g class="g-major">
+            <line x1="4" y1="14" x2="4" y2="21"/><line x1="42.4" y1="14" x2="42.4" y2="21"/><line x1="80.8" y1="14" x2="80.8" y2="21"/>
+            <line x1="119.2" y1="14" x2="119.2" y2="21"/><line x1="157.6" y1="14" x2="157.6" y2="21"/><line x1="196" y1="14" x2="196" y2="21"/>
+          </g>
+          <rect class="g-fill" data-draw x="4" y="12.5" width="153.6" height="3"/>
+          <rect class="g-knob" data-mark x="154.1" y="4" width="7" height="7"/>
+        </svg>
+        <div class="g-legend g-legend-ends"><span>A$0</span><span>A$5</span></div>
+        <p class="tier-for" data-rise>One site. Manager approvals. Payroll export.</p>
       </article>
-      <article class="tier">
-        <h3>Group</h3>
-        <p class="tier-price">A$3<span>/ worker / mo</span></p>
-        <p class="tier-for">3+ sites. Shared casual pool. One bill.</p>
+
+      <article class="cell tier">
+        <h3 data-rise>Group</h3>
+        <p class="tier-price" data-rise>A$3<span>/ worker / mo</span></p>
+        <svg class="mk mk-rule" viewBox="0 0 200 22" role="img" aria-label="A$3 per worker per month, on a rule from A$0 to A$5">
+          <line class="g-axis" x1="4" y1="14" x2="196" y2="14"/>
+          <g class="g-major">
+            <line x1="4" y1="14" x2="4" y2="21"/><line x1="42.4" y1="14" x2="42.4" y2="21"/><line x1="80.8" y1="14" x2="80.8" y2="21"/>
+            <line x1="119.2" y1="14" x2="119.2" y2="21"/><line x1="157.6" y1="14" x2="157.6" y2="21"/><line x1="196" y1="14" x2="196" y2="21"/>
+          </g>
+          <rect class="g-fill" data-draw x="4" y="12.5" width="115.2" height="3"/>
+          <rect class="g-knob" data-mark x="115.7" y="4" width="7" height="7"/>
+        </svg>
+        <div class="g-legend g-legend-ends"><span>A$0</span><span>A$5</span></div>
+        <p class="tier-for" data-rise>3+ sites. Shared casual pool. One bill.</p>
       </article>
+
     </div>
-    <p class="pricing-note">Billed monthly. Cancel anytime.</p>
   </section>
 
-  <!-- HONEST LIMITATION -->
-  <section class="limitation">
-    <p class="section-eyebrow">What the dish doesn’t hide</p>
-    <h2>Roster cannot make anyone pick up your shift.</h2>
-    <p>6% of swaps go unfilled. If nobody is free, nobody is free — the app just stops you finding that out on Thursday morning.</p>
-    <div class="dot-row" id="dot-row" aria-hidden="true"></div>
-    <p class="dot-caption">47 filled, 3 didn’t — every dish we grow, whatever order it grows in.</p>
+  <!-- ========== HONEST LIMITATION ========== -->
+  <section class="row limitation">
+    <div class="row-head" data-rule>
+      <span class="head-label">What the dish doesn’t hide</span>
+      <span class="head-meta">6% unfilled</span>
+    </div>
+    <div class="lim-grid">
+      <div class="cell lim-copy">
+        <h2 data-resolve>Roster cannot make anyone pick up your shift.</h2>
+        <p data-rise>6% of swaps go unfilled. If nobody is free, nobody is free — the app just stops you finding that out on Thursday morning.</p>
+      </div>
+      <div class="cell lim-mark">
+        <span class="cell-badge" data-stamp>50 shifts</span>
+        <svg class="mk mk-plate" viewBox="0 0 200 100" role="img" aria-label="Fifty shifts: forty-seven filled, three unfilled">
+          <g class="plate-dots" id="plate-dots" data-plate>
+            <circle cx="10" cy="10" r="5.5"/><circle cx="30" cy="10" r="5.5"/><circle cx="50" cy="10" r="5.5"/><circle cx="70" cy="10" r="5.5"/><circle cx="90" cy="10" r="5.5"/><circle cx="110" cy="10" r="5.5"/><circle cx="130" cy="10" r="5.5"/><circle cx="150" cy="10" r="5.5" class="empty"/><circle cx="170" cy="10" r="5.5"/><circle cx="190" cy="10" r="5.5"/>
+            <circle cx="10" cy="30" r="5.5"/><circle cx="30" cy="30" r="5.5"/><circle cx="50" cy="30" r="5.5"/><circle cx="70" cy="30" r="5.5"/><circle cx="90" cy="30" r="5.5"/><circle cx="110" cy="30" r="5.5"/><circle cx="130" cy="30" r="5.5"/><circle cx="150" cy="30" r="5.5"/><circle cx="170" cy="30" r="5.5"/><circle cx="190" cy="30" r="5.5"/>
+            <circle cx="10" cy="50" r="5.5"/><circle cx="30" cy="50" r="5.5"/><circle cx="50" cy="50" r="5.5"/><circle cx="70" cy="50" r="5.5"/><circle cx="90" cy="50" r="5.5" class="empty"/><circle cx="110" cy="50" r="5.5"/><circle cx="130" cy="50" r="5.5"/><circle cx="150" cy="50" r="5.5"/><circle cx="170" cy="50" r="5.5"/><circle cx="190" cy="50" r="5.5"/>
+            <circle cx="10" cy="70" r="5.5"/><circle cx="30" cy="70" r="5.5"/><circle cx="50" cy="70" r="5.5"/><circle cx="70" cy="70" r="5.5"/><circle cx="90" cy="70" r="5.5"/><circle cx="110" cy="70" r="5.5"/><circle cx="130" cy="70" r="5.5"/><circle cx="150" cy="70" r="5.5"/><circle cx="170" cy="70" r="5.5"/><circle cx="190" cy="70" r="5.5"/>
+            <circle cx="10" cy="90" r="5.5"/><circle cx="30" cy="90" r="5.5" class="empty"/><circle cx="50" cy="90" r="5.5"/><circle cx="70" cy="90" r="5.5"/><circle cx="90" cy="90" r="5.5"/><circle cx="110" cy="90" r="5.5"/><circle cx="130" cy="90" r="5.5"/><circle cx="150" cy="90" r="5.5"/><circle cx="170" cy="90" r="5.5"/><circle cx="190" cy="90" r="5.5"/>
+          </g>
+        </svg>
+        <p class="dot-caption" data-rise>47 filled, 3 didn’t — every dish we grow, whatever order it grows in.</p>
+      </div>
+    </div>
   </section>
 
-</main>
+  <!-- ========== FOOTER ========== -->
+  <footer class="row">
+    <p>Roster is a concept, built for a design exercise — not a real company, not a real product. The numbers above are the brief’s, not measured revenue.</p>
+  </footer>
 
-<footer>
-  <p>Roster is a concept, built for a design exercise — not a real company, not a real product. The numbers above are the brief’s, not measured revenue.</p>
-</footer>
+</div>
 
 <script src="app.js"></script>
 </body>
