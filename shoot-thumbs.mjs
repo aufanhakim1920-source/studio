@@ -109,5 +109,5 @@ for (const b of builds) {
 }
 
 sock.close(); chrome.kill(); srv.close();
-console.log(`\n${ok}/${builds.length} shot -> work/_thumbs/`);
+console.log(`\n${ok}/${builds.length} shot -> work/thumbs/`);
 if (bad.length) { console.log("FAILED:\n" + bad.join("\n")); process.exit(1); }

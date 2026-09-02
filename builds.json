@@ -269,5 +269,26 @@
     "title": "SOLSTICE",
     "blurb": "a sun that opens as you scroll, and hovering an act repaints the whole page",
     "date": "3 Sep"
+  },
+  {
+    "n": "70",
+    "slug": "land-still",
+    "title": "STILL",
+    "blurb": "cold-water swim club &mdash; flip the sand timer, it picks your session",
+    "date": "3 Sep"
+  },
+  {
+    "n": "71",
+    "slug": "land-rotor",
+    "title": "ROTOR",
+    "blurb": "a zoetrope you drag &mdash; twelve frames, and the drawing walks",
+    "date": "3 Sep"
+  },
+  {
+    "n": "72",
+    "slug": "land-abacus",
+    "title": "SUM",
+    "blurb": "pricing as an abacus &mdash; the beads are the quantities, no quote needed",
+    "date": "3 Sep"
   }
 ]

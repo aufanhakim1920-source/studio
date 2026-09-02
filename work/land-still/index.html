@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STILL — cold water and hot air, Port Phillip</title>
+<meta name="description" content="A cold-water swim and sauna club on Port Phillip Bay. Three session lengths, six mornings a week.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23EDF0E8'/%3E%3Cpath d='M10 6h12l-6 10 6 10H10l6-10z' fill='%23BECFBB'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="bar">
+  <span class="mark">STILL<i>.</i></span>
+  <nav><a href="#how">How it works</a><a href="#sessions">Sessions</a><a href="#join">Join</a></nav>
+  <a class="mini" href="#join">Book a morning</a>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero__t">
+      <p class="kick"><span class="pip"></span>Port Phillip Bay &middot; six mornings a week</p>
+      <h1>Cold water,<br><em>then hot air.</em></h1>
+      <p class="sub">Two minutes in the bay at 13&deg;C, then twelve in a wood-fired sauna at 82&deg;C.
+        Repeat three times. You will feel it for the rest of the day.</p>
+      <div class="acts">
+        <a class="cta" href="#join"><span>Book a morning</span><i>&rarr;</i></a>
+        <a class="ghost" href="#how">How it works</a>
+      </div>
+      <p class="fine mono">First session $18 &middot; towel and robe included</p>
+    </div>
+
+    <!-- ⭐ THE OBJECT: a sand timer. Flip it to pick a session length; the sand
+         actually runs, and the length you flipped to drives the whole page. -->
+    <figure class="glassfig">
+      <div class="glass" id="glass">
+        <canvas id="cv" width="420" height="560" role="img"
+                aria-label="A sand timer showing the selected session length"></canvas>
+        <button class="flip" id="flip" type="button">
+          <span class="flip__i" aria-hidden="true">&#8635;</span>
+          <span class="flip__t">Flip to start</span>
+        </button>
+      </div>
+      <figcaption>
+        <span class="mono" id="read">08:00 remaining</span>
+        <span class="lens" id="lens">the short one</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- the three lengths: picking one re-fills the timer above -->
+  <section class="picks" id="sessions">
+    <p class="tag">01 &mdash; pick your length</p>
+    <div class="picks__g" id="picks"></div>
+  </section>
+
+  <section class="how" id="how">
+    <p class="tag">02 &mdash; the round</p>
+    <h2>Three rounds, <em>same order every time.</em></h2>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <section class="inc">
+    <p class="tag">03 &mdash; what you get</p>
+    <div class="inc__g" id="inc"></div>
+  </section>
+
+  <section class="join" id="join">
+    <p class="tag">04 &mdash; join</p>
+    <h2>Six mornings a week.<br><em>Book the one you want.</em></h2>
+    <div class="plans" id="plans"></div>
+    <p class="fine">Cancel any time &middot; no lock-in &middot; first session is single-entry, no membership needed</p>
+  </section>
+
+  <section class="faq" id="faq">
+    <p class="tag">05 &mdash; questions</p>
+    <h2>The ones people ask <em>on the beach.</em></h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>STILL &middot; Port Phillip Bay</span>
+  <span class="mono">Water <span id="temp">13.4</span>&deg;C &middot; <span id="clock">&mdash;</span></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

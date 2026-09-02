@@ -1,0 +1,220 @@
+/* SUM — landing page 3 of 3 (my own pick)
+   ---------------------------------------------------------------------------
+   Palette learned from reference 49 (a.Record), pulled from Variant this session:
+   warm grey #E8E6E1, paper #F7F6F3, ink #111111, mute #8B8985, signal #EA4335.
+
+   ⭐ WHY THIS GROUND: the round's other two are porcelain-green and warm
+   near-black. A warm neutral grey with ONE hot red is the third distinct family,
+   and it is what a page about money should look like — the reference is a
+   recording tool, and its restraint transfers.
+
+   Radius is a committed two-tier system: 0 on the abacus frame and rows,
+   999px on beads and pills. Nothing carries a middling uniform corner. */
+
+:root {
+  --ground: #E8E6E1;
+  --paper: #F7F6F3;
+  --paper-2: #EFECE7;
+  --ink: #111111;
+  --ink-2: #1A1A1A;
+  --mute: #8B8985;
+  --line: rgba(17,17,17,.14);
+  --sig: #EA4335;
+
+  --ui: 'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --serif: 'Newsreader', Georgia, serif;
+  --mono: 'DM Mono', ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(.2,.7,.3,1);
+  --spring: cubic-bezier(.34,1.5,.64,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--ground); color: var(--ink);
+  font: 400 16px/1.6 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.mono { font-family: var(--mono); }
+
+/* second layer over the ground: a fine ruled grid, like accounting paper */
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .55;
+  background-image:
+    linear-gradient(rgba(17,17,17,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17,17,17,.03) 1px, transparent 1px);
+  background-size: 100% 30px, 30px 100%;
+}
+
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
+.skip:focus { left: 16px; top: 16px; z-index: 60; background: var(--ink); color: var(--paper); padding: 0 20px; }
+:is(a, button, [tabindex]):focus-visible { outline: 2px solid var(--sig); outline-offset: 3px; }
+
+/* ── bar ───────────────────────────────────────────────────────────────── */
+.bar { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; padding: 18px clamp(16px,4vw,54px); }
+.mark { font: 800 17px/1 var(--ui); letter-spacing: .18em; }
+.mark i { font-style: normal; color: var(--sig); }
+.bar nav { display: flex; gap: clamp(12px,2vw,26px); }
+.bar nav a { color: var(--mute); text-decoration: none; font-size: 14px;
+  min-height: 44px; display: inline-flex; align-items: center; transition: color .18s; }
+.bar nav a:hover { color: var(--ink); }
+.mini { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
+  border-radius: 999px; background: var(--ink); color: var(--paper); text-decoration: none;
+  font: 700 14px/1 var(--ui); transition: transform .22s var(--spring), background .2s; }
+.mini:hover { transform: translateY(-2px); background: var(--sig); }
+
+main { position: relative; z-index: 5; }
+section { padding: 0 clamp(16px,4vw,54px); max-width: 1180px; margin: 0 auto; }
+
+/* ── hero ──────────────────────────────────────────────────────────────── */
+.hero { padding-top: clamp(30px,6vw,80px); padding-bottom: clamp(24px,4vw,48px); }
+.kick { display: inline-flex; align-items: center; gap: 9px; font: 400 12px/1 var(--mono);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--mute);
+  border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; }
+.pip { width: 6px; height: 6px; border-radius: 50%; background: var(--sig); }
+
+h1 { font: 800 clamp(42px,7.6vw,96px)/.96 var(--ui); letter-spacing: -.05em; margin: 24px 0 20px; }
+h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -.02em; color: var(--sig); }
+.sub { font-size: clamp(16px,1.7vw,19px); color: rgba(17,17,17,.66); max-width: 52ch; }
+
+/* ── the abacus ────────────────────────────────────────────────────────── */
+.frame { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(0,.85fr);
+  gap: clamp(18px,3vw,36px); align-items: start; padding-top: clamp(20px,3vw,42px); }
+
+.abacus { background: var(--paper); border: 2px solid var(--ink); padding: 8px clamp(12px,2vw,22px) 14px; }
+.rod { border-bottom: 1px solid var(--line); padding: 16px 0 14px; }
+.rod:last-child { border-bottom: 0; }
+.rod__h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.rod__n { font: 700 14.5px/1.2 var(--ui); letter-spacing: -.01em; }
+.rod__n small { display: block; font: 400 12px/1.4 var(--ui); color: var(--mute); margin-top: 3px; letter-spacing: 0; }
+.rod__v { font: 500 13px/1 var(--mono); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rod__v b { color: var(--sig); font-weight: 500; }
+
+/* the wire, and the beads on it */
+.wire { position: relative; height: 46px; display: flex; align-items: center; touch-action: none; }
+.wire::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px;
+  background: var(--ink); opacity: .3; }
+/* ⚠️ The BEAD is 34px because that is the right size for a bead. The BUTTON is
+   44px tall because that is the tap floor. Those are two different numbers, and
+   the fix is a tall transparent button with the bead drawn inside it - not a
+   bigger bead. Shipping 34px hit targets failed the phone gate. */
+.bead {
+  position: relative; width: 34px; height: 44px; border: 0; padding: 0;
+  background: none; cursor: grab; flex: none;
+}
+.bead::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  height: 34px; transform: translateY(-50%); border-radius: 999px;
+  background: var(--ink-2);
+  transition: background .18s var(--ease), transform .3s var(--spring);
+}
+.bead + .bead { margin-left: 4px; }
+.bead:hover::before { transform: translateY(-50%) scale(1.12); }
+.bead:active { cursor: grabbing; }
+/* a counted bead is red and pushed left — the count IS the value */
+.bead.on::before { background: var(--sig); }
+.bead.on::after { content: ""; position: absolute; left: 50%; top: 50%;
+  width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 999px;
+  background: rgba(255,255,255,.5); }
+/* the gap between counted and uncounted beads is the reading of the rod */
+.bead.edge { margin-right: auto; }
+
+/* ── the total ─────────────────────────────────────────────────────────── */
+.total { background: var(--ink); color: var(--paper); padding: 26px 24px 24px; position: sticky; top: 18px; }
+.total__k { font: 500 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(247,246,243,.55); }
+.total__n { display: flex; align-items: baseline; gap: 2px; margin: 10px 0 18px;
+  font: 800 clamp(42px,6vw,68px)/1 var(--ui); letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+.total__n .cur { font-size: .46em; color: rgba(247,246,243,.6); }
+.total__n small { font: 400 13px/1 var(--mono); color: rgba(247,246,243,.5); margin-left: 8px; letter-spacing: .06em; }
+.bill { list-style: none; border-top: 1px solid rgba(247,246,243,.18); }
+.bill li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0;
+  border-bottom: 1px solid rgba(247,246,243,.1); font: 400 13px/1.4 var(--mono);
+  color: rgba(247,246,243,.75); font-variant-numeric: tabular-nums; }
+.bill li b { color: var(--paper); font-weight: 500; }
+.bill li.zero { color: rgba(247,246,243,.34); }
+.cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; margin-top: 20px; border-radius: 999px; background: var(--sig); color: #fff;
+  text-decoration: none; font: 700 15px/1 var(--ui);
+  transition: transform .25s var(--spring), background .2s; }
+.cta:hover { transform: translateY(-2px); background: #F2564A; }
+.cta i { font-style: normal; transition: transform .3s var(--ease); }
+.cta:hover i { transform: translateX(4px); }
+.total .fine { margin-top: 12px; font-size: 12.5px; color: rgba(247,246,243,.45); }
+
+/* ── shared ────────────────────────────────────────────────────────────── */
+.tag { font: 500 11.5px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--sig); }
+h2 { font: 800 clamp(28px,4.2vw,48px)/1.08 var(--ui); letter-spacing: -.04em; margin: 16px 0 28px; max-width: 20ch; }
+h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -.015em; }
+.does, .who, .faq { padding-top: clamp(48px,7vw,100px); }
+.fine { font-size: 13px; color: var(--mute); }
+
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); }
+.card { background: var(--paper); padding: 24px 20px 26px; }
+.card b { display: block; font: 700 16px/1.3 var(--ui); letter-spacing: -.015em; }
+.card span { display: block; margin-top: 8px; font-size: 14px; color: var(--mute); line-height: 1.55; }
+.card i { font-style: normal; display: block; font: 500 11.5px/1 var(--mono); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--sig); margin-bottom: 12px; }
+
+.rows { list-style: none; border-top: 1px solid var(--line); }
+.rows li { border-bottom: 1px solid var(--line); display: grid;
+  grid-template-columns: 44px 1fr auto; gap: clamp(10px,2vw,26px); align-items: baseline;
+  padding: 18px 2px; min-height: 66px; transition: padding-left .28s var(--ease), background .2s; }
+.rows li:hover { padding-left: 12px; background: var(--paper); }
+.rows .no { font: 400 12px/1 var(--mono); color: var(--mute); }
+.rows b { font: 700 clamp(17px,2.2vw,24px)/1.25 var(--ui); letter-spacing: -.025em; }
+.rows .m { font: 400 13px/1.5 var(--ui); color: var(--mute); max-width: 46ch; }
+
+/* ── questions (animated, per the rule set two builds ago) ─────────────── */
+.qa { border-top: 1px solid var(--line); }
+.qa details { border-bottom: 1px solid var(--line); position: relative; }
+.qa details::before {
+  content: ""; position: absolute; left: -14px; top: 12px; bottom: 12px; width: 2px;
+  background: var(--sig); transform: scaleY(0); transform-origin: 50% 0; opacity: 0;
+  transition: transform .4s var(--ease), opacity .28s;
+}
+.qa details.is-open::before { transform: scaleY(1); opacity: 1; }
+.qa summary { list-style: none; cursor: pointer; padding: 20px 0; display: flex;
+  align-items: center; justify-content: space-between; gap: 18px;
+  font: 700 clamp(16px,1.9vw,19px)/1.35 var(--ui); letter-spacing: -.02em; min-height: 58px;
+  transition: color .2s, padding-left .4s var(--ease); }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary:hover { color: var(--sig); }
+.qa details.is-open > summary { padding-left: 4px; }
+.qa summary::after { content: "+"; font: 400 20px/1 var(--mono); color: var(--sig);
+  transition: transform .4s var(--spring); }
+.qa details.is-open > summary::after { transform: rotate(135deg); }
+.qa .a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); }
+.qa details.is-open .a { grid-template-rows: 1fr; }
+.qa .a > div { overflow: hidden; }
+.qa .a p { padding: 0 0 24px; color: rgba(17,17,17,.66); font-size: 15px; max-width: 62ch;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .3s var(--ease), transform .4s var(--ease); }
+.qa details.is-open .a p { opacity: 1; transform: none; transition-delay: .1s; }
+
+.foot { position: relative; z-index: 5; display: flex; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap; padding: 26px clamp(16px,4vw,54px) 40px; margin-top: clamp(48px,7vw,100px);
+  border-top: 1px solid var(--line); color: var(--mute);
+  font: 400 12px/1.6 var(--mono); letter-spacing: .06em; }
+.foot b { color: var(--sig); font-weight: 500; }
+
+@media (max-width: 900px) {
+  .frame { grid-template-columns: 1fr; }
+  .total { position: static; }
+  .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .bar nav { display: none; }
+  .bead { width: 28px; }
+  .bead::before { height: 28px; }
+  .bead + .bead { margin-left: 3px; }
+}
+@media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; }
+  .rows li { grid-template-columns: 34px 1fr; }
+  .rows .m { grid-column: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
+}
