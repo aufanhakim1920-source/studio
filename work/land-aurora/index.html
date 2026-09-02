@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGNAL — every deploy, watched</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23030407'/%3E%3Cpath d='M4 22c4-14 20-14 24 0' stroke='%234A88FF' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ ONE big moving thing: a warped ring of light. Raw WebGL, no library. -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="logo" href="#"><i></i>SIGNAL</a>
+  <nav class="nav__l">
+    <a href="#how">How it works</a>
+    <a href="#num">Numbers</a>
+    <a href="#faq">Questions</a>
+  </nav>
+  <a class="btn btn--ghost mag" href="#cta">Get access</a>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="eyebrow rv"><i class="dot"></i>Uplink established &middot; v3.01</p>
+    <h1 class="rv">Every deploy,<br><em>watched</em> from the<br>first byte.</h1>
+    <p class="sub rv">SIGNAL sits between your build and your users. It sees the request before
+      the error page does, and it tells you which commit did it — in the time it takes to
+      alt-tab.</p>
+    <div class="row rv">
+      <a class="btn btn--solid mag" href="#cta">Start watching <span>&rarr;</span></a>
+      <a class="btn btn--ghost mag" href="#how">See how it works</a>
+    </div>
+    <p class="fine rv">No card. 14 days. Your data never leaves your region.</p>
+  </section>
+
+  <!-- the marquee is ONE object moving as one, not many independent movers -->
+  <div class="ticker" aria-hidden="true"><div class="ticker__t" id="tick"></div></div>
+
+  <section class="how" id="how">
+    <p class="tag rv">01 &mdash; how it works</p>
+    <h2 class="rv">Three moving parts.<br>You only touch one.</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="num" id="num">
+    <div class="num__g" id="nums"></div>
+  </section>
+
+  <section class="faq" id="faq">
+    <p class="tag rv">03 &mdash; questions</p>
+    <h2 class="rv">The ones people actually ask.</h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+  <section class="cta" id="cta">
+    <h2 class="rv">Point it at one service.<br><em>Watch what happens.</em></h2>
+    <a class="btn btn--solid btn--lg mag" href="#">Get access <span>&rarr;</span></a>
+    <p class="fine rv">Read-only agent &middot; SOC 2 &middot; 4 minute setup</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>SIGNAL</span>
+  <span class="mono">Melbourne &middot; <span id="clock">—</span></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

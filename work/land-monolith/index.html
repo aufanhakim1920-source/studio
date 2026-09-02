@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MONOLITH — a type foundry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F3F3E1'/%3E%3Cpath d='M16 3l11 7v12l-11 7-11-7V10z' fill='none' stroke='%231C00FF' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="rule" aria-hidden="true"></div>
+
+<header class="bar">
+  <span class="mark">MONOLITH</span>
+  <nav><a href="#faces">Faces</a><a href="#spec">Spec</a><a href="#buy">Licence</a></nav>
+  <span class="mono" id="clock">—</span>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero__t">
+      <p class="kick">Est. 2026 &mdash; Melbourne <span class="sl">/</span> a type foundry</p>
+      <h1>
+        <span class="ln"><span>LETTERS</span></span>
+        <span class="ln"><span>WITH</span></span>
+        <span class="ln"><span class="blue">WEIGHT.</span></span>
+      </h1>
+      <p class="sub">Six faces cut for screens that are too bright and rooms that are too loud.
+        Variable, hinted, and licensed once &mdash; not by the pageview.</p>
+      <div class="acts">
+        <a class="btn btn--fill" href="#buy">Licence the family</a>
+        <a class="btn" href="#spec">Read the spec</a>
+      </div>
+    </div>
+
+    <!-- ⭐ the object: a wireframe solid, hand-rolled, turned by your scroll -->
+    <figure class="stage">
+      <canvas id="cv" aria-label="A wireframe solid that turns as you scroll"></canvas>
+      <figcaption class="mono" id="cap">DRAG TO TURN &middot; SCROLL TO ROTATE</figcaption>
+    </figure>
+  </section>
+
+  <!-- the big scrolling word: one object, moving as one -->
+  <div class="band" aria-hidden="true"><div class="band__t" id="band"></div></div>
+
+  <section class="faces" id="faces">
+    <p class="tag">01 / the family</p>
+    <ol class="list" id="faces-l"></ol>
+  </section>
+
+  <section class="spec" id="spec">
+    <p class="tag">02 / the spec</p>
+    <div class="spec__g" id="spec-g"></div>
+  </section>
+
+  <section class="buy" id="buy">
+    <p class="tag">03 / licence</p>
+    <h2>One price.<br><span class="blue">Forever.</span></h2>
+    <div class="price">
+      <div class="price__n"><span class="mono">AUD</span><b id="amt">0</b></div>
+      <ul class="price__l">
+        <li>Six faces, variable + static</li>
+        <li>Desktop, web and app, unlimited</li>
+        <li>No pageview counting, ever</li>
+        <li>Updates for the life of the family</li>
+      </ul>
+      <a class="btn btn--fill btn--lg" href="#">Take it &rarr;</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>MONOLITH &copy; 2026</span>
+  <span class="mono">Set in Archivo &amp; IBM Plex Mono</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

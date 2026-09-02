@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOLSTICE — three nights, one long light</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070707'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23E85D04' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E9C46A'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ ONE object: concentric rings that open as you scroll. Not a particle field. -->
+<div class="sun" id="sun" aria-hidden="true">
+  <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i>
+  <i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i>
+  <b class="core"></b>
+</div>
+
+<header class="bar">
+  <span class="mark">SOLSTICE<i>&deg;</i></span>
+  <nav><a href="#line">Line-up</a><a href="#when">When</a><a href="#pass">Passes</a></nav>
+  <a class="mini" href="#pass">Get a pass</a>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="kick"><span class="pip"></span>21&ndash;23 December &middot; Point Nepean, VIC</p>
+    <h1 id="h1" aria-label="Three nights, one long light."></h1>
+    <p class="sub">Forty artists across three stages, from the last light on Friday to the first
+      on Monday. No clashes &mdash; we publish the whole line as one timetable and we keep to it.</p>
+    <div class="acts">
+      <a class="cta" href="#pass"><span>Get a pass</span><i>&rarr;</i></a>
+      <a class="ghost" href="#line">See who&rsquo;s playing</a>
+    </div>
+  </section>
+
+  <!-- the line-up: hovering a name paints the page in that artist's colour -->
+  <section class="line" id="line">
+    <p class="tag">01 &mdash; the line</p>
+    <ol id="acts"></ol>
+  </section>
+
+  <section class="when" id="when">
+    <p class="tag">02 &mdash; the shape of it</p>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section class="pass" id="pass">
+    <p class="tag">03 &mdash; passes</p>
+    <h2>Three nights.<br><em>One wristband.</em></h2>
+    <div class="tiers" id="tiers"></div>
+    <p class="fine">Under 18s free with a guardian &middot; camping included &middot; refundable to 1 Dec</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>SOLSTICE 2026</span>
+  <span class="mono">Point Nepean &middot; <span id="clock">—</span></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
