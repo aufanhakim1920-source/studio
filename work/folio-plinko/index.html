@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aufan Rachmad — Drop a token</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23E8E5D8'/%3E%3Ccircle cx='11' cy='11' r='2' fill='%231C1C1C'/%3E%3Ccircle cx='21' cy='11' r='2' fill='%231C1C1C'/%3E%3Ccircle cx='16' cy='18' r='2' fill='%231C1C1C'/%3E%3Ccircle cx='16' cy='6' r='3.4' fill='%23F9A16C'/%3E%3Crect x='5' y='24' width='22' height='4' rx='2' fill='%23E7F65E'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#board">Skip to the projects</a>
+<div class="blob blob--1" aria-hidden="true"></div>
+<div class="blob blob--2" aria-hidden="true"></div>
+
+<header class="top">
+  <span class="brand">Aufan&nbsp;Rachmad</span>
+  <span class="pill"><i class="led"></i><span id="clock">—</span> Melbourne</span>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kick">Nine projects <span class="dot">&bull;</span> one bad idea</p>
+    <h1>Drop a token.<br><em>Let it decide.</em></h1>
+    <p class="lede">Click anywhere along the top of the board and a token falls through it.
+      <b>The wider slots are the bigger builds</b>, so they catch more &mdash; which is either
+      a metaphor or a bug. Impatient? The slots are buttons too.</p>
+  </section>
+
+  <section class="stage" id="board">
+    <div class="rig">
+      <canvas id="cv" aria-label="A pegboard. Drop a token to land on a project."></canvas>
+      <div class="rig__hint" id="hint">click along the top to drop</div>
+      <button class="drop" id="drop">Drop a token</button>
+    </div>
+
+    <ol class="slots" id="slots" aria-label="Projects"></ol>
+
+    <div class="out" id="out" aria-live="polite">
+      <div>
+        <p class="mono cue" id="cue">— nothing landed yet —</p>
+        <h2 id="oName">Drop one</h2>
+        <p class="out__d" id="oDesc">A token has to land somewhere. Whatever it hits, you get.</p>
+        <ul class="tags" id="oTags"></ul>
+        <a class="go" id="oLink" href="#" hidden>Open it &rarr;</a>
+      </div>
+      <div class="out__r">
+        <div class="chip" id="oYear">—</div>
+        <div class="chip chip--st" id="oStatus">—</div>
+        <div class="chip chip--n"><span id="oHits">0</span> drops</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" id="stats"></section>
+</main>
+
+<footer class="foot">
+  <p>aufanhakim1920@gmail.com</p>
+  <p class="mono">Data Science &mdash; University of Melbourne</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

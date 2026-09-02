@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aufan Rachmad — Press a key</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23E8E5D8'/%3E%3Crect x='5' y='8' width='22' height='16' rx='4' fill='%231C1C1C'/%3E%3Crect x='8' y='11' width='16' height='9' rx='2' fill='%23E7F65E'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#board">Skip to the keyboard</a>
+<div class="blob blob--1" aria-hidden="true"></div>
+<div class="blob blob--2" aria-hidden="true"></div>
+
+<header class="top">
+  <span class="brand">Aufan&nbsp;Rachmad</span>
+  <span class="pill"><i class="led"></i><span id="clock">—</span> Melbourne</span>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kick">Nine projects <span class="dot">&bull;</span> nine keys</p>
+    <h1>Press a key.<br><em>Any key.</em></h1>
+    <p class="lede">Each project is a keycap. Click one &mdash; or just <b>type its letter on your
+      real keyboard</b>. Wide keys are the big builds; the colour is what kind of thing it is.</p>
+  </section>
+
+  <!-- ── the board ─────────────────────────────────────────────────────── -->
+  <section class="stage" id="board">
+    <div class="deck" id="deck">
+      <div class="deck__rail" aria-hidden="true"></div>
+      <div class="keys" id="keys" role="group" aria-label="Projects as keys"></div>
+      <div class="deck__feet" aria-hidden="true"></div>
+    </div>
+
+    <!-- what the keypress prints -->
+    <div class="out" id="out" aria-live="polite">
+      <div class="out__l">
+        <p class="mono cue" id="cue">— press anything —</p>
+        <h2 id="oName">Nothing pressed yet</h2>
+        <p class="out__d" id="oDesc">Hit a key above, or type one of the highlighted letters.</p>
+        <ul class="tags" id="oTags"></ul>
+        <a class="go" id="oLink" href="#" hidden>Open it &rarr;</a>
+      </div>
+      <div class="out__r">
+        <div class="chip" id="oYear">—</div>
+        <div class="chip chip--st" id="oStatus">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" id="stats"></section>
+</main>
+
+<footer class="foot">
+  <p>aufanhakim1920@gmail.com</p>
+  <p class="mono">Data Science &mdash; University of Melbourne</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

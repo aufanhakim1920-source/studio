@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aufan Rachmad — Pull the tab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23E8E5D8'/%3E%3Crect x='5' y='18' width='22' height='9' rx='2' fill='%23F9A16C'/%3E%3Crect x='9' y='7' width='14' height='12' rx='2' fill='%23E7F65E'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#book">Skip to the book</a>
+<div class="blob blob--1" aria-hidden="true"></div>
+<div class="blob blob--2" aria-hidden="true"></div>
+
+<header class="top">
+  <span class="brand">Aufan&nbsp;Rachmad</span>
+  <span class="pill"><i class="led"></i><span id="clock">—</span> Melbourne</span>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="kick">Nine projects <span class="dot">&bull;</span> one pop-up book</p>
+    <h1>Pull the tab.<br><em>Watch it stand up.</em></h1>
+    <p class="lede">Every project is a paper spread. Drag the tab at the bottom and the whole
+      thing rises off the page &mdash; slowly if you drag slowly. Nothing on this site moves
+      unless you move it.</p>
+  </section>
+
+  <!-- ── the book ─────────────────────────────────────────────────────── -->
+  <section class="stage" id="book">
+    <div class="book" id="tilt">
+      <div class="spread">
+
+        <!-- the flat page: the writing lives here -->
+        <div class="page">
+          <p class="mono num" id="pgNo">01 / 09</p>
+          <h2 id="pgName">—</h2>
+          <p class="page__d" id="pgDesc">—</p>
+          <ul class="tags" id="pgTags"></ul>
+          <a class="go" id="pgLink" href="#" hidden>Open it &rarr;</a>
+        </div>
+
+        <!-- ⭐ the pop-up: three layers that rise at different rates -->
+        <div class="pop" id="pop">
+          <div class="lay lay--back"  id="lay3"><span id="l3">—</span></div>
+          <div class="lay lay--mid"   id="lay2"><span id="l2">—</span></div>
+          <div class="lay lay--front" id="lay1"><span id="l1">—</span></div>
+          <div class="crease" aria-hidden="true"></div>
+        </div>
+
+        <!-- the tab you actually pull -->
+        <button class="tab" id="tab" aria-label="Pull to raise the pop-up">
+          <span class="tab__grip" aria-hidden="true"></span>
+          <span class="tab__t" id="tabT">Pull</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="pager">
+      <button class="rnd" id="prev" aria-label="Previous project">&larr;</button>
+      <div class="dots" id="dots" role="tablist" aria-label="Projects"></div>
+      <button class="rnd" id="next" aria-label="Next project">&rarr;</button>
+    </div>
+  </section>
+
+  <section class="stats" id="stats"></section>
+</main>
+
+<footer class="foot">
+  <p>aufanhakim1920@gmail.com</p>
+  <p class="mono">Data Science &mdash; University of Melbourne</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
