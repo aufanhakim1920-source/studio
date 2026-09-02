@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aufan Rachmad — Nine Floors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%238C8B85'/%3E%3Crect x='6' y='4' width='9' height='24' fill='%2317171A'/%3E%3Crect x='17' y='4' width='9' height='24' fill='%2317171A'/%3E%3Crect x='14' y='13' width='4' height='6' fill='%23E9B429'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#dir">Skip to the directory</a>
+
+<div class="lobby">
+
+  <header class="hdr">
+    <div>
+      <p class="cap">Aufan Rachmad <span class="sep">/</span> Nine floors</p>
+      <h1>The building</h1>
+    </div>
+    <p class="hdr__s">Every project is a floor. The higher it sits, the more of it is finished.
+      Call the lift and it takes as long to get there as the distance deserves.</p>
+  </header>
+
+  <div class="shaft">
+
+    <!-- ── the directory board ──────────────────────────────────────────── -->
+    <section class="dir" id="dir" aria-label="Floor directory">
+      <p class="dir__h">Directory</p>
+      <ol id="dirList" role="list"></ol>
+    </section>
+
+    <!-- ── the car ──────────────────────────────────────────────────────── -->
+    <section class="car" aria-label="Lift car">
+      <div class="car__top">
+        <div class="ind" id="ind" aria-live="polite" aria-atomic="true">
+          <span class="ind__f" id="indF">—</span>
+          <span class="ind__a" id="indA">·</span>
+        </div>
+        <p class="cap dim" id="indS">Idle</p>
+      </div>
+
+      <div class="doors" id="doors">
+        <div class="door door--l"></div>
+        <div class="door door--r"></div>
+
+        <div class="inside" id="inside">
+          <p class="cap dim" id="fNo">—</p>
+          <h2 id="fName">—</h2>
+          <p class="fmeta"><span id="fYear">—</span> <span class="sep">/</span> <span id="fStatus">—</span></p>
+          <p class="fdesc" id="fDesc">—</p>
+          <ul class="ftags" id="fTags"></ul>
+          <a class="fgo" id="fLink" href="#" hidden>Open it &rsaquo;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── the call panel ───────────────────────────────────────────────── -->
+    <section class="panel" aria-label="Call panel">
+      <p class="cap dim">Call</p>
+      <div class="btns" id="btns" role="group"></div>
+      <div class="panel__f">
+        <p class="cap dim">Load</p>
+        <p class="mono" id="load">—</p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <p class="cap dim">aufanhakim1920@gmail.com <span class="sep">/</span> Melbourne</p>
+    <p class="cap dim" id="footNote">—</p>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

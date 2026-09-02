@@ -1,0 +1,150 @@
+/* THE LOOM — portfolio 3 of 3, Claude's own pick
+   ---------------------------------------------------------------------------
+   THE OBJECT: a loom, mid-weave. The warp threads running down are
+   capabilities; the weft threads running across are projects. Where a project
+   was built from a capability, the weft crosses over and a knot is tied.
+
+   IT IS LOAD-BEARING, and it is the only one of the three that tells Aufan
+   something he did not already know:
+     · a THICK warp is a capability that runs through everything he builds
+     · a THIN one he has touched once
+     · the cloth as a whole is the shape of a practice, not a list of jobs
+
+   A project list cannot show that. Neither can a tag cloud, because a tag
+   cloud loses which project each tag belongs to. The weave keeps both axes,
+   which is the entire argument for the object.
+
+   Ground: unbleached cotton, indigo warp, madder weft. Recent grounds were
+   cream, black, cold paper, slate, warm black, near-white, indigo, forest,
+   ink-on-white, oak brown and concrete — raw cotton with dyed thread is a
+   twelfth, and it is the first one that names an actual material
+   ([[Vary the Palette]]). */
+
+:root {
+  --cotton: #DDD6C6;
+  --cotton-2: #D3CBB8;
+  --ink: #221E18;
+  --ink-60: rgba(34,30,24,.62);
+  --ink-35: rgba(34,30,24,.35);
+  --rule: rgba(34,30,24,.18);
+  --indigo: #24406B;
+  --indigo-2: rgba(36,64,107,.30);
+  --madder: #A33B2A;
+
+  --disp: "Fraunces", ui-serif, Georgia, serif;
+  --mono: "Roboto Mono", ui-monospace, Menlo, Consolas, monospace;
+  --t: .13s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+/* a display rule beats the [hidden] attribute, so say so explicitly —
+   otherwise every element given display: flex ignores hidden entirely */
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 1ms !important; } }
+
+body {
+  background: var(--cotton);
+  /* the ground is cloth: a fine two-way slub, not a flat fill */
+  background-image:
+    repeating-linear-gradient(90deg, rgba(34,30,24,.035) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg,  rgba(34,30,24,.028) 0 1px, transparent 1px 3px);
+  color: var(--ink);
+  font: 400 15px/1.6 var(--mono);
+  -webkit-font-smoothing: antialiased;
+  padding: clamp(16px, 3vw, 42px);
+  min-height: 100vh;
+}
+.cap { font: 400 11px/1.4 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+.dim { color: var(--ink-35); }
+.sep { opacity: .4; padding: 0 .4em; }
+
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
+.skip:focus { left: 20px; top: 20px; z-index: 9; background: var(--ink); color: var(--cotton); padding: 0 18px; }
+:is(a, button, [tabindex]):focus-visible { outline: 2px solid var(--madder); outline-offset: 3px; }
+
+.frame { max-width: 1220px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(20px, 2.8vw, 34px); }
+
+.hdr { display: flex; align-items: flex-end; justify-content: space-between; gap: 34px;
+  border-bottom: 1px solid var(--rule); padding-bottom: 18px; flex-wrap: wrap; }
+h1 { font: 600 clamp(40px, 6.4vw, 84px)/.94 var(--disp); letter-spacing: -.03em; margin-top: 7px; }
+.hdr__s { max-width: 42ch; font-size: 13px; line-height: 1.65; color: var(--ink-60); }
+.hdr__s b { color: var(--ink); font-weight: 500; }
+
+/* ── the cloth ──────────────────────────────────────────────────────────── */
+.cloth { display: grid; grid-template-columns: minmax(0, 1fr) 216px; gap: clamp(14px, 2vw, 26px); align-items: start; }
+.cloth__wrap { min-width: 0; }
+#web { display: block; width: 100%; height: clamp(300px, 42vw, 470px); overflow: visible; }
+
+.warp { stroke: var(--indigo-2); stroke-width: 1.2; transition: stroke var(--t), stroke-width var(--t); }
+.warp.is-lit { stroke: var(--indigo); stroke-width: 3; }
+.weft { stroke: rgba(163,59,42,.26); stroke-width: 1.4; transition: stroke var(--t), stroke-width var(--t); }
+.weft.is-lit { stroke: var(--madder); stroke-width: 3.4; }
+
+/* a knot is a real crossing — the weft passing over the warp */
+.knot { fill: var(--indigo); opacity: .5; transition: opacity var(--t), fill var(--t), r var(--t); }
+.knot.is-lit { fill: var(--madder); opacity: 1; }
+.knot.is-dim { opacity: .12; }
+
+.hitrow, .hitcol { fill: transparent; cursor: pointer; }
+
+/* warp labels, rotated, under the cloth */
+.wlab { display: flex; gap: 0; margin-top: 8px; border-top: 1px solid var(--rule); padding-top: 9px; }
+.wlab button {
+  flex: 1 1 0; min-width: 0; background: none; border: 0; cursor: pointer; padding: 0;
+  font: 400 11px/1.25 var(--mono); letter-spacing: .04em; color: var(--ink-35);
+  writing-mode: vertical-rl; text-orientation: mixed; height: 106px;
+  display: flex; align-items: flex-start; justify-content: center;
+  transition: color var(--t);
+}
+.wlab button:hover { color: var(--ink); }
+.wlab button.is-lit { color: var(--indigo); font-weight: 500; }
+.wlab button b { font-weight: 400; color: var(--ink-35); }
+.wlab button i { font-style: normal; opacity: .4; padding: .5em 0; }
+
+/* project labels down the right */
+.plabs { list-style: none; display: flex; flex-direction: column; }
+.plabs button {
+  width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  padding: 0 0 0 12px; border-left: 3px solid transparent;
+  display: flex; flex-direction: column; gap: 2px; transition: border-color var(--t), color var(--t);
+}
+.plabs li { min-height: 0; }
+.plabs button b { font: 500 13.5px/1.2 var(--disp); font-weight: 600; letter-spacing: -.01em; }
+.plabs button em { font-style: normal; font: 400 11px/1 var(--mono); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-35); }
+.plabs button:hover { color: var(--madder); }
+.plabs button.is-lit { border-left-color: var(--madder); color: var(--madder); }
+
+/* ── the readout ────────────────────────────────────────────────────────── */
+.read { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: clamp(18px, 2.6vw, 40px);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 20px 0; align-items: start; }
+.read h2 { font: 600 clamp(24px, 3vw, 36px)/1.1 var(--disp); letter-spacing: -.02em; margin: 7px 0 9px; }
+.read__d { font-size: 13.5px; line-height: 1.65; color: var(--ink-60); max-width: 56ch;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.read__a { display: inline-flex; align-items: center; min-height: 42px; margin-top: 12px;
+  font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink); border-bottom: 1px solid var(--ink); text-decoration: none; }
+
+.read__r { display: flex; flex-direction: column; gap: 0; }
+.read__r div { display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+  padding: 8px 0; border-bottom: 1px dotted var(--rule); }
+.read__r dt { font: 400 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-35); }
+.read__r dd { font: 500 14px/1 var(--mono); }
+.read__r dd small { font-size: 11px; color: var(--ink-35); margin-left: 4px; }
+
+.foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+@media (max-width: 900px) {
+  .cloth { grid-template-columns: 1fr; }
+  .plabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+  .plabs button { min-height: 46px; justify-content: center; }
+  .read { grid-template-columns: 1fr; }
+  .wlab button { height: 92px; min-height: 92px; font-size: 11px; }
+}
+@media (max-width: 560px) {
+  .plabs { grid-template-columns: 1fr; }
+  /* the cloth IS the object — on a phone it takes more of the screen, not
+     less, and the prose is what gives way */
+  #web { height: 62vh; min-height: 380px; }
+  .hdr__s { font-size: 12.5px; }
+}

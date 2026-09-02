@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aufan Rachmad — The Loom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23DDD6C6'/%3E%3Cg stroke='%2324406B' stroke-width='1.6'%3E%3Cpath d='M8 3v26M16 3v26M24 3v26'/%3E%3C/g%3E%3Cg stroke='%23A33B2A' stroke-width='2'%3E%3Cpath d='M3 11h26M3 21h26'/%3E%3C/g%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#loom">Skip to the cloth</a>
+
+<div class="frame">
+
+  <header class="hdr">
+    <div>
+      <p class="cap">Aufan Rachmad <span class="sep">/</span> Melbourne</p>
+      <h1>The&nbsp;Loom</h1>
+    </div>
+    <p class="hdr__s">Nine projects, woven across the capabilities they were built from.
+      Every crossing is a real use. <b>The thick warps are what I actually do</b> &mdash;
+      the thin ones I have touched once.</p>
+  </header>
+
+  <!-- ── the cloth ──────────────────────────────────────────────────────── -->
+  <section class="cloth" id="loom">
+    <div class="cloth__wrap">
+      <svg id="web" role="img" aria-labelledby="webT">
+        <title id="webT">A weave of nine projects against the capabilities each was built from</title>
+        <g id="warps"></g><g id="wefts"></g><g id="knots"></g><g id="hit"></g>
+      </svg>
+      <div class="wlab" id="wlab"></div>
+    </div>
+    <ol class="plabs" id="plabs"></ol>
+  </section>
+
+  <!-- ── what the cloth is saying ───────────────────────────────────────── -->
+  <section class="read" id="read">
+    <div class="read__l">
+      <p class="cap dim" id="readK">The whole cloth</p>
+      <h2 id="readT">—</h2>
+      <p class="read__d" id="readD">—</p>
+      <a class="read__a" id="readA" href="#" hidden>Open it &rsaquo;</a>
+    </div>
+    <dl class="read__r" id="readStats"></dl>
+  </section>
+
+  <footer class="foot">
+    <p class="cap dim">Pull a thread &mdash; click a project or a capability. Click again to release.</p>
+    <p class="cap dim">aufanhakim1920@gmail.com</p>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
