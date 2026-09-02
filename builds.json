@@ -269,5 +269,26 @@
     "title": "SOLSTICE",
     "blurb": "a sun that opens as you scroll, and hovering an act repaints the whole page",
     "date": "3 Sep"
+  },
+  {
+    "n": "73",
+    "slug": "land-symbolon",
+    "title": "SYMBOLON",
+    "blurb": "a sign burning at the threshold &mdash; approach it and the fire recedes",
+    "date": "3 Sep"
+  },
+  {
+    "n": "74",
+    "slug": "land-caustic",
+    "title": "ABYSSAL",
+    "blurb": "water seen from underneath &mdash; it stills where you hold the cursor",
+    "date": "3 Sep"
+  },
+  {
+    "n": "75",
+    "slug": "land-molten",
+    "title": "MOLTEN",
+    "blurb": "a mass of cold metal that heats where you rub it, then cools on its own",
+    "date": "3 Sep"
   }
 ]

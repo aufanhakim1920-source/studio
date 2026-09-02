@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ABYSSAL — a mineral spring, thirty metres down</title>
+<meta name="description" content="Water drawn from a confined aquifer under the Otway basin. Bottled at the head, nothing added.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050B14'/%3E%3Cpath d='M6 20q5-6 10 0t10 0' fill='none' stroke='%2390E0EF' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ THE OBJECT: the surface of the water, seen from underneath. Move the
+     cursor and the caustics part around it — the water settles where you are. -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
+
+<header class="bar">
+  <span class="mark">ABYSSAL</span>
+  <nav><a href="#source">Source</a><a href="#analysis">Analysis</a><a href="#order">Order</a></nav>
+  <span class="stat mono" id="stat">MOVING</span>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="eyebrow mono"><span class="dot"></span>Otway basin &middot; confined aquifer &middot; 31.4 m</p>
+    <h1>Rain that fell<br><em>before the Republic.</em></h1>
+    <p class="sub">It entered the ground about two thousand years ago and has been
+      travelling through basalt ever since. We take it at the head, filter nothing out,
+      and put it in glass. Move the cursor &mdash; the water stills where you hold it.</p>
+    <div class="acts">
+      <a class="cta" href="#order"><span>Order a case</span><i>&rarr;</i></a>
+      <a class="ghost" href="#analysis">Read the analysis</a>
+    </div>
+    <p class="fine mono" id="thresh">SURFACE &mdash; <b>0%</b> still</p>
+  </section>
+
+  <section class="method" id="source">
+    <p class="tag mono">I &mdash; the source</p>
+    <h2>One bore. <em>No blending, ever.</em></h2>
+    <div class="orders" id="orders"></div>
+  </section>
+
+  <section class="work" id="analysis">
+    <p class="tag mono">II &mdash; analysis</p>
+    <h2>What is actually <em>in it.</em></h2>
+    <ol class="jobs" id="jobs"></ol>
+  </section>
+
+  <section class="engage" id="order">
+    <p class="tag mono">III &mdash; order</p>
+    <h2>Glass only.<br><em>Returned, washed, refilled.</em></h2>
+    <div class="tiers" id="tiers"></div>
+    <p class="fine">Delivered across Victoria &middot; $4 per bottle refunded on return of the crate</p>
+  </section>
+
+  <section class="faq" id="faq">
+    <p class="tag mono">IV &mdash; questions</p>
+    <h2>Fair things <em>to be sceptical about.</em></h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span class="mono">ABYSSAL SPRING CO. &middot; DJARGURD WURRUNG COUNTRY</span>
+  <span class="mono">HEAD TEMP <b id="rev">12.4</b>&deg;C &middot; <span id="clock">&mdash;</span></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

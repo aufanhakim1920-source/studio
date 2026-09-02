@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SYMBOLON — brand identity at the threshold</title>
+<meta name="description" content="A brand identity practice. We architect meaning by controlling the threshold between the known and the obscured.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0705'/%3E%3Ccircle cx='16' cy='18' r='8' fill='none' stroke='%23D96B27' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='8' r='3' fill='none' stroke='%23C9A881' stroke-width='1.5'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ THE OBJECT: a sign held at the threshold between legible and obscured.
+     Move toward it and the fire recedes and the mark resolves; move away and it
+     is consumed again. The cursor IS the threshold the studio talks about. -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
+
+<header class="bar">
+  <span class="mark">SYMBOLON</span>
+  <nav><a href="#method">Method</a><a href="#work">Work</a><a href="#engage">Engage</a></nav>
+  <span class="stat mono" id="stat">OBSCURED</span>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="eyebrow mono"><span class="dot"></span>Brand identity architecture &middot; est. MMXIV</p>
+    <h1>A brand is not a logo.<br><em>It is a sign that holds.</em></h1>
+    <p class="sub">We build marks that function inside an interpretive structure &mdash; and we
+      control the threshold between what a viewer knows and what they are still working out.
+      Move toward the sign. It resolves as you approach.</p>
+    <div class="acts">
+      <a class="cta" href="#engage"><span>Begin an engagement</span><i>&rarr;</i></a>
+      <a class="ghost" href="#method">Read the method</a>
+    </div>
+    <p class="fine mono" id="thresh">THRESHOLD &mdash; <b>0%</b> resolved</p>
+  </section>
+
+  <!-- the three orders of sign, which is the studio's actual method -->
+  <section class="method" id="method">
+    <p class="tag mono">I &mdash; methodology</p>
+    <h2>Three orders of sign. <em>We work in all of them.</em></h2>
+    <div class="orders" id="orders"></div>
+  </section>
+
+  <section class="work" id="work">
+    <p class="tag mono">II &mdash; selected work</p>
+    <h2>Marks that had to <em>survive contact.</em></h2>
+    <ol class="jobs" id="jobs"></ol>
+  </section>
+
+  <section class="engage" id="engage">
+    <p class="tag mono">III &mdash; engagement</p>
+    <h2>Three ways to begin.<br><em>Each one starts with a reading.</em></h2>
+    <div class="tiers" id="tiers"></div>
+    <p class="fine">Fees in AUD, excluding GST &middot; a reading is charged whether or not the engagement continues</p>
+  </section>
+
+  <section class="faq" id="faq">
+    <p class="tag mono">IV &mdash; enquiry</p>
+    <h2>What clients ask <em>before the reading.</em></h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span class="mono">SYMBOLON IDENTITY ARCH. &middot; NAARM / MELBOURNE</span>
+  <span class="mono">REV <b id="rev">0.000</b> &middot; <span id="clock">&mdash;</span></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
