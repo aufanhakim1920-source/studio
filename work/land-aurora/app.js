@@ -181,8 +181,50 @@ function init() {
   $("#nums").innerHTML = NUMS.map(([v, u, k]) =>
     `<div class="stat rv"><b data-to="${v}">0<small>${u}</small></b><span>${k}</span></div>`).join("");
 
+  /* ── the questions ───────────────────────────────────────────────────────
+     A bare <details> snaps open with zero motion — the browser toggles display
+     on the content, so there is nothing to transition. Aufan caught exactly this:
+     the hero got a hand-written shader and this got the default.
+
+     ⭐ The fix: keep <details> for semantics and no-JS, but drive the open state
+     ourselves so the panel can be ANIMATED. The panel is a grid whose row goes
+     0fr -> 1fr, which is the only way to transition to an unknown height.
+     Opening one closes the other, so a click always moves two things.          */
   $("#qa").innerHTML = QA.map(([q, a], i) =>
-    `<details class="rv"${i === 0 ? " open" : ""}><summary>${q}</summary><p>${a}</p></details>`).join("");
+    `<details class="rv"${i === 0 ? " open" : ""}>
+       <summary><span class="q">${q}</span></summary>
+       <div class="a"><div><p>${a}</p></div></div>
+     </details>`).join("");
+
+  const rows = $$("#qa details");
+  rows.forEach((d) => { if (d.open) d.classList.add("is-open"); });
+
+  const close = (d) => {
+    if (!d.open) return;
+    d.classList.remove("is-open");
+    if (REDUCED) { d.open = false; return; }
+    /* wait for the collapse to finish before removing [open], or the content
+       disappears instantly and the animation plays against nothing */
+    const panel = d.querySelector(".a");
+    const done = (e) => {
+      if (e.propertyName !== "grid-template-rows") return;
+      panel.removeEventListener("transitionend", done);
+      if (!d.classList.contains("is-open")) d.open = false;
+    };
+    panel.addEventListener("transitionend", done);
+  };
+
+  rows.forEach((d) => {
+    d.querySelector("summary").addEventListener("click", (e) => {
+      e.preventDefault();
+      if (d.open) { close(d); return; }
+      rows.forEach((o) => o !== d && close(o));
+      d.open = true;
+      /* one frame at 0fr before flipping to 1fr, or the browser coalesces both
+         values into the same style recalc and there is no transition at all */
+      requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add("is-open")));
+    });
+  });
 
   const strip = TICK.map((t) => `<span>${t}</span>`).join("<b>/</b>");
   $("#tick").innerHTML = strip + "<b>/</b>" + strip + "<b>/</b>";

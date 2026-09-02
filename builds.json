@@ -42,10 +42,7 @@
     "slug": "gacha",
     "title": "Gacha",
     "blurb": "a working capsule machine &mdash; coin, crank, crack it open",
-    "date": "22 Aug",
-    "fav": true,
-    "why": "a whole machine that works: coin, crank, capsule, crack",
-    "rank": 4
+    "date": "22 Aug"
   },
   {
     "n": "07",
@@ -76,17 +73,14 @@
     "date": "23 Aug",
     "fav": true,
     "why": "the price IS the thickness of the card you pick up",
-    "rank": 6
+    "rank": 3
   },
   {
     "n": "11",
     "slug": "ah19",
     "title": "AH-19",
     "blurb": "bench console &mdash; one dial drives five readouts",
-    "date": "24 Aug",
-    "fav": true,
-    "why": "one dial, five instruments — turning it re-reads the whole bench",
-    "rank": 3
+    "date": "24 Aug"
   },
   {
     "n": "12",
@@ -100,10 +94,7 @@
     "slug": "stone",
     "title": "The Stone",
     "blurb": "hand-rolled dodecahedron, no 3D library",
-    "date": "24 Aug",
-    "fav": true,
-    "why": "a solid rolled by hand, no 3D library anywhere in it",
-    "rank": 5
+    "date": "24 Aug"
   },
   {
     "n": "14",
@@ -176,7 +167,7 @@
     "date": "25 Aug",
     "fav": true,
     "why": "the approved baka nae. design — periwinkle and hot pink",
-    "rank": 7
+    "rank": 4
   },
   {
     "n": "43",

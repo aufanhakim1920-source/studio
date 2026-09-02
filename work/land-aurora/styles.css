@@ -33,6 +33,7 @@
   --ui: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, Helvetica, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
   --ease: cubic-bezier(.16,1,.3,1);
+  --spring: cubic-bezier(.34,1.4,.64,1);   /* overshoots slightly - for the + that becomes a x */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -144,16 +145,48 @@ h2 em { font-style: normal; color: var(--blue); }
 .stat b small { font-size: .48em; color: var(--blue); font-weight: 500; margin-left: 2px; }
 .stat span { display: block; margin-top: 10px; font: 400 12.5px/1.4 var(--mono); color: var(--mut); }
 
+/* ── the questions ─────────────────────────────────────────────────────────
+   Rebuilt 2026-09-03. It was a default <details>: the panel appeared instantly
+   because the browser toggles `display` on the content, and nothing about the
+   row acknowledged the click. Now the row answers the way the rest of the page
+   does — it lights up, and the answer rises into the space it makes.          */
 .qa { border-top: 1px solid var(--line); }
-.qa details { border-bottom: 1px solid var(--line); }
+.qa details { border-bottom: 1px solid var(--line); position: relative; }
+
+/* ⭐ a rail down the left edge that lights when the row opens — the same
+   "one accent, one light source" logic as the hero, at row scale */
+.qa details::before {
+  content: ""; position: absolute; left: -16px; top: 10px; bottom: 10px; width: 2px;
+  background: var(--blue); border-radius: 2px;
+  transform: scaleY(0); transform-origin: 50% 0;
+  opacity: 0; transition: transform .42s var(--ease), opacity .3s;
+}
+.qa details.is-open::before { transform: scaleY(1); opacity: 1;
+  box-shadow: 0 0 12px 1px rgba(74,136,255,.55); }
+
 .qa summary { list-style: none; cursor: pointer; padding: 22px 0; display: flex;
   align-items: center; justify-content: space-between; gap: 20px; font: 500 17px/1.3 var(--ui);
-  letter-spacing: -.015em; min-height: 60px; transition: color .2s; }
+  letter-spacing: -.015em; min-height: 60px;
+  transition: color .22s var(--ease), padding-left .42s var(--ease); }
 .qa summary::-webkit-details-marker { display: none; }
 .qa summary:hover { color: var(--blue); }
-.qa summary::after { content: "+"; font: 400 22px/1 var(--mono); color: var(--blue); transition: transform .3s var(--ease); }
-.qa details[open] summary::after { transform: rotate(45deg); }
-.qa p { padding: 0 0 24px; color: var(--mut); font-size: 15px; max-width: 66ch; }
+.qa details.is-open > summary { color: var(--ink); padding-left: 4px; }
+.qa summary::after { content: "+"; font: 400 22px/1 var(--mono); color: var(--blue);
+  transition: transform .42s var(--spring); }
+.qa details.is-open > summary::after { transform: rotate(135deg); }
+
+/* ⭐ 0fr -> 1fr is the ONLY way to transition to a height you do not know.
+   max-height guesses a number and either clips long text or eases against a
+   value that is not there; grid rows interpolate the real measured height. */
+.qa .a { display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .42s var(--ease); }
+.qa details.is-open .a { grid-template-rows: 1fr; }
+.qa .a > div { overflow: hidden; }        /* required: the row is what animates */
+.qa .a p { padding: 0 0 26px; color: var(--mut); font-size: 15px; max-width: 66ch;
+  opacity: 0; transform: translateY(7px);
+  transition: opacity .3s var(--ease), transform .42s var(--ease); }
+/* the text arrives slightly after the space does, so it reads as arriving IN it */
+.qa details.is-open .a p { opacity: 1; transform: none; transition-delay: .1s; }
 
 .cta { text-align: center; padding-bottom: clamp(60px,9vw,120px); }
 .cta h2 { margin-inline: auto; }
