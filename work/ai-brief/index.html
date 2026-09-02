@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive Brief — one page, four decisions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FBFAF8'/%3E%3Crect x='5' y='5' width='22' height='9' fill='%2314161A'/%3E%3Crect x='5' y='17' width='14' height='3' fill='%231B44E5'/%3E%3Crect x='5' y='23' width='18' height='3' fill='%2314161A'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="sheet" id="main">
+
+  <!-- ── masthead ──────────────────────────────────────────────────────── -->
+  <header class="head">
+    <div class="head__l">
+      <p class="kick">Executive brief</p>
+      <h1>Retail ledger</h1>
+    </div>
+    <div class="head__r">
+      <p class="meta"><span>Prepared</span><b id="prep">—</b></p>
+      <p class="meta"><span>Period</span><b id="period">—</b></p>
+      <p class="meta"><span>Basis</span><b id="basis">—</b></p>
+    </div>
+  </header>
+
+  <!-- ── the verdict: one sentence, before any number ──────────────────── -->
+  <section class="verdict">
+    <p class="kick kick--inv">The one thing</p>
+    <p id="verdict">—</p>
+  </section>
+
+  <!-- ── the four decisions ────────────────────────────────────────────── -->
+  <section class="finds" id="finds" aria-label="Findings"></section>
+
+  <!-- ── the shape of the year, small and factual ──────────────────────── -->
+  <section class="strip">
+    <div class="strip__l">
+      <p class="kick">Revenue by month</p>
+      <p class="mut" id="stripNote">—</p>
+    </div>
+    <figure class="chart">
+      <svg id="spark" viewBox="0 0 900 130" preserveAspectRatio="none" role="img"
+           aria-labelledby="sparkT"><title id="sparkT">Monthly revenue across the period</title>
+        <g id="sparkBody"></g>
+      </svg>
+      <figcaption id="sparkAxis"></figcaption>
+    </figure>
+  </section>
+
+  <!-- ── method: what was thrown away, and what this cannot tell you ───── -->
+  <footer class="method">
+    <div class="method__c">
+      <p class="kick">What was excluded</p>
+      <ul id="excl"></ul>
+    </div>
+    <div class="method__c">
+      <p class="kick">What this cannot tell you</p>
+      <ul id="limits"></ul>
+    </div>
+    <div class="method__c method__c--sign">
+      <p class="kick">Reproduce</p>
+      <p class="mono" id="repro">—</p>
+      <p class="mut">Every figure recomputed from source. No number on this page is typed by hand.</p>
+    </div>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

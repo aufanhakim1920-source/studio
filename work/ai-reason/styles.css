@@ -1,0 +1,181 @@
+/* LEDGER — hackathon prep, build 2 of 3 (Gap A: reasoning and trust)
+   ---------------------------------------------------------------------------
+   The half of the AI Product Patterns note a RAID judge will actually probe:
+   can the thing show its working, name what it does not know, and let you get
+   back to the source row? §A1–A5 and §6 items 1–8.
+
+   Ground: deep forest. Recent grounds were warm cream, pure black, cold paper,
+   dark slate, warm black+amber, cool near-white and deep indigo — this is the
+   eighth ([[Vary the Palette]]).
+
+   The motion in this build is the reasoning stream, and it is user-driven and
+   bounded: it starts because you asked, it runs four steps, it stops. Nothing
+   loops ([[Motion Must Be User Driven]]). */
+
+:root {
+  --bg: #0C1210;
+  --s1: rgba(255,255,255,.03);
+  --s2: rgba(255,255,255,.06);
+  --line: rgba(255,255,255,.10);
+  --line-2: rgba(255,255,255,.055);
+  --ink: #E4EDE8;
+  --mut: #86988F;
+  --dim: #5C6C64;
+
+  --sig: #6EE7B7;
+  --warn: #E9B949;
+  --bad: #F2717C;
+
+  --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --num: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --t: .12s ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; } }
+
+body {
+  background: var(--bg); color: var(--ink);
+  font: 400 13.5px/1.55 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+.num, .fig__v, pre { font-family: var(--num); font-variant-numeric: tabular-nums; }
+
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
+.skip:focus { left: 12px; top: 12px; z-index: 9; background: var(--sig); color: #06110C; padding: 0 18px; border-radius: 6px; font-weight: 600; }
+:is(a, button, input, summary, [tabindex]):focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
+
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 0 18px; height: 52px; flex: 0 0 auto; border-bottom: 1px solid var(--line); background: var(--s1); }
+.bar__l { display: flex; align-items: center; gap: 9px; }
+.bar__l b { font-weight: 650; letter-spacing: -.01em; }
+.mark { width: 15px; height: 15px; border-radius: 4px; background: linear-gradient(140deg, var(--sig), #3FA37A); }
+.mut { color: var(--mut); font-size: 12px; }
+.bar__r { display: flex; align-items: center; gap: 12px; }
+.who { width: 28px; height: 28px; border-radius: 999px; background: var(--s2); color: var(--mut);
+  display: grid; place-content: center; font: 600 11px/1 var(--ui); }
+
+.chip { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px;
+  padding: 5px 11px; min-height: 28px; font: 500 11.5px/1 var(--ui);
+  border: 1px solid var(--line); background: transparent; color: var(--mut); }
+.chip b { font-family: var(--num); color: var(--ink); font-weight: 600; }
+.chip--scope { cursor: pointer; transition: border-color var(--t), color var(--t); }
+.chip--scope:hover { border-color: var(--sig); color: var(--ink); }
+
+.wrap { flex: 1 1 auto; padding: 18px; display: flex; flex-direction: column; gap: 14px;
+  max-width: 1400px; width: 100%; margin: 0 auto; }
+
+/* ── ask ─────────────────────────────────────────────────────────────── */
+.ask { display: flex; flex-direction: column; gap: 9px; }
+.ask__row { display: flex; gap: 9px; }
+#q { flex: 1; min-height: 42px; background: var(--s1); border: 1px solid var(--line);
+  border-radius: 8px; padding: 0 14px; color: var(--ink); font: 400 14px var(--ui); }
+#q::placeholder { color: var(--dim); }
+.btn { min-height: 42px; padding: 0 22px; border-radius: 8px; border: 1px solid var(--sig);
+  background: var(--sig); color: #06110C; font: 600 13px/1 var(--ui); cursor: pointer;
+  transition: opacity var(--t); }
+.btn:hover:not(:disabled) { opacity: .87; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.sugg { display: flex; gap: 7px; flex-wrap: wrap; }
+.sugg button { border: 1px solid var(--line-2); background: transparent; color: var(--mut);
+  border-radius: 999px; padding: 6px 12px; min-height: 30px; font: 400 12px/1 var(--ui);
+  cursor: pointer; transition: color var(--t), border-color var(--t); }
+.sugg button:hover { color: var(--ink); border-color: var(--sig); }
+
+/* ── panes ───────────────────────────────────────────────────────────── */
+.cols { display: grid; grid-template-columns: minmax(0,1fr); gap: 14px; align-items: start; }
+.cols.is-open { grid-template-columns: minmax(0,1fr) minmax(0,.85fr); }
+.pane { background: var(--s1); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-width: 0; }
+.pane__h { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h2 { font: 600 13.5px/1.2 var(--ui); letter-spacing: -.01em; }
+.lab { font: 600 11px/1 var(--ui); letter-spacing: .09em; text-transform: uppercase; color: var(--dim); }
+.x { background: none; border: 0; color: var(--mut); font-size: 20px; line-height: 1; cursor: pointer;
+  width: 30px; height: 30px; border-radius: 6px; }
+.x:hover { background: var(--s2); color: var(--ink); }
+
+/* ── the tense-changing disclosure (§A1) ─────────────────────────────── */
+.disc { border: 1px solid var(--line-2); border-radius: 8px; background: rgba(0,0,0,.16); }
+.disc > summary { list-style: none; cursor: pointer; padding: 11px 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font: 500 12.5px/1 var(--ui); color: var(--mut); min-height: 40px; }
+.disc > summary::-webkit-details-marker { display: none; }
+.disc > summary::after { content: "›"; color: var(--dim); font-size: 15px; transition: transform var(--t); }
+.disc[open] > summary::after { transform: rotate(90deg); }
+.disc.is-live > summary { color: var(--sig); }
+.disc__c { font: 500 11px/1 var(--num); color: var(--dim); margin-left: auto; margin-right: 6px; }
+
+.steps { list-style: none; padding: 2px 14px 13px; display: flex; flex-direction: column; gap: 8px; }
+.steps li { display: grid; grid-template-columns: 20px 1fr auto; gap: 10px; align-items: baseline;
+  font-size: 12.5px; color: var(--mut); }
+.steps li b { font: 600 11px/1 var(--num); color: var(--dim); }
+.steps li em { font-style: normal; font: 500 11px/1 var(--num); color: var(--dim); }
+.steps li.is-on { color: var(--ink); }
+.steps li.is-on b { color: var(--sig); }
+
+/* ── the answer ──────────────────────────────────────────────────────── */
+.ans { margin-top: 14px; display: flex; flex-direction: column; gap: 14px; }
+.empty { color: var(--dim); font-size: 12.5px; padding: 14px 2px 2px; }
+
+/* ONE number, and it is a button, because it opens its own rows (§6.2) */
+.fig { text-align: left; background: rgba(110,231,183,.055); border: 1px solid rgba(110,231,183,.22);
+  border-radius: 9px; padding: 16px 18px; cursor: pointer; display: flex; flex-direction: column; gap: 3px;
+  transition: background var(--t), border-color var(--t); width: 100%; }
+.fig:hover { background: rgba(110,231,183,.1); border-color: var(--sig); }
+.fig__v { font: 600 42px/1 var(--num); letter-spacing: -.025em; color: var(--ink); }
+.fig__k { font-size: 12.5px; color: var(--mut); }
+.fig__go { font: 500 11.5px/1 var(--ui); color: var(--sig); margin-top: 7px; }
+
+.say { font-size: 13.5px; line-height: 1.6; color: #C8D6CF; max-width: 62ch; }
+.say b { color: var(--ink); font-weight: 600; }
+
+/* uncertainty: the CATEGORY, as a mono chip. Never a confidence percentage. */
+.flags { display: flex; gap: 7px; flex-wrap: wrap; }
+.flag { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
+  padding: 5px 11px; min-height: 28px; font: 500 11px/1 var(--num); letter-spacing: .02em; }
+.flag--limit { color: var(--warn); background: rgba(233,185,73,.09); border: 1px solid rgba(233,185,73,.22); }
+.flag--miss  { color: var(--bad);  background: rgba(242,113,124,.09); border: 1px solid rgba(242,113,124,.22); }
+
+.sql { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.sql > summary { cursor: pointer; font: 500 12px/1 var(--ui); color: var(--mut); min-height: 32px;
+  display: flex; align-items: center; }
+.sql > summary:hover { color: var(--ink); }
+.sql pre { margin: 9px 0 7px; background: rgba(0,0,0,.3); border: 1px solid var(--line-2);
+  border-radius: 7px; padding: 12px 14px; font-size: 11.5px; line-height: 1.65; color: #A9C2B7;
+  overflow-x: auto; white-space: pre; }
+
+.fb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  border-top: 1px solid var(--line-2); padding-top: 13px; }
+.tinybtn { border: 1px solid var(--line); background: transparent; color: var(--mut);
+  border-radius: 6px; padding: 6px 11px; min-height: 30px; font: 500 11.5px/1 var(--ui);
+  cursor: pointer; transition: color var(--t), border-color var(--t); }
+.tinybtn:hover { color: var(--ink); border-color: var(--mut); }
+.tinybtn--hard:hover { color: var(--bad); border-color: rgba(242,113,124,.5); }
+.tinybtn.is-on { color: var(--sig); border-color: var(--sig); }
+
+/* ── drill-down ──────────────────────────────────────────────────────── */
+.pane--drill { position: sticky; top: 18px; }
+.tbl { display: flex; flex-direction: column; margin-top: 11px; max-height: 46vh; overflow-y: auto; }
+.trow { display: grid; grid-template-columns: 1fr 84px 96px; gap: 10px; padding: 8px 2px;
+  border-bottom: 1px solid var(--line-2); font-size: 12.5px; }
+.trow--head { color: var(--dim); font: 600 11px/1 var(--ui); letter-spacing: .09em;
+  text-transform: uppercase; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #0E1512; }
+.trow span:nth-child(2), .trow span:nth-child(3) { text-align: right; font-family: var(--num); color: var(--mut); }
+.trow--head span:nth-child(2), .trow--head span:nth-child(3) { font-family: var(--ui); }
+.note { margin-top: 11px; font-size: 11.5px; color: var(--dim); }
+
+@media (max-width: 940px) {
+  .cols.is-open { grid-template-columns: 1fr; }
+  .pane--drill { position: static; }
+  .fig__v { font-size: 34px; }
+}
+@media (max-width: 900px) {
+  .btn, .tinybtn, .sugg button, .chip, .x { min-height: 44px; }
+  #q { min-height: 48px; }
+  /* both disclosures are real controls on touch */
+  .disc > summary, .sql > summary { min-height: 48px; }
+}
+@media (max-width: 560px) {
+  .btn, .tinybtn, .sugg button, .chip { min-height: 44px; }
+  .ask__row { flex-direction: column; }
+}
