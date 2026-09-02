@@ -4,114 +4,602 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Work — Aufan Rachmad</title>
-<meta name="description" content="Portfolios, landing pages and storefronts. Hand-built — no framework, no template.">
+<meta name="description" content="Hand-built portfolios, landing pages and storefronts. No framework, no template.">
+<meta name="color-scheme" content="dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%2317131F'/><circle cx='8' cy='8' r='3' fill='%23FF3D6E'/></svg>">
 <style>
 :root{
-  --bg:#17131F; --ink:#EDE8F0; --dim:#8F8899; --sig:#FF3D6E;
-  --line:#2C2436; --card:#1D1828;
+  --bg:#17131F; --ink:#EDE8F0; --dim:#9A93A5; --sig:#FF3D6E;
+  --line:#2C2436; --card:#1E1829; --card-2:#241D31; --gold:#FFC24B;
+  --ui:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.2,.7,.3,1);
 }
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-  padding:56px 22px 90px; -webkit-font-smoothing:antialiased;
+  margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 var(--ui);
+  padding:0 22px 96px; -webkit-font-smoothing:antialiased;
+  /* the ground is not flat black: one soft signal-coloured bloom behind the header.
+     Cheapest way to stop a dark page reading as a default terminal. */
+  background-image:radial-gradient(120% 62% at 50% -14%,rgba(255,61,110,.16),transparent 62%);
+  background-repeat:no-repeat;
 }
-.w{max-width:820px;margin:0 auto}
-h1{font-size:clamp(28px,6vw,42px);margin:0 0 8px;letter-spacing:-.025em;font-weight:650}
-.sub{color:var(--dim);margin:0 0 8px;font-size:15px;max-width:56ch}
-.meta{color:var(--dim);margin:0 0 36px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-  font-family:ui-monospace,"SF Mono",Menlo,monospace}
+.w{max-width:1120px;margin:0 auto}
+a{color:inherit;text-decoration:none}
+:is(a,button,input):focus-visible{outline:2px solid var(--sig);outline-offset:3px;border-radius:6px}
 
-ol{list-style:none;padding:0;margin:0}
-li{border-bottom:1px solid var(--line)}
-a{
-  display:grid; grid-template-columns:44px 1fr auto; gap:14px; align-items:baseline;
-  padding:15px 8px 15px 0; text-decoration:none; color:inherit;
-  transition:background .16s ease,padding-left .16s ease;
+/* ── header ─────────────────────────────────────────────────────────────── */
+header{padding:64px 0 30px}
+.back{margin:0 0 20px;font:500 12.5px/1 var(--mono);letter-spacing:.06em}
+.back a{color:var(--sig)}
+.back a:hover{text-decoration:underline}
+h1{font-size:clamp(30px,5.4vw,46px);margin:0 0 10px;letter-spacing:-.03em;font-weight:680;line-height:1.05}
+.sub{color:var(--dim);margin:0;font-size:15.5px;max-width:56ch}
+/* line-height 1 collided with itself the moment this wrapped on a phone */
+.meta{color:var(--dim);margin:14px 0 0;font:500 11.5px/1.7 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.meta b{color:var(--ink);font-weight:500}
+
+/* ── the control bar ────────────────────────────────────────────────────── */
+.bar{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  padding:16px 0 22px;margin-bottom:26px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20;background:var(--bg);
 }
-a:hover,a:focus-visible{background:var(--card);padding-left:10px;outline:none}
-a:focus-visible{box-shadow:inset 2px 0 0 var(--sig)}
-.n{
-  font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; color:var(--dim);
-  font-variant-numeric:tabular-nums; letter-spacing:.04em;
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px}
+.seg button{
+  appearance:none;border:0;background:none;color:var(--dim);cursor:pointer;
+  font:600 13px/1 var(--ui);letter-spacing:-.005em;
+  display:inline-flex;align-items:center;gap:7px;
+  min-height:44px;padding:0 17px;border-radius:999px;   /* 44 is the tap floor, not 38 */
+  transition:color .18s var(--ease),background .18s var(--ease);
 }
-.t{font-weight:600;font-size:16.5px;letter-spacing:-.01em}
-.t small{display:block;font-weight:400;font-size:13.5px;color:var(--dim);margin-top:3px;letter-spacing:0}
-.d{
-  font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:11.5px; color:var(--dim);
-  white-space:nowrap; text-align:right;
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--sig);color:#fff}
+.seg button .s{color:var(--gold);font-size:14px;line-height:1}
+.seg button[aria-pressed="true"] .s{color:#fff}
+.seg button .ct{font:500 11px/1 var(--mono);opacity:.72;font-variant-numeric:tabular-nums}
+.find{
+  flex:1 1 190px;min-width:0;max-width:280px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;
+  color:var(--ink);font:400 13.5px/1 var(--ui);min-height:44px;padding:0 16px;
+  transition:border-color .18s var(--ease);
 }
-.latest .n,.latest .d{color:var(--sig)}
-.tag{
-  display:inline-block; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--sig); border:1px solid var(--sig); border-radius:999px;
-  padding:1px 7px; margin-left:8px; vertical-align:1px;
+.find::placeholder{color:var(--dim)}
+.find:focus{border-color:var(--sig);outline:none}
+.count{margin-left:auto;color:var(--dim);font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+
+/* ── the grid ───────────────────────────────────────────────────────────── */
+ol{list-style:none;padding:0;margin:0;display:grid;gap:16px;
+  grid-template-columns:repeat(auto-fill,minmax(292px,1fr))}
+.c{min-width:0}
+.c a{
+  display:block;height:100%;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:10px 10px 15px;
+  transition:transform .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease);
 }
-footer{margin-top:44px;color:var(--dim);font-size:12.5px;line-height:1.7}
-footer a{display:inline;padding:0;color:var(--sig)}
-footer a:hover{background:none;padding:0}
+.c a:hover,.c a:focus-visible{transform:translateY(-3px);border-color:#3B3049;background:var(--card-2)}
+/* the preview is the point of the card, so it gets the space */
+.c__sh{display:block;border-radius:9px;overflow:hidden;background:#0E0B14;aspect-ratio:16/10}
+.c__sh img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
+  transition:transform .5s var(--ease)}
+.c a:hover .c__sh img{transform:scale(1.035)}
+.c__b{display:flex;align-items:center;gap:9px;margin:13px 2px 0;min-width:0}
+.c__n{font:500 11.5px/1 var(--mono);color:var(--dim);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.c__t{font-weight:600;font-size:15.5px;letter-spacing:-.012em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c__star{color:var(--gold);font-size:13px;line-height:1;flex:none}
+/* 11px is the phone legibility floor - 9.5px failed the gate */
+.c__tag{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sig);
+  border:1px solid var(--sig);border-radius:999px;padding:3px 7px;flex:none}
+.c__d{margin-left:auto;font:400 11px/1 var(--mono);color:var(--dim);white-space:nowrap;flex:none}
+.c__p{display:block;margin:7px 2px 0;color:var(--dim);font-size:13.5px;line-height:1.5}
+/* why a favourite is a favourite — shown only in the favourites view, so the list
+   explains itself instead of being a pile of bookmarks */
+.c__w{display:none;margin:10px 2px 0;padding-top:9px;border-top:1px dashed var(--line);
+  color:var(--gold);font-size:12.5px;line-height:1.5}
+body[data-view="fav"] .c__w{display:block}
+.c--new .c__n{color:var(--sig)}
+
+.empty{display:none;color:var(--dim);padding:26px 2px;font-size:14.5px}
+body.is-empty .empty{display:block}
+
+footer{margin-top:52px;padding-top:24px;border-top:1px solid var(--line);
+  color:var(--dim);font-size:13px;line-height:1.75}
+footer a{color:var(--sig)}
+footer a:hover{text-decoration:underline}
+
 @media(max-width:560px){
-  a{grid-template-columns:34px 1fr;gap:10px}
-  .d{grid-column:2;text-align:left;margin-top:2px}
+  body{padding:0 16px 72px}
+  header{padding:40px 0 22px}
+  ol{grid-template-columns:1fr;gap:14px}
+  .count{display:none}
+  .find{max-width:none}
 }
-.back{margin:0 0 18px}
-.back a{display:inline;padding:0;color:var(--sig);font-size:13px;
-  font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:.04em}
-.back a:hover{background:none;padding:0;text-decoration:underline}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms!important}}
 </style>
 </head>
-<body>
+<body data-view="all">
 <div class="w">
 
-  <p class="back"><a href="../">← Aufan Rachmad</a></p>
-  <h1>Work</h1>
-  <p class="sub">Portfolios, landing pages and storefronts. Hand-built &mdash; no framework, no template, no page builder.</p>
-  <p class="meta">41 builds &middot; retired numbers are not reused</p>
+  <header>
+    <p class="back"><a href="../">&larr; Aufan Rachmad</a></p>
+    <h1>Work</h1>
+    <p class="sub">Every build, live. Hand-built HTML, CSS and vanilla JS.</p>
+    <p class="meta"><b>37</b> builds &middot; <b>7</b> favourites &middot; retired numbers are not reused</p>
+  </header>
 
-  <ol>
-        <li><a href="pixel-bloom/"><span class="n">01</span><span class="t">Pixel Bloom<small>cobalt portfolio, floating pixel art</small></span><span class="d">19 Aug</span></a></li>
-    <li><a href="aster-doll/"><span class="n">02</span><span class="t">Aster Doll<small>product unboxing in CSS 3D</small></span><span class="d">19 Aug</span></a></li>
-    <li><a href="shelf/"><span class="n">03</span><span class="t">Shelf<small>projects as book spines you pull off a shelf</small></span><span class="d">20 Aug</span></a></li>
-    <li><a href="contact-sheet/"><span class="n">04</span><span class="t">Contact Sheet<small>drag the loupe across the grid</small></span><span class="d">20 Aug</span></a></li>
-    <li><a href="foil/"><span class="n">05</span><span class="t">Foil<small>holographic cards you throw off a pile</small></span><span class="d">20 Aug</span></a></li>
-    <li><a href="gacha/"><span class="n">06</span><span class="t">Gacha<small>a working capsule machine &mdash; coin, crank, crack it open</small></span><span class="d">22 Aug</span></a></li>
-    <li><a href="pasar-malam/"><span class="n">07</span><span class="t">Pasar Malam<small>night market &mdash; one clock drives six components</small></span><span class="d">23 Aug</span></a></li>
-    <li><a href="nocturne-rack/"><span class="n">08</span><span class="t">Nocturne Rack<small>paper split-flap board that sets the price</small></span><span class="d">23 Aug</span></a></li>
-    <li><a href="nocturne-board/"><span class="n">09</span><span class="t">Nocturne Board<small>split-flap departures, cream on cobalt</small></span><span class="d">23 Aug</span></a></li>
-    <li><a href="nocturne/"><span class="n">10</span><span class="t">Nocturne<small>sleeper train &mdash; card thickness is the price</small></span><span class="d">23 Aug</span></a></li>
-    <li><a href="ah19/"><span class="n">11</span><span class="t">AH-19<small>bench console &mdash; one dial drives five readouts</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="desk/"><span class="n">12</span><span class="t">The Desk<small>an orbitable room in CSS 3D</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="stone/"><span class="n">13</span><span class="t">The Stone<small>hand-rolled dodecahedron, no 3D library</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="bakery/"><span class="n">14</span><span class="t">Second Rise<small>bakery &mdash; pull a tray off the rack</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="baka-nae/"><span class="n">19</span><span class="t">baka nae.<small>parts runner &mdash; snap a charm off the sprue</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="portfolio/"><span class="n">24</span><span class="t">Portfolio<small>hire-me page &mdash; real work, real prices</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="penalty/"><span class="n">25</span><span class="t">Penalty<small>sales landing page &mdash; full conversion flow</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="thrown/"><span class="n">26</span><span class="t">THROWN<small>e-commerce &mdash; filter, sort, glaze picker, working cart</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="north-chill/"><span class="n">27</span><span class="t">Northbound &mdash; chill<small>caf&eacute;, lane 1 &mdash; cream and olive, quiet motion</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="north-bold/"><span class="n">28</span><span class="t">Northbound &mdash; bold<small>caf&eacute;, lane 2 &mdash; drag the 3D cup, it fills as you scroll</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="north-now/"><span class="n">29</span><span class="t">Northbound &mdash; now<small>caf&eacute;, lane 3 &mdash; it knows the time and filters the menu</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="calendar-month/"><span class="n">30</span><span class="t">Calendar &mdash; month<small>chill &mdash; month grid, day panel, keyboard</small></span><span class="d">24 Aug</span></a></li>
-    <li><a href="bakanae-atelier/"><span class="n">34</span><span class="t">baka nae. &mdash; atelier<small>the approved design &mdash; periwinkle and hot pink; 40-42 are this in her palettes</small></span><span class="d">25 Aug</span></a></li>
-    <li><a href="bakanae-p1/"><span class="n">43</span><span class="t">baka nae. &mdash; ungu<small>her four colours, purple-led &mdash; purple ground, yellow band</small></span><span class="d">26 Aug</span></a></li>
-    <li><a href="bakanae-p2/"><span class="n">44</span><span class="t">baka nae. &mdash; kuning<small>her four colours, yellow-led &mdash; yellow ground, purple band</small></span><span class="d">26 Aug</span></a></li>
-    <li><a href="bakanae-p3/"><span class="n">45</span><span class="t">baka nae. &mdash; putih<small>her four colours, white-led &mdash; white ground, purple and yellow as blocks</small></span><span class="d">26 Aug</span></a></li>
-    <li><a href="ledger-a/"><span class="n">48</span><span class="t">Ledger &mdash; clean<small>the measured SaaS register: tinted ground, white cards, one accent</small></span><span class="d">30 Aug</span></a></li>
-    <li><a href="ledger-c/"><span class="n">50</span><span class="t">Ledger &mdash; dark<small>pastel tiles on near-black &mdash; light on dark, not dark on dark</small></span><span class="d">30 Aug</span></a></li>
-    <li><a href="ledger-d/"><span class="n">51</span><span class="t">Ledger &mdash; the chase<small>a pile of invoices that fans open &mdash; the object explains the product</small></span><span class="d">30 Aug</span></a></li>
-    <li><a href="dash-chroma/"><span class="n">52</span><span class="t">Retail Ledger &mdash; chroma<small>524,878 real transactions; panels divided by a 1px gap over black</small></span><span class="d">31 Aug</span></a></li>
-    <li><a href="dash-metal/"><span class="n">53</span><span class="t">Ledger &mdash; telemetry<small>the same data in black and metal type; bar opacity is share of peak</small></span><span class="d">31 Aug</span></a></li>
-    <li><a href="dash-print/"><span class="n">54</span><span class="t">Substrate &mdash; culture plate<small>a reaction&ndash;diffusion plate seeded from the data &mdash; spot count is market share</small></span><span class="d">31 Aug</span></a></li>
-    <li><a href="dash-board/"><span class="n">55</span><span class="t">Retail Ops &mdash; live board<small>the chill one: one screen, ten charts, no number without its comparison</small></span><span class="d">31 Aug</span></a></li>
-    <li><a href="dash-wall/"><span class="n">56</span><span class="t">Retail Ops &mdash; wall 01<small>the creative one: an amber CRT wall board where one timeline drives everything</small></span><span class="d">31 Aug</span></a></li>
-    <li><a href="dash-grid/"><span class="n">57</span><span class="t">Twelve markets, thirteen months<small>small multiples &mdash; one toggle turns the same 156 numbers into two different findings</small></span><span class="d">31 Aug</span></a></li>
-    <li><a href="folio-popup/"><span class="n">64</span><span class="t">Pull the tab<small>a pop-up book &mdash; the paper stands up by the amount you drag, degree by degree</small></span><span class="d">3 Sep</span></a></li>
-    <li><a href="folio-keys/"><span class="n">65</span><span class="t">Press a key<small>nine projects as keycaps &mdash; and your real keyboard works on it</small></span><span class="d">3 Sep</span></a></li>
-    <li><a href="folio-plinko/"><span class="n">66</span><span class="t">Drop a token<small>real physics, and the slot widths are the project sizes &mdash; the odds are the portfolio</small></span><span class="d">3 Sep</span></a></li>
-    <li><a href="land-aurora/"><span class="n">67</span><span class="t">SIGNAL<small>a ribbon of light in raw WebGL &mdash; one shader, no library, and it leans toward your cursor</small></span><span class="d">3 Sep</span></a></li>
-    <li><a href="land-monolith/"><span class="n">68</span><span class="t">MONOLITH<small>bone, ink and pure electric blue &mdash; a hand-rolled wireframe you turn with the scroll</small></span><span class="d">3 Sep</span></a></li>
-    <li class="latest"><a href="land-solstice/"><span class="n">69</span><span class="t">SOLSTICE<span class="tag">latest</span><small>a sun that opens as you scroll, and hovering an act repaints the whole page</small></span><span class="d">3 Sep</span></a></li>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Filter builds">
+      <button type="button" data-v="all" aria-pressed="true">All <span class="ct">37</span></button>
+      <button type="button" data-v="fav" aria-pressed="false"><span class="s">&#9733;</span>Favourites <span class="ct">7</span></button>
+    </div>
+    <input class="find" id="find" type="search" placeholder="Search builds&hellip;  /" aria-label="Search builds">
+    <span class="count" id="count">37 builds</span>
+  </div>
+
+  <ol id="list">
+      <li class="c" data-fav="0"
+          data-k="pixel bloom cobalt portfolio, floating pixel art">
+        <a href="pixel-bloom/">
+          <span class="c__sh"><img src="thumbs/pixel-bloom.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">01</span>
+            <span class="c__t">Pixel Bloom</span>
+            <span class="c__d">19 Aug</span>
+          </span>
+          <span class="c__p">cobalt portfolio, floating pixel art</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="aster doll product unboxing in css 3d">
+        <a href="aster-doll/">
+          <span class="c__sh"><img src="thumbs/aster-doll.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">02</span>
+            <span class="c__t">Aster Doll</span>
+            <span class="c__d">19 Aug</span>
+          </span>
+          <span class="c__p">product unboxing in CSS 3D</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="shelf projects as book spines you pull off a shelf" data-rank="2">
+        <a href="shelf/">
+          <span class="c__sh"><img src="thumbs/shelf.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">03</span>
+            <span class="c__t">Shelf</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">20 Aug</span>
+          </span>
+          <span class="c__p">projects as book spines you pull off a shelf</span>
+          <span class="c__w">his first favourite, still frozen — projects as spines you physically pull</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="contact sheet drag the loupe across the grid">
+        <a href="contact-sheet/">
+          <span class="c__sh"><img src="thumbs/contact-sheet.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">04</span>
+            <span class="c__t">Contact Sheet</span>
+            <span class="c__d">20 Aug</span>
+          </span>
+          <span class="c__p">drag the loupe across the grid</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="foil holographic cards you throw off a pile">
+        <a href="foil/">
+          <span class="c__sh"><img src="thumbs/foil.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">05</span>
+            <span class="c__t">Foil</span>
+            <span class="c__d">20 Aug</span>
+          </span>
+          <span class="c__p">holographic cards you throw off a pile</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="gacha a working capsule machine   coin, crank, crack it open" data-rank="4">
+        <a href="gacha/">
+          <span class="c__sh"><img src="thumbs/gacha.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">06</span>
+            <span class="c__t">Gacha</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">22 Aug</span>
+          </span>
+          <span class="c__p">a working capsule machine &mdash; coin, crank, crack it open</span>
+          <span class="c__w">a whole machine that works: coin, crank, capsule, crack</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="pasar malam night market   one clock drives six components">
+        <a href="pasar-malam/">
+          <span class="c__sh"><img src="thumbs/pasar-malam.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">07</span>
+            <span class="c__t">Pasar Malam</span>
+            <span class="c__d">23 Aug</span>
+          </span>
+          <span class="c__p">night market &mdash; one clock drives six components</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="nocturne rack paper split-flap board that sets the price">
+        <a href="nocturne-rack/">
+          <span class="c__sh"><img src="thumbs/nocturne-rack.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">08</span>
+            <span class="c__t">Nocturne Rack</span>
+            <span class="c__d">23 Aug</span>
+          </span>
+          <span class="c__p">paper split-flap board that sets the price</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="nocturne board split-flap departures, cream on cobalt">
+        <a href="nocturne-board/">
+          <span class="c__sh"><img src="thumbs/nocturne-board.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">09</span>
+            <span class="c__t">Nocturne Board</span>
+            <span class="c__d">23 Aug</span>
+          </span>
+          <span class="c__p">split-flap departures, cream on cobalt</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="nocturne sleeper train   card thickness is the price" data-rank="6">
+        <a href="nocturne/">
+          <span class="c__sh"><img src="thumbs/nocturne.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">10</span>
+            <span class="c__t">Nocturne</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">23 Aug</span>
+          </span>
+          <span class="c__p">sleeper train &mdash; card thickness is the price</span>
+          <span class="c__w">the price IS the thickness of the card you pick up</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="ah-19 bench console   one dial drives five readouts" data-rank="3">
+        <a href="ah19/">
+          <span class="c__sh"><img src="thumbs/ah19.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">11</span>
+            <span class="c__t">AH-19</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">bench console &mdash; one dial drives five readouts</span>
+          <span class="c__w">one dial, five instruments — turning it re-reads the whole bench</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="the desk an orbitable room in css 3d">
+        <a href="desk/">
+          <span class="c__sh"><img src="thumbs/desk.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">12</span>
+            <span class="c__t">The Desk</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">an orbitable room in CSS 3D</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="the stone hand-rolled dodecahedron, no 3d library" data-rank="5">
+        <a href="stone/">
+          <span class="c__sh"><img src="thumbs/stone.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">13</span>
+            <span class="c__t">The Stone</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">hand-rolled dodecahedron, no 3D library</span>
+          <span class="c__w">a solid rolled by hand, no 3D library anywhere in it</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="second rise bakery   pull a tray off the rack">
+        <a href="bakery/">
+          <span class="c__sh"><img src="thumbs/bakery.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">14</span>
+            <span class="c__t">Second Rise</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">bakery &mdash; pull a tray off the rack</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="baka nae. parts runner   snap a charm off the sprue">
+        <a href="baka-nae/">
+          <span class="c__sh"><img src="thumbs/baka-nae.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">19</span>
+            <span class="c__t">baka nae.</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">parts runner &mdash; snap a charm off the sprue</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="portfolio hire-me page   real work, real prices">
+        <a href="portfolio/">
+          <span class="c__sh"><img src="thumbs/portfolio.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">24</span>
+            <span class="c__t">Portfolio</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">hire-me page &mdash; real work, real prices</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="penalty sales landing page   full conversion flow">
+        <a href="penalty/">
+          <span class="c__sh"><img src="thumbs/penalty.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">25</span>
+            <span class="c__t">Penalty</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">sales landing page &mdash; full conversion flow</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="thrown e-commerce   filter, sort, glaze picker, working cart">
+        <a href="thrown/">
+          <span class="c__sh"><img src="thumbs/thrown.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">26</span>
+            <span class="c__t">THROWN</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">e-commerce &mdash; filter, sort, glaze picker, working cart</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="northbound   chill caf , lane 1   cream and olive, quiet motion">
+        <a href="north-chill/">
+          <span class="c__sh"><img src="thumbs/north-chill.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">27</span>
+            <span class="c__t">Northbound &mdash; chill</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">caf&eacute;, lane 1 &mdash; cream and olive, quiet motion</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="northbound   bold caf , lane 2   drag the 3d cup, it fills as you scroll">
+        <a href="north-bold/">
+          <span class="c__sh"><img src="thumbs/north-bold.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">28</span>
+            <span class="c__t">Northbound &mdash; bold</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">caf&eacute;, lane 2 &mdash; drag the 3D cup, it fills as you scroll</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="northbound   now caf , lane 3   it knows the time and filters the menu">
+        <a href="north-now/">
+          <span class="c__sh"><img src="thumbs/north-now.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">29</span>
+            <span class="c__t">Northbound &mdash; now</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">caf&eacute;, lane 3 &mdash; it knows the time and filters the menu</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="calendar   month chill   month grid, day panel, keyboard">
+        <a href="calendar-month/">
+          <span class="c__sh"><img src="thumbs/calendar-month.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">30</span>
+            <span class="c__t">Calendar &mdash; month</span>
+            <span class="c__d">24 Aug</span>
+          </span>
+          <span class="c__p">chill &mdash; month grid, day panel, keyboard</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="baka nae.   atelier the approved design   periwinkle and hot pink; 40-42 are this in her palettes" data-rank="7">
+        <a href="bakanae-atelier/">
+          <span class="c__sh"><img src="thumbs/bakanae-atelier.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">34</span>
+            <span class="c__t">baka nae. &mdash; atelier</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">25 Aug</span>
+          </span>
+          <span class="c__p">the approved design &mdash; periwinkle and hot pink; 40-42 are this in her palettes</span>
+          <span class="c__w">the approved baka nae. design — periwinkle and hot pink</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="baka nae.   ungu her four colours, purple-led   purple ground, yellow band">
+        <a href="bakanae-p1/">
+          <span class="c__sh"><img src="thumbs/bakanae-p1.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">43</span>
+            <span class="c__t">baka nae. &mdash; ungu</span>
+            <span class="c__d">26 Aug</span>
+          </span>
+          <span class="c__p">her four colours, purple-led &mdash; purple ground, yellow band</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="baka nae.   kuning her four colours, yellow-led   yellow ground, purple band">
+        <a href="bakanae-p2/">
+          <span class="c__sh"><img src="thumbs/bakanae-p2.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">44</span>
+            <span class="c__t">baka nae. &mdash; kuning</span>
+            <span class="c__d">26 Aug</span>
+          </span>
+          <span class="c__p">her four colours, yellow-led &mdash; yellow ground, purple band</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="baka nae.   putih her four colours, white-led   white ground, purple and yellow as blocks">
+        <a href="bakanae-p3/">
+          <span class="c__sh"><img src="thumbs/bakanae-p3.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">45</span>
+            <span class="c__t">baka nae. &mdash; putih</span>
+            <span class="c__d">26 Aug</span>
+          </span>
+          <span class="c__p">her four colours, white-led &mdash; white ground, purple and yellow as blocks</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="ledger   clean the measured saas register: tinted ground, white cards, one accent">
+        <a href="ledger-a/">
+          <span class="c__sh"><img src="thumbs/ledger-a.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">48</span>
+            <span class="c__t">Ledger &mdash; clean</span>
+            <span class="c__d">30 Aug</span>
+          </span>
+          <span class="c__p">the measured SaaS register: tinted ground, white cards, one accent</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="ledger   dark pastel tiles on near-black   light on dark, not dark on dark">
+        <a href="ledger-c/">
+          <span class="c__sh"><img src="thumbs/ledger-c.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">50</span>
+            <span class="c__t">Ledger &mdash; dark</span>
+            <span class="c__d">30 Aug</span>
+          </span>
+          <span class="c__p">pastel tiles on near-black &mdash; light on dark, not dark on dark</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="retail ops   live board the chill one: one screen, ten charts, no number without its comparison">
+        <a href="dash-board/">
+          <span class="c__sh"><img src="thumbs/dash-board.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">55</span>
+            <span class="c__t">Retail Ops &mdash; live board</span>
+            <span class="c__d">31 Aug</span>
+          </span>
+          <span class="c__p">the chill one: one screen, ten charts, no number without its comparison</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="retail ops   wall 01 the creative one: an amber crt wall board where one timeline drives everything">
+        <a href="dash-wall/">
+          <span class="c__sh"><img src="thumbs/dash-wall.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">56</span>
+            <span class="c__t">Retail Ops &mdash; wall 01</span>
+            <span class="c__d">31 Aug</span>
+          </span>
+          <span class="c__p">the creative one: an amber CRT wall board where one timeline drives everything</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="twelve markets, thirteen months small multiples   one toggle turns the same 156 numbers into two different findings">
+        <a href="dash-grid/">
+          <span class="c__sh"><img src="thumbs/dash-grid.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">57</span>
+            <span class="c__t">Twelve markets, thirteen months</span>
+            <span class="c__d">31 Aug</span>
+          </span>
+          <span class="c__p">small multiples &mdash; one toggle turns the same 156 numbers into two different findings</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="pull the tab a pop-up book   the paper stands up by the amount you drag, degree by degree">
+        <a href="folio-popup/">
+          <span class="c__sh"><img src="thumbs/folio-popup.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">64</span>
+            <span class="c__t">Pull the tab</span>
+            <span class="c__d">3 Sep</span>
+          </span>
+          <span class="c__p">a pop-up book &mdash; the paper stands up by the amount you drag, degree by degree</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="press a key nine projects as keycaps   and your real keyboard works on it">
+        <a href="folio-keys/">
+          <span class="c__sh"><img src="thumbs/folio-keys.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">65</span>
+            <span class="c__t">Press a key</span>
+            <span class="c__d">3 Sep</span>
+          </span>
+          <span class="c__p">nine projects as keycaps &mdash; and your real keyboard works on it</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="drop a token real physics, and the slot widths are the project sizes   the odds are the portfolio">
+        <a href="folio-plinko/">
+          <span class="c__sh"><img src="thumbs/folio-plinko.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">66</span>
+            <span class="c__t">Drop a token</span>
+            <span class="c__d">3 Sep</span>
+          </span>
+          <span class="c__p">real physics, and the slot widths are the project sizes &mdash; the odds are the portfolio</span>
+        </a>
+      </li>
+      <li class="c c--fav" data-fav="1"
+          data-k="signal a ribbon of light in raw webgl   one shader, no library, and it leans toward your cursor" data-rank="1">
+        <a href="land-aurora/">
+          <span class="c__sh"><img src="thumbs/land-aurora.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">67</span>
+            <span class="c__t">SIGNAL</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
+            <span class="c__d">3 Sep</span>
+          </span>
+          <span class="c__p">a ribbon of light in raw WebGL &mdash; one shader, no library, and it leans toward your cursor</span>
+          <span class="c__w">professional, not AI-seeming — a shader written from scratch, then modified</span>
+        </a>
+      </li>
+      <li class="c" data-fav="0"
+          data-k="monolith bone, ink and pure electric blue   a hand-rolled wireframe you turn with the scroll">
+        <a href="land-monolith/">
+          <span class="c__sh"><img src="thumbs/land-monolith.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">68</span>
+            <span class="c__t">MONOLITH</span>
+            <span class="c__d">3 Sep</span>
+          </span>
+          <span class="c__p">bone, ink and pure electric blue &mdash; a hand-rolled wireframe you turn with the scroll</span>
+        </a>
+      </li>
+      <li class="c c--new" data-fav="0"
+          data-k="solstice a sun that opens as you scroll, and hovering an act repaints the whole page">
+        <a href="land-solstice/">
+          <span class="c__sh"><img src="thumbs/land-solstice.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
+          <span class="c__b">
+            <span class="c__n">69</span>
+            <span class="c__t">SOLSTICE</span>
+            <span class="c__tag">latest</span>
+            <span class="c__d">3 Sep</span>
+          </span>
+          <span class="c__p">a sun that opens as you scroll, and hovering an act repaints the whole page</span>
+        </a>
+      </li>
   </ol>
+  <p class="empty">Nothing matches that.</p>
 
   <footer>
     Melbourne &middot; <a href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a><br>
@@ -119,5 +607,43 @@ footer a:hover{background:none;padding:0}
   </footer>
 
 </div>
+<script>
+/* Favourites and search are ONE filter pass. No framework and no re-render — every
+   card is already in the DOM and we toggle [hidden], which is why the count is
+   instant and the back button never loses your place. */
+(function(){
+  var body=document.body, list=document.getElementById("list");
+  var cards=[].slice.call(list.children);
+  var find=document.getElementById("find");
+  var btns=[].slice.call(document.querySelectorAll(".seg button"));
+  var count=document.getElementById("count");
+  var view=(location.hash==="#favourites")?"fav":"all";
+
+  function apply(){
+    var q=(find.value||"").trim().toLowerCase(), shown=0, fav=(view==="fav");
+    cards.forEach(function(c){
+      var ok=(view==="all"||c.dataset.fav==="1")&&(!q||c.dataset.k.indexOf(q)>-1);
+      c.hidden=!ok; if(ok) shown++;
+      /* ⚠️ rank is applied ONLY in the favourites view. Setting it once at load
+         reordered the ALL view too — grid order defaults to 0, so every ranked
+         favourite jumped to the back and 03 vanished from its slot. */
+      c.style.order=(fav&&c.dataset.rank)?c.dataset.rank:"";
+    });
+    body.dataset.view=view;
+    body.classList.toggle("is-empty",shown===0);
+    count.textContent=shown+(shown===1?" build":" builds");
+    btns.forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.v===view)); });
+    try{ history.replaceState(null,"",view==="fav"?"#favourites":location.pathname); }catch(e){}
+  }
+  btns.forEach(function(b){ b.addEventListener("click",function(){ view=b.dataset.v; apply(); }); });
+  find.addEventListener("input",apply);
+  /* "/" focuses search, Escape clears it — it is a tool, it should behave like one */
+  addEventListener("keydown",function(e){
+    if(e.key==="/"&&document.activeElement!==find){ e.preventDefault(); find.focus(); }
+    if(e.key==="Escape"&&document.activeElement===find){ find.value=""; apply(); find.blur(); }
+  });
+  apply();
+})();
+</script>
 </body>
 </html>
