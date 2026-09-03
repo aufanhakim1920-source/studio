@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TREMOR — thirty seconds of warning</title>
+<meta name="description" content="An earthquake early-warning network. Sensors on the ground, alerts before the shaking arrives.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F2F3F5'/%3E%3Cpath d='M5 22c6-14 16-14 22 0' fill='none' stroke='%233F5FD6' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ THE OBJECT: ground that RIPPLES. Every touch sends a wavefront outward;
+     overlapping waves are averaged, and the height is lit by a normal taken from
+     its own gradient. -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
+
+<header class="bar">
+  <span class="mark">TREMOR</span>
+  <nav><a href="#how">Network</a><a href="#hold">Coverage</a><a href="#rates">Access</a></nav>
+  <span class="stat mono" id="stat">QUIET</span>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="eyebrow mono"><span class="dot"></span>Seismic network &middot; 412 stations &middot; live</p>
+    <h1>Thirty seconds<br><em>is a lot of time.</em></h1>
+    <p class="sub">P-waves travel about twice as fast as the shaking that does the damage.
+      Detect one near the epicentre and you can warn a city before it arrives. Touch the
+      ground below &mdash; every tap sends a front outward, the way the real thing does.</p>
+    <div class="acts">
+      <a class="cta" href="#rates"><span>Connect a system</span><i>&rarr;</i></a>
+      <a class="ghost" href="#how">See the network</a>
+    </div>
+    <p class="fine mono" id="thresh">GROUND &mdash; <b>0</b> fronts active</p>
+  </section>
+
+  <section class="method" id="how">
+    <p class="tag mono">I &mdash; the network</p>
+    <h2>412 stations. <em>One second apart.</em></h2>
+    <div class="orders" id="orders"></div>
+  </section>
+
+  <section class="work" id="hold">
+    <p class="tag mono">II &mdash; coverage</p>
+    <h2>What the network <em>actually reaches.</em></h2>
+    <ol class="jobs" id="jobs"></ol>
+  </section>
+
+  <section class="engage" id="rates">
+    <p class="tag mono">III &mdash; access</p>
+    <h2>Free to the public.<br><em>Paid by the machines.</em></h2>
+    <div class="tiers" id="tiers"></div>
+    <p class="fine">Prices in AUD per year, excluding GST &middot; retrieval is always free &mdash; charging to get your own material back is how archives die</p>
+  </section>
+
+  <section class="faq" id="faq">
+    <p class="tag mono">IV &mdash; questions</p>
+    <h2>What people ask <em>about the seconds.</em></h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span class="mono">TREMOR SEISMIC NETWORK &middot; 412 STATIONS &middot; LAST EVENT 04:11</span>
+  <span class="mono">LATENCY <b id="rev">1.8</b>s &middot; <span id="clock">&mdash;</span></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
