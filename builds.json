@@ -358,5 +358,29 @@
     "kind": "landing",
     "fav": true,
     "rank": 6
+  },
+  {
+    "n": "91",
+    "slug": "land-undertone",
+    "title": "UNDERTONE",
+    "blurb": "a reissue label &mdash; sweep a bearing across the dark until a lost side names itself",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "92",
+    "slug": "land-chroma",
+    "title": "CHROMA",
+    "blurb": "a risograph studio &mdash; drag the inks over each other, and the passes are the price",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "93",
+    "slug": "land-terrace",
+    "title": "TERRACE",
+    "blurb": "a Laos coffee co-op &mdash; turn the year and the harvest band climbs the slope",
+    "date": "3 Sep",
+    "kind": "landing"
   }
 ]

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TERRACE — green coffee from the Bolaven Plateau, picked by altitude</title>
+<meta name="description" content="TERRACE is a 41-farm coffee co-operative on the Bolaven Plateau, Laos. Five lots between 1,110 and 1,350 m, sold direct to roasters. Turn the year and watch the harvest climb the slope.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0806'/%3E%3Cpath d='M2 26h28M5 21h22M9 16h14M13 11h6' stroke='%23d97b56' stroke-width='2.4' stroke-linecap='square'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="frame" aria-hidden="true"></div>
+<header class="top hit">
+  <a class="mark" href="#top"><i></i>TERRACE</a>
+  <nav class="nav" aria-label="Sections">
+    <a href="#lots">Lots</a>
+    <a href="#coop">Co-op</a>
+    <a href="#ask">Terms</a>
+  </nav>
+  <a class="act" href="#order">Request samples <span aria-hidden="true">&rarr;</span></a>
+</header>
+<main id="main">
+  <section class="hero" id="top">
+    <div class="say hit">
+      <p class="eyebrow">Bolaven Plateau, Laos</p>
+      <h1>Picked by<br>altitude,<br><em>not by date.</em></h1>
+      <p class="lede">TERRACE is a 41-farm co-operative above Paksong. We sell green coffee
+        direct to roasters, one lot per terrace &mdash; and the higher the terrace, the later
+        it ripens.</p>
+      <p class="verb"><span class="key">Drag the slope</span> to turn the year.</p>
+    </div>
+    <div class="ledger hit" role="group" aria-label="Lots on the slope">
+      <p class="ledger__h">On the slope &middot; 1,110–1,350 m</p>
+      <div id="ledger"></div>
+    </div>
+    <div class="turn hit">
+      <div class="turn__now">
+        <span class="turn__month" id="month">JAN</span>
+        <span class="turn__state" id="state">&mdash;</span>
+      </div>
+      <label class="turn__ctl">
+        <span class="vh">Season — turn the year</span>
+        <input id="season" type="range" min="0" max="12" step="0.02" value="11.85">
+      </label>
+      <p class="turn__hint" id="alt">band &mdash;</p>
+    </div>
+  </section>
+  <section class="sec" id="lots">
+    <p class="tag">01 &mdash; the five lots</p>
+    <h2>Five terraces.<br>Five pick dates.<br><em>One slope.</em></h2>
+    <p class="body">Every lot is one contiguous band of terraces at a single altitude, picked
+      inside a two-week window and milled the same day. Ripeness below is live &mdash; it follows
+      the year you are turning.</p>
+    <div id="lotlist"></div>
+    <p class="fine">Prices are FOB Vientiane, per kilogram of green coffee, 2026 crop.
+      60 kg bags. Minimum one bag.</p>
+  </section>
+  <section class="sec" id="coop">
+    <p class="tag">02 &mdash; how the co-op works</p>
+    <h2>Forty-one families.<br><em>No middle.</em></h2>
+    <div id="steps"></div>
+  </section>
+  <section class="sec" id="ask">
+    <p class="tag">03 &mdash; terms</p>
+    <h2>What roasters<br>ask first.</h2>
+    <div id="qa"></div>
+  </section>
+  <section class="sec sec--end" id="order">
+    <p class="tag">04 &mdash; samples</p>
+    <h2>Three 200 g samples,<br><em>your pick of the slope.</em></h2>
+    <p class="body">Tell us the altitudes you are curious about. Samples ship from Paksong on
+      the Tuesday after the pick, and land in most of Europe inside nine days.</p>
+    <a class="act act--lg" href="mailto:lots@terrace.la">lots@terrace.la <span aria-hidden="true">&rarr;</span></a>
+    <p class="fine">Ban Nong Luang, Paksong District, Champasak &middot; +856 20 5599 0141</p>
+  </section>
+</main>
+<footer class="foot">
+  <span>TERRACE Co-operative</span>
+  <span class="mono">Paksong, Laos &middot; <span id="clock">&mdash;</span></span>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

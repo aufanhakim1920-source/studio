@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Undertone — reissues from lost tape</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2303050a'/%3E%3Cg fill='none' stroke='%23e85d04' stroke-width='2'%3E%3Ccircle cx='16' cy='16' r='4'/%3E%3Ccircle cx='16' cy='16' r='11'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="stage" id="stage">
+  <header class="frame-top" id="frameTop">
+    <div class="ident">
+      <span class="wordmark">Undertone</span>
+      <span class="ident-sub">Reissues from lost tape</span>
+    </div>
+    <nav class="topnav">
+      <span class="series">Archive series II</span>
+      <a class="navlink" href="#index" id="indexLink">Index <em id="foundTop">0/8</em></a>
+    </nav>
+  </header>
+  <div class="field-space" aria-hidden="true">
+    <p class="hint" id="hint">Drag across to tune</p>
+  </div>
+  <div class="rail" id="rail" role="slider" tabindex="0"
+       aria-label="Tuning bearing across the archive"
+       aria-valuemin="0" aria-valuemax="1000" aria-valuenow="438"
+       aria-valuetext="Bearing 438 — Iron Sunday, Wilbert Nkosi &amp; the Six">
+    <div class="rail-line"></div>
+    <div class="ticks" id="ticks"></div>
+    <div class="head" id="head"><i></i><b></b></div>
+  </div>
+  <section class="caption" id="caption">
+    <div class="cap-l">
+      <p class="cat" id="cat">UT-1104 · side a</p>
+      <h1 class="title" id="title">Iron Sunday</h1>
+      <p class="by" id="by">Wilbert Nkosi &amp; the Six, 1976</p>
+    </div>
+    <div class="cap-r">
+      <p class="note" id="note">Pulled from a Johannesburg pressing plant’s reject bin, boxed as a wedding tape.</p>
+      <p class="readout"><span id="bearing">bearing 438</span><span id="signal">signal 100%</span></p>
+    </div>
+  </section>
+  <footer class="frame-bottom">
+    <span>Undertone Recordings</span>
+    <span class="tally" id="foundBottom">recovered 0 / 8</span>
+  </footer>
+</div>
+<div class="index" id="index" aria-hidden="true">
+  <div class="index-head">
+    <span class="index-title">Eight recovered sides</span>
+    <button class="close" id="closeIndex" type="button">Close</button>
+  </div>
+  <ol class="index-list" id="indexList"></ol>
+  <p class="index-foot">Every side below was cut from a tape that had been written off. Tune to a bearing and hold it to recover the side.</p>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

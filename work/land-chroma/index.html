@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHROMA — risograph print studio, Brunswick</title>
+<meta name="description" content="Small-batch risograph printing. One ink at a time; the overlaps are free. Drag the inks and watch them overprint — the number of passes is the price.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F1EB'/%3E%3Ccircle cx='13' cy='16' r='9' fill='%231E5FCE'/%3E%3Ccircle cx='19' cy='16' r='9' fill='%23FF4FA3' style='mix-blend-mode:multiply'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#press">Skip to the press</a>
+<header class="masthead">
+  <div class="masthead__brand">
+    <span class="wordmark">CHROMA</span>
+    <span class="mono muted">Risograph print studio<span class="hide-s"> &middot; Brunswick</span></span>
+  </div>
+  <nav class="masthead__nav" aria-label="Sections">
+    <a href="#inks">Inks</a>
+    <a href="#stocks">Stocks</a>
+    <a href="#runs">Runs</a>
+    <a href="#order">Order</a>
+  </nav>
+  <a class="pill pill--solid" href="#order">Book a run</a>
+</header>
+<main>
+<section class="press" id="press">
+  <div class="lede">
+    <div class="lede__t">
+      <p class="kick mono">
+        <span id="slugPass">3</span>&thinsp;/&thinsp;6 passes
+        &middot; <span id="slugSize">A3</span>
+        &middot; <span id="slugStock">Munken Cream 120</span>
+        <span class="hide-s">&middot; screen 75 lpi</span>
+      </p>
+      <h1><span class="n" id="inkWord">Three</span> inks.<br><em><span class="n" id="colWord">Seven</span> colours.</em></h1>
+    </div>
+    <div class="lede__q" aria-live="polite">
+      <p class="tag mono" id="quoteLine">3 passes &middot; A3 &middot; 100 copies</p>
+      <p class="price" id="price">$120.90</p>
+      <p class="mono muted" id="working">$24.00 masters &middot; $96.90 ink &amp; paper &middot; $1.21 a copy</p>
+      <p class="mono hint" id="hint">Drag an ink &mdash; where two land, they multiply</p>
+    </div>
+  </div>
+  <div class="bed">
+    <canvas id="sheet" aria-label="A press sheet. Six risograph inks; drag one to move it and watch the overlaps make new colours."></canvas>
+  </div>
+</section>
+<section class="deck" aria-label="Set up the run">
+  <div class="deck__inks">
+    <p class="tag mono">The drums &mdash; tap to lay one down</p>
+    <div class="rail" id="rail"></div>
+    <label class="reg">
+      <span class="mono">Registration</span>
+      <input id="reg" type="range" min="0" max="3" step="0.1" value="0.8" aria-label="Registration error in millimetres">
+      <span class="mono reg__v"><b id="regV">0.8</b>&thinsp;mm</span>
+    </label>
+    <p class="tag mono tag--gap">The overlaps &mdash; you don't pay for these</p>
+    <div class="mixes" id="mixes"></div>
+    <p class="mono muted" id="mixnote">3 inks + 4 overlaps = 7 colours</p>
+  </div>
+  <div class="deck__set">
+    <p class="tag mono">The job</p>
+    <div class="set" id="setSize" role="group" aria-label="Sheet size"></div>
+    <div class="set" id="setRun" role="group" aria-label="Run length"></div>
+    <div class="set" id="setStock" role="group" aria-label="Paper stock"></div>
+    <div class="set" id="setRush" role="group" aria-label="Turnaround"></div>
+  </div>
+  <div class="deck__sheet">
+    <p class="tag mono">The run sheet</p>
+    <ol class="runsheet" id="runsheet"></ol>
+  </div>
+</section>
+<section class="chapter" id="inks">
+  <p class="tag mono">01 &mdash; the ink library</p>
+  <h2>Six drums.<br><em>We run them one at a time.</em></h2>
+  <p class="say">Riso ink is soy-based and it sits <em>on</em> the paper rather than soaking in, so a second pass
+    does not cover the first &mdash; it multiplies with it. That is the whole trick, and it is why we sell passes.</p>
+  <div class="inks" id="inkList"></div>
+</section>
+<section class="chapter" id="stocks">
+  <p class="tag mono">02 &mdash; paper</p>
+  <h2>Uncoated, always.<br><em>Coated stock rejects the ink.</em></h2>
+  <div class="rows" id="stockList"></div>
+  <p class="say">Pick a stock above and the sheet changes under the ink &mdash; every overprint on this page
+    is computed against the paper you chose, because that is what actually happens on the drum.</p>
+</section>
+<section class="chapter" id="runs">
+  <p class="tag mono">03 &mdash; what a run costs</p>
+  <h2>Masters, then copies.<br><em>Longer runs get cheaper fast.</em></h2>
+  <div class="rows">
+    <div class="row"><span class="row__k">50 copies</span><span class="mono">$0.24</span><span class="row__n mono muted">per pass, per copy</span></div>
+    <div class="row"><span class="row__k">100 copies</span><span class="mono">$0.17</span><span class="row__n mono muted">per pass, per copy</span></div>
+    <div class="row"><span class="row__k">250 copies</span><span class="mono">$0.11</span><span class="row__n mono muted">per pass, per copy</span></div>
+    <div class="row"><span class="row__k">Master</span><span class="mono">$8.00</span><span class="row__n mono muted">one per pass, per design</span></div>
+    <div class="row"><span class="row__k">Size</span><span class="mono">&times;0.6 &middot; &times;1.0 &middot; &times;1.9</span><span class="row__n mono muted">A5 &middot; A4 &middot; A3</span></div>
+    <div class="row"><span class="row__k">Turnaround</span><span class="mono">7 days</span><span class="row__n mono muted">rush 3 days, +25%</span></div>
+  </div>
+  <p class="say"><b>100 &times; A3, three passes on Munken Cream</b> &mdash; three masters at $8.00 is $24.00,
+    plus 100 &times; 3 passes &times; $0.17 &times; 1.9 for A3 is $96.90. <b>$120.90</b>, or $1.21 a copy.
+    Past four passes registration gets hard; ring us first.</p>
+</section>
+<section class="chapter chapter--end" id="order">
+  <p class="tag mono">04 &mdash; booking</p>
+  <h2>Send separations,<br><em>or send a drawing.</em></h2>
+  <p class="say">If you already have your layers split, send them as greyscale &mdash; one file per pass, 300dpi.
+    If you do not, send the artwork and we will pull the separations for you and proof them before the run.
+    Half up front, the rest on collection.</p>
+  <a class="pill pill--solid pill--big" href="mailto:press@chroma.press?subject=Run%20booking">Book a run</a>
+</section>
+</main>
+<footer class="footbar">
+  <span class="mono">CHROMA &middot; 14 Weston St, Brunswick</span>
+  <span class="mono muted">Mon&ndash;Thu, 9&ndash;5</span>
+  <span class="mono"><a href="mailto:press@chroma.press">press@chroma.press</a></span>
+</footer>
+<div class="grain" aria-hidden="true"></div>
+<script src="app.js"></script>
+</body>
+</html>
