@@ -330,29 +330,5 @@
     "blurb": "a mass of cold metal that heats where you rub it, then cools on its own",
     "date": "3 Sep",
     "kind": "landing"
-  },
-  {
-    "n": "76",
-    "slug": "land-vestige",
-    "title": "VESTIGE",
-    "blurb": "a plate that remembers your hand, then forgets &mdash; real frame feedback",
-    "date": "3 Sep",
-    "kind": "landing"
-  },
-  {
-    "n": "77",
-    "slug": "land-tremor",
-    "title": "TREMOR",
-    "blurb": "touch the ground and a wavefront spreads &mdash; lit from its own gradient",
-    "date": "3 Sep",
-    "kind": "landing"
-  },
-  {
-    "n": "78",
-    "slug": "land-carillon",
-    "title": "CARILLON",
-    "blurb": "sixteen bars that ring independently, with zero per-frame state",
-    "date": "3 Sep",
-    "kind": "landing"
   }
 ]
