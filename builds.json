@@ -23,7 +23,7 @@
     "date": "20 Aug",
     "fav": true,
     "why": "his first favourite, still frozen — projects as spines you physically pull",
-    "rank": 2,
+    "rank": 1,
     "kind": "portfolio"
   },
   {
@@ -82,7 +82,7 @@
     "date": "23 Aug",
     "fav": true,
     "why": "the price IS the thickness of the card you pick up",
-    "rank": 3,
+    "rank": 2,
     "kind": "landing"
   },
   {
@@ -189,7 +189,7 @@
     "date": "25 Aug",
     "fav": true,
     "why": "the approved baka nae. design — periwinkle and hot pink",
-    "rank": 4,
+    "rank": 3,
     "kind": "store"
   },
   {
@@ -288,7 +288,7 @@
     "date": "3 Sep",
     "fav": true,
     "why": "professional, not AI-seeming — a shader written from scratch, then modified",
-    "rank": 1,
+    "rank": 4,
     "kind": "landing"
   },
   {
@@ -321,7 +321,9 @@
     "title": "ABYSSAL",
     "blurb": "water seen from underneath &mdash; it stills where you hold the cursor",
     "date": "3 Sep",
-    "kind": "landing"
+    "kind": "landing",
+    "fav": true,
+    "rank": 5
   },
   {
     "n": "75",
@@ -353,6 +355,8 @@
     "title": "SOUNDING",
     "blurb": "subsea cable survey &mdash; fire a sonar ping into the dark and it charts the seabed it passes",
     "date": "3 Sep",
-    "kind": "landing"
+    "kind": "landing",
+    "fav": true,
+    "rank": 6
   }
 ]
