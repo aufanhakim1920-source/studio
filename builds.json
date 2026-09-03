@@ -358,29 +358,5 @@
     "kind": "landing",
     "fav": true,
     "rank": 6
-  },
-  {
-    "n": "88",
-    "slug": "land-core-swiss",
-    "title": "KIRKWOOD / A",
-    "blurb": "controlled round &mdash; one grotesk, dense and rapid. Same ice, same words as 89 and 90",
-    "date": "3 Sep",
-    "kind": "landing"
-  },
-  {
-    "n": "89",
-    "slug": "land-core-editorial",
-    "title": "KIRKWOOD / B",
-    "blurb": "controlled round &mdash; editorial serif, slow and spacious. Same ice, same words as 88 and 90",
-    "date": "3 Sep",
-    "kind": "landing"
-  },
-  {
-    "n": "90",
-    "slug": "land-core-technical",
-    "title": "KIRKWOOD / C",
-    "blurb": "controlled round &mdash; monospace catalogue, tabular. Same ice, same words as 88 and 89",
-    "date": "3 Sep",
-    "kind": "landing"
   }
 ]
