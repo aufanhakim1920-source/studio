@@ -400,5 +400,29 @@
     "blurb": "a paper toy theatre you look into &mdash; cut-paper flats in real 3D, and the show re-scenes",
     "date": "3 Sep",
     "kind": "landing"
+  },
+  {
+    "n": "97",
+    "slug": "land-currents",
+    "title": "CURRENTS",
+    "blurb": "Australia&rsquo;s electricity 2005&ndash;2025 as a river you travel &mdash; swap one file and it tells any dataset&rsquo;s story",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "98",
+    "slug": "dash-control",
+    "title": "MERIDIAN CONTROL",
+    "blurb": "a metro line control board &mdash; built to measured product spec, still until touched",
+    "date": "3 Sep",
+    "kind": "dashboard"
+  },
+  {
+    "n": "99",
+    "slug": "shop-glass",
+    "title": "LUMEN",
+    "blurb": "a glassblowing studio in real 3D &mdash; turn the vessel, move the light, watch the caustic",
+    "date": "3 Sep",
+    "kind": "store"
   }
 ]

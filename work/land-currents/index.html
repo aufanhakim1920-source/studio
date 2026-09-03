@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Currents — a river of electricity you travel along</title>
+<meta name="description" content="Twenty years of Australian electricity told sideways. The generation mix is a river of flowing bands; travel right and the bands change width, because the shape of the river is the data.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050912'/%3E%3Cpath d='M0 22h32' stroke='%23E0442A' stroke-width='7'/%3E%3Cpath d='M0 15.5h32' stroke='%232F82F2' stroke-width='5'/%3E%3Cpath d='M0 10h32' stroke='%233CE0A2' stroke-width='4'/%3E%3Cpath d='M0 6h32' stroke='%23FFD22E' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="river" aria-hidden="true"></canvas>
+
+<div class="stage">
+
+  <header class="frame-top">
+    <div class="ident">
+      <span class="wordmark" id="wordmark">—</span>
+      <span class="ident-sub" id="tagline">—</span>
+    </div>
+    <nav class="topnav">
+      <span class="series" id="kicker">—</span>
+      <a class="navlink" href="#index" id="indexLink">— <em id="passedTop">0/0</em></a>
+    </nav>
+  </header>
+
+  <div class="field" id="field">
+
+    <div class="odo">
+      <p class="odo-step" id="odoStep">—</p>
+      <p class="odo-sub"><span id="leadLabel">—</span><b id="leadValue">—</b></p>
+    </div>
+
+    <figure class="figure" id="figure">
+      <figcaption class="fig-name" id="figName">—</figcaption>
+      <p class="fig-num" id="figNum">—</p>
+      <p class="fig-unit" id="figUnit">—</p>
+    </figure>
+
+    <div class="stop" id="stopBlock">
+      <p class="stop-meta">
+        <span class="stop-no" id="stopNo">01</span>
+        <span class="stop-at" id="stopAt">—</span>
+        <span class="stop-away" id="stopAway">—</span>
+      </p>
+      <h1 class="stop-title" id="stopTitle">—</h1>
+      <p class="stop-line" id="stopLine">—</p>
+    </div>
+
+    <p class="hint" id="hint">—</p>
+  </div>
+
+  <div class="rail" id="rail" role="slider" tabindex="0"
+       aria-label="Year rail" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="rail-line"></div>
+    <div class="ticks" id="ticks"></div>
+    <div class="marks" id="marks"></div>
+    <div class="head" id="head"><i></i></div>
+  </div>
+
+  <footer class="frame-bottom">
+    <p class="groups" id="groups"></p>
+    <p class="tally" id="passedBottom">—</p>
+  </footer>
+
+</div>
+
+<div class="index" id="index" aria-hidden="true">
+  <div class="ix-head">
+    <span class="ix-title" id="ixTitle">—</span>
+    <button class="close" id="closeIndex" type="button">—</button>
+  </div>
+  <ol class="ix-list" id="ixList"></ol>
+  <p class="ix-foot" id="ixFoot">—</p>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
