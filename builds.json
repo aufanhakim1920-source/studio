@@ -330,29 +330,5 @@
     "blurb": "a mass of cold metal that heats where you rub it, then cools on its own",
     "date": "3 Sep",
     "kind": "landing"
-  },
-  {
-    "n": "79",
-    "slug": "play-curl",
-    "title": "Draw Weight",
-    "blurb": "a game of curling &mdash; drag to throw, hold space to sweep, real stone physics",
-    "date": "3 Sep",
-    "kind": "game"
-  },
-  {
-    "n": "80",
-    "slug": "app-transcript",
-    "title": "Marginal",
-    "blurb": "a transcript editor where the words ARE the scrubber &mdash; click any one to seek",
-    "date": "3 Sep",
-    "kind": "product"
-  },
-  {
-    "n": "81",
-    "slug": "read-standard",
-    "title": "The day with two noons",
-    "blurb": "a long read with margin sidenotes &mdash; no object, no canvas, just typesetting",
-    "date": "3 Sep",
-    "kind": "editorial"
   }
 ]
