@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kirkwood Core Library — Specimen Catalogue</title>
+<meta name="description" content="Kirkwood Core Library, Hobart. 2,412 polar ice cores, 41 km on the shelf, held at minus fifty-five. Specimen index and access procedure.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060B12'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' font-weight='600' fill='%23BFE9F2' text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="page">
+
+  <header id="top">
+    <a class="brand" href="#masthead">
+      <span class="mark">KCL</span>
+      <span class="bn">KIRKWOOD&nbsp;CORE&nbsp;LIBRARY</span>
+    </a>
+    <nav id="nav" aria-label="Sections">
+      <a href="#holdings">HOLDINGS</a>
+      <a href="#index">INDEX</a>
+      <a href="#access">ACCESS</a>
+    </nav>
+    <span class="loc">HOBART&nbsp;/&nbsp;TAS&nbsp;·&nbsp;EST&nbsp;1987</span>
+    <button id="navtoggle" class="navtoggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav">MENU</button>
+  </header>
+
+  <div id="strip" role="group" aria-label="Live core readout">
+    <dl class="reads">
+      <div class="read"><dt>DEPTH</dt><dd><span id="r-depth">0</span><i>m</i></dd></div>
+      <div class="read"><dt>AGE</dt><dd><span id="r-age">0</span><i>bp</i></dd></div>
+      <div class="read"><dt>LAYER</dt><dd><span id="r-layer">—</span><i>mm/yr</i></dd></div>
+      <div class="read wide"><dt>PHASE</dt><dd><span id="r-phase">BUBBLE ICE</span></dd></div>
+      <div class="read wide"><dt>STORE</dt><dd><span>−55</span><i>°C</i></dd></div>
+    </dl>
+    <div class="ruler" aria-hidden="true">
+      <div class="ticks">
+        <b style="left:0%"></b><b style="left:15.29%"></b><b style="left:30.58%"></b>
+        <b style="left:45.87%"></b><b style="left:61.16%"></b><b style="left:76.45%"></b>
+        <b style="left:91.74%"></b>
+      </div>
+      <div id="mark" class="mark-line"></div>
+      <span class="rl rl-a">0</span><span class="rl rl-b">3 270 m</span>
+    </div>
+  </div>
+
+  <section id="masthead" class="blk">
+    <div class="code"><span>REC</span><span>00</span></div>
+    <div class="bd">
+      <p class="kicker">SPECIMEN CATALOGUE · REVISION 41 · PUBLIC EXTRACT</p>
+      <h1>Snow that fell before there were people.</h1>
+      <div class="sheet abstract">
+        <p class="fld">ABSTRACT<span>REV 41</span></p>
+        <div class="abstract-in">
+        <p class="stand">Kirkwood holds 41 kilometres of polar ice, cut into 2,412 cores and kept at fifty-five below. The deepest of them reached 3,270 metres and came up carrying air that last touched the sky 1.2 million years ago. Drag down the core to go back.</p>
+        <div class="acts">
+          <p class="drag"><span class="d1"><span class="gl" aria-hidden="true">&#8597;</span>DRAG THE CORE UP OR DOWN</span><span class="d2"><em>·</em> OR USE <kbd>&uarr;</kbd><kbd>&darr;</kbd></span></p>
+          <a class="btn" href="#index">OPEN SPECIMEN INDEX</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="holdings" class="blk">
+    <div class="code"><span>A</span><span>HOLD</span></div>
+    <div class="bd">
+      <h2>HOLDINGS</h2>
+      <dl class="spec sheet">
+        <div><dt>CORES HELD</dt><dd>2,412</dd></div>
+        <div><dt>SHELF LENGTH</dt><dd>41 km of core</dd></div>
+        <div><dt>DEEPEST CORE</dt><dd>3,270 m &nbsp;<span class="dim">KCL-0001, KIRKWOOD DOME</span></dd></div>
+        <div><dt>OLDEST ICE</dt><dd>1.2 million years</dd></div>
+        <div><dt>STORAGE TEMP</dt><dd>−55 °C &nbsp;<span class="dim">continuous, no excursion above −48 °C</span></dd></div>
+        <div><dt>LOCATION</dt><dd>Hobart, Tasmania</dd></div>
+        <div><dt>FOUNDED</dt><dd>1987</dd></div>
+        <div><dt>ACCESS</dt><dd>By research request &nbsp;<span class="dim">6-week lead time</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="index" class="blk">
+    <div class="code"><span>B</span><span>IDX</span></div>
+    <div class="bd">
+      <h2>SPECIMEN INDEX</h2>
+      <div class="sheet card">
+      <div class="tbar">
+        <p class="cap">SELECTED RECORDS · <span id="rowcount">10</span> OF 2,412 · <span id="qstate">READY</span></p>
+        <label class="filt" for="filter">STATUS
+          <select id="filter">
+            <option value="ALL">ALL</option>
+            <option value="IN VAULT">IN VAULT</option>
+            <option value="ON LOAN">ON LOAN</option>
+            <option value="IN ANALYSIS">IN ANALYSIS</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="twrap">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th scope="col" aria-label="Current"></th>
+              <th scope="col">ID</th>
+              <th scope="col" class="th-site">SITE</th>
+              <th scope="col" class="num">DEPTH</th>
+              <th scope="col" class="num">AGE</th>
+              <th scope="col" class="num th-lay">LAYER</th>
+              <th scope="col"><span class="full">STATUS</span><span class="abbr">ST</span></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="legend">▶ MARKS THE CORE NEAREST YOUR CURRENT DEPTH · DEPTH IN METRES · ka = THOUSAND YEARS, Ma = MILLION YEARS · LAYER = ANNUAL LAYER THICKNESS AT THE BASE OF THE CORE, mm/yr · SELECT ANY ROW FOR THE FULL RECORD</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="access" class="blk">
+    <div class="code"><span>C</span><span>ACC</span></div>
+    <div class="bd">
+      <h2>ACCESS PROCEDURE</h2>
+      <div class="sheet card">
+      <p class="note">Ice is spent when it is measured. Every request is assessed against what the section can still answer, and against who has asked for it before. Allow a <b>6-week lead time</b> from lodgement to dispatch.</p>
+      <div class="steps" id="steps">
+
+        <div class="step">
+          <button class="step-head" type="button" aria-expanded="false" aria-controls="p1">
+            <span class="n">01</span><span class="t">LODGE A RESEARCH REQUEST</span><span class="x" aria-hidden="true"></span>
+          </button>
+          <div class="step-body" id="p1"><div class="step-inner"><div class="step-txt">
+            <p>Access is by research request only. Name the investigator, the holding institution, the measurement to be made, and the minimum mass of ice that will answer it. Requests without a stated mass are returned unread.</p>
+          </div></div></div>
+        </div>
+
+        <div class="step">
+          <button class="step-head" type="button" aria-expanded="false" aria-controls="p2">
+            <span class="n">02</span><span class="t">SCIENTIFIC REVIEW</span><span class="x" aria-hidden="true"></span>
+          </button>
+          <div class="step-body" id="p2"><div class="step-inner"><div class="step-txt">
+            <p>The committee sits on the first Tuesday of each month. It weighs the request against the prior sampling record for that borehole. A section already cut for three isotope studies will not be cut for a fourth.</p>
+          </div></div></div>
+        </div>
+
+        <div class="step">
+          <button class="step-head" type="button" aria-expanded="false" aria-controls="p3">
+            <span class="n">03</span><span class="t">ALLOCATION AND CUT PLAN</span><span class="x" aria-hidden="true"></span>
+          </button>
+          <div class="step-body" id="p3"><div class="step-inner"><div class="step-txt">
+            <p>Cores are held in 1 metre sections. The cut plan states the depth interval, the quadrant of the round taken, and the archive half that is never released. You receive the plan before the saw is run.</p>
+          </div></div></div>
+        </div>
+
+        <div class="step">
+          <button class="step-head" type="button" aria-expanded="false" aria-controls="p4">
+            <span class="n">04</span><span class="t">COLD-CHAIN DISPATCH</span><span class="x" aria-hidden="true"></span>
+          </button>
+          <div class="step-body" id="p4"><div class="step-inner"><div class="step-txt">
+            <p>Ice leaves Hobart at −55 °C in a logged container and must arrive without an excursion above −20 °C. A broken chain voids the section: it is recorded as consumed whether or not it was ever measured.</p>
+          </div></div></div>
+        </div>
+
+        <div class="step">
+          <button class="step-head" type="button" aria-expanded="false" aria-controls="p5">
+            <span class="n">05</span><span class="t">RETURN OR CONSUMPTION RECORD</span><span class="x" aria-hidden="true"></span>
+          </button>
+          <div class="step-body" id="p5"><div class="step-inner"><div class="step-txt">
+            <p>Unused ice comes home. Melted ice is written off against the borehole and the entry is public. The index you are reading is the sum of every one of those decisions since 1987.</p>
+          </div></div></div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="stamp">
+    <div class="code"><span>&middot;</span><span>END</span></div>
+    <div class="bd">
+      <div class="stampbox">
+        <p class="s1">KIRKWOOD CORE LIBRARY</p>
+        <p class="s2">HOBART, TASMANIA &nbsp;·&nbsp; ESTABLISHED 1987</p>
+        <hr>
+        <p class="s3">RECORD SET &nbsp;KCL-IDX-41</p>
+        <p class="s3">HOLDINGS &nbsp;&nbsp;&nbsp;&nbsp;2,412 CORES / 41 KM</p>
+        <p class="s3">DEEPEST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3,270 M / 1.2 MILLION YR</p>
+        <p class="s3">STORE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;−55 °C</p>
+        <p class="s3">ACCESS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RESEARCH REQUEST / 6-WEEK LEAD</p>
+        <hr>
+        <p class="s4">THIS EXTRACT IS NOT A LOAN AGREEMENT</p>
+      </div>
+      <p class="fl">
+        <a href="#masthead">TOP</a> ·
+        <a href="#holdings">HOLDINGS</a> ·
+        <a href="#index">INDEX</a> ·
+        <a href="#access">ACCESS</a>
+      </p>
+    </div>
+  </footer>
+
+</div>
+
+<div id="scrim" aria-hidden="true">
+  <div id="panel" role="dialog" aria-modal="true" aria-labelledby="p-id">
+    <div class="p-in">
+      <div class="p-head">
+        <div>
+          <p class="p-k">CORE RECORD</p>
+          <h3 id="p-id">KCL-0000</h3>
+        </div>
+        <button id="p-close" class="p-close" type="button" aria-label="Close record">CLOSE&nbsp;&#215;</button>
+      </div>
+      <div class="p-body">
+        <dl class="spec p-spec" id="p-spec"></dl>
+        <div class="p-bar" aria-hidden="true"><div class="p-bar-fill" id="p-bar"></div><span class="p-bar-l">0</span><span class="p-bar-r">3 270 m</span></div>
+        <p class="p-note" id="p-note"></p>
+      </div>
+      <div class="p-foot">
+        <p class="p-fl">ACCESS BY RESEARCH REQUEST · 6-WEEK LEAD TIME</p>
+        <a class="btn btn-s" href="#access" id="p-cta">REQUEST THIS SECTION</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="core.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

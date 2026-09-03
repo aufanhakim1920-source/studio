@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kirkwood Core Library — Hobart</title>
+<meta name="description" content="Kirkwood Core Library holds 41 kilometres of polar ice, cut into 2,412 cores and kept at fifty-five below. Hobart, Tasmania. Founded 1987.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main>
+
+  <section class="sec hero" id="index">
+    <div class="wrap">
+
+      <div class="secbar">
+        <span class="mark"><i></i>01 / INDEX</span>
+        <span class="mark mut">KIRKWOOD CORE LIBRARY · EST. 1987</span>
+      </div>
+
+      <div class="grid hero-grid">
+        <div class="col-7 pad">
+          <h1 class="display">Snow that fell before there were&nbsp;people.</h1>
+        </div>
+        <div class="col-5 pad brl">
+          <p class="stand">Kirkwood holds 41 kilometres of polar ice, cut into 2,412 cores and kept at fifty-five below. The deepest of them reached 3,270 metres and came up carrying air that last touched the sky 1.2 million years ago. Drag down the core to go back.</p>
+        </div>
+      </div>
+
+      <div class="grid liveband">
+        <div class="col-3 pad cell">
+          <span class="mark mut">DEPTH</span>
+          <span class="figrow"><span class="fig" data-out="depth">0</span><span class="unit">m</span></span>
+        </div>
+        <div class="col-3 pad cell brl">
+          <span class="mark mut">AGE OF ICE</span>
+          <span class="figrow"><span class="fig" data-out="age">0</span><span class="unit">yr</span></span>
+        </div>
+        <div class="col-6 brl scrubcell">
+          <div class="scrub-head">
+            <span class="mark">DRAG&nbsp;↕&nbsp;OR&nbsp;PRESS&nbsp;↑&nbsp;↓</span>
+            <span class="mark mut"><span data-out="pct">6</span>% DOWN THE CORE</span>
+          </div>
+          <div class="scrub" id="scrub" aria-hidden="true">
+            <div class="scrub-fill" data-out="fill"></div>
+            <div class="scrub-thumb" data-out="thumb"></div>
+          </div>
+          <div class="stops">
+            <button class="stop" data-depth="0">0 m</button>
+            <button class="stop" data-depth="800">800 m</button>
+            <button class="stop" data-depth="1700">1,700 m</button>
+            <button class="stop" data-depth="3270">3,270 m</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="sec" id="holdings">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>02 / HOLDINGS</span>
+        <span class="mark mut">FOUR FIGURES</span>
+      </div>
+      <div class="grid">
+        <div class="col-3 pad cell">
+          <span class="fig big">2,412</span>
+          <span class="mark mut">CORES HELD</span>
+        </div>
+        <div class="col-3 pad cell brl">
+          <span class="fig big">41 km</span>
+          <span class="mark mut">OF CORE ON THE SHELVES</span>
+        </div>
+        <div class="col-3 pad cell brl">
+          <span class="fig big">3,270 m</span>
+          <span class="mark mut">DEEPEST CORE</span>
+        </div>
+        <div class="col-3 pad cell brl">
+          <span class="fig big">1.2 M</span>
+          <span class="mark mut">YEARS — OLDEST ICE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="traverse">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>03 / TRAVERSE</span>
+        <span class="mark mut">LIVE — DRAG OR USE ↑ ↓</span>
+      </div>
+      <div class="grid">
+        <div class="col-8 nopad">
+          <div class="kv"><span class="k">DEPTH BELOW SURFACE</span><span class="lead" aria-hidden="true"></span><span class="v" data-out="depth2">0</span><span class="u">m</span></div>
+          <div class="kv"><span class="k">AGE AT THIS DEPTH</span><span class="lead" aria-hidden="true"></span><span class="v" data-out="age2">0</span><span class="u">yr</span></div>
+          <div class="kv"><span class="k">ANNUAL LAYER PITCH</span><span class="lead" aria-hidden="true"></span><span class="v" data-out="pitch">380</span><span class="u">mm</span></div>
+          <div class="kv"><span class="k">ICE STILL HOLDING BUBBLES</span><span class="lead" aria-hidden="true"></span><span class="v" data-out="bub">94</span><span class="u">%</span></div>
+          <div class="kv last"><span class="k">CORE TRAVERSED</span><span class="lead" aria-hidden="true"></span><span class="v" data-out="pct">2</span><span class="u">%</span></div>
+        </div>
+        <div class="col-4 pad brl">
+          <span class="mark mut">READING</span>
+          <p class="body">Snow lands, buries, and turns to ice. Every year leaves a band. Deeper down the weight above squeezes those bands together and forces the trapped air into the crystal, so the layers tighten and the bubbles disappear.</p>
+          <p class="body">The readout at left is that compression, measured as you pull.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="conditions">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>04 / CONDITIONS</span>
+        <span class="mark mut">STORAGE &amp; SITE</span>
+      </div>
+      <div class="grid">
+        <div class="col-4 pad cell">
+          <span class="fig big">−55 °C</span>
+          <span class="mark mut">HELD TEMPERATURE</span>
+          <p class="body">Cold enough that the trapped air cannot migrate between layers. The rooms have not been above freezing since 1987.</p>
+        </div>
+        <div class="col-4 pad cell brl">
+          <span class="fig big">Hobart</span>
+          <span class="mark mut">TASMANIA · 42°53′ S</span>
+          <p class="body">The last deep-water port before the Southern Ocean, which is why the cores come ashore here.</p>
+        </div>
+        <div class="col-4 pad cell brl">
+          <span class="fig big">1987</span>
+          <span class="mark mut">FOUNDED</span>
+          <p class="body">Thirty-nine years of continuous cold chain. No core in the collection has ever thawed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="access">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>05 / ACCESS</span>
+        <span class="mark mut">BY RESEARCH REQUEST</span>
+      </div>
+      <div class="grid">
+        <div class="col-7 pad">
+          <h2 class="h2">Access is by research request, with a six-week lead time.</h2>
+          <p class="body">Cores are cut, not copied. Every metre issued is a metre gone, so requests are read by the collections committee against the question being asked.</p>
+        </div>
+        <div class="col-5 pad brl stack">
+          <div class="kv2"><span class="k">LEAD TIME</span><span class="v2">6 weeks</span></div>
+          <div class="kv2"><span class="k">ELIGIBILITY</span><span class="v2">Research request</span></div>
+          <div class="kv2"><span class="k">CUT LIMIT</span><span class="v2">300 mm / core</span></div>
+          <button class="btn" id="open-req">REQUEST ACCESS <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="catalogue">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>06 / CATALOGUE</span>
+        <span class="mark mut">5 OF 2,412 · SAMPLE INDEX</span>
+      </div>
+      <div class="table" role="table" aria-label="Sample index of cores">
+        <div class="tr th" role="row">
+          <span role="columnheader">REF</span>
+          <span role="columnheader">SITE</span>
+          <span role="columnheader" class="num">DEPTH</span>
+          <span role="columnheader" class="num">BASAL AGE</span>
+          <span role="columnheader" class="st">STATUS</span>
+        </div>
+        <div class="tr" role="row"><span role="cell">KCL-0001</span><span role="cell">Law Dome</span><span role="cell" class="num">1,196 m</span><span role="cell" class="num">90,000 yr</span><span role="cell" class="st on">ON SHELF</span></div>
+        <div class="tr" role="row"><span role="cell">KCL-0344</span><span role="cell">Dome C</span><span role="cell" class="num">3,270 m</span><span role="cell" class="num">1,200,000 yr</span><span role="cell" class="st on">ON SHELF</span></div>
+        <div class="tr" role="row"><span role="cell">KCL-0912</span><span role="cell">Mount Brown</span><span role="cell" class="num">295 m</span><span role="cell" class="num">1,100 yr</span><span role="cell" class="st">ISSUED</span></div>
+        <div class="tr" role="row"><span role="cell">KCL-1580</span><span role="cell">Aurora Basin</span><span role="cell" class="num">303 m</span><span role="cell" class="num">2,050 yr</span><span role="cell" class="st on">ON SHELF</span></div>
+        <div class="tr last" role="row"><span role="cell">KCL-2412</span><span role="cell">Denman Glacier</span><span role="cell" class="num">2,004 m</span><span role="cell" class="num">340,000 yr</span><span role="cell" class="st">QUARANTINE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="questions">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>07 / QUESTIONS</span>
+        <span class="mark mut">FOUR ENTRIES</span>
+      </div>
+      <div class="faq">
+
+        <details class="q">
+          <summary><span class="qn">01</span><span class="qt">Who can request a core?</span><span class="qi" aria-hidden="true"></span></summary>
+          <div class="qwrap"><div class="qin"><p class="body">Access is by research request. Applications come from institutions, and are assessed on whether the question needs this ice specifically — because once a section is cut, it is gone. Expect a six-week lead time from submission to shipment.</p></div></div>
+        </details>
+
+        <details class="q">
+          <summary><span class="qn">02</span><span class="qt">Why is the store kept at −55 °C?</span><span class="qi" aria-hidden="true"></span></summary>
+          <div class="qwrap"><div class="qin"><p class="body">Warmer ice lets trapped air move between layers, and a core that has mixed is a core that can no longer be dated. Fifty-five below is the margin that keeps 1.2 million years of atmosphere sitting exactly where it fell.</p></div></div>
+        </details>
+
+        <details class="q">
+          <summary><span class="qn">03</span><span class="qt">How is 41 km of core stored?</span><span class="qi" aria-hidden="true"></span></summary>
+          <div class="qwrap"><div class="qin"><p class="body">In one-metre sections, sleeved and racked by depth rather than by site. The 2,412 cores in the collection run to 41 kilometres end to end — roughly the length of the Derwent, laid out on shelves in Hobart.</p></div></div>
+        </details>
+
+        <details class="q last">
+          <summary><span class="qn">04</span><span class="qt">What does the deepest core hold?</span><span class="qi" aria-hidden="true"></span></summary>
+          <div class="qwrap"><div class="qin"><p class="body">The 3,270 m core reaches ice that formed 1.2 million years ago. At that depth the annual layers are millimetres apart and the bubbles have vanished into the crystal, so the air is read by melting rather than by crushing.</p></div></div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="colophon">
+    <div class="wrap">
+      <div class="secbar">
+        <span class="mark"><i></i>08 / COLOPHON</span>
+        <span class="mark mut">END OF INDEX</span>
+      </div>
+      <div class="grid">
+        <div class="col-4 pad cell">
+          <span class="mark mut">ADDRESS</span>
+          <p class="body">Kirkwood Core Library<br>Macquarie Wharf No. 2<br>Hobart, Tasmania</p>
+        </div>
+        <div class="col-4 pad cell brl">
+          <span class="mark mut">HOURS</span>
+          <p class="body">Reading room 09:00–16:00<br>Cold store by appointment only</p>
+        </div>
+        <div class="col-4 pad cell brl">
+          <span class="mark mut">ENQUIRIES</span>
+          <p class="body">registry@kirkwood.example<br>Founded 1987</p>
+        </div>
+      </div>
+      <div class="secbar end">
+        <span class="mark mut">© 2026 KIRKWOOD CORE LIBRARY</span>
+        <span class="mark mut">HOBART, TASMANIA</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="wordmark" href="#index">KIRKWOOD<span class="wm-sub">CORE LIBRARY</span></a>
+    <nav class="bar-nav" aria-label="Sections">
+      <a href="#holdings">02 HOLDINGS</a>
+      <a href="#traverse">03 TRAVERSE</a>
+      <a href="#conditions">04 CONDITIONS</a>
+      <a href="#access">05 ACCESS</a>
+      <a href="#catalogue">06 CATALOGUE</a>
+      <a href="#questions">07 QUESTIONS</a>
+    </nav>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-panel">
+      <span class="nt-l"></span><span class="nt-l"></span><span class="nt-t">MENU</span>
+    </button>
+  </div>
+  <div class="nav-panel" id="nav-panel" hidden>
+    <div class="nav-panel-in">
+      <a href="#index">01 INDEX</a>
+      <a href="#holdings">02 HOLDINGS</a>
+      <a href="#traverse">03 TRAVERSE</a>
+      <a href="#conditions">04 CONDITIONS</a>
+      <a href="#access">05 ACCESS</a>
+      <a href="#catalogue">06 CATALOGUE</a>
+      <a href="#questions">07 QUESTIONS</a>
+      <a href="#colophon">08 COLOPHON</a>
+    </div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim" hidden></div>
+
+<div class="holder" id="holder" hidden>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t">
+    <div class="sheet-bar">
+      <span class="mark"><i></i>05 / ACCESS REQUEST</span>
+      <button class="sheet-x" id="sheet-x" aria-label="Close">CLOSE ✕</button>
+    </div>
+    <div class="sheet-body">
+      <h2 class="h3" id="sheet-t">Six weeks from request to shipment.</h2>
+      <div class="kv2"><span class="k">01 SUBMIT</span><span class="v2">Question, site, depth window</span></div>
+      <div class="kv2"><span class="k">02 ASSESSMENT</span><span class="v2">Collections committee · 2 weeks</span></div>
+      <div class="kv2"><span class="k">03 CUTTING</span><span class="v2">Cold store · 300 mm limit</span></div>
+      <div class="kv2"><span class="k">04 SHIPMENT</span><span class="v2">Cold chain from Hobart · 4 weeks</span></div>
+      <p class="body">Requests are read against the collection, not against the calendar. A core cut for the wrong question cannot be put back.</p>
+      <a class="btn" href="#colophon" id="sheet-go">SEE ENQUIRIES <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+
+<script src="core.js"></script>
+<script src="page.js"></script>
+</body>
+</html>
