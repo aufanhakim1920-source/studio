@@ -330,29 +330,5 @@
     "blurb": "a mass of cold metal that heats where you rub it, then cools on its own",
     "date": "3 Sep",
     "kind": "landing"
-  },
-  {
-    "n": "82",
-    "slug": "site-foundry",
-    "title": "HALIDE",
-    "blurb": "a type foundry &mdash; drag the loupe and the letterforms magnify with real lens fringing",
-    "date": "3 Sep",
-    "kind": "landing"
-  },
-  {
-    "n": "83",
-    "slug": "shop-pigment",
-    "title": "DRAB &amp; CO",
-    "blurb": "a paint shop where you move the light across the swatch &mdash; the finish is the product",
-    "date": "3 Sep",
-    "kind": "store"
-  },
-  {
-    "n": "84",
-    "slug": "school-meridian",
-    "title": "MERIDIAN",
-    "blurb": "an evening school for celestial navigation &mdash; aim the quadrant and it sights the star",
-    "date": "3 Sep",
-    "kind": "school"
   }
 ]
