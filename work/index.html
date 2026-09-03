@@ -20,54 +20,72 @@ html{-webkit-text-size-adjust:100%}
 body{
   margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 var(--ui);
   padding:0 22px 96px; -webkit-font-smoothing:antialiased;
-  /* the ground is not flat black: one soft signal-coloured bloom behind the header.
-     Cheapest way to stop a dark page reading as a default terminal. */
   background-image:radial-gradient(120% 62% at 50% -14%,rgba(255,61,110,.16),transparent 62%);
   background-repeat:no-repeat;
 }
 .w{max-width:1120px;margin:0 auto}
 a{color:inherit;text-decoration:none}
-:is(a,button,input):focus-visible{outline:2px solid var(--sig);outline-offset:3px;border-radius:6px}
+:is(a,button,input,select):focus-visible{outline:2px solid var(--sig);outline-offset:3px;border-radius:6px}
 
-/* ── header ─────────────────────────────────────────────────────────────── */
-header{padding:64px 0 30px}
+header{padding:56px 0 22px}
 .back{margin:0 0 20px;font:500 12.5px/1 var(--mono);letter-spacing:.06em}
 .back a{color:var(--sig)}
 .back a:hover{text-decoration:underline}
 h1{font-size:clamp(30px,5.4vw,46px);margin:0 0 10px;letter-spacing:-.03em;font-weight:680;line-height:1.05}
 .sub{color:var(--dim);margin:0;font-size:15.5px;max-width:56ch}
-/* line-height 1 collided with itself the moment this wrapped on a phone */
 .meta{color:var(--dim);margin:14px 0 0;font:500 11.5px/1.7 var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .meta b{color:var(--ink);font-weight:500}
 
-/* ── the control bar ────────────────────────────────────────────────────── */
+/* ── the control bar ────────────────────────────────────────────────────────
+   Two rows on purpose: WHAT you are looking at on top, HOW it is arranged
+   underneath. One row of nine controls is a wall; two rows of four is a tool. */
 .bar{
-  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-  padding:16px 0 22px;margin-bottom:26px;border-bottom:1px solid var(--line);
   position:sticky;top:0;z-index:20;background:var(--bg);
+  padding:14px 0 16px;margin-bottom:24px;border-bottom:1px solid var(--line);
 }
-.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px}
-.seg button{
-  appearance:none;border:0;background:none;color:var(--dim);cursor:pointer;
-  font:600 13px/1 var(--ui);letter-spacing:-.005em;
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row + .row{margin-top:10px}
+
+.chip{
+  appearance:none;border:1px solid var(--line);background:var(--card);color:var(--dim);
+  cursor:pointer;font:600 13px/1 var(--ui);letter-spacing:-.005em;
   display:inline-flex;align-items:center;gap:7px;
-  min-height:44px;padding:0 17px;border-radius:999px;   /* 44 is the tap floor, not 38 */
-  transition:color .18s var(--ease),background .18s var(--ease);
+  min-height:44px;padding:0 15px;border-radius:999px;
+  transition:color .18s var(--ease),background .18s var(--ease),border-color .18s var(--ease);
 }
-.seg button:hover{color:var(--ink)}
-.seg button[aria-pressed="true"]{background:var(--sig);color:#fff}
-.seg button .s{color:var(--gold);font-size:14px;line-height:1}
-.seg button[aria-pressed="true"] .s{color:#fff}
-.seg button .ct{font:500 11px/1 var(--mono);opacity:.72;font-variant-numeric:tabular-nums}
+.chip:hover{color:var(--ink);border-color:#3B3049}
+.chip[aria-pressed="true"]{background:var(--sig);border-color:var(--sig);color:#fff}
+.chip .ct{font:500 11px/1 var(--mono);opacity:.72;font-variant-numeric:tabular-nums}
+.chip .s{color:var(--gold);font-size:14px;line-height:1}
+.chip[aria-pressed="true"] .s{color:#fff}
+.sep{width:1px;align-self:stretch;background:var(--line);margin:0 4px}
+
 .find{
-  flex:1 1 190px;min-width:0;max-width:280px;
+  flex:1 1 200px;min-width:0;max-width:320px;
   background:var(--card);border:1px solid var(--line);border-radius:999px;
   color:var(--ink);font:400 13.5px/1 var(--ui);min-height:44px;padding:0 16px;
   transition:border-color .18s var(--ease);
 }
 .find::placeholder{color:var(--dim)}
 .find:focus{border-color:var(--sig);outline:none}
-.count{margin-left:auto;color:var(--dim);font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+
+.sortwrap{display:inline-flex;align-items:center;gap:8px}
+.sortwrap label{color:var(--dim);font:500 11.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+select{
+  appearance:none;background:var(--card);border:1px solid var(--line);border-radius:999px;
+  color:var(--ink);font:600 13px/1 var(--ui);min-height:44px;padding:0 34px 0 15px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--dim) 50%),linear-gradient(135deg,var(--dim) 50%,transparent 50%);
+  background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+}
+select:hover{border-color:#3B3049}
+.count{margin-left:auto;color:var(--dim);font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.clear{
+  appearance:none;border:0;background:none;color:var(--sig);cursor:pointer;
+  font:500 12px/1 var(--mono);letter-spacing:.06em;min-height:44px;padding:0 6px;
+}
+.clear:hover{text-decoration:underline}
+.clear[hidden]{display:none}
 
 /* ── the grid ───────────────────────────────────────────────────────────── */
 ol{list-style:none;padding:0;margin:0;display:grid;gap:16px;
@@ -80,7 +98,6 @@ ol{list-style:none;padding:0;margin:0;display:grid;gap:16px;
   transition:transform .22s var(--ease),border-color .22s var(--ease),background .22s var(--ease);
 }
 .c a:hover,.c a:focus-visible{transform:translateY(-3px);border-color:#3B3049;background:var(--card-2)}
-/* the preview is the point of the card, so it gets the space */
 .c__sh{display:block;border-radius:9px;overflow:hidden;background:#0E0B14;aspect-ratio:16/10}
 .c__sh img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;
   transition:transform .5s var(--ease)}
@@ -89,13 +106,10 @@ ol{list-style:none;padding:0;margin:0;display:grid;gap:16px;
 .c__n{font:500 11.5px/1 var(--mono);color:var(--dim);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .c__t{font-weight:600;font-size:15.5px;letter-spacing:-.012em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .c__star{color:var(--gold);font-size:13px;line-height:1;flex:none}
-/* 11px is the phone legibility floor - 9.5px failed the gate */
 .c__tag{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sig);
   border:1px solid var(--sig);border-radius:999px;padding:3px 7px;flex:none}
 .c__d{margin-left:auto;font:400 11px/1 var(--mono);color:var(--dim);white-space:nowrap;flex:none}
 .c__p{display:block;margin:7px 2px 0;color:var(--dim);font-size:13.5px;line-height:1.5}
-/* why a favourite is a favourite — shown only in the favourites view, so the list
-   explains itself instead of being a pile of bookmarks */
 .c__w{display:none;margin:10px 2px 0;padding-top:9px;border-top:1px dashed var(--line);
   color:var(--gold);font-size:12.5px;line-height:1.5}
 body[data-view="fav"] .c__w{display:block}
@@ -108,13 +122,17 @@ footer{margin-top:52px;padding-top:24px;border-top:1px solid var(--line);
   color:var(--dim);font-size:13px;line-height:1.75}
 footer a{color:var(--sig)}
 footer a:hover{text-decoration:underline}
+kbd{font:500 11px/1 var(--mono);background:var(--card);border:1px solid var(--line);
+  border-radius:5px;padding:3px 6px;color:var(--dim)}
 
-@media(max-width:560px){
+@media(max-width:640px){
   body{padding:0 16px 72px}
-  header{padding:40px 0 22px}
+  header{padding:36px 0 18px}
   ol{grid-template-columns:1fr;gap:14px}
   .count{display:none}
-  .find{max-width:none}
+  .find{max-width:none;order:-1;flex-basis:100%}
+  .sep{display:none}
+  .bar{padding-top:10px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms!important}}
 </style>
@@ -126,21 +144,39 @@ footer a:hover{text-decoration:underline}
     <p class="back"><a href="../">&larr; Aufan Rachmad</a></p>
     <h1>Work</h1>
     <p class="sub">Every build, live. Hand-built HTML, CSS and vanilla JS.</p>
-    <p class="meta"><b>40</b> builds &middot; <b>4</b> favourites &middot; retired numbers are not reused</p>
+    <p class="meta"><b>40</b> builds &middot; <b>4</b> favourites &middot; newest first &middot; retired numbers are not reused</p>
   </header>
 
   <div class="bar">
-    <div class="seg" role="group" aria-label="Filter builds">
-      <button type="button" data-v="all" aria-pressed="true">All <span class="ct">40</span></button>
-      <button type="button" data-v="fav" aria-pressed="false"><span class="s">&#9733;</span>Favourites <span class="ct">4</span></button>
+    <div class="row" role="group" aria-label="Filter by type">
+      <button class="chip" type="button" data-v="all" aria-pressed="true">All <span class="ct">40</span></button>
+      <button class="chip" type="button" data-v="fav" aria-pressed="false"><span class="s">&#9733;</span>Favourites <span class="ct">4</span></button>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="chip" type="button" data-v="portfolio" aria-pressed="false">Portfolios <span class="ct">12</span></button>
+      <button class="chip" type="button" data-v="landing" aria-pressed="false">Landing pages <span class="ct">17</span></button>
+      <button class="chip" type="button" data-v="store" aria-pressed="false">Storefronts <span class="ct">6</span></button>
+      <button class="chip" type="button" data-v="dashboard" aria-pressed="false">Dashboards <span class="ct">3</span></button>
+      <button class="chip" type="button" data-v="product" aria-pressed="false">Product UI <span class="ct">2</span></button>
     </div>
-    <input class="find" id="find" type="search" placeholder="Search builds&hellip;  /" aria-label="Search builds">
-    <span class="count" id="count">40 builds</span>
+    <div class="row">
+      <input class="find" id="find" type="search" placeholder="Search builds&hellip;  /" aria-label="Search builds">
+      <span class="sortwrap">
+        <label for="sort">Sort</label>
+        <select id="sort" aria-label="Sort builds">
+          <option value="new">Newest first</option>
+          <option value="old">Oldest first</option>
+          <option value="fav">Favourites first</option>
+        </select>
+      </span>
+      <button class="clear" id="clear" type="button" hidden>Reset</button>
+      <span class="count" id="count">40 builds</span>
+    </div>
   </div>
 
   <ol id="list">
-      <li class="c" data-fav="0"
-          data-k="pixel bloom cobalt portfolio, floating pixel art">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="01" data-rank="99"
+          data-k="pixel bloom cobalt portfolio, floating pixel art portfolio">
         <a href="pixel-bloom/">
           <span class="c__sh"><img src="thumbs/pixel-bloom.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -151,8 +187,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">cobalt portfolio, floating pixel art</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="aster doll product unboxing in css 3d">
+      <li class="c" data-fav="0" data-kind="product"
+          data-n="02" data-rank="99"
+          data-k="aster doll product unboxing in css 3d product">
         <a href="aster-doll/">
           <span class="c__sh"><img src="thumbs/aster-doll.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -163,8 +200,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">product unboxing in CSS 3D</span>
         </a>
       </li>
-      <li class="c c--fav" data-fav="1"
-          data-k="shelf projects as book spines you pull off a shelf" data-rank="2">
+      <li class="c c--fav" data-fav="1" data-kind="portfolio"
+          data-n="03" data-rank="2"
+          data-k="shelf projects as book spines you pull off a shelf portfolio">
         <a href="shelf/">
           <span class="c__sh"><img src="thumbs/shelf.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -177,8 +215,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__w">his first favourite, still frozen — projects as spines you physically pull</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="contact sheet drag the loupe across the grid">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="04" data-rank="99"
+          data-k="contact sheet drag the loupe across the grid portfolio">
         <a href="contact-sheet/">
           <span class="c__sh"><img src="thumbs/contact-sheet.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -189,8 +228,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">drag the loupe across the grid</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="foil holographic cards you throw off a pile">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="05" data-rank="99"
+          data-k="foil holographic cards you throw off a pile portfolio">
         <a href="foil/">
           <span class="c__sh"><img src="thumbs/foil.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -201,8 +241,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">holographic cards you throw off a pile</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="gacha a working capsule machine   coin, crank, crack it open">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="06" data-rank="99"
+          data-k="gacha a working capsule machine   coin, crank, crack it open portfolio">
         <a href="gacha/">
           <span class="c__sh"><img src="thumbs/gacha.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -213,8 +254,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">a working capsule machine &mdash; coin, crank, crack it open</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="pasar malam night market   one clock drives six components">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="07" data-rank="99"
+          data-k="pasar malam night market   one clock drives six components landing">
         <a href="pasar-malam/">
           <span class="c__sh"><img src="thumbs/pasar-malam.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -225,8 +267,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">night market &mdash; one clock drives six components</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="nocturne rack paper split-flap board that sets the price">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="08" data-rank="99"
+          data-k="nocturne rack paper split-flap board that sets the price landing">
         <a href="nocturne-rack/">
           <span class="c__sh"><img src="thumbs/nocturne-rack.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -237,8 +280,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">paper split-flap board that sets the price</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="nocturne board split-flap departures, cream on cobalt">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="09" data-rank="99"
+          data-k="nocturne board split-flap departures, cream on cobalt landing">
         <a href="nocturne-board/">
           <span class="c__sh"><img src="thumbs/nocturne-board.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -249,8 +293,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">split-flap departures, cream on cobalt</span>
         </a>
       </li>
-      <li class="c c--fav" data-fav="1"
-          data-k="nocturne sleeper train   card thickness is the price" data-rank="3">
+      <li class="c c--fav" data-fav="1" data-kind="landing"
+          data-n="10" data-rank="3"
+          data-k="nocturne sleeper train   card thickness is the price landing">
         <a href="nocturne/">
           <span class="c__sh"><img src="thumbs/nocturne.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -263,8 +308,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__w">the price IS the thickness of the card you pick up</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="ah-19 bench console   one dial drives five readouts">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="11" data-rank="99"
+          data-k="ah-19 bench console   one dial drives five readouts portfolio">
         <a href="ah19/">
           <span class="c__sh"><img src="thumbs/ah19.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -275,8 +321,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">bench console &mdash; one dial drives five readouts</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="the desk an orbitable room in css 3d">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="12" data-rank="99"
+          data-k="the desk an orbitable room in css 3d portfolio">
         <a href="desk/">
           <span class="c__sh"><img src="thumbs/desk.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -287,8 +334,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">an orbitable room in CSS 3D</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="the stone hand-rolled dodecahedron, no 3d library">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="13" data-rank="99"
+          data-k="the stone hand-rolled dodecahedron, no 3d library portfolio">
         <a href="stone/">
           <span class="c__sh"><img src="thumbs/stone.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -299,8 +347,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">hand-rolled dodecahedron, no 3D library</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="second rise bakery   pull a tray off the rack">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="14" data-rank="99"
+          data-k="second rise bakery   pull a tray off the rack landing">
         <a href="bakery/">
           <span class="c__sh"><img src="thumbs/bakery.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -311,8 +360,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">bakery &mdash; pull a tray off the rack</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="baka nae. parts runner   snap a charm off the sprue">
+      <li class="c" data-fav="0" data-kind="store"
+          data-n="19" data-rank="99"
+          data-k="baka nae. parts runner   snap a charm off the sprue store">
         <a href="baka-nae/">
           <span class="c__sh"><img src="thumbs/baka-nae.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -323,8 +373,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">parts runner &mdash; snap a charm off the sprue</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="portfolio hire-me page   real work, real prices">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="24" data-rank="99"
+          data-k="portfolio hire-me page   real work, real prices portfolio">
         <a href="portfolio/">
           <span class="c__sh"><img src="thumbs/portfolio.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -335,8 +386,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">hire-me page &mdash; real work, real prices</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="penalty sales landing page   full conversion flow">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="25" data-rank="99"
+          data-k="penalty sales landing page   full conversion flow landing">
         <a href="penalty/">
           <span class="c__sh"><img src="thumbs/penalty.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -347,8 +399,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">sales landing page &mdash; full conversion flow</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="thrown e-commerce   filter, sort, glaze picker, working cart">
+      <li class="c" data-fav="0" data-kind="store"
+          data-n="26" data-rank="99"
+          data-k="thrown e-commerce   filter, sort, glaze picker, working cart store">
         <a href="thrown/">
           <span class="c__sh"><img src="thumbs/thrown.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -359,8 +412,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">e-commerce &mdash; filter, sort, glaze picker, working cart</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="northbound   chill caf , lane 1   cream and olive, quiet motion">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="27" data-rank="99"
+          data-k="northbound   chill caf , lane 1   cream and olive, quiet motion landing">
         <a href="north-chill/">
           <span class="c__sh"><img src="thumbs/north-chill.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -371,8 +425,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">caf&eacute;, lane 1 &mdash; cream and olive, quiet motion</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="northbound   bold caf , lane 2   drag the 3d cup, it fills as you scroll">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="28" data-rank="99"
+          data-k="northbound   bold caf , lane 2   drag the 3d cup, it fills as you scroll landing">
         <a href="north-bold/">
           <span class="c__sh"><img src="thumbs/north-bold.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -383,8 +438,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">caf&eacute;, lane 2 &mdash; drag the 3D cup, it fills as you scroll</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="northbound   now caf , lane 3   it knows the time and filters the menu">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="29" data-rank="99"
+          data-k="northbound   now caf , lane 3   it knows the time and filters the menu landing">
         <a href="north-now/">
           <span class="c__sh"><img src="thumbs/north-now.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -395,8 +451,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">caf&eacute;, lane 3 &mdash; it knows the time and filters the menu</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="calendar   month chill   month grid, day panel, keyboard">
+      <li class="c" data-fav="0" data-kind="product"
+          data-n="30" data-rank="99"
+          data-k="calendar   month chill   month grid, day panel, keyboard product">
         <a href="calendar-month/">
           <span class="c__sh"><img src="thumbs/calendar-month.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -407,8 +464,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">chill &mdash; month grid, day panel, keyboard</span>
         </a>
       </li>
-      <li class="c c--fav" data-fav="1"
-          data-k="baka nae.   atelier the approved design   periwinkle and hot pink; 40-42 are this in her palettes" data-rank="4">
+      <li class="c c--fav" data-fav="1" data-kind="store"
+          data-n="34" data-rank="4"
+          data-k="baka nae.   atelier the approved design   periwinkle and hot pink; 40-42 are this in her palettes store">
         <a href="bakanae-atelier/">
           <span class="c__sh"><img src="thumbs/bakanae-atelier.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -421,8 +479,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__w">the approved baka nae. design — periwinkle and hot pink</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="baka nae.   ungu her four colours, purple-led   purple ground, yellow band">
+      <li class="c" data-fav="0" data-kind="store"
+          data-n="43" data-rank="99"
+          data-k="baka nae.   ungu her four colours, purple-led   purple ground, yellow band store">
         <a href="bakanae-p1/">
           <span class="c__sh"><img src="thumbs/bakanae-p1.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -433,8 +492,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">her four colours, purple-led &mdash; purple ground, yellow band</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="baka nae.   kuning her four colours, yellow-led   yellow ground, purple band">
+      <li class="c" data-fav="0" data-kind="store"
+          data-n="44" data-rank="99"
+          data-k="baka nae.   kuning her four colours, yellow-led   yellow ground, purple band store">
         <a href="bakanae-p2/">
           <span class="c__sh"><img src="thumbs/bakanae-p2.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -445,8 +505,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">her four colours, yellow-led &mdash; yellow ground, purple band</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="baka nae.   putih her four colours, white-led   white ground, purple and yellow as blocks">
+      <li class="c" data-fav="0" data-kind="store"
+          data-n="45" data-rank="99"
+          data-k="baka nae.   putih her four colours, white-led   white ground, purple and yellow as blocks store">
         <a href="bakanae-p3/">
           <span class="c__sh"><img src="thumbs/bakanae-p3.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -457,8 +518,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">her four colours, white-led &mdash; white ground, purple and yellow as blocks</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="ledger   clean the measured saas register: tinted ground, white cards, one accent">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="48" data-rank="99"
+          data-k="ledger   clean the measured saas register: tinted ground, white cards, one accent landing">
         <a href="ledger-a/">
           <span class="c__sh"><img src="thumbs/ledger-a.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -469,8 +531,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">the measured SaaS register: tinted ground, white cards, one accent</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="ledger   dark pastel tiles on near-black   light on dark, not dark on dark">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="50" data-rank="99"
+          data-k="ledger   dark pastel tiles on near-black   light on dark, not dark on dark landing">
         <a href="ledger-c/">
           <span class="c__sh"><img src="thumbs/ledger-c.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -481,8 +544,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">pastel tiles on near-black &mdash; light on dark, not dark on dark</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="retail ops   live board the chill one: one screen, ten charts, no number without its comparison">
+      <li class="c" data-fav="0" data-kind="dashboard"
+          data-n="55" data-rank="99"
+          data-k="retail ops   live board the chill one: one screen, ten charts, no number without its comparison dashboard">
         <a href="dash-board/">
           <span class="c__sh"><img src="thumbs/dash-board.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -493,8 +557,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">the chill one: one screen, ten charts, no number without its comparison</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="retail ops   wall 01 the creative one: an amber crt wall board where one timeline drives everything">
+      <li class="c" data-fav="0" data-kind="dashboard"
+          data-n="56" data-rank="99"
+          data-k="retail ops   wall 01 the creative one: an amber crt wall board where one timeline drives everything dashboard">
         <a href="dash-wall/">
           <span class="c__sh"><img src="thumbs/dash-wall.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -505,8 +570,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">the creative one: an amber CRT wall board where one timeline drives everything</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="twelve markets, thirteen months small multiples   one toggle turns the same 156 numbers into two different findings">
+      <li class="c" data-fav="0" data-kind="dashboard"
+          data-n="57" data-rank="99"
+          data-k="twelve markets, thirteen months small multiples   one toggle turns the same 156 numbers into two different findings dashboard">
         <a href="dash-grid/">
           <span class="c__sh"><img src="thumbs/dash-grid.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -517,8 +583,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">small multiples &mdash; one toggle turns the same 156 numbers into two different findings</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="pull the tab a pop-up book   the paper stands up by the amount you drag, degree by degree">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="64" data-rank="99"
+          data-k="pull the tab a pop-up book   the paper stands up by the amount you drag, degree by degree portfolio">
         <a href="folio-popup/">
           <span class="c__sh"><img src="thumbs/folio-popup.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -529,8 +596,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">a pop-up book &mdash; the paper stands up by the amount you drag, degree by degree</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="press a key nine projects as keycaps   and your real keyboard works on it">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="65" data-rank="99"
+          data-k="press a key nine projects as keycaps   and your real keyboard works on it portfolio">
         <a href="folio-keys/">
           <span class="c__sh"><img src="thumbs/folio-keys.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -541,8 +609,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">nine projects as keycaps &mdash; and your real keyboard works on it</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="drop a token real physics, and the slot widths are the project sizes   the odds are the portfolio">
+      <li class="c" data-fav="0" data-kind="portfolio"
+          data-n="66" data-rank="99"
+          data-k="drop a token real physics, and the slot widths are the project sizes   the odds are the portfolio portfolio">
         <a href="folio-plinko/">
           <span class="c__sh"><img src="thumbs/folio-plinko.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -553,8 +622,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">real physics, and the slot widths are the project sizes &mdash; the odds are the portfolio</span>
         </a>
       </li>
-      <li class="c c--fav" data-fav="1"
-          data-k="signal a ribbon of light in raw webgl   one shader, no library, and it leans toward your cursor" data-rank="1">
+      <li class="c c--fav" data-fav="1" data-kind="landing"
+          data-n="67" data-rank="1"
+          data-k="signal a ribbon of light in raw webgl   one shader, no library, and it leans toward your cursor landing">
         <a href="land-aurora/">
           <span class="c__sh"><img src="thumbs/land-aurora.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -567,8 +637,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__w">professional, not AI-seeming — a shader written from scratch, then modified</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="monolith bone, ink and pure electric blue   a hand-rolled wireframe you turn with the scroll">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="68" data-rank="99"
+          data-k="monolith bone, ink and pure electric blue   a hand-rolled wireframe you turn with the scroll landing">
         <a href="land-monolith/">
           <span class="c__sh"><img src="thumbs/land-monolith.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -579,8 +650,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">bone, ink and pure electric blue &mdash; a hand-rolled wireframe you turn with the scroll</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="solstice a sun that opens as you scroll, and hovering an act repaints the whole page">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="69" data-rank="99"
+          data-k="solstice a sun that opens as you scroll, and hovering an act repaints the whole page landing">
         <a href="land-solstice/">
           <span class="c__sh"><img src="thumbs/land-solstice.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -591,8 +663,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">a sun that opens as you scroll, and hovering an act repaints the whole page</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="symbolon a sign burning at the threshold   approach it and the fire recedes">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="73" data-rank="99"
+          data-k="symbolon a sign burning at the threshold   approach it and the fire recedes landing">
         <a href="land-symbolon/">
           <span class="c__sh"><img src="thumbs/land-symbolon.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -603,8 +676,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">a sign burning at the threshold &mdash; approach it and the fire recedes</span>
         </a>
       </li>
-      <li class="c" data-fav="0"
-          data-k="abyssal water seen from underneath   it stills where you hold the cursor">
+      <li class="c" data-fav="0" data-kind="landing"
+          data-n="74" data-rank="99"
+          data-k="abyssal water seen from underneath   it stills where you hold the cursor landing">
         <a href="land-caustic/">
           <span class="c__sh"><img src="thumbs/land-caustic.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -615,8 +689,9 @@ footer a:hover{text-decoration:underline}
           <span class="c__p">water seen from underneath &mdash; it stills where you hold the cursor</span>
         </a>
       </li>
-      <li class="c c--new" data-fav="0"
-          data-k="molten a mass of cold metal that heats where you rub it, then cools on its own">
+      <li class="c c--new" data-fav="0" data-kind="landing"
+          data-n="75" data-rank="99"
+          data-k="molten a mass of cold metal that heats where you rub it, then cools on its own landing">
         <a href="land-molten/">
           <span class="c__sh"><img src="thumbs/land-molten.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
@@ -629,49 +704,111 @@ footer a:hover{text-decoration:underline}
         </a>
       </li>
   </ol>
-  <p class="empty">Nothing matches that.</p>
+  <p class="empty">Nothing matches that. <kbd>Esc</kbd> to reset.</p>
 
   <footer>
     Melbourne &middot; <a href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a><br>
-    Every build here is self-initiated or spec work. Concept pages are labelled as such on the page.
+    Every build here is self-initiated or spec work. Concept pages are labelled as such on the page.<br>
+    <span style="color:var(--dim)"><kbd>/</kbd> search &middot; <kbd>Esc</kbd> reset &middot; your filter and sort are remembered</span>
   </footer>
 
 </div>
 <script>
-/* Favourites and search are ONE filter pass. No framework and no re-render — every
-   card is already in the DOM and we toggle [hidden], which is why the count is
-   instant and the back button never loses your place. */
+/* One filter pass drives everything: type, favourites, search and sort.
+   No framework. Every card is already in the DOM; filtering toggles [hidden]
+   and sorting re-appends, so the browser keeps scroll position and the back
+   button still works.
+
+   ⚠️ Sorting re-appends nodes rather than setting CSS `order`. An earlier
+   version used `order` and the values leaked between views — ranked favourites
+   jumped to the back of the ALL list and build 03 vanished from its slot. */
 (function(){
   var body=document.body, list=document.getElementById("list");
   var cards=[].slice.call(list.children);
   var find=document.getElementById("find");
-  var btns=[].slice.call(document.querySelectorAll(".seg button"));
+  var chips=[].slice.call(document.querySelectorAll(".chip"));
+  var sortSel=document.getElementById("sort");
   var count=document.getElementById("count");
-  var view=(location.hash==="#favourites")?"fav":"all";
+  var clear=document.getElementById("clear");
+  var KEY="studio.view.v2";
+
+  var view="all", sort="new";
+
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify({view:view,sort:sort})); }catch(e){}
+  }
+  function load(){
+    try{
+      var s=JSON.parse(localStorage.getItem(KEY)||"{}");
+      if(s.view) view=s.view;
+      if(s.sort) sort=s.sort;
+    }catch(e){}
+    /* a hash in the URL always wins, so a link he pastes opens on that view */
+    var h=(location.hash||"").replace("#","");
+    if(h){
+      var parts=h.split("/");
+      if(parts[0]) view=parts[0];
+      if(parts[1]) sort=parts[1];
+    }
+  }
+
+  var num=function(c){ return parseInt(c.dataset.n,10)||0; };
+  var SORTS={
+    "new":  function(a,b){ return num(b)-num(a); },
+    "old":  function(a,b){ return num(a)-num(b); },
+    "fav":  function(a,b){
+      var fa=a.dataset.fav==="1"?parseInt(a.dataset.rank,10):999;
+      var fb=b.dataset.fav==="1"?parseInt(b.dataset.rank,10):999;
+      return fa-fb || num(b)-num(a);
+    }
+  };
 
   function apply(){
-    var q=(find.value||"").trim().toLowerCase(), shown=0, fav=(view==="fav");
+    var q=(find.value||"").trim().toLowerCase(), shown=0;
+
     cards.forEach(function(c){
-      var ok=(view==="all"||c.dataset.fav==="1")&&(!q||c.dataset.k.indexOf(q)>-1);
+      var okView = view==="all" ? true
+                 : view==="fav" ? c.dataset.fav==="1"
+                 : c.dataset.kind===view;
+      var ok = okView && (!q || c.dataset.k.indexOf(q)>-1);
       c.hidden=!ok; if(ok) shown++;
-      /* ⚠️ rank is applied ONLY in the favourites view. Setting it once at load
-         reordered the ALL view too — grid order defaults to 0, so every ranked
-         favourite jumped to the back and 03 vanished from its slot. */
-      c.style.order=(fav&&c.dataset.rank)?c.dataset.rank:"";
     });
+
+    /* re-append in the chosen order. Only the visible ones need moving, but
+       sorting all of them keeps the DOM order honest for the next pass. */
+    cards.slice().sort(SORTS[sort]||SORTS["new"]).forEach(function(c){ list.appendChild(c); });
+
     body.dataset.view=view;
     body.classList.toggle("is-empty",shown===0);
     count.textContent=shown+(shown===1?" build":" builds");
-    btns.forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.v===view)); });
-    try{ history.replaceState(null,"",view==="fav"?"#favourites":location.pathname); }catch(e){}
+    chips.forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.v===view)); });
+    sortSel.value=sort;
+    clear.hidden = (view==="all" && !q && sort==="new");
+
+    save();
+    try{
+      var h = (view==="all"&&sort==="new") ? "" : "#"+view+"/"+sort;
+      history.replaceState(null,"",h||location.pathname);
+    }catch(e){}
   }
-  btns.forEach(function(b){ b.addEventListener("click",function(){ view=b.dataset.v; apply(); }); });
+
+  chips.forEach(function(b){ b.addEventListener("click",function(){ view=b.dataset.v; apply(); }); });
+  sortSel.addEventListener("change",function(){ sort=sortSel.value; apply(); });
   find.addEventListener("input",apply);
-  /* "/" focuses search, Escape clears it — it is a tool, it should behave like one */
+  clear.addEventListener("click",function(){ view="all"; sort="new"; find.value=""; apply(); find.blur(); });
+
+  /* it is a tool, so it behaves like one */
   addEventListener("keydown",function(e){
-    if(e.key==="/"&&document.activeElement!==find){ e.preventDefault(); find.focus(); }
-    if(e.key==="Escape"&&document.activeElement===find){ find.value=""; apply(); find.blur(); }
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key==="/"&&document.activeElement!==find){ e.preventDefault(); find.focus(); return; }
+    if(e.key==="Escape"){
+      if(document.activeElement===find&&find.value){ find.value=""; apply(); }
+      else { view="all"; sort="new"; find.value=""; apply(); }
+      find.blur();
+    }
   });
+
+  load();
   apply();
 })();
 </script>

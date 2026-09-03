@@ -4,14 +4,16 @@
     "slug": "pixel-bloom",
     "title": "Pixel Bloom",
     "blurb": "cobalt portfolio, floating pixel art",
-    "date": "19 Aug"
+    "date": "19 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "02",
     "slug": "aster-doll",
     "title": "Aster Doll",
     "blurb": "product unboxing in CSS 3D",
-    "date": "19 Aug"
+    "date": "19 Aug",
+    "kind": "product"
   },
   {
     "n": "03",
@@ -21,49 +23,56 @@
     "date": "20 Aug",
     "fav": true,
     "why": "his first favourite, still frozen — projects as spines you physically pull",
-    "rank": 2
+    "rank": 2,
+    "kind": "portfolio"
   },
   {
     "n": "04",
     "slug": "contact-sheet",
     "title": "Contact Sheet",
     "blurb": "drag the loupe across the grid",
-    "date": "20 Aug"
+    "date": "20 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "05",
     "slug": "foil",
     "title": "Foil",
     "blurb": "holographic cards you throw off a pile",
-    "date": "20 Aug"
+    "date": "20 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "06",
     "slug": "gacha",
     "title": "Gacha",
     "blurb": "a working capsule machine &mdash; coin, crank, crack it open",
-    "date": "22 Aug"
+    "date": "22 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "07",
     "slug": "pasar-malam",
     "title": "Pasar Malam",
     "blurb": "night market &mdash; one clock drives six components",
-    "date": "23 Aug"
+    "date": "23 Aug",
+    "kind": "landing"
   },
   {
     "n": "08",
     "slug": "nocturne-rack",
     "title": "Nocturne Rack",
     "blurb": "paper split-flap board that sets the price",
-    "date": "23 Aug"
+    "date": "23 Aug",
+    "kind": "landing"
   },
   {
     "n": "09",
     "slug": "nocturne-board",
     "title": "Nocturne Board",
     "blurb": "split-flap departures, cream on cobalt",
-    "date": "23 Aug"
+    "date": "23 Aug",
+    "kind": "landing"
   },
   {
     "n": "10",
@@ -73,91 +82,104 @@
     "date": "23 Aug",
     "fav": true,
     "why": "the price IS the thickness of the card you pick up",
-    "rank": 3
+    "rank": 3,
+    "kind": "landing"
   },
   {
     "n": "11",
     "slug": "ah19",
     "title": "AH-19",
     "blurb": "bench console &mdash; one dial drives five readouts",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "12",
     "slug": "desk",
     "title": "The Desk",
     "blurb": "an orbitable room in CSS 3D",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "13",
     "slug": "stone",
     "title": "The Stone",
     "blurb": "hand-rolled dodecahedron, no 3D library",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "14",
     "slug": "bakery",
     "title": "Second Rise",
     "blurb": "bakery &mdash; pull a tray off the rack",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "landing"
   },
   {
     "n": "19",
     "slug": "baka-nae",
     "title": "baka nae.",
     "blurb": "parts runner &mdash; snap a charm off the sprue",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "store"
   },
   {
     "n": "24",
     "slug": "portfolio",
     "title": "Portfolio",
     "blurb": "hire-me page &mdash; real work, real prices",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "portfolio"
   },
   {
     "n": "25",
     "slug": "penalty",
     "title": "Penalty",
     "blurb": "sales landing page &mdash; full conversion flow",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "landing"
   },
   {
     "n": "26",
     "slug": "thrown",
     "title": "THROWN",
     "blurb": "e-commerce &mdash; filter, sort, glaze picker, working cart",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "store"
   },
   {
     "n": "27",
     "slug": "north-chill",
     "title": "Northbound &mdash; chill",
     "blurb": "caf&eacute;, lane 1 &mdash; cream and olive, quiet motion",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "landing"
   },
   {
     "n": "28",
     "slug": "north-bold",
     "title": "Northbound &mdash; bold",
     "blurb": "caf&eacute;, lane 2 &mdash; drag the 3D cup, it fills as you scroll",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "landing"
   },
   {
     "n": "29",
     "slug": "north-now",
     "title": "Northbound &mdash; now",
     "blurb": "caf&eacute;, lane 3 &mdash; it knows the time and filters the menu",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "landing"
   },
   {
     "n": "30",
     "slug": "calendar-month",
     "title": "Calendar &mdash; month",
     "blurb": "chill &mdash; month grid, day panel, keyboard",
-    "date": "24 Aug"
+    "date": "24 Aug",
+    "kind": "product"
   },
   {
     "n": "34",
@@ -167,84 +189,96 @@
     "date": "25 Aug",
     "fav": true,
     "why": "the approved baka nae. design — periwinkle and hot pink",
-    "rank": 4
+    "rank": 4,
+    "kind": "store"
   },
   {
     "n": "43",
     "slug": "bakanae-p1",
     "title": "baka nae. &mdash; ungu",
     "blurb": "her four colours, purple-led &mdash; purple ground, yellow band",
-    "date": "26 Aug"
+    "date": "26 Aug",
+    "kind": "store"
   },
   {
     "n": "44",
     "slug": "bakanae-p2",
     "title": "baka nae. &mdash; kuning",
     "blurb": "her four colours, yellow-led &mdash; yellow ground, purple band",
-    "date": "26 Aug"
+    "date": "26 Aug",
+    "kind": "store"
   },
   {
     "n": "45",
     "slug": "bakanae-p3",
     "title": "baka nae. &mdash; putih",
     "blurb": "her four colours, white-led &mdash; white ground, purple and yellow as blocks",
-    "date": "26 Aug"
+    "date": "26 Aug",
+    "kind": "store"
   },
   {
     "n": "48",
     "slug": "ledger-a",
     "title": "Ledger &mdash; clean",
     "blurb": "the measured SaaS register: tinted ground, white cards, one accent",
-    "date": "30 Aug"
+    "date": "30 Aug",
+    "kind": "landing"
   },
   {
     "n": "50",
     "slug": "ledger-c",
     "title": "Ledger &mdash; dark",
     "blurb": "pastel tiles on near-black &mdash; light on dark, not dark on dark",
-    "date": "30 Aug"
+    "date": "30 Aug",
+    "kind": "landing"
   },
   {
     "n": "55",
     "slug": "dash-board",
     "title": "Retail Ops &mdash; live board",
     "blurb": "the chill one: one screen, ten charts, no number without its comparison",
-    "date": "31 Aug"
+    "date": "31 Aug",
+    "kind": "dashboard"
   },
   {
     "n": "56",
     "slug": "dash-wall",
     "title": "Retail Ops &mdash; wall 01",
     "blurb": "the creative one: an amber CRT wall board where one timeline drives everything",
-    "date": "31 Aug"
+    "date": "31 Aug",
+    "kind": "dashboard"
   },
   {
     "n": "57",
     "slug": "dash-grid",
     "title": "Twelve markets, thirteen months",
     "blurb": "small multiples &mdash; one toggle turns the same 156 numbers into two different findings",
-    "date": "31 Aug"
+    "date": "31 Aug",
+    "kind": "dashboard"
   },
   {
     "n": "64",
     "slug": "folio-popup",
     "title": "Pull the tab",
     "blurb": "a pop-up book &mdash; the paper stands up by the amount you drag, degree by degree",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "portfolio"
   },
   {
     "n": "65",
     "slug": "folio-keys",
     "title": "Press a key",
     "blurb": "nine projects as keycaps &mdash; and your real keyboard works on it",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "portfolio"
   },
   {
     "n": "66",
     "slug": "folio-plinko",
     "title": "Drop a token",
     "blurb": "real physics, and the slot widths are the project sizes &mdash; the odds are the portfolio",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "portfolio"
   },
   {
     "n": "67",
@@ -254,41 +288,47 @@
     "date": "3 Sep",
     "fav": true,
     "why": "professional, not AI-seeming — a shader written from scratch, then modified",
-    "rank": 1
+    "rank": 1,
+    "kind": "landing"
   },
   {
     "n": "68",
     "slug": "land-monolith",
     "title": "MONOLITH",
     "blurb": "bone, ink and pure electric blue &mdash; a hand-rolled wireframe you turn with the scroll",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "landing"
   },
   {
     "n": "69",
     "slug": "land-solstice",
     "title": "SOLSTICE",
     "blurb": "a sun that opens as you scroll, and hovering an act repaints the whole page",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "landing"
   },
   {
     "n": "73",
     "slug": "land-symbolon",
     "title": "SYMBOLON",
     "blurb": "a sign burning at the threshold &mdash; approach it and the fire recedes",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "landing"
   },
   {
     "n": "74",
     "slug": "land-caustic",
     "title": "ABYSSAL",
     "blurb": "water seen from underneath &mdash; it stills where you hold the cursor",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "landing"
   },
   {
     "n": "75",
     "slug": "land-molten",
     "title": "MOLTEN",
     "blurb": "a mass of cold metal that heats where you rub it, then cools on its own",
-    "date": "3 Sep"
+    "date": "3 Sep",
+    "kind": "landing"
   }
 ]
