@@ -3,120 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ROAST — one bean, roasted by hand</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f4f1eb'/%3E%3Cellipse cx='16' cy='16' rx='8' ry='11' fill='%23a9682f' stroke='%23241610' stroke-width='2'/%3E%3Cpath d='M16 6 q3 5 0 10 q-3 5 0 10' fill='none' stroke='%23241610' stroke-width='2'/%3E%3C/svg%3E">
+<title>ROAST — one bean, one line, green to burnt</title>
+<meta name="description" content="A sample coffee roastery in Brunswick. One green bean travels a single line through the fire; where you stop it is the coffee you buy.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f4f1eb'/%3E%3Cpath d='M2 30 Q12 22 16 14 T30 2' stroke='%23ed5a14' stroke-width='3' fill='none'/%3E%3Cellipse cx='16' cy='16' rx='6' ry='8' fill='%23a9682f' stroke='%23241610' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<canvas id="scene" aria-hidden="true"></canvas>
 <div class="grain" id="grain" aria-hidden="true"></div>
 <header class="topframe">
   <div class="ident">
     <span class="mark">ROAST</span>
     <span class="sub">Sample roastery · Brunswick · we roast the day it ships</span>
   </div>
-  <nav class="topnav">
-    <a class="navlink" href="#roasts">The four bags</a>
-    <span class="tally" id="tallyTop">0 / 4 roasted</span>
+  <nav class="stations" id="stations" aria-label="Stations along the roast">
+    <a href="#s-green">Green</a>
+    <a href="#s-first">1st crack</a>
+    <a href="#s-cross">Crossing</a>
+    <a href="#s-second">2nd crack</a>
+    <a href="#s-counter">Counter</a>
   </nav>
+  <p class="tally" id="tally">0 / 4 tasted</p>
 </header>
-<main>
-  <section class="stage" id="stage">
-    <canvas id="pan" aria-hidden="true"></canvas>
-    <p class="crack" id="crack" aria-hidden="true"></p>
-    <div class="stagelayer">
-      <div class="inner lede">
-        <h1>One green bean.<br><em>You bring the heat.</em></h1>
-        <p class="stand">Drag it. Flavour, chemistry and price all follow your hand — the whole page runs off this one roast.</p>
-      </div>
-      <div class="inner heroread">
-        <p class="say" id="heroSay">Raw and grassy — not coffee yet</p>
-        <p class="hint" id="hint">Drag the bean sideways, or use the roast rail below</p>
-      </div>
+<main id="page">
+  <article class="stop" id="s-green" data-u="0.015" data-size="s">
+    <p class="kicker">Green</p>
+    <h1>It is a seed,<br>not a bean.</h1>
+    <p class="note">Raw coffee smells of hay and tastes of grass. Follow the line down — everything below it is heat.</p>
+  </article>
+  <article class="stop" data-u="0.17" data-size="xl">
+    <p class="kicker">01 · Drying</p>
+    <p class="big">62<i>%</i></p>
+    <p class="note">of a roast happens before the bean is coffee at all. First the water has to leave.</p>
+  </article>
+  <article class="stop" data-u="0.375" data-size="s">
+    <p class="kicker">02 · Browning</p>
+    <h2>150°C — the sugars turn.</h2>
+    <p class="note">The same reaction that browns bread crust. Every sweet note in the cup is made here.</p>
+  </article>
+  <article class="stop" id="s-first" data-u="0.62" data-size="l">
+    <p class="kicker">03 · First crack</p>
+    <h2>196°C — it opens.</h2>
+    <p class="note">The bean's own water flashes to steam and blows it apart. It swells, throws off its skin, and becomes coffee in about four seconds.</p>
+    <p class="note em">Stop near here and you keep the farm — blackcurrant, grapefruit, cane sugar. Every acid the tree grew is still in there, which is the sourness people call brightness.</p>
+  </article>
+  <article class="stop" id="s-cross" data-u="0.745" data-size="m">
+    <p class="kicker">04 · The crossing</p>
+    <h2>Fruit falls, sugar rises.</h2>
+    <div class="ribbon" id="ribbon" aria-hidden="true">
+      <span data-k="acid"></span><span data-k="sugar"></span><span data-k="carbon"></span>
     </div>
-  </section>
-  <section class="band" id="taste">
-    <div class="inner">
-      <p class="secnum">01 — What it would taste like</p>
-    </div>
-    <canvas id="strip" aria-hidden="true"></canvas>
-    <div class="inner">
-      <p class="notes" id="tasteWords">Grass · Straw · Raw peanut</p>
-      <p class="say small" id="tasteSay">Nothing has browned yet, so there is nothing to taste but the seed.</p>
-    </div>
-  </section>
-  <section class="band" id="profile">
-    <div class="inner">
-      <p class="secnum">02 — The roast, drawn</p>
-    </div>
-    <canvas id="curve" aria-hidden="true"></canvas>
-    <div class="inner readrow">
-      <p class="read"><b id="rTime">00:00</b><span>elapsed</span></p>
-      <p class="read"><b id="rTemp">22°C</b><span>bean temperature</span></p>
-      <p class="read"><b id="rDev">—</b><span>after first crack</span></p>
-      <p class="read"><b id="rRatio">—</b><span>development ratio</span></p>
-    </div>
-    <div class="inner">
-      <p class="say small">Bean temperature against time. <em>Where you stop is the entire argument.</em> First crack is the bean's own water flashing to steam and blowing it open; second crack is the cell walls giving way.</p>
-    </div>
-  </section>
-  <section class="band" id="why">
-    <div class="inner">
-      <p class="secnum">03 — Why it tastes like that</p>
-    </div>
-    <canvas id="cross" aria-hidden="true"></canvas>
-    <div class="inner">
-      <p class="say" id="whySay">Every acid the farm grew is still in there.</p>
-      <p class="say small">Heat does two opposite things at once: it <em>destroys</em> the fruit acids the farm grew, and it <em>builds</em> browned sugar out of what is left. They cross a little after first crack — which is the whole difference between sour-fruity and chocolate, then smoke.</p>
-    </div>
-  </section>
-  <section class="band" id="roasts">
-    <div class="inner">
-      <p class="secnum">04 — The four we sell</p>
-      <p class="say small">Land the bean in a band and hold it — the bag names itself. <em>The higher it grew, the lighter we take it:</em> dense beans hold their acids, and burning them is burning what you paid for.</p>
-    </div>
-    <div class="shelf" id="shelf"></div>
-  </section>
-  <section class="band" id="order">
-    <div class="inner">
-      <p class="secnum">05 — Roasted to order</p>
-    </div>
-    <div class="orderrow">
-      <div class="pricewrap">
-        <p class="huge" id="priceBig"><i>A$</i><b id="priceNum">—</b></p>
-        <p class="say small" id="priceSub">250 g whole bean · pick a roast above</p>
-      </div>
-      <canvas id="works" aria-hidden="true"></canvas>
-    </div>
-    <div class="inner orderline">
-      <p class="ordersum"><b id="orderName">No roast chosen</b><span id="orderMeta">drag the rail until a bag names itself</span></p>
-      <button class="add" id="addBtn" type="button" disabled>Add 250 g</button>
-    </div>
-  </section>
+    <p class="ribkeys" id="ribkeys">Fruit acid <b>—</b> · Browned sugar <b>—</b> · Carbon <b>—</b></p>
+    <p class="note">They cross a little after first crack. Before it the cup tastes of fruit; after it, of chocolate. That one swap is the whole difference between a light roast and a dark one.</p>
+  </article>
+  <article class="stop" id="s-second" data-u="0.868" data-size="l">
+    <p class="kicker">05 · Second crack</p>
+    <h2>224°C — oil comes out.</h2>
+    <p class="note">The cell walls give way and oil beads on the surface. From here you are tasting the roast, not the farm: cocoa, cedar, pipe smoke.</p>
+  </article>
+  <article class="stop" id="s-counter" data-u="1" data-size="s">
+    <p class="kicker">06 · The counter</p>
+    <h2>So we stop in four places.</h2>
+    <div class="run" id="run"></div>
+    <p class="note">The higher it grew, the lighter we take it. Past the last of these it is ash.</p>
+  </article>
 </main>
+<div class="grip" id="grip" role="slider" tabindex="0"
+     aria-label="Roast level — slide to feed the bean through the fire"
+     aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0"
+     aria-valuetext="Green, 22 degrees — not coffee yet"></div>
+<p class="hint" id="hint"><span>Scroll, or drag the brass slide</span></p>
 <footer class="botframe">
-  <span>ROAST · 14 Weston St, Brunswick VIC · Tue–Sun 7–3</span>
-  <span class="tally" id="tallyFoot">0 / 4 roasted</span>
+  <canvas class="swatch" id="swatch" aria-hidden="true"></canvas>
+  <p class="live"><b id="liveName">Green</b><span id="liveMeta">22°C · 00:00 · not coffee yet</span></p>
+  <p class="price" id="livePrice"><i>A$</i><b>—</b></p>
+  <button class="buy" id="buy" type="button" disabled>Add 250 g</button>
 </footer>
-<div class="roastbar">
-  <div class="barreads">
-    <span class="bTemp" id="bTemp">22°C</span>
-    <span class="bTime" id="bTime">00:00</span>
-    <span class="bPhase" id="bPhase">Drying</span>
-  </div>
-  <div class="rail" id="rail" role="slider" tabindex="0"
-       aria-label="Roast level"
-       aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0"
-       aria-valuetext="Green, 22 degrees — not coffee yet">
-    <div class="zones" id="zones"></div>
-    <div class="railline"></div>
-    <div class="marks" id="marks"></div>
-    <div class="head" id="head"><i></i></div>
-  </div>
-  <span class="barhint">roast →</span>
-</div>
 <script src="app.js"></script>
 </body>
 </html>
