@@ -1,0 +1,201 @@
+/* HALIDE — a type foundry
+   ---------------------------------------------------------------------------
+   A LANDING PAGE, and the first of three sites in this round that are meant to
+   be different KINDS of website rather than three versions of one — see
+   [[Extract the Technique Not the Template]].
+
+   Palette from reference 26 (Editorial pricing), unused until now: near-black
+   #030303, paper #F4F4F2, and one hot #FF4400. A foundry page is mostly type on
+   a ground, so the palette has to be almost nothing — the letterforms are the
+   picture, and any second colour would compete with them.
+
+   ⭐ ONE FAMILY ONLY. Every other build in this gallery pairs a serif with a
+   mono, because the pre-flight rule says one neutral sans alone is the failure.
+   This page breaks that ON PURPOSE and it is the only correct call here: a
+   foundry selling a grotesk cannot set its own site in somebody else's serif.
+   The rule is satisfied a different way — Archivo is used across SIX weights,
+   from 100 to 900, so the variety comes from the axis rather than from a second
+   family. The mono is confined to labels and numbers, where a foundry would
+   genuinely use one. */
+
+:root {
+  --void: #030303;
+  --void-2: #0B0B0B;
+  --paper: #F4F4F2;
+  --hot: #FF4400;
+  --mut: rgba(244,244,242,.60);
+  --dim: rgba(244,244,242,.34);
+  --line: rgba(244,244,242,.16);
+
+  --ui: 'Archivo', ui-sans-serif, system-ui, -apple-system, Helvetica, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(.2,.7,.3,1);
+  --spring: cubic-bezier(.34,1.45,.64,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--void); color: var(--paper);
+  font: 400 16px/1.6 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* the second layer over the ground: a fine horizontal rule field, like the
+     baseline grid on a specimen sheet */
+  background-image: repeating-linear-gradient(0deg, rgba(244,244,242,.028) 0 1px, transparent 1px 5px);
+}
+.mono { font-family: var(--mono); }
+
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
+.skip:focus { left: 16px; top: 16px; z-index: 60; background: var(--hot); color: var(--void); padding: 0 20px; }
+:is(a, button, [tabindex]):focus-visible { outline: 2px solid var(--hot); outline-offset: 3px; }
+
+/* ── bar ───────────────────────────────────────────────────────────────── */
+.bar { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; padding: 18px clamp(16px,4vw,52px); border-bottom: 1px solid var(--line); }
+.mark { font: 900 17px/1 var(--ui); letter-spacing: -.03em; }
+.bar nav { display: flex; gap: clamp(12px,2vw,28px); }
+.bar nav a { color: var(--mut); text-decoration: none; font: 500 12px/1 var(--mono);
+  letter-spacing: .1em; text-transform: uppercase;
+  min-height: 44px; display: inline-flex; align-items: center; transition: color .18s; }
+.bar nav a:hover { color: var(--hot); }
+.mini { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px;
+  background: var(--paper); color: var(--void); text-decoration: none;
+  font: 700 13px/1 var(--ui); letter-spacing: -.01em;
+  transition: background .2s, transform .22s var(--spring); }
+.mini:hover { background: var(--hot); color: var(--paper); transform: translateY(-2px); }
+
+main { position: relative; z-index: 5; }
+section { padding: 0 clamp(16px,4vw,52px); max-width: 1280px; margin: 0 auto; }
+
+/* ── hero ──────────────────────────────────────────────────────────────── */
+.hero { display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr);
+  gap: clamp(22px,3.5vw,48px); align-items: center;
+  padding-top: clamp(28px,5vw,66px); padding-bottom: clamp(26px,4vw,56px); }
+.kick { display: inline-flex; align-items: center; gap: 9px; font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--mut);
+  border: 1px solid var(--line); padding: 9px 14px; }
+.pip { width: 6px; height: 6px; border-radius: 50%; background: var(--hot); }
+
+h1 { font: 900 clamp(44px,7.4vw,92px)/.9 var(--ui); letter-spacing: -.055em; margin: 22px 0 20px; }
+h1 em { font-style: normal; color: var(--hot); }
+.sub { font-size: clamp(15px,1.6vw,17px); color: var(--mut); max-width: 42ch; }
+
+/* ── the specimen stage ────────────────────────────────────────────────── */
+.stage { margin: 0; position: relative; background: var(--void-2); border: 1px solid var(--line); }
+#cv { display: block; width: 100%; height: auto; cursor: none; touch-action: none; }
+.stage figcaption { display: flex; justify-content: space-between; gap: 12px;
+  padding: 10px 14px; border-top: 1px solid var(--line);
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.stage figcaption b { color: var(--hot); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* ── the strip ─────────────────────────────────────────────────────────── */
+.strip { max-width: none; padding: 0; overflow: hidden; border-block: 1px solid var(--line);
+  margin: clamp(18px,3vw,40px) 0; }
+.strip__t { display: flex; gap: 0; }
+.strip__t span { flex: 1; padding: 18px 10px; text-align: center; white-space: nowrap;
+  font-size: clamp(20px,3.2vw,42px); line-height: 1; letter-spacing: -.03em;
+  border-right: 1px solid var(--line); transition: background .2s var(--ease), color .2s; }
+.strip__t span:last-child { border-right: 0; }
+.strip__t span:hover { background: var(--hot); color: var(--void); }
+
+/* ── shared ────────────────────────────────────────────────────────────── */
+.tag { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--hot); }
+h2 { font: 900 clamp(28px,4.6vw,56px)/.98 var(--ui); letter-spacing: -.05em; margin: 14px 0 30px; }
+h2 em { font-style: normal; color: var(--mut); }
+.weights, .detail, .licence, .faq { padding-top: clamp(48px,7vw,104px); }
+.fine { font-size: 13px; color: var(--dim); }
+
+/* ── the weights ───────────────────────────────────────────────────────── */
+.wts { list-style: none; border-top: 1px solid var(--line); }
+.wts li { border-bottom: 1px solid var(--line); }
+.wts button { width: 100%; background: none; border: 0; cursor: pointer; text-align: left; color: inherit;
+  display: grid; grid-template-columns: 46px 1fr auto; gap: clamp(12px,2.4vw,28px);
+  align-items: center; padding: 14px 4px; min-height: 74px;
+  transition: padding-left .3s var(--ease), background .2s, color .2s; }
+.wts button:hover { padding-left: 16px; background: rgba(255,68,0,.07); color: var(--hot); }
+.wts .no { font: 400 11.5px/1 var(--mono); color: var(--dim); }
+/* ⭐ each row is SET IN ITS OWN WEIGHT — the list is the specimen */
+.wts b { font-size: clamp(21px,3.4vw,38px); line-height: 1; letter-spacing: -.035em; }
+.wts .k { font: 400 11.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
+
+/* ── detail cards ──────────────────────────────────────────────────────── */
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line);
+  border: 1px solid var(--line); }
+.card { background: var(--void); padding: 26px 22px 30px; transition: background .25s var(--ease); }
+.card:hover { background: var(--void-2); }
+.card .g { font-size: clamp(48px,6vw,76px); line-height: 1; letter-spacing: -.04em; color: var(--hot); }
+.card b { display: block; margin: 16px 0 8px; font-size: 15px; font-weight: 700; letter-spacing: -.015em; }
+.card span { display: block; font-size: 14px; color: var(--mut); line-height: 1.5; }
+
+/* ── licence ───────────────────────────────────────────────────────────── */
+.tiers { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line);
+  border: 1px solid var(--line); }
+.tier { background: var(--void); padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 7px;
+  transition: background .25s var(--ease); }
+.tier:hover { background: var(--void-2); }
+.tier--hot { background: rgba(255,68,0,.09); }
+.tier__k { font: 400 11.5px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--dim); }
+.tier__p { font: 900 clamp(30px,4vw,46px)/1 var(--ui); letter-spacing: -.05em; }
+.tier__p small { font: 400 12px/1 var(--mono); color: var(--dim); margin-left: 7px; letter-spacing: .06em; }
+.tier ul { list-style: none; margin: 10px 0 20px; }
+.tier li { font-size: 14px; color: var(--mut); padding: 4px 0 4px 18px; position: relative; }
+.tier li::before { content: ""; position: absolute; left: 0; top: 10px; width: 9px; height: 2px; background: var(--hot); }
+.tier a { margin-top: auto; display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; text-decoration: none; font: 700 13px/1 var(--ui);
+  border: 1px solid var(--line); color: var(--paper);
+  transition: background .2s, color .2s, border-color .2s; }
+.tier a:hover { background: var(--hot); border-color: var(--hot); color: var(--void); }
+.licence .fine { margin-top: 20px; }
+
+/* ── questions (animated, per [[The Small Interactions Get the Craft Too]]) ── */
+.qa { border-top: 1px solid var(--line); }
+.qa details { border-bottom: 1px solid var(--line); position: relative; }
+.qa details::before { content: ""; position: absolute; left: -14px; top: 14px; bottom: 14px; width: 2px;
+  background: var(--hot); transform: scaleY(0); transform-origin: 50% 0; opacity: 0;
+  transition: transform .42s var(--ease), opacity .28s; }
+.qa details.is-open::before { transform: scaleY(1); opacity: 1; }
+.qa summary { list-style: none; cursor: pointer; padding: 20px 0; display: flex;
+  align-items: center; justify-content: space-between; gap: 18px;
+  font: 700 clamp(17px,2.1vw,22px)/1.3 var(--ui); letter-spacing: -.03em; min-height: 60px;
+  transition: color .2s, padding-left .42s var(--ease); }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary:hover { color: var(--hot); }
+.qa details.is-open > summary { padding-left: 5px; }
+.qa summary::after { content: "+"; font: 400 20px/1 var(--mono); color: var(--hot);
+  transition: transform .42s var(--spring); }
+.qa details.is-open > summary::after { transform: rotate(135deg); }
+.qa .a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .42s var(--ease); }
+.qa details.is-open .a { grid-template-rows: 1fr; }
+.qa .a > div { overflow: hidden; }
+.qa .a p { padding: 0 0 24px; color: var(--mut); font-size: 15px; max-width: 64ch;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .3s var(--ease), transform .42s var(--ease); }
+.qa details.is-open .a p { opacity: 1; transform: none; transition-delay: .1s; }
+
+.foot { position: relative; z-index: 5; display: flex; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap; padding: 26px clamp(16px,4vw,52px) 42px; margin-top: clamp(52px,8vw,110px);
+  border-top: 1px solid var(--line); color: var(--dim);
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+
+@media (max-width: 940px) {
+  .hero { grid-template-columns: 1fr; }
+  .stage { order: -1; }
+  .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .tiers { grid-template-columns: 1fr; }
+  .bar nav { display: none; }
+  .strip__t span:nth-child(n+4) { display: none; }
+}
+@media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; }
+  /* ⚠️ `.k` is nowrap and sits in an `auto` grid column, so at 390px it forced
+     the row 91px wider than the viewport. A nowrap cell in an auto track is a
+     horizontal-overflow bug waiting to happen. */
+  .wts button { grid-template-columns: 34px 1fr; }
+  .wts .k { display: none; }
+  .strip__t span { font-size: 22px; padding: 14px 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
+}
