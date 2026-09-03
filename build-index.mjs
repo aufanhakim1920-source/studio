@@ -36,6 +36,7 @@ const KINDS = [
   ["product", "Product UI"],
   ["game", "Games"],
   ["editorial", "Editorial"],
+  ["school", "Courses"],
 ];
 const untyped = builds.filter((b) => !b.kind);
 if (untyped.length) console.warn("no kind set for: " + untyped.map((b) => b.slug).join(", "));

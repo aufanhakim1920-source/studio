@@ -346,5 +346,13 @@
     "blurb": "a paint shop where you move the light across the swatch &mdash; the finish is the product",
     "date": "3 Sep",
     "kind": "store"
+  },
+  {
+    "n": "84",
+    "slug": "school-meridian",
+    "title": "MERIDIAN",
+    "blurb": "an evening school for celestial navigation &mdash; aim the quadrant and it sights the star",
+    "date": "3 Sep",
+    "kind": "school"
   }
 ]
