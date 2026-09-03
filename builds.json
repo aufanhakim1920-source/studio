@@ -376,5 +376,29 @@
     "blurb": "a risograph studio &mdash; drag the inks over each other, and the passes are the price",
     "date": "3 Sep",
     "kind": "landing"
+  },
+  {
+    "n": "94",
+    "slug": "land-container",
+    "title": "CONTAINER",
+    "blurb": "a history that runs sideways &mdash; travel right through the century and the port grows around you",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "95",
+    "slug": "land-roast",
+    "title": "ROAST",
+    "blurb": "a painted coffee bean you roast yourself &mdash; it pops at first crack and the flavour follows",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "96",
+    "slug": "land-diorama",
+    "title": "FOLDAWAY",
+    "blurb": "a paper toy theatre you look into &mdash; cut-paper flats in real 3D, and the show re-scenes",
+    "date": "3 Sep",
+    "kind": "landing"
   }
 ]

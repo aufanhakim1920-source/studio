@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Foldaway — a paper theatre that tours schools</title>
+<meta name="description" content="Foldaway is a three-hander children's theatre company touring three shows into school halls across the north of England, with a cut-paper set that folds into two suitcases.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23150E17'/%3E%3Cpath d='M4 27V9l12-5 12 5v18z' fill='%23DC3A22'/%3E%3Cpath d='M11 27V15h10v12z' fill='%23F2B426'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="ledge" id="top">
+  <div class="ident">
+    <span class="mark">Foldaway</span>
+    <span class="sub">A paper theatre, carried into school halls</span>
+  </div>
+  <nav class="wayfind" aria-label="Sections">
+    <a href="#theatre">Theatre</a>
+    <a href="#hall">Your hall</a>
+    <a href="#touring">Touring</a>
+    <a href="#packing">Packing</a>
+    <a href="#fee">Fee</a>
+  </nav>
+  <p class="tally" id="tally">Staged 1 / 3</p>
+</header>
+
+<main>
+
+<section class="act" id="theatre">
+  <div class="house" id="house" tabindex="0" role="img"
+       aria-label="A paper toy theatre. Six layers of cut-paper scenery standing at different depths behind a red proscenium arch. Use the arrow keys to move your viewpoint.">
+    <div class="lens" id="lens">
+      <div class="rig" id="rig"></div>
+    </div>
+    <div class="glow" id="glow" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <canvas id="dust" aria-hidden="true"></canvas>
+    <p class="lookin" id="lookin">Drag to look into the box</p>
+  </div>
+
+  <div class="marquee">
+    <div class="billing">
+      <p class="run" id="run">Show one · touring February to April</p>
+      <h1 class="showtitle" id="showtitle">The Boy Who Ate the Moon</h1>
+      <p class="line" id="blurb">A boy climbs a ladder to taste the moon, and then has to put it back a slice at a time.</p>
+      <dl class="facts" id="facts">
+        <div><dt>Ages</dt><dd id="fAges">5–7</dd></div>
+        <div><dt>Runs</dt><dd id="fMins">35 min</dd></div>
+        <div><dt>Company</dt><dd id="fCast">2 performers</dd></div>
+        <div><dt>Interval</dt><dd id="fInt">None</dd></div>
+      </dl>
+    </div>
+    <div class="stubs" id="stubs" aria-label="Choose a show to stage"></div>
+  </div>
+</section>
+
+<section class="act shelf" id="hall">
+  <div class="slate">
+    <p class="ord">Two</p>
+    <h2>Will it go in your hall?</h2>
+    <p class="line">Drag the corner of the floor to your hall's real size. The gold outline is our footprint — it does not move, because the arch is 2.4&nbsp;m and does not fold any smaller.</p>
+    <p class="verdict" id="verdict" role="status">9.0 × 7.5 m — fits, with 1.5 m spare at the sides.</p>
+    <ul class="asks">
+      <li><b>6.0 × 5.0 m</b> clear floor, plus the audience</li>
+      <li><b>2.6 m</b> height clearance under any beam</li>
+      <li><b>Two 13A sockets</b> within 10 m of the set</li>
+      <li><b>45 min</b> to get in, <b>30 min</b> to get out</li>
+      <li><b>Van parking</b> within 50 m of a door we can use</li>
+      <li>No blackout — the set brings its own house light</li>
+    </ul>
+  </div>
+  <div class="plan" id="plan"></div>
+</section>
+
+<section class="act shelf" id="touring">
+  <div class="slate">
+    <p class="ord">Three</p>
+    <h2>Where the van goes</h2>
+    <p class="line">Pull the year across. Two months of it we are not touring at all — August is spent cutting the next set, and the workshop keeps us through the turn of the year.</p>
+    <p class="line">Three or four towns a month, eleven or twelve performances, and never more than two hours from the workshop in case a flat splits.</p>
+  </div>
+  <div class="side">
+    <div class="mapwrap" id="mapwrap"></div>
+    <div class="scrub" id="monthScrub" role="slider" tabindex="0"
+         aria-label="Month of the touring year" aria-valuemin="1" aria-valuemax="12" aria-valuenow="2" aria-valuetext="February">
+      <div class="track"></div><div class="knob"></div><div class="stops" id="monthStops"></div>
+    </div>
+    <p class="readout" id="monthRead">February · The Boy Who Ate the Moon · 4 towns, 11 performances</p>
+  </div>
+</section>
+
+<section class="act" id="packing">
+  <div class="slate wide">
+    <p class="ord">Four</p>
+    <h2>It folds into two cases</h2>
+    <p class="line">Every flat is hinged where it can be and rolled where it cannot. Drag the handle and watch the whole set walk into the boot of a small van.</p>
+  </div>
+  <div class="foldout" id="foldout"></div>
+  <div class="scrub" id="packScrub" role="slider" tabindex="0"
+       aria-label="Pack the set away" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="Standing, nothing packed">
+    <div class="track"></div><div class="knob"></div>
+    <div class="ends"><span>Standing</span><span>Packed</span></div>
+  </div>
+  <p class="readout" id="packRead">0 of 17 pieces away · 0.0 kg of 32.4 kg · takes two people 12 minutes</p>
+</section>
+
+<section class="act" id="fee">
+  <div class="slate wide">
+    <p class="ord">Five</p>
+    <h2>One number, and it is the whole number</h2>
+  </div>
+  <p class="huge" id="huge">£445</p>
+  <p class="band" id="band">Within 40 miles of Sheffield · regional rate, no travel charged</p>
+  <div class="road" id="road"></div>
+  <div class="scrub" id="mileScrub" role="slider" tabindex="0"
+       aria-label="Distance from Sheffield in miles" aria-valuemin="0" aria-valuemax="200" aria-valuenow="18" aria-valuetext="18 miles, £445">
+    <div class="track"></div><div class="knob"></div>
+    <div class="ends"><span>Sheffield</span><span>200 miles</span></div>
+  </div>
+  <ul class="asks tight">
+    <li><b>£410</b> for each further performance the same day</li>
+    <li><b>+ £95</b> over 120 miles, for the overnight</li>
+    <li>Nothing else. No hire, no rider, no per-head charge.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="ledge">
+  <span>Foldaway · Attercliffe workshop, Sheffield</span>
+  <span><a href="mailto:tour@foldaway.example">tour@foldaway.example</a> · 0114 496 0031</span>
+  <span class="tally" id="tally2">Staged 1 / 3</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

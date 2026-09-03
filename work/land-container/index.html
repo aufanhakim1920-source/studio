@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Container — how one steel box rewired the world</title>
+<meta name="description" content="A history of the shipping container told sideways: travel right and the year advances, the quay grows, the gangs of men give way to cranes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23CBE6EE'/%3E%3Cg fill='none' stroke='%23DC3A1B' stroke-width='2.4'%3E%3Cpath d='M4 26h24M9 26V13h14v13'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Big+Shoulders+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="port" aria-hidden="true"></canvas>
+
+<div class="stage">
+
+  <header class="frame-top">
+    <div class="ident">
+      <span class="wordmark">Container</span>
+      <span class="ident-sub">How one steel box rewired the world</span>
+    </div>
+    <nav class="topnav">
+      <span class="series">A lateral history</span>
+      <a class="navlink" href="#manifest" id="manifestLink">Manifest <em id="crossedTop">0/9</em></a>
+    </nav>
+  </header>
+
+  <div class="field" id="field">
+
+    <div class="plate" id="plate">
+
+      <figure class="f f-live on" id="fLive">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The largest container ship afloat, 1955 to 2024">
+          <text class="f-lab" x="0" y="12">Largest ship afloat · boxes carried</text>
+          <path class="lv-area" id="lvArea" d=""/>
+          <path class="lv-line" id="lvLine" d=""/>
+          <line class="lv-base" x1="0" y1="150" x2="332" y2="150"/>
+          <g class="lv-head" id="lvHead">
+            <line class="lv-stem" x1="0" y1="20" x2="0" y2="150"/>
+            <circle class="lv-dot" cx="0" cy="150" r="4.5"/>
+          </g>
+          <text class="f-t" x="0" y="168">1955</text>
+          <text class="f-t f-tr" x="332" y="168">2024</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-days" data-i="1">
+        <svg viewBox="0 0 340 176" role="img" aria-label="A break-bulk ship could sit in port for a week or more">
+          <text class="f-lab" x="0" y="12">Days a ship sat in port</text>
+          <g class="d-set">
+            <rect class="d-b" style="--i:0" x="0"   y="30" width="30" height="88"/>
+            <rect class="d-b" style="--i:1" x="38"  y="30" width="30" height="88"/>
+            <rect class="d-b" style="--i:2" x="76"  y="30" width="30" height="88"/>
+            <rect class="d-b" style="--i:3" x="114" y="30" width="30" height="88"/>
+            <rect class="d-b" style="--i:4" x="152" y="30" width="30" height="88"/>
+            <rect class="d-b" style="--i:5" x="190" y="30" width="30" height="88"/>
+            <rect class="d-b" style="--i:6" x="228" y="30" width="30" height="88"/>
+            <text class="d-more" x="272" y="104">+</text>
+          </g>
+          <text class="f-big" x="0" y="168">A WEEK OR MORE</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-cost" data-i="2">
+        <svg viewBox="0 0 340 176" role="img" aria-label="Loading cost fell from about 5 dollars 86 a ton to about 16 cents a ton">
+          <text class="f-lab" x="0" y="12">Cost to load one ton of cargo</text>
+          <text class="f-was" x="0" y="52">$5.86</text>
+          <line class="f-strike" x1="-3" y1="43" x2="126" y2="43"/>
+          <text class="f-num" x="0" y="156">$0.16</text>
+          <text class="f-t f-tr" x="332" y="156">36× CHEAPER</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-route" data-i="3">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The first container crossing, Newark to Rotterdam, 1966">
+          <text class="f-lab" x="0" y="12">First container crossing · April 1966</text>
+          <path class="rt-arc" id="rtArc" d="M30 120 C 112 40, 236 40, 310 96"/>
+          <circle class="rt-pt" cx="30" cy="120" r="4.5"/>
+          <circle class="rt-pt rt-pt2" cx="310" cy="96" r="4.5"/>
+          <text class="f-t" x="30" y="142">NEWARK</text>
+          <text class="f-t f-tr" x="310" y="118">ROTTERDAM</text>
+          <text class="f-big" x="0" y="168">236 BOXES</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-spec" data-i="4">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The ISO twenty-foot container: 20 feet long, 8 feet wide, 8 feet 6 high">
+          <text class="f-lab" x="0" y="12">ISO 668 · one twenty-foot unit</text>
+          <rect class="sp-body" x="24" y="40" width="244" height="80"/>
+          <g class="sp-ribs">
+            <line x1="46"  y1="44" x2="46"  y2="116"/><line x1="68"  y1="44" x2="68"  y2="116"/>
+            <line x1="90"  y1="44" x2="90"  y2="116"/><line x1="112" y1="44" x2="112" y2="116"/>
+            <line x1="134" y1="44" x2="134" y2="116"/><line x1="156" y1="44" x2="156" y2="116"/>
+            <line x1="178" y1="44" x2="178" y2="116"/><line x1="200" y1="44" x2="200" y2="116"/>
+            <line x1="222" y1="44" x2="222" y2="116"/><line x1="244" y1="44" x2="244" y2="116"/>
+          </g>
+          <g class="sp-cast">
+            <rect x="24" y="40" width="13" height="10"/><rect x="255" y="40" width="13" height="10"/>
+            <rect x="24" y="110" width="13" height="10"/><rect x="255" y="110" width="13" height="10"/>
+          </g>
+          <g class="sp-dim">
+            <line class="sp-d" x1="24" y1="140" x2="268" y2="140"/>
+            <line x1="24" y1="132" x2="24" y2="148"/><line x1="268" y1="132" x2="268" y2="148"/>
+            <line class="sp-d sp-dv" x1="292" y1="40" x2="292" y2="120"/>
+            <line x1="284" y1="40" x2="300" y2="40"/><line x1="284" y1="120" x2="300" y2="120"/>
+          </g>
+          <text class="f-t sp-l1" x="146" y="164">20 FT</text>
+          <text class="f-t sp-l2" x="306" y="84">8 FT 6</text>
+          <text class="f-big sp-l3" x="0" y="164">1 TEU</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-legs" data-i="5">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The loaded leg to Vietnam and the return leg that was filled in Japan">
+          <text class="f-lab" x="0" y="12">Sea-Land, 1967 — 1970</text>
+          <text class="f-t" x="0" y="42">OUT · US TO CAM RANH BAY</text>
+          <rect class="lg-bg" x="0" y="50" width="300" height="22"/>
+          <rect class="lg-full" x="0" y="50" width="300" height="22"/>
+          <text class="f-t" x="0" y="112">HOME · THE RETURN LEG</text>
+          <rect class="lg-bg" x="0" y="120" width="300" height="22"/>
+          <rect class="lg-fill" x="0" y="120" height="22"/>
+          <text class="f-t lg-a" x="310" y="136">EMPTY</text>
+          <text class="f-t lg-b" x="310" y="136">JAPAN</text>
+          <text class="f-big" x="0" y="170">THE PACIFIC TRADE</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-crew" data-i="6">
+        <svg viewBox="0 0 340 176" role="img" aria-label="Registered longshoremen in New York fell from about 35,000 to about 3,500">
+          <text class="f-lab" x="0" y="12">Registered longshoremen · New York</text>
+          <g id="crewField" class="cw-field"></g>
+          <text class="f-big cw-a" x="0" y="168">ABOUT 35,000</text>
+          <text class="f-big cw-b" x="0" y="168">ABOUT 3,500</text>
+          <text class="f-t f-tr cw-c" x="332" y="168">ONE IN TEN LEFT</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-rank" data-i="7">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The busiest container ports, 1995 compared with 2023">
+          <text class="f-lab" x="0" y="12">Million boxes a year · 1995 → 2023</text>
+          <g class="rk-row" style="--r0:0;--r1:2;--w0:67;--w1:76"><rect class="rk-b" x="88" y="0" height="20"/><text class="rk-n" x="82" y="15">HONG KONG</text><text class="rk-v" x="0" y="15"></text></g>
+          <g class="rk-row" style="--r0:1;--r1:1;--w0:63;--w1:206"><rect class="rk-b" x="88" y="0" height="20"/><text class="rk-n" x="82" y="15">SINGAPORE</text><text class="rk-v" x="0" y="15"></text></g>
+          <g class="rk-row" style="--r0:2;--r1:3;--w0:25;--w1:71"><rect class="rk-b" x="88" y="0" height="20"/><text class="rk-n" x="82" y="15">ROTTERDAM</text><text class="rk-v" x="0" y="15"></text></g>
+          <g class="rk-row rk-win" style="--r0:3;--r1:0;--w0:8;--w1:260"><rect class="rk-b" x="88" y="0" height="20"/><text class="rk-n" x="82" y="15">SHANGHAI</text><text class="rk-v" x="0" y="15"></text></g>
+          <text class="f-t" x="0" y="170">ROTTERDAM LED THE WORLD 1962 — 2004</text>
+        </svg>
+      </figure>
+
+      <figure class="f f-jam" data-i="8">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The world price of shipping a forty-foot box spiked in 2021">
+          <text class="f-lab" x="0" y="12">Cost to ship one 40-ft box · world average</text>
+          <line class="jm-base" x1="0" y1="140" x2="332" y2="140"/>
+          <path class="jm-line" id="jmLine" d="M0 128 L46 126 L92 122 L120 118 L152 74 L186 30 L214 36 L248 58 L286 104 L332 120"/>
+          <circle class="jm-peak" cx="186" cy="30" r="5"/>
+          <text class="f-t jm-l1" x="0" y="158">2019 · ABOUT $1,500</text>
+          <text class="f-t jm-l2" x="186" y="22">ABOUT $10,000</text>
+          <g class="jm-queue" id="jmQueue"></g>
+        </svg>
+      </figure>
+
+      <figure class="f f-scale" data-i="9">
+        <svg viewBox="0 0 340 176" role="img" aria-label="The Ideal-X of 1956 beside MSC Irina of 2023, drawn at the same scale">
+          <text class="f-lab" x="0" y="12">Same scale · 160 m and 400 m</text>
+          <g class="sc-old">
+            <rect class="sc-hull" x="0" y="44" width="99" height="15"/>
+            <rect class="sc-dk" x="18" y="38" width="52" height="6"/>
+            <rect class="sc-br" x="76" y="32" width="14" height="12"/>
+          </g>
+          <text class="f-t" x="0" y="76">1956 · IDEAL-X · 58 BOXES</text>
+          <g class="sc-new" id="scNew">
+            <rect class="sc-hull" x="0" y="116" width="248" height="24"/>
+            <rect class="sc-dk sc-stack" x="10" y="94" width="196" height="22"/>
+            <rect class="sc-dk sc-stack" x="24" y="82" width="164" height="12"/>
+            <rect class="sc-br" x="212" y="86" width="26" height="30"/>
+          </g>
+          <text class="f-t" x="0" y="158">2023 · MSC IRINA · 24,346 BOXES</text>
+          <text class="f-big f-tr" x="332" y="158">400 M</text>
+        </svg>
+      </figure>
+
+    </div>
+
+    <div class="odo" aria-live="off">
+      <p class="odo-year" id="odoYear">1955</p>
+      <p class="odo-sub">Largest ship afloat <b id="odoShip">none yet</b></p>
+    </div>
+
+    <p class="hint" id="hint">Drag the quay to travel · or pull the year rail</p>
+  </div>
+
+  <div class="rail" id="rail" role="slider" tabindex="0"
+       aria-label="Year, 1955 to 2024. Travel through the history of the shipping container."
+       aria-valuemin="1955" aria-valuemax="2024" aria-valuenow="1955"
+       aria-valuetext="1955 — Break-bulk">
+    <div class="rail-line"></div>
+    <div class="years" id="years"></div>
+    <div class="marks" id="marks"></div>
+    <div class="head" id="head"><i></i><b></b></div>
+  </div>
+
+  <section class="caption">
+    <div class="cap-l">
+      <p class="stn-meta">
+        <span class="stn-no" id="stnNo">01</span>
+        <span class="stn-yr" id="stnYear">1955</span>
+        <span class="stn-away" id="stnAway">you are here</span>
+      </p>
+      <h1 class="stn-title" id="stnTitle">Break-bulk</h1>
+      <p class="stn-line" id="stnLine">Cargo came aboard piece by piece — sacks, barrels, crates — carried by gangs of men.</p>
+    </div>
+    <div class="cap-r">
+      <p class="ro"><span>To load one ton</span><b id="roCost">$5.86</b></p>
+      <p class="ro"><span>Century crossed</span><b id="roPct">0%</b></p>
+    </div>
+  </section>
+
+  <footer class="frame-bottom">
+    <span>Container<i class="foot-tail"> · a history that runs sideways</i></span>
+    <span class="tally" id="crossedBottom">crossed 0 / 9</span>
+  </footer>
+
+</div>
+
+<div class="manifest" id="manifest" aria-hidden="true">
+  <div class="mf-head">
+    <span class="mf-title">Nine stops between 1955 and 2024</span>
+    <button class="close" id="closeManifest" type="button">Close</button>
+  </div>
+  <ol class="mf-list" id="mfList"></ol>
+  <p class="mf-foot">Figures from Marc Levinson, <i>The Box</i>; ISO 668 and ISO 1161; Drewry’s World Container Index; port authority throughput returns. Ship capacities are the largest vessel afloat in that year, with the years between them interpolated — anything estimated is marked “about”.</p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
