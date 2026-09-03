@@ -1,0 +1,141 @@
+/* DRAW WEIGHT — a game of curling
+   ---------------------------------------------------------------------------
+   ⚠️ DELIBERATELY NOT A LANDING PAGE. Six builds in a row shared one shape —
+   shader hero, one accent, lean page — and Aufan called it: *"it look the same
+   structure exactly like 67."* See [[Extract the Technique Not the Template]].
+   This is a full-screen game: a fixed HUD, a playfield that owns the viewport,
+   and a rail at the bottom. No hero, no sections, no FAQ, nothing to scroll.
+
+   The CRAFT still transfers — one committed accent, a lagged response, nothing
+   moving unless the player moves it, a real object doing real work. The FORM
+   does not.
+
+   Palette is chosen for a game rather than a mood: pale ice, two stone colours
+   that can never be confused, and a house in flat sport red and blue. Legibility
+   first, because you have to read the board at a glance. */
+
+:root {
+  --ice: #E9F1F5;
+  --ice-2: #DCE7ED;
+  --line: #C3D3DC;
+  --ink: #16232B;
+  --mut: #5C7180;
+  --red: #C8433A;
+  --blue: #1E3A5F;
+  --stoneA: #C8433A;   /* you   */
+  --stoneB: #2E3B45;   /* them  */
+  --gold: #E0A526;
+
+  --ui: 'Archivo', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: 'DM Mono', ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(.2,.7,.3,1);
+  --spring: cubic-bezier(.34,1.5,.64,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+body {
+  background: var(--ice); color: var(--ink);
+  font: 400 15px/1.5 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;                 /* a game screen does not scroll */
+}
+
+/* ⚠️ a skip link is still a tap target — it failed the 44px floor at 23px */
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
+.skip:focus { left: 12px; top: 12px; z-index: 60; background: var(--ink); color: var(--ice); padding: 10px 18px; border-radius: 4px; }
+:is(button, [tabindex]):focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+/* three rows: HUD, playfield, rail. The playfield takes whatever is left. */
+.app { height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
+
+/* ── HUD ───────────────────────────────────────────────────────────────── */
+.hud { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px clamp(14px,3vw,28px); border-bottom: 1px solid var(--line); background: var(--ice); }
+.hud__l, .hud__r { display: flex; align-items: center; gap: 14px; flex: 1 1 0; }
+.hud__r { justify-content: flex-end; }
+.mark { font: 900 15px/1 var(--ui); letter-spacing: .14em; }
+.rule { width: 1px; height: 18px; background: var(--line); }
+.end { font-size: 11.5px; letter-spacing: .12em; color: var(--mut); }
+.end b { color: var(--ink); font-weight: 500; }
+
+/* the score is the one thing that must read from across the room */
+.score { display: flex; align-items: center; gap: 10px; }
+.side { display: flex; align-items: baseline; gap: 8px; padding: 6px 14px; border-radius: 999px;
+  background: var(--ice-2); transition: background .3s var(--ease); }
+.side.lead { background: var(--gold); }
+.side i { width: 10px; height: 10px; border-radius: 50%; font-style: normal; flex: none; }
+.side b { font: 900 26px/1 var(--ui); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.side span { font: 500 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mut); }
+.side.lead span { color: rgba(22,35,43,.72); }
+
+.btn { appearance: none; border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  font: 700 12.5px/1 var(--ui); letter-spacing: .04em; min-height: 44px; padding: 0 18px;
+  border-radius: 999px; cursor: pointer; transition: background .2s, color .2s, transform .2s var(--spring); }
+.btn:hover { background: var(--ink); color: var(--ice); transform: translateY(-1px); }
+
+/* ── the sheet ─────────────────────────────────────────────────────────── */
+.sheet { position: relative; min-height: 0; background: var(--ice); }
+#cv { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+#cv:active { cursor: grabbing; }
+
+/* one coach line, which changes as the game changes state */
+/* ⚠️ the coach used to sit centred at the bottom, directly on top of the stone
+   in your hand. The sheet is narrow and the margins beside it are dead space —
+   put the instruction there instead, where it can never cover the ice. */
+.coach { position: absolute; left: clamp(14px,4vw,54px); top: 50%; transform: translateY(-50%);
+  display: grid; gap: 4px; max-width: 230px; padding: 16px 18px;
+  background: rgba(233,241,245,.94); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-radius: 14px; text-align: left;
+  transition: opacity .3s var(--ease), transform .35s var(--spring); pointer-events: none; }
+.coach b { font: 700 15px/1.25 var(--ui); letter-spacing: -.015em; }
+.coach span { font: 400 13px/1.4 var(--ui); color: var(--mut); }
+.coach[hidden] { display: none; }
+.coach.pop { transform: translateY(-50%) scale(1.03); }
+
+/* ── the rail ──────────────────────────────────────────────────────────── */
+.rail { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px clamp(14px,3vw,28px); border-top: 1px solid var(--line); background: var(--ice); }
+.rack { display: flex; align-items: center; gap: 6px; }
+/* one pip per stone still to throw — the only inventory the game has */
+.pip { width: 16px; height: 16px; border-radius: 50%; background: var(--ice-2);
+  border: 1.5px solid var(--line); transition: background .25s var(--ease), transform .3s var(--spring); }
+.pip.a { background: var(--stoneA); border-color: var(--stoneA); }
+.pip.b { background: var(--stoneB); border-color: var(--stoneB); }
+.pip.used { background: transparent; }
+.pip.next { transform: scale(1.35); box-shadow: 0 0 0 3px rgba(200,67,58,.22); }
+.tip { font-size: 10.5px; letter-spacing: .1em; color: var(--mut); }
+kbd { font: 500 11px/1 var(--mono); border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 4px; padding: 3px 5px; background: var(--ice-2); }
+
+@media (max-width: 900px) {
+  /* on a narrow screen there is no margin, so it goes back to the bottom */
+  .coach { left: 50%; top: auto; bottom: 12px; transform: translateX(-50%); text-align: center; justify-items: center; }
+  .coach.pop { transform: translateX(-50%) scale(1.03); }
+}
+
+@media (max-width: 720px) {
+  /* ⚠️ the playfield SHRANK as a share of the screen on a phone, because the HUD
+     and rail kept their desktop padding. On a small screen the chrome gives way,
+     not the board. */
+  .hud { flex-wrap: wrap; padding: 8px 12px; gap: 8px; }
+  .rail { padding: 7px 12px; }
+  .rack { gap: 4px; }
+  .pip { width: 13px; height: 13px; }
+  /* ⚠️ the score used to wrap onto its own row, which cost the board a whole
+     line of height. Keep the HUD to ONE row and shrink its parts instead. */
+  .hud { flex-wrap: nowrap; }
+  .hud__l, .hud__r { flex: 0 1 auto; gap: 8px; }
+  .end, .rule { display: none; }
+  .side { padding: 4px 9px; gap: 5px; }
+  .side b { font-size: 19px; }
+  .side span { display: none; }
+  .btn { padding: 0 12px; font-size: 11.5px; }
+  .tip { display: none; }
+  .mark { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; }
+}

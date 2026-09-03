@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DRAW WEIGHT — a game of curling</title>
+<meta name="description" content="Eight stones, one house. Pull back to aim, let go to throw, sweep to make it run.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E9F1F5'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23C8433A' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%231E3A5F'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#sheet">Skip to the game</a>
+
+<div class="app">
+
+  <header class="hud">
+    <div class="hud__l">
+      <span class="mark">DRAW&nbsp;WEIGHT</span>
+      <span class="rule" aria-hidden="true"></span>
+      <span class="end mono">END <b id="end">1</b> OF 3</span>
+    </div>
+
+    <div class="score" id="score"></div>
+
+    <div class="hud__r">
+      <button class="btn" id="again" type="button">New game</button>
+    </div>
+  </header>
+
+  <!-- ⭐ THE OBJECT: the sheet itself. Everything happens on it. -->
+  <main class="sheet" id="sheet">
+    <canvas id="cv" tabindex="0"
+      aria-label="A curling sheet. Drag back from your stone to aim and set weight, then release to throw."></canvas>
+
+    <div class="coach" id="coach">
+      <b>Drag toward the house</b>
+      <span>The longer the drag, the harder the throw.</span>
+    </div>
+  </main>
+
+  <footer class="rail">
+    <div class="rack" id="rack" aria-label="Stones remaining"></div>
+    <p class="tip mono" id="tip">HOLD <kbd>SPACE</kbd> WHILE IT SLIDES TO SWEEP &mdash; IT RUNS FURTHER AND STRAIGHTER</p>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
