@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plain Goods — where the money actually goes</title>
+<meta name="description" content="A small online shop, one month. Which products make money once ads and returns come out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0C0E'/%3E%3Cpath d='M7 12h18l-2 13H9z' fill='none' stroke='%234F8DF7' stroke-width='2.4'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar__id">
+    <span class="mark">Plain Goods</span>
+    <span class="sub mono">August &middot; 9 products</span>
+  </div>
+  <nav class="jump mono" aria-label="Sections">
+    <a href="#find">Problem</a><a href="#products">Products</a><a href="#funnel">Funnel</a><a href="#returns">Returns</a>
+  </nav>
+  <div class="bar__live">
+    <span class="lbl mono">Orders today</span>
+    <b class="mono" id="liveN">&mdash;</b>
+    <span class="mono dim" id="liveVs">&mdash;</span>
+  </div>
+</header>
+
+<section class="find" id="find">
+  <p class="find__k mono">Where the month went</p>
+  <h1 id="findHead">&mdash;</h1>
+  <p class="find__d" id="findBody">&mdash;</p>
+  <p class="find__act mono" id="findAct">&mdash;</p>
+</section>
+
+<section class="top">
+  <dl class="tot" id="tot"></dl>
+</section>
+
+<section class="prod" id="products">
+  <div class="prod__h">
+    <p class="k mono">Every product, after cost of goods, shipping, ads and returns</p>
+    <div class="sorts mono" id="sorts" role="group" aria-label="Sort products"></div>
+  </div>
+  <table class="tbl" id="items">
+    <thead><tr>
+      <th>Product</th><th class="n">Units</th><th class="n">Revenue</th>
+      <th class="n">Ads</th><th class="n">Returned</th><th class="n">Profit</th><th class="n">Per order</th>
+    </tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section class="grid2">
+  <div class="col" id="funnel">
+    <p class="k mono">From visit to paid &mdash; where people leave</p>
+    <div class="fun" id="fun"></div>
+  </div>
+  <div class="col" id="returns">
+    <p class="k mono">Why things came back</p>
+    <div class="why" id="why"></div>
+    <p class="k mono rk">What returns cost you</p>
+    <p class="rv"><b class="mono" id="retV">&mdash;</b> <span class="mono dim" id="retN">&mdash;</span></p>
+  </div>
+</section>
+
+<footer class="foot mono">
+  <span>Plain Goods &middot; one person, nine products</span>
+  <span class="dim">Units &times; price reconciles to revenue &middot; profit is after goods, post, ads and returns</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -400,5 +400,29 @@
     "blurb": "a paper toy theatre you look into &mdash; cut-paper flats in real 3D, and the show re-scenes",
     "date": "3 Sep",
     "kind": "landing"
+  },
+  {
+    "n": "100",
+    "slug": "dash-cafe",
+    "title": "Kettle &amp; Kin",
+    "blurb": "one caf&eacute;, one week &mdash; the hours where wages beat takings, and what that costs a year",
+    "date": "3 Sep",
+    "kind": "dashboard"
+  },
+  {
+    "n": "101",
+    "slug": "dash-store",
+    "title": "Plain Goods",
+    "blurb": "a small online shop &mdash; the biggest seller by revenue loses money on every order",
+    "date": "3 Sep",
+    "kind": "dashboard"
+  },
+  {
+    "n": "102",
+    "slug": "dash-chairs",
+    "title": "Four Chairs",
+    "blurb": "a barbershop &mdash; empty chair time, no-shows, or clients not returning: which one is the leak",
+    "date": "3 Sep",
+    "kind": "dashboard"
   }
 ]

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kettle &amp; Kin — the week</title>
+<meta name="description" content="One café, one week. Which hours paid for themselves and which ones did not.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F7F4EF'/%3E%3Cpath d='M8 11h13v8a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5z' fill='%23C2410C'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar__id">
+    <span class="mark">Kettle &amp; Kin</span>
+    <span class="sub mono">Brunswick &middot; week of 25 Aug</span>
+  </div>
+  
+  <nav class="jump mono" aria-label="Sections">
+    <a href="#find">Problem</a><a href="#hours">Hours</a><a href="#earns">What earns</a><a href="#week">vs last week</a>
+  </nav>
+  <div class="bar__live">
+    <span class="lbl mono">Today so far</span>
+    <b class="mono" id="todayNow">&mdash;</b>
+    <span class="mono dim" id="todayVs">&mdash;</span>
+  </div>
+</header>
+
+<section class="find" id="find">
+  <p class="find__k mono">What went wrong this week</p>
+  <h1 id="findHead">&mdash;</h1>
+  <p class="find__d" id="findBody">&mdash;</p>
+  <p class="find__act mono" id="findAct">&mdash;</p>
+</section>
+
+<section class="wk" id="hours">
+  <div class="wk__h">
+    <p class="k mono">Every hour, all week &mdash; what came in against what it cost to be open</p>
+    <div class="days mono" id="days" role="group" aria-label="Choose a day"></div>
+  </div>
+  <div class="chart" id="chart"></div>
+  <p class="k mono legend">
+    <i class="sw sw--take"></i>taken
+    <i class="sw sw--wage"></i>wages
+    <i class="sw sw--loss"></i>the hour cost more than it took
+  </p>
+</section>
+
+<section class="grid2" id="earns">
+  <div class="col">
+    <p class="k mono">What actually earns &mdash; ranked by profit, not by how many you sell</p>
+    <table class="tbl" id="items">
+      <thead><tr><th>Item</th><th class="n">Sold</th><th class="n">Each</th><th class="n">Profit</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="col">
+    <p class="k mono" id="week">The week, against the one before</p>
+    <dl class="cmp" id="cmp"></dl>
+    <p class="k mono waste">Thrown out at close</p>
+    <p class="waste__v"><b class="mono" id="wasteV">&mdash;</b> <span class="mono dim" id="wasteN">&mdash;</span></p>
+  </div>
+</section>
+
+<footer class="foot mono">
+  <span>Kettle &amp; Kin &middot; 9 hours a day, 7 days</span>
+  <span class="dim">Takings reconcile to items sold &middot; wages at $32 weekday, $38 Sat, $44 Sun</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

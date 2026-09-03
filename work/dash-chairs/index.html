@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Four Chairs — where the week leaks</title>
+<meta name="description" content="A barbershop with four chairs. Empty time, no-shows, and who never came back.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23EEF0F1'/%3E%3Crect x='7' y='6' width='4' height='20' fill='%230F766E'/%3E%3Crect x='14' y='6' width='4' height='20' fill='%230F766E'/%3E%3Crect x='21' y='6' width='4' height='20' fill='%23B45309'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar__id">
+    <span class="mark">Four Chairs</span>
+    <span class="sub mono">Coburg &middot; week of 25 Aug</span>
+  </div>
+  <nav class="jump mono" aria-label="Sections">
+    <a href="#find">Problem</a><a href="#week">The week</a><a href="#barbers">Barbers</a><a href="#back">Coming back</a>
+  </nav>
+  <div class="bar__live">
+    <span class="lbl mono">In the chairs now</span>
+    <b class="mono" id="liveN">&mdash;</b>
+    <span class="mono dim" id="liveVs">&mdash;</span>
+  </div>
+</header>
+
+<section class="find" id="find">
+  <p class="find__k mono">Where the week leaked</p>
+  <h1 id="findHead">&mdash;</h1>
+  <p class="find__d" id="findBody">&mdash;</p>
+  <p class="find__act mono" id="findAct">&mdash;</p>
+</section>
+
+<section class="top">
+  <dl class="tot" id="tot"></dl>
+</section>
+
+<section class="wk" id="week">
+  <div class="wk__h">
+    <p class="k mono">Every chair, every hour &mdash; booked, walked in, or empty</p>
+    <div class="pick mono" id="pick" role="group" aria-label="Show one barber"></div>
+  </div>
+  <div class="sched" id="sched"></div>
+  <p class="k mono legend">
+    <i class="sw sw--bk"></i>booked
+    <i class="sw sw--wi"></i>walk-in
+    <i class="sw sw--ns"></i>no-show
+    <i class="sw sw--mt"></i>empty
+  </p>
+</section>
+
+<section class="grid2">
+  <div class="col" id="barbers">
+    <p class="k mono">Per barber &mdash; and takings per chair-hour, which is the real number</p>
+    <table class="tbl" id="who">
+      <thead><tr><th>Barber</th><th class="n">Busy</th><th class="n">No-shows</th><th class="n">Taken</th><th class="n">Per chair-hour</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="k mono svc">Services &mdash; what each one earns for the time it takes</p>
+    <table class="tbl" id="svc">
+      <thead><tr><th>Service</th><th class="n">Done</th><th class="n">Mins</th><th class="n">Price</th><th class="n">Per hour</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="col" id="back">
+    <p class="k mono">Of last month&rsquo;s clients, who came back</p>
+    <div class="rep" id="rep"></div>
+    <p class="k mono nsk">No-shows, by when they were booked</p>
+    <div class="nsw" id="nsw"></div>
+  </div>
+</section>
+
+<footer class="foot mono">
+  <span>Four Chairs &middot; 4 chairs, 9 hours, 7 days</span>
+  <span class="dim">Slots &times; price reconciles to takings &middot; busy % is booked minutes over shift minutes</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
