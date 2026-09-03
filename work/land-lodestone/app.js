@@ -1,21 +1,3 @@
-/* LODESTONE — a payments router
- * ---------------------------------------------------------------------------
- * ⭐ THE OBJECT: a field of iron filings lying along a magnetic field, drawn in
- * RAW WebGL as the whole page background. Drag and the field re-orients; the
- * filings swing round with lag and settle. The product routes every payment to
- * the cheapest path, so the visitor is literally doing what the product does.
- *
- * How the lag works without storing any per-filing state (technique borrowed
- * from the "store the time, not the state" idea in the vault): the CPU keeps
- * TWO magnet positions — one that chases the pointer quickly, one that chases
- * it slowly. Each filing has a fixed random blend between the two, so they
- * arrive at different moments and the field settles in a wave rather than
- * snapping as one. Nothing is integrated, nothing can drift.
- *
- * ⚠️ Never put a backtick inside this template literal, comments included —
- * it closes the string and the GLSL below is parsed as JavaScript.
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;

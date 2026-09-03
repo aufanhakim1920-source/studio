@@ -1,49 +1,35 @@
-/* ============================================================
-   Contact Sheet — loupe, frames, radial meter
-   ============================================================ */
-
 const FRAMES = [
   { img: "assets/codebrew.jpg", kind: "PROOF", name: "CISSA Codebrew — 1st place",
     body: "Led a team of 4–6 to first place under a 48-hour deadline, as a first-year against masters-level teams. Covered design, frontend and backend, and pitched to the judges. Did it again at Design Blitz.",
     tags: ["Team lead", "48h", "Full-stack", "Pitch"], meta: "Mar 2026 · UniMelb" },
-
   { img: "assets/wyf.jpg", kind: "PROOF", name: "World Youth Forum Asia",
     body: "Selected delegate representing Indonesia at the Future Economics Leadership Summit.",
     tags: ["Delegate", "2025"], meta: "2025 · Asia" },
-
   { img: "assets/oweek.jpg", kind: "PROOF", name: "O-Week — Community Badge",
     body: "Guided hundreds of domestic and international students through orientation in high-volume crowd conditions. Awarded the UniMelb Community Badge for proactive service.",
     tags: ["Volunteer", "Front of house"], meta: "Feb 2026 · UniMelb" },
-
   { img: "assets/cleanup.jpg", kind: "PROOF", name: "Cobra Cleanup — 203.6 kg",
     body: "Head Assistant on a youth environmental committee. 203.6 kg of waste collected, plus donation drives for orphanages. Featured in Jawa Pos.",
     tags: ["Head assistant", "Environment"], meta: "2023 · Surabaya" },
-
   { img: "assets/orphanage.jpg", kind: "PROOF", name: "Community Build",
     body: "Built and painted housing for underprivileged families, and ran colour-in sessions with kids at the orphanage.",
     tags: ["Community", "Build"], meta: "2023 · Surabaya" },
-
   { img: "assets/water.jpg", kind: "PROOF", name: "Clean Water Outreach",
     body: "Distributed free clean-water access to households in the surrounding community.",
     tags: ["Outreach"], meta: "2023 · Surabaya" },
-
   /* NOTE: the IELTS certificate scan is deliberately NOT a frame — it carries a
      candidate ID and a passport photo, and this is a public page. The band
      score lives in the stat blocks instead, which says the same thing. */
-
   { img: "assets/coffee.jpg", kind: "WORK", name: "Front of house — Natural Tucker",
     body: "Carlton North bakery, weekly roster, high-volume morning service. Won the role from a cold-email outreach campaign I ran and tracked myself. Barista-certified, latte art included.",
     tags: ["Barista", "Service", "Outreach"], meta: "Jul 2026 — now · Carlton North" },
-
   { img: "assets/athletic.jpg", kind: "PROOF", name: "Taekwondo — 1st place",
     body: "First place, Kyorugi competition. Also a 10K finish at the Standard Chartered Singapore Marathon.",
     tags: ["Kyorugi", "10K"], meta: "2024–25" },
-
   { img: "assets/gym.jpg", kind: "CERT", name: "NASM — ICPT",
     body: "International Certified Personal Trainer (theory), valid to 2027. Plus First Aid (APKI) and DoFoodSafely.",
     tags: ["NASM", "First aid"], meta: "Valid to 2027" },
 ];
-
 const SKILLS = [
   { name: "Web & commerce", pct: 92, note: "Shopify · Netlify · vanilla" },
   { name: "Games", pct: 78, note: "Unity · Canvas" },
@@ -51,17 +37,14 @@ const SKILLS = [
   { name: "Motion", pct: 66, note: "Remotion · frame-timed SFX" },
   { name: "Data science", pct: 58, note: "In progress · UniMelb" },
 ];
-
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 /* ---------------- ticker ---------------- */
 (() => {
   const line = "OPEN TO WORK /// MELBOURNE 37.81°S /// 9 PROJECTS SHIPPED /// 2× HACKATHON 1ST /// DATA SCIENCE @ UNIMELB /// ";
   $("#ticker").textContent = line.repeat(4);   // repeat so the -50% loop is seamless
 })();
-
 /* ---------------- frames ---------------- */
 function renderFrames() {
   $("#sheet").innerHTML = FRAMES.map((f, i) => `
@@ -71,7 +54,6 @@ function renderFrames() {
       <span class="frame__mark"></span>
     </button>`).join("");
 }
-
 function pick(i) {
   const f = FRAMES[i];
   $("#readout").innerHTML = `
@@ -87,7 +69,6 @@ function pick(i) {
     </div>`;
   $$(".frame").forEach((el) => el.classList.toggle("is-picked", Number(el.dataset.i) === i));
 }
-
 /* ---------------- the loupe ----------------
    One veil over the whole grid with a hole punched at the cursor, rather than
    the reference's two stacked copies of a single image — that's what lets it
@@ -97,26 +78,22 @@ function initLoupe() {
   const loupe = $("#loupe");
   const ring = $("#ring");
   if (!shell || reduced) { shell?.classList.add("no-loupe"); return; }
-
   // start at the sheet's centre, matching the CSS default
   const r0 = shell.getBoundingClientRect();
   let tx = r0.width / 2, ty = r0.height * 0.42, cx = tx, cy = ty, raf = null;
   ring.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
-
   shell.addEventListener("pointermove", (e) => {
     const r = shell.getBoundingClientRect();
     tx = e.clientX - r.left;
     ty = e.clientY - r.top;
     if (!raf) raf = requestAnimationFrame(follow);
   });
-
   // on leave, drift back to the resting spot rather than snapping off-screen
   shell.addEventListener("pointerleave", () => {
     const r = shell.getBoundingClientRect();
     tx = r.width / 2; ty = r.height * 0.42;
     if (!raf) raf = requestAnimationFrame(follow);
   });
-
   // lerp, so the loupe trails the cursor slightly — the lag is what makes it
   // feel like glass being moved rather than a cursor effect
   function follow() {
@@ -127,12 +104,10 @@ function initLoupe() {
     ring.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
     raf = Math.abs(tx - cx) > 0.4 || Math.abs(ty - cy) > 0.4 ? requestAnimationFrame(follow) : null;
   }
-
   $("#toggle-loupe")?.addEventListener("click", (e) => {
     const off = shell.classList.toggle("no-loupe");
     e.target.textContent = off ? "Turn the loupe on" : "Turn the loupe off";
   });
-
   $("#dev-btn")?.addEventListener("click", () => {
     shell.classList.add("no-loupe");
     const t = $("#toggle-loupe");
@@ -140,24 +115,20 @@ function initLoupe() {
     shell.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
   });
 }
-
 /* ---------------- radial tick meter (ref 21, reworked) ---------------- */
 function initMeter() {
   const c = $("#meter");
   if (!c) return;
   const ctx = c.getContext("2d");
   const N = 132, R = 190, CX = 260, CY = 260;
-
   function draw() {
     ctx.clearRect(0, 0, 520, 520);
     const t = Date.now() * 0.002;
-
     for (let i = 0; i < N; i++) {
       const a = (i / N) * Math.PI * 2;
       let n = Math.sin(i * 0.2 + t) * Math.cos(i * 0.1 - t * 2) * 34;
       n += Math.random() * 9;
       const len = 6 + Math.max(0, n);
-
       ctx.save();
       ctx.translate(CX, CY);
       ctx.rotate(a);
@@ -170,7 +141,6 @@ function initMeter() {
       ctx.stroke();
       ctx.restore();
     }
-
     // inner dashed track
     ctx.save();
     ctx.translate(CX, CY);
@@ -181,11 +151,9 @@ function initMeter() {
     ctx.lineWidth = 1.5;
     ctx.stroke();
     ctx.restore();
-
     if (!reduced) requestAnimationFrame(draw);
   }
   draw();
-
   // the number ticks around a little so the card never looks frozen
   if (!reduced) {
     setInterval(() => {
@@ -193,7 +161,6 @@ function initMeter() {
     }, 2600);
   }
 }
-
 /* ---------------- skills ---------------- */
 function renderSkills() {
   $("#skills").innerHTML = SKILLS.map((s) => `
@@ -205,12 +172,10 @@ function renderSkills() {
       <span class="skill-val">${s.note}</span>
     </div>`).join("");
 }
-
 /* ---------------- reveal ---------------- */
 function initReveal() {
   if (reduced || !("IntersectionObserver" in window)) return;
   document.documentElement.classList.add("anim-ready");
-
   // The bars are NOT collapsed and re-filled on scroll. Tried it; an observer
   // that doesn't fire (off-screen rendering, a script error) leaves every skill
   // reading zero — and a wrong number is worse than a missing animation.
@@ -223,10 +188,8 @@ function initReveal() {
       }
     });
   }, { threshold: 0.12, rootMargin: "-4% 0px -4% 0px" });
-
   $$(".rise").forEach((el) => obs.observe(el));
 }
-
 /* ---------------- clock ---------------- */
 function initClock() {
   const el = $("#clock");
@@ -240,7 +203,6 @@ function initClock() {
   tick();
   setInterval(tick, 30000);
 }
-
 /* ---------------- boot ---------------- */
 renderFrames();
 renderSkills();
@@ -249,7 +211,6 @@ initLoupe();
 initMeter();
 initReveal();
 initClock();
-
 $("#sheet").addEventListener("click", (e) => {
   const f = e.target.closest(".frame");
   if (f) pick(Number(f.dataset.i));

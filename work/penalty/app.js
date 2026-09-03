@@ -1,32 +1,11 @@
-/* Penalty — motion.
-   =========================================================================
-   The brief on animation: use it, but never to the point the site stops
-   working. So every effect here follows two rules:
-
-   1. NOTHING IS HIDDEN UNTIL JS PROVES IT CAN SHOW IT AGAIN. The reveal
-      class is added by this script, not baked into the stylesheet. If the
-      JS fails to load, every element is simply visible — a page whose copy
-      is invisible because an observer never fired is a broken page, and
-      that is the usual way scroll animation kills a site.
-   2. Anything that loops is tied to hover, and the whole lot is off under
-      prefers-reduced-motion.
-
-   Plus one thing this page needs that the portfolio does not: <details>
-   snaps open with no animation at all, so the FAQ height is animated by
-   hand. It still opens with JavaScript off — the element does its own job
-   and this only smooths it. */
-
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 /* rule 1: opt the page into animation only once we are running */
 if (!REDUCED) document.documentElement.classList.add("motion");
-
 /* ── hero entrance ───────────────────────────────────────────────────── */
 document.querySelectorAll("[data-enter]").forEach((el) => {
   el.style.setProperty("--d", (el.dataset.enter - 1) * 90 + "ms");
   requestAnimationFrame(() => el.classList.add("in"));
 });
-
 /* ── scroll reveal ───────────────────────────────────────────────────────
    ⚠️ This deliberately does NOT use IntersectionObserver alone. IO delivers
    asynchronously, so a fast flick-scroll or an in-page anchor jump can pass
@@ -37,7 +16,6 @@ document.querySelectorAll("[data-enter]").forEach((el) => {
    is at or above the fold gets revealed, full stop. Twelve elements make the
    cost irrelevant. */
 const rise = [...document.querySelectorAll("[data-rise]")];
-
 if (REDUCED) {
   rise.forEach((el) => el.classList.add("in"));
 } else {
@@ -45,7 +23,6 @@ if (REDUCED) {
     const sibs = [...el.parentElement.children].filter((c) => c.hasAttribute("data-rise"));
     el.style.setProperty("--d", Math.min(sibs.indexOf(el), 4) * 80 + "ms");
   });
-
   let queued = false;
   const sweep = () => {
     queued = false;
@@ -66,7 +43,6 @@ if (REDUCED) {
   addEventListener("resize", ping);
   sweep();
 }
-
 /* ── counters ────────────────────────────────────────────────────────── */
 /* The final value is already in the HTML, so the number is correct with
    JavaScript off. This only animates towards it. */
@@ -84,7 +60,6 @@ function countUp(el) {
   };
   requestAnimationFrame(step);
 }
-
 const nums = [...document.querySelectorAll("[data-count]")];
 if (!REDUCED) {
   let nq = false;
@@ -102,14 +77,11 @@ if (!REDUCED) {
   addEventListener("scroll", nping, { passive: true });
   nsweep();
 }
-
-
 /* ── FAQ: animate a height <details> would otherwise snap ────────────── */
 document.querySelectorAll(".faq details").forEach((d) => {
   const body = d.querySelector("p");
   if (!body || REDUCED) return;
   body.style.overflow = "hidden";
-
   d.querySelector("summary").addEventListener("click", (e) => {
     e.preventDefault();
     const open = d.open;

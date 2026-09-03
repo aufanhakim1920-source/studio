@@ -1,11 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   AUFAN GACHA
-   Every motion here is caused by the visitor: the crank is dragged,
-   the coin is clicked, capsules crack on click, bars and counters
-   fire once on scroll-in. The only autonomous motion on the page is
-   the 7px status LED and the ring around a freshly dropped capsule.
-   ═══════════════════════════════════════════════════════════ */
-
 const PROJECTS = [
   {
     name: "FanNest", mono: "FN", c: "#E2483A", r: "SSR", kind: "web",
@@ -78,7 +70,6 @@ const PROJECTS = [
     tags: ["Remotion", "React", "Sound design"],
   },
 ];
-
 const RATES = [
   { n: "JavaScript & TypeScript",        note: "every project on this page", v: 92, c: "#E2483A" },
   { n: "Interface design → build",       note: "figma through to shipped css", v: 86, c: "#F5C243" },
@@ -90,13 +81,10 @@ const RATES = [
   { n: "C, close to the metal",          note: "comp10002, pointers and all", v: 38, c: "#3A4048" },
   { n: "Motion graphics in code",        note: "remotion, frame-timed sound", v: 30, c: "#E88A1B" },
 ];
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 document.documentElement.classList.replace("no-js", "js");
-
 const state = { coined: false, opened: new Set(), queue: [...PROJECTS.keys()], active: null };
-
 /* ─────────────── capsule markup, shared everywhere ─────────────── */
 function capHTML(p, withPrize = true) {
   return `
@@ -118,7 +106,6 @@ function capHTML(p, withPrize = true) {
     </div>
   </div>`;
 }
-
 /* ═══════════════ THE DOME ═══════════════ */
 /* 22 capsules sitting still inside the glass. Fixed coordinates, no motion —
    they are scenery, and a bowl of independently drifting balls is exactly the
@@ -152,7 +139,6 @@ function setDomeStock(n) {
   const show = Math.min(DOME_POS.length, Math.round(8 + n * 2.5));
   $$("#domeCaps .dcap").forEach((el, i) => { el.style.display = i < show ? "" : "none"; });
 }
-
 /* ═══════════════ THE GRID ═══════════════ */
 function renderGrid() {
   $("#capgrid").innerHTML = PROJECTS.map((p, i) => `
@@ -165,7 +151,6 @@ function renderGrid() {
       <h3 class="capcell__name">${p.name}</h3>
       <p class="capcell__meta">${p.meta}</p>
     </article>`).join("");
-
   $$(".capcell").forEach((cell) => {
     cell.addEventListener("click", () => openCell(cell, true));
     cell.addEventListener("keydown", (e) => {
@@ -174,7 +159,6 @@ function renderGrid() {
     attachTilt(cell);
   });
 }
-
 /* pointer tilt + specular — the card only moves while a pointer is on it */
 function attachTilt(cell) {
   const tilt = $(".cap__tilt", cell);
@@ -189,7 +173,6 @@ function attachTilt(cell) {
   });
   cell.addEventListener("pointerleave", () => { tilt.style.transform = ""; });
 }
-
 function openCell(cell, showDetail) {
   const i = +cell.dataset.i;
   const cap = $(".cap", cell);
@@ -206,7 +189,6 @@ function openCell(cell, showDetail) {
     renderDetail(i);
   }
 }
-
 function resealAll() {
   state.opened.clear();
   state.active = null;
@@ -225,11 +207,9 @@ function resealAll() {
   $("#plateTxt").textContent = state.coined ? "READY — TURN CRANK" : "INSERT COIN";
   updateCollected();
 }
-
 function updateCollected() {
   $("#collected").textContent = state.opened.size;
 }
-
 /* ═══════════════ DETAIL PANEL ═══════════════ */
 function renderDetail(i) {
   const p = PROJECTS[i];
@@ -249,7 +229,6 @@ function renderDetail(i) {
       </div>
     </div>`;
 }
-
 /* ═══════════════ FILTERS ═══════════════ */
 function initFilters() {
   $$(".ban").forEach((b) => b.addEventListener("click", () => {
@@ -262,7 +241,6 @@ function initFilters() {
     });
   }));
 }
-
 /* ═══════════════ THE COIN ═══════════════ */
 function initCoin() {
   const coin = $("#coin");
@@ -282,7 +260,6 @@ function initCoin() {
     }, 420);
   });
 }
-
 /* ═══════════════ THE CRANK ═══════════════ */
 /* Drag accumulates real angle deltas (atan2). One full 360° turn dispenses.
    The knurl layer rotates; the lighting layer above it never does — that is
@@ -291,12 +268,10 @@ function initKnob() {
   const knob = $("#knob"), knurl = $("#knurl");
   knob.classList.add("is-locked");
   let dragging = false, last = 0, spun = 0, base = 0;
-
   const angleOf = (e) => {
     const b = knob.getBoundingClientRect();
     return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI;
   };
-
   knob.addEventListener("pointerdown", (e) => {
     if (!state.coined) { nudgeCoin(); return; }
     dragging = true; last = angleOf(e); knob.setPointerCapture(e.pointerId);
@@ -316,7 +291,6 @@ function initKnob() {
   const end = () => { dragging = false; };
   knob.addEventListener("pointerup", end);
   knob.addEventListener("pointercancel", end);
-
   knob.addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;
     e.preventDefault();
@@ -324,7 +298,6 @@ function initKnob() {
     autoTurn();
   });
   $("#turnBtn").addEventListener("click", autoTurn);
-
   function autoTurn() {
     if (!state.coined || knob.dataset.busy) return;
     knob.dataset.busy = "1";
@@ -334,7 +307,6 @@ function initKnob() {
     setTimeout(() => { knurl.style.transition = ""; delete knob.dataset.busy; dispense(); }, 620);
   }
 }
-
 function nudgeCoin() {
   const coin = $("#coin");
   coin.animate(
@@ -344,7 +316,6 @@ function nudgeCoin() {
   );
   $("#plateTxt").textContent = "INSERT COIN FIRST";
 }
-
 /* ═══════════════ DISPENSE ═══════════════ */
 function dispense() {
   if (!state.queue.length) {
@@ -357,7 +328,6 @@ function dispense() {
   setDomeStock(state.queue.length);
   $("#plateTxt").textContent = `PULLED ${p.r}`;
   $("#trayHint").style.display = "none";
-
   const holder = $("#trayHolder");
   holder.innerHTML = `
     <div class="drop is-fresh" id="dropCap" role="button" tabindex="0"
@@ -365,7 +335,6 @@ function dispense() {
       ${capHTML(p)}
       <p class="drop__tag">tap to open</p>
     </div>`;
-
   const drop = $("#dropCap");
   const open = () => {
     drop.classList.remove("is-fresh");
@@ -382,7 +351,6 @@ function dispense() {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
   });
 }
-
 /* ═══════════════ DOME SPECULAR (pointer) ═══════════════ */
 function initDomeLight() {
   const m = $("#machineUnit"), spec = $(".dome__spec");
@@ -394,7 +362,6 @@ function initDomeLight() {
   });
   m.addEventListener("pointerleave", () => m.classList.remove("is-touched"));
 }
-
 /* ═══════════════ DROP RATES ═══════════════ */
 function renderRates() {
   $("#ratesList").innerHTML = RATES.map((r) => {
@@ -410,12 +377,10 @@ function renderRates() {
     </div>`;
   }).join("");
 }
-
 /* ═══════════════ SCROLL-IN, ONCE ═══════════════ */
 function initReveal() {
   $$(".sechead, .banners, .capgrid, .rates, .rates__foot, .prizes, .proof, .leaders, .counterwin, .stage")
     .forEach((el) => el.classList.add("reveal"));
-
   const io = new IntersectionObserver((entries) => {
     entries.forEach((en) => {
       if (!en.isIntersecting) return;
@@ -431,10 +396,8 @@ function initReveal() {
       }
     });
   }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
-
   $$(".reveal").forEach((el) => io.observe(el));
 }
-
 function countUp(el) {
   const target = parseFloat(el.dataset.count);
   const dec = +(el.dataset.decimal || 0);
@@ -450,7 +413,6 @@ function countUp(el) {
   };
   requestAnimationFrame(step);
 }
-
 /* ═══════════════ CLOCK ═══════════════ */
 function initClock() {
   const el = $("#clock");
@@ -462,7 +424,6 @@ function initClock() {
   tick();
   setInterval(tick, 30000);
 }
-
 /* ═══════════════ BOOT ═══════════════ */
 renderDome();
 renderGrid();
@@ -475,7 +436,6 @@ initReveal();
 initClock();
 setDomeStock(PROJECTS.length);
 $("#stock").textContent = PROJECTS.length;
-
 $("#openAll").addEventListener("click", () => {
   $$(".capcell").forEach((cell, k) => setTimeout(() => openCell(cell, false), k * 70));
   $("#plateTxt").textContent = "COLLECTION UNSEALED";

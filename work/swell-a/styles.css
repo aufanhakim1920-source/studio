@@ -1,10 +1,3 @@
-/* =========================================================
-   FATHOM — swell-a, the CHILL lane
-   Cool sea-mist ground, deep teal-green slab, IBM Plex Mono
-   + Fraunces display, system-UI body. Conventional, mobile-
-   first, legible in the dark at 5:40am.
-   ========================================================= */
-
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
@@ -70,8 +63,6 @@ ul { list-style: none; }
 
 .wrap { max-width: var(--col-max); margin: 0 auto; padding: 0 var(--pad-x); }
 
-/* -------------------------------------------------- texture layer -------- */
-/* graph-paper dot grid over the ground — apt for a tide-table product */
 body::before {
   content: '';
   position: fixed;
@@ -83,9 +74,6 @@ body::before {
 }
 body > * { position: relative; z-index: 1; }
 
-/* =========================================================
-   HEADER
-   ========================================================= */
 header.site {
   position: sticky;
   top: 0;
@@ -161,9 +149,6 @@ header.site {
 .btn-get:hover { background: var(--deep-2); }
 .btn-get:active { transform: translateY(1px); }
 
-/* =========================================================
-   BUTTONS — shared
-   ========================================================= */
 .btn-primary {
   min-height: 44px;
   padding: 0 26px;
@@ -190,9 +175,6 @@ header.site {
 }
 .btn-ghost:hover { background: rgba(255,255,255,.55); border-color: rgba(12,32,27,.24); }
 
-/* =========================================================
-   SECTION SCAFFOLDING
-   ========================================================= */
 section { padding: 34px 0; }
 .eyebrow {
   font-family: var(--font-mono);
@@ -218,9 +200,6 @@ section { padding: 34px 0; }
   max-width: 52ch;
 }
 
-/* =========================================================
-   HERO
-   ========================================================= */
 .hero { padding-top: 28px; padding-bottom: 4px; }
 .hero-top {
   display: flex; align-items: center; gap: 10px;
@@ -251,7 +230,6 @@ section { padding: 34px 0; }
 }
 .hero-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* the tide curve panel */
 .tide-panel {
   margin-top: 22px;
   background: var(--card);
@@ -264,7 +242,7 @@ section { padding: 34px 0; }
   overflow: hidden;
   position: relative;
 }
-/* ambient wall-light gradient — a fixed light source, not decoration */
+
 .tide-panel::before {
   content: '';
   position: absolute;
@@ -302,8 +280,6 @@ section { padding: 34px 0; }
 .tide-now-dot { fill: var(--signal); }
 .tide-now-ring { fill: none; stroke: var(--signal); stroke-width: 1.4; opacity: .5; }
 
-/* labels: real HTML over the SVG, positioned from the same computed points —
-   stays true 11px+ at every viewport instead of scaling down with the chart */
 .tide-marks { position: absolute; inset: 0; pointer-events: none; }
 .tide-label {
   position: absolute;
@@ -326,9 +302,6 @@ section { padding: 34px 0; }
   white-space: nowrap;
 }
 
-/* =========================================================
-   SCORES
-   ========================================================= */
 .activity-toggle {
   display: inline-flex;
   gap: 3px;
@@ -393,9 +366,6 @@ section { padding: 34px 0; }
 .score-band.b-low { color: var(--clay); }
 .score-reason { font-size: 13px; color: var(--ink-soft); }
 
-/* =========================================================
-   FORECAST STRIP
-   ========================================================= */
 .forecast-scroll {
   display: flex;
   gap: 8px;
@@ -433,9 +403,6 @@ section { padding: 34px 0; }
 }
 .day-score { font-family: var(--font-mono); font-weight: 600; font-size: 14px; }
 
-/* =========================================================
-   NUMBERS BAND
-   ========================================================= */
 .numbers { background: var(--deep); color: #fff; }
 .numbers .eyebrow { color: var(--deep-ink-2); }
 .numbers .section-title { color: #fff; }
@@ -507,9 +474,6 @@ section { padding: 34px 0; }
   transform-origin: left;
 }
 
-/* =========================================================
-   PRICING
-   ========================================================= */
 .pricing-scroll {
   display: flex;
   gap: 14px;
@@ -570,9 +534,6 @@ section { padding: 34px 0; }
   color: var(--ink-faint);
 }
 
-/* =========================================================
-   HONEST LIMITATION
-   ========================================================= */
 .limitation { padding: 40px 0 46px; }
 .limitation-card {
   max-width: 680px;
@@ -592,9 +553,6 @@ section { padding: 34px 0; }
 .limitation-figure .n { font-family: var(--font-mono); font-weight: 600; font-size: 15px; }
 .limitation-figure .lbl { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--ink-faint); text-transform: uppercase; }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
 footer.site {
   border-top: 1px solid var(--ink-line);
   padding: 20px 0 calc(20px + var(--safe-bottom));
@@ -608,9 +566,6 @@ footer.site {
 .footer-links a { transition: color var(--dur-fast) var(--ease-std); }
 .footer-links a:hover { color: var(--ink); }
 
-/* =========================================================
-   MOBILE STICKY SHEET — reused Scan&Go plumbing, reskinned
-   ========================================================= */
 .mobile-sheet {
   position: fixed;
   left: 0; right: 0; bottom: 0;
@@ -639,9 +594,6 @@ footer.site {
 body.has-mobile-sheet { padding-bottom: 78px; }
 @media (min-width: 768px) { body.has-mobile-sheet { padding-bottom: 0; } }
 
-/* =========================================================
-   MOTION — runtime opt-in only; JS-off shows final state
-   ========================================================= */
 .motion [data-rise] { opacity: 0; transform: translateY(14px); }
 .motion [data-rise].in { opacity: 1; transform: none; transition: opacity var(--dur-med) var(--ease-std), transform var(--dur-med) var(--ease-std); }
 .motion [data-rise-slow] { opacity: 0; transform: translateY(10px); }
@@ -651,9 +603,6 @@ body.has-mobile-sheet { padding-bottom: 78px; }
 .motion .hero-clip { clip-path: inset(0 100% 0 0); }
 .motion .hero-clip.in { clip-path: inset(0 0 0 0); transition: clip-path .38s var(--ease-std); }
 
-/* below-fold reveal states — ALL gated behind the runtime .motion class.
-   With no .motion class (JS never ran, or reduced-motion), every one of
-   these elements renders at its plain, fully-visible default above. */
 .motion .forecast-bar { transform: scaleY(0); transition: transform var(--dur-med) var(--ease-std); }
 .motion .forecast-bar.in { transform: scaleY(1); }
 
@@ -676,9 +625,6 @@ body.has-mobile-sheet { padding-bottom: 78px; }
   .flap-tile.flipping { transform: none !important; }
 }
 
-/* =========================================================
-   RESPONSIVE GUARDS
-   ========================================================= */
 @media (max-width: 480px) {
   .wrap { padding: 0 16px; }
   section { padding: 44px 0; }

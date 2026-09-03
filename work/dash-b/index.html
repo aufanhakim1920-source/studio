@@ -23,9 +23,7 @@
   <section class="hero">
     <div class="intro">
       <h1>The annual<br>skyline</h1>
-      <!-- was a paragraph explaining the object. A daily reader does not need
-           telling what a dial is; three totals, each with the shape that made
-           it, do more work in a quarter of the space. -->
+      
       <div class="yearstats" id="yearStats"></div>
     </div>
 
@@ -42,9 +40,7 @@
       <div class="console">
 
         <div class="dial-unit">
-          <!-- The stage exists purely to give .dial a positioning context the
-               size of the tick ring. Without it .dial's top/left:50% resolved
-               against <main> and the knob rendered 380px away, on the skyline. -->
+          
           <div class="dial-stage">
             <div class="tick-ring" id="tickRing" aria-hidden="true"></div>
             <div class="dial"
@@ -98,8 +94,6 @@
   </section>
 </main>
 
-<!-- The source note used to be four sentences. It is now the cleaning chain
-     drawn as one bar with three chips; the sentences live on in aria-label. -->
 <footer id="prov"></footer>
 
 <script src="app.js"></script>

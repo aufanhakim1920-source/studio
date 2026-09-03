@@ -1,47 +1,29 @@
-/* ============================================================================
-   NOCTURNE — direction A, "Paper you can pick up"
-   Material  : Template 12 · Paper Sheets on Void
-   Technique : Template 03 · Cardboard 3D Object Stage
-   ========================================================================== */
-
 :root{
-  /* --- Template 12 tokens, verbatim --- */
-  --bg-void:       #030303;   /* NOT #000 — the shadow needs headroom to be darker */
+  --bg-void:       #030303;   
   --paper-white:   #F4F4F2;
   --paper-grey:    #E5E5E2;
   --ink-black:     #0A0A0A;
   --ink-grey:      #555555;
   --accent-orange: #FF4400;
-
   --font-serif: 'Newsreader', 'Times New Roman', Times, serif;
   --font-mono:  'Courier Prime', 'Courier New', Courier, monospace;
-
-  --radius-none: 0px;         /* sharpness is a decision, not an absence */
+  --radius-none: 0px;         
   --shadow-paper: 0 24px 48px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4);
   --shadow-hover: 0 32px 64px rgba(0,0,0,0.8), 0 8px 16px rgba(0,0,0,0.5);
-
   --space-1:.5rem; --space-2:1rem; --space-3:2rem;
   --space-4:4rem;  --space-6:6rem; --space-8:8rem;
-
-  /* --- new here: the slab needs edge stock, three tones (Template 03 §2) --- */
-  --edge-lid:   #EDEDEA;   /* top edge, catching the lamp */
-  --edge-side:  #D3D3CF;   /* sides, turning away */
-  --edge-under: #BEBEBA;   /* bottom edge, in its own shadow */
+  --edge-lid:   #EDEDEA;   
+  --edge-side:  #D3D3CF;   
+  --edge-under: #BEBEBA;   
   --edge-lid-o:  #FF5C1F;
   --edge-side-o: #E03B00;
   --edge-under-o:#B62E00;
-
-  /* --- slab geometry, driven from one place (Template 03 §3) --- */
   --sw: 356px;
   --sh: 545px;
-
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);   /* one curve for the whole page */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);   
 }
-
 *{ box-sizing:border-box; margin:0; padding:0 }
-
 html{ background:var(--bg-void) }
-
 body{
   background:var(--bg-void);
   color:var(--paper-white);
@@ -50,38 +32,25 @@ body{
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-
-h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
-
-/* ---------------------------------------------------------------- texture
-   Two layers over the ground. The reference's own texture is the weakest in
-   the collection (one 5% square on z-index:-1) — upgraded here to grain +
-   a lamp pool, both on a POSITIVE stacking order. */
-
+h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   
 .lamp{
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background:
     radial-gradient(1100px 620px at 50% -6%, rgba(255,68,0,.075), transparent 62%),
     radial-gradient(900px 900px at 50% 30%, rgba(244,244,242,.030), transparent 70%);
 }
-
 .grain{
   position:fixed; inset:0; z-index:90; pointer-events:none;
-  opacity:.075;                    /* budgeted above 5% — under it, it vanishes */
+  opacity:.075;                    
   background-size:180px 180px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-
 .page{ position:relative; z-index:1 }
-
 .wrap{
   max-width:1400px;
   margin:0 auto;
   padding:var(--space-8) var(--space-4);
 }
-
-/* ---------------------------------------------------------------- type kit */
-
 .mono-label,
 .eyebrow,
 .stat-label,
@@ -94,24 +63,18 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   text-transform:uppercase;
   letter-spacing:.05em;
 }
-
 .eyebrow{ font-size:.72rem; letter-spacing:.16em; color:#6E6E69; margin-bottom:2.25rem }
-
 .hero h1{
   font-size:clamp(2.6rem, 6.2vw, 5.5rem);
   line-height:1;
   margin-bottom:2rem;
 }
-
 .lead{
   font-size:1.25rem;
   line-height:1.5;
   color:rgba(244,244,242,.70);
   max-width:46ch;
 }
-
-/* ---------------------------------------------------------------- the run */
-
 .run{
   list-style:none;
   display:grid;
@@ -120,11 +83,9 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   padding-top:2.25rem;
   border-top:1px solid rgba(244,244,242,.16);
 }
-
 .run-stop{ position:relative }
 .run-stop:nth-child(2){ text-align:center }
 .run-stop:nth-child(3){ text-align:right }
-
 .run-stop::before{
   content:''; position:absolute; top:calc(-2.25rem - 4px);
   width:8px; height:8px; background:var(--paper-white);
@@ -133,7 +94,6 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
 .run-stop:nth-child(2)::before{ left:50%; margin-left:-4px }
 .run-stop:nth-child(3)::before{ left:auto; right:0 }
 .run-stop.is-stop::before{ background:var(--accent-orange) }
-
 .run-time{ display:block; font-size:.8rem; color:var(--accent-orange); margin-bottom:.35rem }
 .run-name{ display:block; font-size:1.5rem; line-height:1.1 }
 .run-note{
@@ -143,37 +103,22 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
 }
 .run-stop:hover .run-note,
 .run-stop:focus-within .run-note{ opacity:1 }
-
-/* =========================================================== THE FARE ROW ==
-   One perspective for the whole row, so the three sheets share a vanishing
-   point and a lifted one genuinely occludes its neighbours.                */
-
 .fares{
   display:flex;
   justify-content:center;
   align-items:center;
   margin-top:var(--space-8);
   perspective:1400px;
-  /* The eye sits well above the desk rather than level with it. This is the
-     single line that makes the idea legible without a hover: it puts a ~13°
-     downward sightline on the top edge of every sheet, so all three
-     thicknesses — 6 / 18 / 34px, drawn to fare — can be compared before
-     anything is touched. Level with the row they are hairlines. */
   perspective-origin:50% -55%;
   transform-style:preserve-3d;
 }
-
-.fare + .fare{ margin-left:-18px }   /* a pile, not a grid: they really overlap */
-
+.fare + .fare{ margin-left:-18px }   
 .fare{
   position:relative;
   width:var(--sw);
   height:var(--sh);
   transform-style:preserve-3d;
 }
-
-/* the ambient half of --shadow-paper, promoted to its own object on the desk.
-   It stays at z=0 while the sheet lifts away from it. */
 .fare-cast{
   position:absolute; left:-10%; right:-10%; top:6%; bottom:-12%;
   background:radial-gradient(ellipse 58% 52% at 50% 64%,
@@ -182,77 +127,46 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   opacity:.9;
   transition:transform .45s var(--ease), opacity .45s var(--ease);
 }
-
-/* layer 1 — the lift. Depth replaces the reference's z-index ladder AND its
-   scale(1.05) on the featured card: the recommended fare is not bigger, it is
-   nearer, and perspective does the rest. */
 .fare-lift{
   position:absolute; inset:0;
   transform-style:preserve-3d;
   transform:translateZ(var(--rest));
   transition:transform .45s var(--ease);
 }
-
-/* layer 2 — the pointer tilt.
-   ⚠️ transform-origin is load-bearing, not taste. Pivoting at the centre makes
-   the sheet's lower half swing to NEGATIVE z, where it crosses the flat cast-
-   shadow plane at z=0 — and two intersecting surfaces inside preserve-3d get
-   split and interleaved by the compositor, which paints a hard grey wedge
-   across the bottom of the card. Hinging near the bottom edge (the way you
-   actually tip a card that is lying on a desk) keeps the whole sheet in front
-   of the shadow, and the artefact disappears. */
 .fare-tilt{
   position:absolute; inset:0;
   transform-style:preserve-3d;
   transform-origin:50% 90%;
-  /* -6° at rest: the sheets are lying on a desk being looked at from slightly
-     above, so every edge is already showing and the three thicknesses can be
-     compared before anything is touched. Six degrees is the largest tilt that
-     keeps each sheet's z-range clear of its neighbours' — past that the row
-     starts intersecting itself. */
   transform:rotateX(var(--rx,-6deg)) rotateY(var(--ry,0deg));
   transition:transform .18s var(--ease);
 }
-
-/* layer 3 — the ±1° scatter. Its own layer, so hovering never snaps it
-   straight (the documented trap in Template 12 §3). */
 .sheet{
   position:absolute; inset:0;
   transform-style:preserve-3d;
   transform:rotateZ(var(--scatter));
 }
-
 .fare.is-lifted .fare-lift{ transform:translateZ(var(--lift)) }
 .fare.is-lifted .fare-cast{ transform:translate(var(--shx,0px), calc(var(--shy,0px) + 26px)) scale(1.16); opacity:1 }
-
-/* picking one sheet up presses the others back down onto the desk. Without
-   this the featured sheet's resting depth (66px) still occludes a lifted
-   neighbour — real depth sorting has no z-index to cheat with. */
    --down keeps them a few px apart rather than all landing on z=0, because
    coplanar siblings inside preserve-3d z-fight (Template 03 §4). */
 .fares.has-lift .fare:not(.is-lifted) .fare-lift{ transform:translateZ(var(--down,0px)) }
 .fares.has-lift .fare:not(.is-lifted) .fare-cast{ opacity:.55 }
-
-/* -------------------------------------------------------------- the faces */
-
 .s-face,.s-edge{
   position:absolute; top:50%; left:50%;
   border-radius:var(--radius-none);
   backface-visibility:hidden;
 }
-
 .s-face{
   width:var(--sw); height:var(--sh);
   transform:translate(-50%,-50%) translateZ(calc(var(--sd) / 2));
   background:var(--paper-white);
   color:var(--ink-black);
-  box-shadow:0 4px 12px rgba(0,0,0,.4);      /* the contact half */
+  box-shadow:0 4px 12px rgba(0,0,0,.4);      
   display:flex; flex-direction:column;
   padding:1.85rem;
   transition:background .35s var(--ease), box-shadow .35s var(--ease);
 }
 .fare.is-lifted .s-face{ background:#FAFAF8; box-shadow:0 10px 22px rgba(0,0,0,.55) }
-
 .s-edge-top{
   width:var(--sw); height:var(--sd);
   transform:translate(-50%,-50%) rotateX(90deg) translateZ(calc(var(--sh) / 2));
@@ -273,30 +187,20 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   width:var(--sd); height:var(--sh);
   transform:translate(-50%,-50%) rotateY(90deg) translateZ(calc(var(--sw) / 2));
   background:var(--edge-side);
-  /* tear-off perforation down the stub edge */
   background-image:repeating-linear-gradient(to bottom,
     transparent 0 12px, rgba(0,0,0,.22) 12px 16px);
 }
-
-/* the spine — the whole point of the direction. Only thick stock has room. */
 .spine{
   font-size:11px; line-height:1; letter-spacing:.18em;
   color:#8C8C87; white-space:nowrap;
 }
 .fare[data-fare="berth"] .spine{ font-size:9px; letter-spacing:.1em; color:rgba(0,0,0,.55) }
-/* Seat is 6px of stock. There is nothing to print on, so it is cut layers. */
 .fare[data-fare="seat"] .s-edge-top{
   background:linear-gradient(var(--edge-lid) 0 38%, #D6D6D2 38% 62%, var(--edge-lid) 62% 100%);
 }
-
-/* --------------------------------------------------------- face contents */
-
 .s-head{ border-bottom:1px solid rgba(0,0,0,.1); padding-bottom:1.25rem }
-
 .mono-label{ font-size:.68rem; color:var(--ink-grey); margin-bottom:.9rem }
-
 .s-name{ font-size:2rem; line-height:1; margin-bottom:.4rem }
-
 .s-price{
   font-size:3.4rem; line-height:1;
   display:flex; align-items:baseline; gap:.6rem;
@@ -306,12 +210,10 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   font-family:var(--font-mono); font-size:.62rem;
   text-transform:uppercase; letter-spacing:.14em; color:var(--ink-grey);
 }
-
 .s-blurb{
   font-family:var(--font-mono); font-size:.78rem; line-height:1.6;
   color:#3A3A38;
 }
-
 .features{ list-style:none; flex-grow:1; padding-top:.4rem }
 .features li{
   font-family:var(--font-mono); font-size:.76rem; line-height:1.5;
@@ -320,7 +222,6 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   display:flex; gap:.7rem;
 }
 .features li::before{ content:"—"; color:var(--accent-orange); flex:none }
-
 .btn{
   display:block; width:100%; margin-top:1.35rem;
   padding:.95rem 1rem;
@@ -330,9 +231,6 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   transition:color .2s, background .2s;
 }
 .btn:hover,.btn:focus-visible{ color:var(--accent-orange) }
-
-/* ------------------------------------------- the featured sheet, inverted */
-
 .fare.is-featured .s-face{ background:var(--accent-orange); color:var(--ink-black) }
 .fare.is-featured.is-lifted .s-face{ background:#FF5417 }
 .fare.is-featured .s-head{ border-bottom-color:rgba(0,0,0,.22) }
@@ -340,7 +238,7 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
 .fare.is-featured .s-price span{ color:rgba(0,0,0,.62) }
 .fare.is-featured .s-blurb{ color:rgba(0,0,0,.78) }
 .fare.is-featured .features li{ border-bottom-color:rgba(0,0,0,.16) }
-.fare.is-featured .features li::before{ color:var(--ink-black) }   /* on a saturated ground, black is the accent */
+.fare.is-featured .features li::before{ color:var(--ink-black) }   
 .fare.is-featured .btn{ color:var(--accent-orange) }
 .fare.is-featured .btn:hover,
 .fare.is-featured .btn:focus-visible{ color:var(--paper-white) }
@@ -348,20 +246,12 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
 .fare.is-featured .s-edge-bottom{ background:var(--edge-under-o) }
 .fare.is-featured .s-edge-left,
 .fare.is-featured .s-edge-right{ background-color:var(--edge-side-o) }
-
 .fare-foot{
   font-family:var(--font-mono); font-size:.66rem; letter-spacing:.12em;
   text-transform:uppercase; color:#787872;
-  text-align:center; margin-top:5.5rem;   /* clears a lifted sheet's lower edge */
+  text-align:center; margin-top:5.5rem;   
 }
 .ff-touch{ display:none }
-
-/* ================================================================= STATS ==
-   Two odometers only. The other two figures are typeset.
-   Each odometer is many independent movers (963 = 3, 148,320 = 6); nine on
-   screen is inside the reference's own budget of thirteen, and four rolling
-   blocks would not be. See [[Motion Must Be User Driven]].                  */
-
 .stats{
   margin-top:var(--space-6);
   padding-top:var(--space-6);
@@ -370,15 +260,10 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
 }
 .stats-head h2{ font-size:2.5rem; line-height:1.1; margin-bottom:1.25rem }
 .stats-head p{ font-size:1.05rem; color:rgba(244,244,242,.62); max-width:34ch }
-
 .stats-grid{ display:grid; grid-template-columns:1fr 1fr; gap:3.25rem 3rem }
-
 .stat-label{
   font-size:.68rem; color:var(--accent-orange); margin-bottom:.9rem;
-  /* declared once, on its own class — the reference relies on source order
-     here and silently loses the colour if the stylesheet is reordered. */
 }
-
 .odometer,.stat-static{
   font-family:var(--font-mono); font-weight:700;
   font-variant-numeric:tabular-nums;
@@ -386,7 +271,6 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   line-height:1;
 }
 .odometer{ display:inline-flex; align-items:baseline }
-
 .odo-window{
   display:inline-block; height:1em; overflow:hidden;
   vertical-align:bottom; position:relative;
@@ -398,13 +282,9 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
 }
 .odo-num{ height:1em; display:flex; align-items:center; justify-content:center }
 .odo-char{ height:1em; display:flex; align-items:center; color:rgba(255,255,255,.3) }
-
 .odometer.is-visible .odo-strip{
   transform:translateY(calc(var(--target-digit) * -1em));
 }
-
-/* ================================================================== FOOT ==*/
-
 .foot{
   margin-top:var(--space-8);
   padding-top:var(--space-3);
@@ -412,17 +292,10 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap;
   font-size:.66rem; letter-spacing:.1em; color:#5C5C58;
 }
-
-/* ============================================================ RESPONSIVE ==
-   The slab is a pointer-device idea. Below 900px it collapses to its front
-   face only — but the thickness survives as a left edge stripe, so the
-   information degrades instead of disappearing. */
-
 @media (max-width:1180px){
   :root{ --sw:300px; --sh:640px }
   .wrap{ padding:var(--space-6) var(--space-3) }
 }
-
 @media (max-width:900px){
   .fares{
     perspective:none; transform-style:flat;
@@ -446,29 +319,22 @@ h1,h2,h3{ font-weight:400; letter-spacing:-0.02em }   /* never bold */
   }
   .fare.is-lifted .s-face{ box-shadow:var(--shadow-hover) }
   .fare.is-featured .s-face{ border-left-color:#8F2400 }
-
-  /* nothing gets picked up on a touch device — say the true thing instead */
   .ff-pointer{ display:none }
   .ff-touch{ display:inline }
-
   .stats{ grid-template-columns:1fr; gap:var(--space-3) }
   .stats-head h2{ font-size:2rem }
   .stats-grid{ gap:2.5rem 2rem }
   .run{ grid-template-columns:1fr; gap:1.9rem; padding-top:2rem }
   .run-stop,.run-stop:nth-child(2),.run-stop:nth-child(3){ text-align:left; padding-left:1.5rem }
   .run-stop::before{ top:.55rem; left:0 !important; right:auto !important; margin-left:0 }
-  .run-note{ opacity:1 }        /* no hover on touch — just show it */
+  .run-note{ opacity:1 }        
 }
-
 @media (max-width:520px){
   .wrap{ padding:var(--space-4) 1.25rem }
   .s-face{ padding:1.5rem }
   .s-price{ font-size:2.8rem }
   .foot{ flex-direction:column; gap:.6rem }
 }
-
-/* ------------------------------------------------------- reduced motion --
-   The payoff of a CSS-only odometer: one line and it snaps to value. */
 @media (prefers-reduced-motion:reduce){
   .odo-strip{ transition:none }
   .fare-lift,.fare-tilt,.fare-cast,.s-face,.run-note{ transition:none }

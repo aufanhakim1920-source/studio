@@ -1,10 +1,3 @@
-/* Northbound — LANE 1: chill.
-   Clean, warm, conventional. The lane a café owner would sign off without
-   asking questions: hero, hours, menu, beans, visit. Nothing to learn.
-   Palette: paper cream, espresso brown, one olive accent.
-   Motion: entrances, scroll reveals, hover — scoped to .motion so the page
-   is complete without JavaScript. */
-
 :root{
   --paper:  #F3EDE3;
   --paper-2:#EAE2D4;
@@ -34,7 +27,6 @@ body{
 .skip{ position:absolute; left:-9999px; background:var(--ink); color:var(--paper); padding:12px 16px; z-index:99; }
 .skip:focus{ left:0; top:0; }
 
-/* ── bar ──────────────────────────────────────────────────────────────── */
 .bar{
   position:sticky; top:0; z-index:40;
   display:flex; align-items:center; gap:20px;
@@ -62,7 +54,6 @@ body{
 }
 .bar-cta:hover{ background:var(--olive); }
 
-/* ── hero ─────────────────────────────────────────────────────────────── */
 .hero{ padding:clamp(46px,8vw,100px) var(--pad) clamp(34px,5vw,58px); max-width:1100px; }
 .kicker{
   margin:0 0 20px; font-size:12.5px; letter-spacing:.18em; text-transform:uppercase;
@@ -92,7 +83,6 @@ h1{
 .btn:active{ transform:translateY(1px); }
 .btn:focus-visible{ outline:3px solid var(--olive); outline-offset:3px; }
 
-/* ── hours strip ──────────────────────────────────────────────────────── */
 .hours-strip{
   display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
   background:var(--rule); border-block:1px solid var(--rule);
@@ -107,7 +97,6 @@ h1{
   font-size:clamp(18px,2.2vw,24px); letter-spacing:-.01em;
 }
 
-/* ── sections ─────────────────────────────────────────────────────────── */
 .section{ padding:clamp(50px,7vw,90px) var(--pad); }
 .s-head{ margin-bottom:36px; }
 .s-num{
@@ -119,7 +108,6 @@ h2{
   font-size:clamp(26px,4.4vw,44px); line-height:1.1; letter-spacing:-.022em;
 }
 
-/* ── menu ─────────────────────────────────────────────────────────────── */
 .menus{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(24px,4vw,56px); }
 .menu-col h3{
   margin:0 0 18px; padding-bottom:12px; border-bottom:1.5px solid var(--ink);
@@ -131,7 +119,7 @@ h2{
   padding:9px 6px;
 }
 .menu-col dt{ font-size:15.5px; }
-/* the leader dots are drawn, so they stretch to whatever the name leaves */
+
 .menu-col .dots{
   margin:0; height:1px; align-self:center;
   background-image:radial-gradient(circle, var(--rule) 1px, transparent 1px);
@@ -143,7 +131,6 @@ h2{
 }
 .col-note{ margin:18px 0 0; font-size:13.5px; color:var(--ink-3); }
 
-/* ── beans ────────────────────────────────────────────────────────────── */
 .beans{ background:var(--paper-2); border-block:1px solid var(--rule); }
 .bean-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
 .bean{
@@ -162,7 +149,6 @@ h2{
 .b-origin{ margin:5px 0 0 !important; font-size:13px; color:var(--ink-3); }
 .bean p{ margin:13px 0 0; font-size:14.5px; line-height:1.6; color:var(--ink-2); }
 
-/* ── visit ────────────────────────────────────────────────────────────── */
 .visit{
   display:grid; grid-template-columns:1fr .85fr; gap:clamp(26px,4vw,56px);
   align-items:center;
@@ -175,8 +161,6 @@ h2{
 .v-facts dt{ font:500 11.5px/1.5 var(--sans); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
 .v-facts dd{ margin:0; font-size:14.5px; text-align:right; }
 
-/* A drawn map. We have no rights to map tiles, and an iframe of someone
-   else's map is not a design decision — this one matches the palette. */
 .v-map{
   position:relative; aspect-ratio:4/3; border-radius:var(--r-md);
   background:var(--paper-2); border:1px solid var(--rule); overflow:hidden;
@@ -200,7 +184,6 @@ h2{
   color:var(--ink-2);
 }
 
-/* ── foot ─────────────────────────────────────────────────────────────── */
 .foot{
   display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
   padding:22px var(--pad) 30px; border-top:1px solid var(--rule);
@@ -208,7 +191,6 @@ h2{
 .foot p{ margin:0; font-size:12.5px; color:var(--ink-3); }
 .foot b{ color:var(--ink-2); }
 
-/* ── narrower ─────────────────────────────────────────────────────────── */
 @media (max-width:860px){
   .menus{ grid-template-columns:1fr; }
   .bean-grid{ grid-template-columns:1fr; }
@@ -224,9 +206,6 @@ h2{
   :root{ --ink-2:#43342A; --ink-3:#5C4B3E; --rule:#B9A98F; }
 }
 
-/* ── motion ───────────────────────────────────────────────────────────────
-   Scoped to .motion, added by app.js at runtime — with JS off nothing is
-   hidden and the whole menu stays readable. */
 .motion [data-enter], .motion [data-rise]{ opacity:0; transform:translateY(16px); }
 .motion [data-enter].in, .motion [data-rise].in{
   opacity:1; transform:none;

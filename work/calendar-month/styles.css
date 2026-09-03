@@ -1,8 +1,3 @@
-/* Calendar — LANE 1: chill.
-   Quiet, light, close to the tools he already lives in. Month grid on the
-   left, the selected day on the right, form inline rather than in a modal.
-   Palette: paper white, graphite ink, one indigo. Nothing loops. */
-
 :root{
   --bg:     #FAFAF9;
   --panel:  #FFFFFF;
@@ -15,29 +10,20 @@
   --indigo: #3E63DD;
   --indigo-s:#EDF1FE;
   --danger: #B4231C;
-
   --sans: "Figtree", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "DM Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-
   --r:  10px;
   --r-s: 7px;
   --ease: cubic-bezier(.2,.8,.24,1);
 }
-
 *{ box-sizing:border-box; }
-/* ⚠️ A class rule with `display:` beats the [hidden] attribute, so .form{
-   display:grid } left the "New event" form on screen at load even though the
-   markup said hidden. Any element given a display in CSS needs this. */
 [hidden]{ display:none !important; }
 html,body{ height:100%; }
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font:400 15px/1.55 var(--sans); -webkit-font-smoothing:antialiased;
 }
-
 .app{ max-width:1220px; margin:0 auto; padding:22px clamp(14px,3vw,34px) 30px; }
-
-/* ── top ──────────────────────────────────────────────────────────────── */
 .top{
   display:flex; align-items:center; gap:14px; flex-wrap:wrap;
   padding-bottom:18px; border-bottom:1px solid var(--rule);
@@ -67,14 +53,10 @@ h1{
 button:focus-visible, input:focus-visible, select:focus-visible{
   outline:2px solid var(--indigo); outline-offset:2px;
 }
-
-/* ── layout ───────────────────────────────────────────────────────────── */
 .body{
   display:grid; grid-template-columns:minmax(0,1fr) 350px; gap:20px;
   padding-top:20px; align-items:start;
 }
-
-/* ── month ────────────────────────────────────────────────────────────── */
 .dow{
   display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:8px;
 }
@@ -104,15 +86,12 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 .pips{ display:flex; align-items:center; gap:4px; flex-wrap:wrap; margin-top:auto; }
 .pips i{ width:7px; height:7px; border-radius:999px; display:block; }
 .pips em{ font:500 11px/1 var(--mono); font-style:normal; color:var(--ink-3); }
-
 .legend{
   display:flex; gap:16px; list-style:none; margin:16px 0 0; padding:0;
   font-size:12.5px; color:var(--ink-2);
 }
 .legend li{ display:flex; align-items:center; gap:7px; }
 .legend i{ width:9px; height:9px; border-radius:999px; }
-
-/* ── day panel ────────────────────────────────────────────────────────── */
 .day{
   background:var(--panel); border:1px solid var(--rule); border-radius:var(--r);
   padding:18px 18px 20px; position:sticky; top:20px;
@@ -124,7 +103,6 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   background:var(--ink); color:#fff; padding:5px 8px; border-radius:999px;
 }
 .d-meta{ margin:6px 0 16px; font-size:13px; color:var(--ink-3); }
-
 .list{ list-style:none; margin:0 0 14px; padding:0; display:grid; gap:7px; }
 .ev{
   display:grid; grid-template-columns:3px 1fr auto; gap:11px; align-items:center;
@@ -136,7 +114,7 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 .ev-time{ margin:2px 0 0; font:400 12px/1.4 var(--mono); color:var(--ink-3); }
 .ev-acts{ display:flex; gap:4px; }
 .mini{
-  min-height:44px; padding:0 11px;   /* thumb-sized; 32px was unhittable */
+  min-height:44px; padding:0 11px;   
   font:500 12px/1 var(--sans); color:var(--ink-2);
   background:transparent; border:1px solid transparent; border-radius:6px; cursor:pointer;
   transition:background .13s var(--ease), color .13s var(--ease);
@@ -144,7 +122,6 @@ button:focus-visible, input:focus-visible, select:focus-visible{
 .mini:hover{ background:var(--panel); color:var(--ink); border-color:var(--rule-2); }
 .mini.danger:hover{ color:var(--danger); border-color:var(--danger); }
 .empty{ padding:14px 2px; font-size:13.5px; color:var(--ink-3); }
-
 .add{
   width:100%; min-height:44px;
   font:500 14px/1 var(--sans); color:var(--ink);
@@ -152,8 +129,6 @@ button:focus-visible, input:focus-visible, select:focus-visible{
   cursor:pointer; transition:background .14s var(--ease), border-color .14s var(--ease);
 }
 .add:hover{ background:var(--sunk); border-color:var(--indigo); color:var(--indigo); }
-
-/* ── form ─────────────────────────────────────────────────────────────── */
 .form{ display:grid; gap:11px; padding-top:4px; }
 .f-title{ margin:0; font-size:14px; font-weight:600; }
 .f-row{ display:grid; gap:5px; }
@@ -174,12 +149,8 @@ input:focus, select:focus{ border-color:var(--indigo); }
   transition:background .14s var(--ease);
 }
 .solid:hover{ background:var(--indigo); }
-
-/* ── foot ─────────────────────────────────────────────────────────────── */
 .foot{ margin-top:22px; padding-top:14px; border-top:1px solid var(--rule); }
 .foot p{ margin:0; font:400 12px/1.6 var(--mono); color:var(--ink-3); }
-
-/* ── narrower ─────────────────────────────────────────────────────────── */
 @media (max-width:900px){
   .body{ grid-template-columns:1fr; }
   .day{ position:static; }
@@ -191,7 +162,6 @@ input:focus, select:focus{ border-color:var(--indigo); }
   .dow span{ font-size:11px; }
   .legend{ gap:12px; font-size:12px; }
 }
-
 @media (prefers-contrast:more){
   :root{ --ink-2:#33333A; --ink-3:#55555C; --rule:#C9C9C5; --rule-2:#A9A9A4; }
 }

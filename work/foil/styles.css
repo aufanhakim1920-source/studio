@@ -1,17 +1,3 @@
-/* ============================================================
-   AUFAN — FOIL
-   Portfolio built as a card collection. Every bit of motion here
-   is driven by the visitor: tilt follows the pointer, foil follows
-   the tilt, cards turn when clicked. Nothing drifts on its own.
-
-   From the library:
-     · warm ground + saturated colour blocks + 32px radii   → shelf recipe (the one he liked)
-     · one tactile thing you can pick up                    → shelf recipe, applied to a card pile
-     · corner brackets on photos                            → Web Elements Catalogue
-     · dotted leader rows                                   → Web Elements Catalogue
-     · overshoot easing on entrance                         → Motion Specimen
-   ============================================================ */
-
 :root {
   --paper:   #F1EDE2;
   --paper-2: #E7E2D3;
@@ -20,23 +6,17 @@
   --ink-30:  rgba(23, 21, 15, 0.24);
   --line:    rgba(23, 21, 15, 0.14);
   --cream:   #F6F2E6;
-
   --lime:   #C8F53C;
   --coral:  #FF6B4A;
   --teal:   #17A79A;
   --violet: #6A4BE8;
-
   --display: 'Bricolage Grotesque', 'Figtree', sans-serif;
   --body:    'Figtree', -apple-system, sans-serif;
   --mono:    'Space Mono', ui-monospace, monospace;
-
   --pop: cubic-bezier(0.22, 1.4, 0.36, 1);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--paper);
   color: var(--ink);
@@ -46,8 +26,6 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-
-/* a soft warm wash instead of a moving background — depth, no drift */
 body::before {
   content: "";
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
@@ -56,11 +34,9 @@ body::before {
     radial-gradient(50vw 50vw at 96% 12%,  rgba(255, 107, 74, 0.22), transparent 62%),
     radial-gradient(55vw 55vw at 70% 96%,  rgba(106, 75, 232, 0.16), transparent 62%);
 }
-
 a { color: inherit; }
 img { display: block; max-width: 100%; }
 ::selection { background: var(--lime); color: var(--ink); }
-
 .mono {
   font-family: var(--mono);
   font-size: 11px;
@@ -68,7 +44,6 @@ img { display: block; max-width: 100%; }
   text-transform: uppercase;
   color: var(--ink-60);
 }
-
 .kicker {
   display: block;
   font-family: var(--mono);
@@ -78,10 +53,7 @@ img { display: block; max-width: 100%; }
   color: var(--ink-60);
   margin-bottom: 18px;
 }
-
 h1, h2, h3 { font-family: var(--display); font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; }
-
-/* ═══════════════ NAV ═══════════════ */
 .nav {
   position: sticky; top: 14px; z-index: 100;
   width: min(1280px, 100% - 2.5rem);
@@ -98,7 +70,6 @@ h1, h2, h3 { font-family: var(--display); font-weight: 800; letter-spacing: -0.0
 .nav__links { display: flex; gap: 1.35rem; margin-left: auto; }
 .nav__links a { text-decoration: none; font-size: 15px; font-weight: 500; color: var(--ink-60); transition: color 0.18s; }
 .nav__links a:hover { color: var(--ink); }
-
 .pill {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 8px 15px; border-radius: 999px;
@@ -108,14 +79,10 @@ h1, h2, h3 { font-family: var(--display); font-weight: 800; letter-spacing: -0.0
 }
 .pill i { width: 7px; height: 7px; border-radius: 50%; background: #1c7a3f; animation: blip 2.6s ease-in-out infinite; }
 @keyframes blip { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
-
-/* ═══════════════ LAYOUT ═══════════════ */
 .hero, .stats, .section, .foot { width: min(1280px, 100% - 2.5rem); margin-inline: auto; }
 .section { padding: 92px 0 0; }
 .section__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 26px; }
 .section__head h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
-
-/* ═══════════════ HERO ═══════════════ */
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -130,10 +97,8 @@ h1 em {
   padding: 0 0.08em;
 }
 .lede { margin-top: 22px; font-size: 18px; color: var(--ink-60); max-width: 46ch; }
-
 .hero__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .hint { margin-top: 16px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-30); }
-
 .btn {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 15px 26px; border: none; border-radius: 999px; cursor: pointer;
@@ -146,8 +111,6 @@ h1 em {
 .btn:hover span { transform: translateX(4px); }
 .btn--ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink-30); }
 .btn--ghost:hover { border-color: var(--ink); box-shadow: none; }
-
-/* ═══════════════ THE PILE ═══════════════ */
 .deck {
   position: relative;
   height: 460px;
@@ -162,7 +125,6 @@ h1 em {
 }
 .deck__stack { position: relative; width: 262px; height: 366px; transform-style: preserve-3d; }
 .deck__count { position: absolute; bottom: -4px; left: 50%; translate: -50% 0; }
-
 .dcard {
   position: absolute; inset: 0;
   border-radius: 22px;
@@ -173,8 +135,6 @@ h1 em {
 }
 .dcard.is-dragging { cursor: grabbing; transition: none; }
 .dcard.is-gone { transition: transform 0.45s ease-out, opacity 0.45s ease-out; opacity: 0; pointer-events: none; }
-
-/* ═══════════════ CARD FACE (shared by pile + grid) ═══════════════ */
 .cface {
   position: absolute; inset: 0;
   border-radius: 22px;
@@ -185,10 +145,8 @@ h1 em {
   padding: 18px 18px 20px;
   isolation: isolate;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  /* so the monogram can be sized in cqw and scale with whatever card holds it */
   container-type: inline-size;
 }
-/* pattern wash so the foil has something to break over */
 .cface::before {
   content: "";
   position: absolute; inset: 0; z-index: 0;
@@ -197,7 +155,6 @@ h1 em {
   opacity: 0.16;
 }
 .cface > * { position: relative; z-index: 2; }
-
 .cface__top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .cface__no { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; opacity: 0.75; }
 .cface__status {
@@ -206,7 +163,6 @@ h1 em {
   background: rgba(246, 242, 230, 0.18);
   border: 1px solid rgba(246, 242, 230, 0.32);
 }
-
 .cface__art { flex: 1; display: grid; place-items: center; }
 .cface__mono {
   font-family: var(--display); font-weight: 800;
@@ -217,17 +173,12 @@ h1 em {
 }
 .cface__name { font-family: var(--display); font-weight: 800; font-size: 25px; letter-spacing: -0.035em; line-height: 1.05; }
 .cface__meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.72; margin-top: 7px; }
-
-/* ---- the foil: two stacked layers, both driven by pointer position ---- */
 .foil, .glare {
   position: absolute; inset: 0; z-index: 3;
   border-radius: inherit; pointer-events: none;
   opacity: 0;
   transition: opacity 0.28s ease;
 }
-/* wide transparent gaps between the rainbow bands — a full-strength repeating
-   gradient washes the card's own colour out completely and every card reads
-   the same. The base colour has to survive the foil. */
 .foil {
   background: repeating-linear-gradient(
     112deg,
@@ -252,8 +203,6 @@ h1 em {
 }
 .is-lit .foil { opacity: 0.34; }
 .is-lit .glare { opacity: 1; }
-
-/* ═══════════════ STATS ═══════════════ */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 54px; }
 .stat {
   border-radius: 30px;
@@ -272,15 +221,11 @@ h1 em {
 .stat > * { position: relative; z-index: 1; }
 .stat b { font-family: var(--display); font-weight: 800; font-size: clamp(2.4rem, 4.4vw, 3.5rem); letter-spacing: -0.045em; line-height: 1; }
 .stat b small { font-size: 0.42em; font-weight: 600; letter-spacing: -0.02em; }
-/* must be a CHILD selector — `.stat span` also catches the counter <span> inside
-   the <b> and silently shrinks the big number to caption size */
 .stat > span { font-size: 14px; line-height: 1.4; opacity: 0.78; max-width: 26ch; }
 .stat--lime   { background: var(--lime); }
 .stat--coral  { background: var(--coral); }
 .stat--teal   { background: var(--teal);  color: var(--cream); }
 .stat--violet { background: var(--violet); color: var(--cream); }
-
-/* ═══════════════ LEGEND ═══════════════ */
 .legend { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 22px; }
 .chip {
   display: inline-flex; align-items: center; gap: 7px;
@@ -293,12 +238,7 @@ h1 em {
 .chip:hover { transform: translateY(-2px); border-color: var(--ink-30); }
 .chip.is-off { opacity: 0.4; }
 .chip i { width: 9px; height: 9px; border-radius: 3px; background: var(--c); }
-
-/* ═══════════════ THE GRID ═══════════════ */
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-
-/* three nested layers so no two systems ever write the same transform:
-   .card = perspective · .card__tilt = pointer · .card__flip = turn */
 .card {
   aspect-ratio: 63 / 88;
   perspective: 1200px;
@@ -318,8 +258,6 @@ h1 em {
 .card.is-flipped .card__flip { transform: rotateY(180deg); }
 .card__face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 22px; }
 .card__face--back { transform: rotateY(180deg); }
-
-/* ---- back of the card ---- */
 .cback {
   position: absolute; inset: 0;
   border-radius: 22px; overflow: hidden;
@@ -329,8 +267,6 @@ h1 em {
   display: flex; flex-direction: column; gap: 12px;
   container-type: inline-size;
 }
-/* the same monogram as the front, ghosted — fills the dead space a short
-   description leaves and ties the two sides together */
 .cback__mark {
   position: absolute; right: -8px; bottom: 78px; z-index: 0;
   font-family: var(--display); font-weight: 800; line-height: 0.8;
@@ -350,8 +286,6 @@ h1 em {
 .cback__link { font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--c); }
 .cback__link:hover { text-decoration: underline; }
 .cback__back { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-30); }
-
-/* ═══════════════ RULES ═══════════════ */
 .rules { list-style: none; display: grid; gap: 14px; }
 .rule {
   display: grid; grid-template-columns: 86px 1fr; gap: 22px; align-items: start;
@@ -367,13 +301,10 @@ h1 em {
 .rule h3 { font-size: clamp(1.15rem, 2.1vw, 1.5rem); margin-bottom: 7px; }
 .rule p { font-size: 15.5px; color: var(--ink-60); max-width: 68ch; }
 .rule em { font-style: italic; color: var(--ink); }
-
-/* ═══════════════ PROOF ═══════════════ */
 .proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .shot__frame { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--paper-2); }
 .shot__frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
 .shot:hover .shot__frame img { transform: scale(1.045); }
-/* corner brackets */
 .shot__frame::before, .shot__frame::after {
   content: ""; position: absolute; width: 26px; height: 26px; pointer-events: none;
   border: 2px solid rgba(246, 242, 230, 0.85);
@@ -382,8 +313,6 @@ h1 em {
 .shot__frame::after  { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 .shot figcaption { margin-top: 13px; font-size: 14px; color: var(--ink-60); }
 .shot figcaption b { color: var(--ink); font-weight: 600; }
-
-/* dotted leader rows */
 .leaders { list-style: none; margin-top: 46px; }
 .leaders li {
   position: relative;
@@ -397,8 +326,6 @@ h1 em {
 }
 .leaders li span { position: relative; z-index: 1; background: var(--paper); padding-right: 10px; }
 .leaders li span:last-child { padding: 0 0 0 10px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.08em; color: var(--ink-60); }
-
-/* ═══════════════ CONTACT ═══════════════ */
 .contact__card {
   border-radius: 36px;
   padding: clamp(34px, 5vw, 62px);
@@ -417,16 +344,9 @@ h1 em {
 .contact__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
 .contact__actions .btn { background: var(--lime); color: var(--ink); }
 .contact__actions .btn--ghost { background: transparent; color: var(--cream); border-color: rgba(246, 242, 230, 0.3); }
-
-/* ═══════════════ FOOT ═══════════════ */
 .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 46px 0 56px; margin-top: 70px; border-top: 1px solid var(--line); }
-
-/* ═══════════════ REVEAL ═══════════════ */
-/* only hides once JS has proved it can un-hide */
 html.anim-ready .rise { opacity: 0; transform: translateY(26px); }
 html.anim-ready .rise.in { opacity: 1; transform: none; transition: opacity 0.6s ease, transform 0.7s var(--pop); }
-
-/* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 1080px) {
   .hero { grid-template-columns: 1fr; }
   .deck { height: 420px; order: -1; }
@@ -435,7 +355,6 @@ html.anim-ready .rise.in { opacity: 1; transform: none; transition: opacity 0.6s
   .proof { grid-template-columns: 1fr 1fr; }
   .proof .shot:last-child { grid-column: 1 / -1; }
 }
-
 @media (max-width: 720px) {
   .nav { padding-left: 18px; }
   .nav__links { display: none; }
@@ -446,7 +365,6 @@ html.anim-ready .rise.in { opacity: 1; transform: none; transition: opacity 0.6s
   .rule { grid-template-columns: 1fr; gap: 10px; }
   .section { padding-top: 68px; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { animation: none !important; transition-duration: 0.01ms !important; }

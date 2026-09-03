@@ -1,32 +1,21 @@
-/* ============================================================
-   Raufan Hakim — Portfolio
-   Design template: "Pixel Bloom" cobalt portfolio
-   (vault: Claude Second Brain/Design Templates/Pixel Bloom Cobalt Portfolio.md)
-   Tailwind CDN handles utilities; this file holds the design's own system.
-   ============================================================ */
-
 :root {
   --bg-blue: #0044CC;
   --bg-blue-deep: #003399;
   --grid-color: rgba(255, 255, 255, 0.08);
-  --gold: #FDE047;          /* tailwind yellow-300 — the single accent */
+  --gold: #FDE047;          
   --rule: rgba(255, 255, 255, 0.14);
 }
-
 body {
   background-color: var(--bg-blue);
   color: #ffffff;
   font-family: 'Space Mono', monospace;
   overflow-x: hidden;
 }
-
 .font-serif-italic {
   font-family: 'Playfair Display', serif;
   font-style: italic;
   font-weight: 400;
 }
-
-/* ---------- backdrop ---------- */
 .bg-grid {
   background-size: 60px 60px;
   background-image:
@@ -35,33 +24,23 @@ body {
   mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle at center, black 60%, transparent 100%);
 }
-
-/* ---------- float loops ---------- */
 @keyframes float-slow   { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 @keyframes float-medium { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 @keyframes float-fast   { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
 .animate-float-slow   { animation: float-slow 6s ease-in-out infinite; }
 .animate-float-medium { animation: float-medium 5s ease-in-out infinite; }
 .animate-float-fast   { animation: float-fast 4s ease-in-out infinite; }
-
 .delay-100  { animation-delay: 100ms; }
 .delay-200  { animation-delay: 200ms; }
 .delay-300  { animation-delay: 300ms; }
 .delay-500  { animation-delay: 500ms; }
 .delay-700  { animation-delay: 700ms; }
 .delay-1000 { animation-delay: 1000ms; }
-
 .pixel-art {
   image-rendering: pixelated;
   shape-rendering: crispEdges;
 }
-
-/* the parallax wrapper must not fight the float keyframes —
-   the JS moves this element, the keyframes move the child */
 #bg-flowers > div { will-change: transform; }
-
-/* ---------- nav ---------- */
 #site-nav.is-stuck {
   background-color: rgba(0, 51, 153, 0.92);
   backdrop-filter: blur(6px);
@@ -69,8 +48,6 @@ body {
   padding-top: 0.9rem;
   padding-bottom: 0.9rem;
 }
-
-/* ---------- section shell ---------- */
 .section {
   position: relative;
   z-index: 20;
@@ -79,12 +56,10 @@ body {
   background: linear-gradient(180deg, rgba(0, 51, 153, 0.55), rgba(0, 51, 153, 0.35));
 }
 .section--last { padding-bottom: 4rem; }
-
 .wrap {
   width: min(1180px, 100% - 3rem);
   margin-inline: auto;
 }
-
 .sec-head {
   display: flex;
   align-items: baseline;
@@ -112,7 +87,6 @@ body {
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--rule);
 }
-
 .lede {
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   line-height: 1.85;
@@ -126,8 +100,6 @@ body {
   margin-bottom: 1.25rem;
   max-width: 62ch;
 }
-
-/* ---------- stats ---------- */
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -154,8 +126,6 @@ body {
   opacity: 0.6;
   line-height: 1.7;
 }
-
-/* ---------- works ---------- */
 .filter-row {
   display: flex;
   flex-wrap: wrap;
@@ -180,9 +150,7 @@ body {
   color: #0b2f80;
   border-color: var(--gold);
 }
-
 .works-list { border-top: 1px solid var(--rule); }
-
 .work-row {
   display: grid;
   grid-template-columns: 4.5rem 1fr auto;
@@ -196,7 +164,6 @@ body {
 }
 .work-row:hover { background: rgba(255, 255, 255, 0.05); padding-left: 1.5rem; }
 .work-row:hover .work-name { color: var(--gold); }
-
 .work-no { font-size: 0.68rem; letter-spacing: 0.16em; opacity: 0.45; padding-top: 0.4rem; }
 .work-name {
   font-family: 'Playfair Display', serif;
@@ -225,8 +192,6 @@ body {
 }
 .work-status[data-live="true"] { color: var(--gold); }
 .work-status[data-live="false"] { opacity: 0.45; }
-
-/* ---------- timeline / awards ---------- */
 .timeline, .award-list, .cert-list { list-style: none; }
 .timeline li {
   display: grid;
@@ -239,7 +204,6 @@ body {
 .timeline .t-role { font-weight: 700; font-size: 0.9rem; }
 .timeline .t-org { font-size: 0.72rem; letter-spacing: 0.1em; opacity: 0.6; margin-top: 0.2rem; }
 .timeline .t-note { font-size: 0.8rem; line-height: 1.8; opacity: 0.75; margin-top: 0.5rem; }
-
 .award-list li, .cert-list li {
   display: flex;
   gap: 0.9rem;
@@ -263,8 +227,6 @@ body {
   white-space: nowrap;
   padding-left: 1rem;
 }
-
-/* ---------- tags ---------- */
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .tag {
   font-size: 0.7rem;
@@ -274,8 +236,6 @@ body {
   transition: border-color 0.25s, color 0.25s;
 }
 .tag:hover { border-color: var(--gold); color: var(--gold); }
-
-/* ---------- contact ---------- */
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -298,7 +258,6 @@ body {
 .contact-key { font-size: 0.62rem; letter-spacing: 0.2em; opacity: 0.55; }
 .contact-card:not(.contact-card--static):hover .contact-key { opacity: 0.75; }
 .contact-val { font-size: 0.92rem; font-weight: 700; word-break: break-word; }
-
 .site-foot {
   margin-top: 4rem;
   padding-top: 1.5rem;
@@ -313,30 +272,20 @@ body {
   opacity: 0.6;
 }
 .site-foot a { color: inherit; text-decoration: none; }
-
-/* ---------- reveal ----------
-   Hidden ONLY once JS has confirmed it can reveal them again (html.anim-ready).
-   Without this guard, a failed script or a browser without IntersectionObserver
-   leaves the entire page at opacity:0. */
 html.anim-ready .reveal {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 html.anim-ready .reveal.in { opacity: 1; transform: none; }
-
-/* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .section { padding: 5rem 0; }
   .work-row { grid-template-columns: 3rem 1fr; }
   .work-side { grid-column: 2; text-align: left; flex-direction: row; gap: 1rem; padding-top: 0.75rem; }
   .contact-grid { grid-template-columns: 1fr; }
 }
-
 @media (max-width: 640px) {
   nav#site-nav { padding-left: 1rem; padding-right: 1rem; }
-  /* the wordmark is proportionally taller on narrow screens — push the
-     hero tags clear of the italic descenders instead of letting them sit on top */
   .hero-tag { white-space: nowrap; }
   .hero-tag--top { top: -3.5rem; left: 50%; transform: translateX(-50%); }
   .hero-tag--bottom { bottom: -3.5rem; right: auto; left: 50%; transform: translateX(-50%); }
@@ -345,7 +294,6 @@ html.anim-ready .reveal.in { opacity: 1; transform: none; }
   .timeline li { grid-template-columns: 1fr; gap: 0.35rem; }
   .site-foot { flex-direction: column; gap: 0.5rem; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .animate-float-slow, .animate-float-medium, .animate-float-fast { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }

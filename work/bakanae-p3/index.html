@@ -12,23 +12,16 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23ECEDF5'/%3E%3Cpath d='M7 12 L9 5 L14 10 Z M25 12 L23 5 L18 10 Z' fill='%231A1B2E'/%3E%3Ccircle cx='16' cy='18' r='9' fill='%23FF5C8A'/%3E%3Ccircle cx='13' cy='17' r='1.6' fill='%231A1B2E'/%3E%3Ccircle cx='19' cy='17' r='1.6' fill='%231A1B2E'/%3E%3C/svg%3E">
 </head>
 <body id="top">
-
 <div class="grain" aria-hidden="true"></div>
-
-<!-- shared drawing primitives: the "Nya! ver." cat-ear mark -->
 <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <g id="nya-head">
-      <!-- ears -->
       <path d="M-31-18 -24-47 -5-27Z" fill="var(--art-hue,#FBEFC0)" stroke="#6B4A15" stroke-width="3" stroke-linejoin="round"/>
       <path d="M31-18 24-47 5-27Z" fill="var(--art-hue,#FBEFC0)" stroke="#6B4A15" stroke-width="3" stroke-linejoin="round"/>
       <path d="M-25-23 -22-38 -12-27Z" fill="#FBEFC0"/>
       <path d="M25-23 22-38 12-27Z" fill="#FBEFC0"/>
-      <!-- head -->
       <ellipse cx="0" cy="0" rx="34" ry="31" fill="var(--art-hue,#FBEFC0)" stroke="#6B4A15" stroke-width="3"/>
-      <!-- ahoge -->
       <path d="M1-30c-2-9 3-14 10-15-6 4-7 9-4 13" fill="none" stroke="#6B4A15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- face -->
       <ellipse cx="-13" cy="4" rx="3.4" ry="4.8" fill="#6B4A15"/>
       <ellipse cx="13" cy="4" rx="3.4" ry="4.8" fill="#6B4A15"/>
       <ellipse cx="-22" cy="11" rx="5" ry="3" fill="#7A5518" opacity=".5"/>
@@ -46,7 +39,6 @@
     </g>
   </defs>
 </svg>
-
 <header class="site-head">
   <div class="shell head-inner">
     <a class="wordmark" href="#top">baka&nbsp;nae<span>.</span></a>
@@ -62,10 +54,7 @@
     </nav>
   </div>
 </header>
-
 <main>
-
-  <!-- ─────────────────────────────  HERO  ───────────────────────────── -->
   <section class="hero">
     <div class="shell hero-grid">
       <div class="hero-copy">
@@ -77,21 +66,16 @@
           <a class="btn btn-ghost" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Buka Shopee <span aria-hidden="true">↗</span></a>
         </div>
       </div>
-
       <div class="hero-art" data-rise>
         <div class="charm" id="heroCharm">
           <svg viewBox="0 0 260 330" role="img" aria-label="Ilustrasi gantungan kunci akrilik Nya! ver.">
-            <!-- ring + link -->
             <circle cx="130" cy="26" r="17" fill="none" stroke="#6B4A15" stroke-width="5"/>
             <rect x="123" y="42" width="14" height="26" rx="6" fill="#FFFFFF" stroke="#6B4A15" stroke-width="4"/>
-            <!-- acrylic slab -->
             <rect x="26" y="62" width="208" height="244" rx="26" fill="#FBEFC0" stroke="#6B4A15" stroke-width="5"/>
             <rect x="40" y="76" width="180" height="216" rx="16" fill="none" stroke="#6B4A15" stroke-width="2" stroke-dasharray="7 7" opacity=".35"/>
             <g style="--art-hue:#7A5518"><use href="#nya-head" transform="translate(130 168) scale(1.55)"/></g>
-            <!-- collar -->
             <path d="M96 232q34 22 68 0" fill="none" stroke="#6B4A15" stroke-width="5" stroke-linecap="round"/>
             <circle cx="130" cy="245" r="7" fill="#7A5518" stroke="#6B4A15" stroke-width="3"/>
-            <!-- gloss -->
             <path d="M50 290 84 76h16L66 290Z" fill="#fff" opacity=".3"/>
           </svg>
           <span class="charm-stamp">Nya! ver.</span>
@@ -99,8 +83,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ─────────────────────────────  PROOF  ───────────────────────────── -->
   <section class="proof" aria-label="Rekam jejak toko">
     <div class="shell">
       <div class="proof-grid">
@@ -124,8 +106,6 @@
       <p class="proof-note" data-rise>Angka diambil langsung dari halaman toko Shopee, diverifikasi 25 Agustus 2026.</p>
     </div>
   </section>
-
-  <!-- ─────────────────────────────  SERIES  ───────────────────────────── -->
   <section class="band" id="seri">
     <div class="shell">
       <div class="sec-head" data-rise>
@@ -136,8 +116,6 @@
       <div class="series-grid" id="seriesGrid"></div>
     </div>
   </section>
-
-  <!-- ─────────────────────────────  CATALOGUE  ───────────────────────────── -->
   <section class="band band-alt" id="katalog">
     <div class="shell">
       <div class="sec-head" data-rise>
@@ -145,24 +123,18 @@
         <h2>Pilihan <em>terlaris</em></h2>
         <p class="sec-lede">Sembilan dari 32 produk yang ada di toko.</p>
       </div>
-
       <div class="filter-bar" data-rise>
         <div class="pills" id="typePills" role="group" aria-label="Saring menurut jenis"></div>
         <p class="filter-state" id="filterState" role="status" aria-live="polite"></p>
       </div>
-
       <div class="cat-grid" id="catGrid"></div>
       <p class="empty" id="catEmpty" hidden>Tidak ada produk untuk kombinasi ini.</p>
-
       <p class="cat-note" data-rise>Ilustrasi di atas digambar sementara untuk tata letak — foto produk asli menyusul.</p>
-
       <div class="cat-foot" data-rise>
         <a class="btn btn-ink btn-wide" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Lihat 32 produk di Shopee <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
-
-  <!-- ─────────────────────────────  STORY  ───────────────────────────── -->
   <section class="band" id="cerita">
     <div class="shell story-grid">
       <div class="story-copy">
@@ -173,7 +145,6 @@
         <p class="story-p" data-rise>Sketsa, warna, sampai garis potongnya dikerjakan Nae sendiri. Tidak ada desain beli jadi.</p>
         <p class="story-p" data-rise><b>Nya! ver.</b> jadi seri utamanya sejak 2019 — dan sudah lebih dari 7.400 pembeli membawa pulang satu.</p>
       </div>
-
       <ol class="process" data-rise>
         <li>
           <span class="pnum">01</span>
@@ -194,8 +165,6 @@
     </div>
     <p class="ship-line shell" data-rise>Dikirim dari <b>Jakarta Selatan</b> &amp; <b>Surabaya</b>.</p>
   </section>
-
-  <!-- ─────────────────────────────  REVIEWS  ───────────────────────────── -->
   <section class="band band-alt" id="ulasan">
     <div class="shell">
       <div class="sec-head" data-rise>
@@ -206,8 +175,6 @@
       <div class="quote-grid" id="quoteGrid"></div>
     </div>
   </section>
-
-  <!-- ─────────────────────────────  CONTACT  ───────────────────────────── -->
   <section class="cta" id="kontak">
     <div class="shell cta-inner" data-rise>
       <div class="cta-copy">
@@ -221,9 +188,7 @@
       <svg class="cta-mark" viewBox="0 0 120 120" aria-hidden="true"><g style="--art-hue:#FFFFFF"><use href="#nya-head" transform="translate(60 66) scale(1.05)"/></g></svg>
     </div>
   </section>
-
 </main>
-
 <footer class="site-foot">
   <div class="shell foot-inner">
     <span class="wordmark small">baka&nbsp;nae<span>.</span></span>
@@ -231,12 +196,10 @@
     <span>Data toko diverifikasi 25 Agu 2026</span>
   </div>
 </footer>
-
 <noscript>
   <div class="noscript-bar">Katalog butuh JavaScript untuk memuat data produk. Semua produk tetap bisa dilihat di
     <a href="https://shopee.co.id/baka_nae">shopee.co.id/baka_nae</a>.</div>
 </noscript>
-
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,50 +1,29 @@
-/* RETAIL OPS // WALL 01 — build 56, the MODERN-CREATIVE lane
-   ---------------------------------------------------------------------------
-   Reference: Claude Second Brain/Design Templates/Amber CRT Telemetry.md
-   (template 07). Taken verbatim from it: the phosphor tokens, VT323 with
-   `-webkit-font-smoothing: none`, the TWO stacked tube gradients, the one-shot
-   boot flash, and bar end-caps drawn in ::before/::after.
-
-   The brief is still a dashboard, so the creativity goes into the INSTRUMENT,
-   not into decoration — per [[Motion Must Be User Driven]] the only motion here
-   is the visitor moving through the timeline. Nothing loops except the caret.
-
-   Type is sized to be read from across a room, which is what a wall board is
-   for. That is also why there are four numbers, not twenty. */
-
 :root {
   --phosphor-main: #ffb300;
   --phosphor-dim:  #8a6300;
   --phosphor-glow: rgba(255, 179, 0, .4);
-  --bg-deep:       #050300;          /* not #000 — a warm black */
+  --bg-deep:       #050300;          
   --up:   #7CE38B;
   --down: #FF6B5E;
   --t: .1s linear;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; }
 }
-
 body {
   background: var(--bg-deep);
   color: var(--phosphor-main);
   font-family: "VT323", ui-monospace, monospace;
-  -webkit-font-smoothing: none;      /* CRITICAL — antialiasing turns a pixel
-                                        font into grey mush */
+  -webkit-font-smoothing: none;      
   font-size: 22px; line-height: 1.2;
   min-height: 100vh;
   padding: 14px;
 }
-
 .skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
 .skip:focus { left: 14px; top: 14px; z-index: 9; background: var(--phosphor-main);
   color: var(--bg-deep); padding: 0 18px; }
 :is(a, button, [tabindex]):focus-visible { outline: 2px solid var(--phosphor-main); outline-offset: 2px; }
-
-/* ── the tube ────────────────────────────────────────────────────────────── */
 .tube {
   position: relative;
   min-height: calc(100vh - 28px);
@@ -53,11 +32,8 @@ body {
   padding: 16px 20px;
   display: flex; flex-direction: column; gap: 14px;
   overflow: hidden;
-  animation: boot 2s ease-out forwards;    /* one-shot, never repeats */
+  animation: boot 2s ease-out forwards;    
 }
-
-/* scanlines AND an RGB subpixel stripe. Both, not one — scanlines alone read
-   as a filter; the pair reads as a tube. */
 .tube::before {
   content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
   background:
@@ -65,21 +41,17 @@ body {
     linear-gradient(90deg, rgba(255,0,0,.06), rgba(0,255,0,.02), rgba(0,0,255,.06));
   background-size: 100% 4px, 6px 100%;
 }
-/* the corner vignette that makes it a curved screen rather than a rectangle */
 .tube::after {
   content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
   background: radial-gradient(ellipse at center, transparent 58%, rgba(0,0,0,.55) 100%);
 }
-
 @keyframes boot {
   0%   { opacity: 0; filter: brightness(2) blur(10px); }
   10%  { opacity: 1; filter: brightness(1) blur(0); }
-  15%  { opacity: 0; }                 /* the dropout is what sells the warm-up */
+  15%  { opacity: 0; }                 
   20%  { opacity: 1; }
   100% { opacity: 1; }
 }
-
-/* ── header ──────────────────────────────────────────────────────────────── */
 .hd {
   display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
   border-bottom: 1px solid var(--phosphor-dim); padding-bottom: 10px;
@@ -88,10 +60,7 @@ body {
 .hd b { color: var(--phosphor-dim); font-weight: 400; }
 .hd__mid { color: var(--bg-deep); background: var(--phosphor-main); padding: 1px 10px; }
 .hd__r { color: var(--phosphor-dim); }
-
 .k { color: var(--phosphor-dim); font-size: 18px; letter-spacing: .14em; }
-
-/* ── readout ─────────────────────────────────────────────────────────────── */
 .read {
   display: grid; grid-template-columns: 200px 1fr auto; gap: 26px; align-items: end;
   border-bottom: 1px solid var(--phosphor-dim); padding-bottom: 14px; flex: 0 0 auto;
@@ -106,13 +75,9 @@ body {
 .d { font-size: 18px; letter-spacing: .08em; color: var(--phosphor-dim); }
 .d--up { color: var(--up); }
 .d--down { color: var(--down); }
-
-/* the caret is the one looping thing on the page, and it is 10px wide */
 .caret { display: inline-block; width: .42em; height: .82em; background: var(--phosphor-main);
   vertical-align: -.06em; margin-left: .12em; animation: blink 1.06s steps(1) infinite; }
 @keyframes blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
-
-/* ── scrubber ────────────────────────────────────────────────────────────── */
 .scrub { display: flex; flex-direction: column; gap: 8px; flex: 0 0 auto; }
 .scrub__t { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; }
 .mo {
@@ -127,19 +92,12 @@ body {
 .mo.is-on { background: var(--phosphor-main); color: var(--bg-deep); }
 .mo.is-on .mo__b { background: var(--bg-deep); }
 .mo--part { border-style: dashed; }
-
-/* ── market bars ─────────────────────────────────────────────────────────── */
 .mkt { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
 .mkt__h { display: flex; justify-content: space-between; gap: 14px; flex: 0 0 auto; }
-/* stretch, not start: a wall board is read from six feet away, so unused
-   vertical space is wasted legibility. The rows grow to fill the tube. */
 .bars { flex: 1 1 auto; min-height: 0; display: grid; gap: 4px; align-content: stretch; }
 .bar { display: grid; grid-template-columns: 150px 1fr 128px; gap: 12px; align-items: center; font-size: 19px; }
 .bar__n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bar__v { text-align: right; color: var(--phosphor-dim); }
-
-/* the frame is border-top + border-bottom; the pseudo-elements add the
-   L-brackets that turn a div into a gauge */
 .bar__t {
   position: relative; height: 18px;
   border-top: 1px solid var(--phosphor-dim); border-bottom: 1px solid var(--phosphor-dim);
@@ -151,20 +109,16 @@ body {
 .bar__t::before { left: 0; }
 .bar__t::after { right: 0; }
 .bar__f { position: absolute; inset: 0 auto 0 0; background: var(--phosphor-main); transition: width .18s ease; }
-/* vertical scan gaps INSIDE the fill, so it looks drawn by the same beam */
 .bar__f::after {
   content: ""; position: absolute; inset: 0;
   background: repeating-linear-gradient(90deg, transparent, transparent 2px,
               rgba(5,3,0,.3) 2px, rgba(5,3,0,.3) 4px);
 }
-
 .ft {
   display: flex; justify-content: space-between; gap: 16px; flex: 0 0 auto;
   border-top: 1px solid var(--phosphor-dim); padding-top: 9px;
   font-size: 17px; letter-spacing: .1em; color: var(--phosphor-dim);
 }
-
-/* ── narrow ──────────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   body { font-size: 20px; }
   .read { grid-template-columns: 1fr; gap: 12px; align-items: start; }

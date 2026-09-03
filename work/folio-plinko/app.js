@@ -1,27 +1,7 @@
-/* DROP A TOKEN — the pegboard portfolio
- * ---------------------------------------------------------------------------
- * Nine real projects from projects.json.
- *
- * ⭐ THE OBJECT: a plinko board, and it is load-bearing because THE SLOT WIDTHS
- * ARE THE PROJECT SIZES. A five-tag build gets a wider slot than a three-tag
- * one, so the bigger work genuinely catches more tokens. The odds of the board
- * are the shape of the portfolio — you can watch it over a dozen drops and the
- * distribution tells you what he actually spends his time on.
- *
- * ⚠️ And because a portfolio still has to work as a portfolio, the slots are
- * also plain buttons. Randomness is the toy; it is never the only way in.
- * ("not too much to the point the function is gone.")
- *
- * MOTION: real physics — gravity, peg collision with restitution, wall bounce,
- * a little spin — started by the visitor and self-terminating. The render loop
- * STOPS when the token lands. Nothing on this page loops.
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
 const COL = {
   web:    ["#E7F65E", "#23260A"],
   game:   ["#F9A16C", "#2A1B10"],
@@ -35,12 +15,9 @@ function discipline(p) {
   if (/proxy|observability|composio|automation|vision|serverless/.test(t)) return "ai";
   return "web";
 }
-
 let P = [], edges = [], drops = 0, running = false;
 let cv, ctx, W = 0, H = 0, pegs = [], ball = null;
-
 const G = 0.42, REST = 0.62, FRICT = 0.995, PEG_R = 4.5, BALL_R = 9;
-
 /* ── the board ─────────────────────────────────────────────────────────── */
 function layout() {
   const r = cv.getBoundingClientRect();
@@ -48,7 +25,6 @@ function layout() {
   W = r.width; H = r.height;
   cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
   /* a staggered peg lattice — offset rows are what make it bounce sideways */
   /* ⚠️ the stagger is the whole point — a square lattice lets a ball fall
      straight through without ever being deflected. Alternate rows are offset
@@ -68,22 +44,18 @@ function layout() {
   }
   draw();
 }
-
 function draw() {
   ctx.clearRect(0, 0, W, H);
-
   /* the slot edges, drawn as dividers so the board and the buttons line up */
   ctx.strokeStyle = "rgba(28,28,28,.14)";
   ctx.lineWidth = 1;
   edges.slice(1, -1).forEach((x) => {
     ctx.beginPath(); ctx.moveTo(x, H - 34); ctx.lineTo(x, H); ctx.stroke();
   });
-
   ctx.fillStyle = "rgba(28,28,28,.55)";
   pegs.forEach((p) => {
     ctx.beginPath(); ctx.arc(p.x, p.y, PEG_R, 0, Math.PI * 2); ctx.fill();
   });
-
   if (ball) {
     ctx.save();
     ctx.translate(ball.x, ball.y);
@@ -95,14 +67,12 @@ function draw() {
     ctx.restore();
   }
 }
-
 /* ── the fall ──────────────────────────────────────────────────────────── */
 function step() {
   const b = ball;
   b.vy += G;
   b.x += b.vx; b.y += b.vy; b.a += b.vx * 0.06;
   b.vx *= FRICT;
-
   for (const p of pegs) {
     const dx = b.x - p.x, dy = b.y - p.y;
     const d = Math.hypot(dx, dy), min = PEG_R + BALL_R;
@@ -118,26 +88,21 @@ function step() {
   }
   if (b.x < BALL_R) { b.x = BALL_R; b.vx = Math.abs(b.vx) * REST; }
   if (b.x > W - BALL_R) { b.x = W - BALL_R; b.vx = -Math.abs(b.vx) * REST; }
-
   draw();
-
   if (b.y >= H - BALL_R) { land(b.x); return; }        /* ← the loop ENDS here */
   requestAnimationFrame(step);
 }
-
 function land(x) {
   running = false;
   ball = null;
   draw();
   $(".rig").classList.remove("is-busy");
   $("#drop").disabled = false;
-
   let i = edges.findIndex((e, k) => k < edges.length - 1 && x >= e && x < edges[k + 1]);
   if (i < 0) i = clamp(Math.floor(x / W * P.length), 0, P.length - 1);
   drops++;
   select(i, true);
 }
-
 function dropAt(x) {
   if (running || REDUCED_FALL()) { if (REDUCED_FALL()) select(pickWeighted(), true); return; }
   running = true;
@@ -153,7 +118,6 @@ function pickWeighted() {
   const i = edges.findIndex((e, k) => k < edges.length - 1 && r >= e && r < edges[k + 1]);
   return i < 0 ? 0 : i;
 }
-
 /* ── selection ─────────────────────────────────────────────────────────── */
 function select(i, landed = false) {
   const p = P[i];
@@ -161,7 +125,6 @@ function select(i, landed = false) {
     li.classList.remove("is-hit");
     if (k === i && landed) { void li.offsetWidth; li.classList.add("is-hit"); }
   });
-
   $("#cue").textContent = landed
     ? `landed in slot ${String(i + 1).padStart(2, "0")} · ${drops} drop${drops === 1 ? "" : "s"}`
     : `slot ${String(i + 1).padStart(2, "0")} · picked by hand`;
@@ -174,11 +137,9 @@ function select(i, landed = false) {
   const a = $("#oLink");
   a.hidden = !p.url;
   if (p.url) { a.href = p.url; a.target = "_blank"; a.rel = "noopener"; }
-
   const out = $("#out");
   out.classList.remove("is-hit"); void out.offsetWidth; out.classList.add("is-hit");
 }
-
 function wireStats(rows) {
   $("#stats").innerHTML = rows.map(([v, k]) =>
     `<div class="stat"><b data-to="${v}">0</b><span>${k}</span></div>`).join("");
@@ -197,7 +158,6 @@ function wireStats(rows) {
   }), { threshold: .35 });
   io.observe($("#stats"));
 }
-
 async function init() {
   try {
     const r = await fetch("projects.json");
@@ -208,9 +168,7 @@ async function init() {
     $("#oDesc").textContent = e.message;
     return;
   }
-
   cv = $("#cv"); ctx = cv.getContext("2d");
-
   /* ⭐ slot widths ARE the project sizes, so the odds are the portfolio */
   const total = P.reduce((a, p) => a + p.tags.length, 0);
   $("#slots").innerHTML = P.map((p, i) => {
@@ -222,7 +180,6 @@ async function init() {
       </button></li>`;
   }).join("");
   $$(".slots button").forEach((b) => b.addEventListener("click", () => select(+b.dataset.i)));
-
   const measure = () => {
     const base = $("#slots").getBoundingClientRect().left;
     edges = [0];
@@ -232,23 +189,18 @@ async function init() {
   };
   measure();
   new ResizeObserver(measure).observe($("#slots"));
-
   cv.addEventListener("click", (e) => {
     const r = cv.getBoundingClientRect();
     dropAt(e.clientX - r.left);
   });
   $("#drop").addEventListener("click", () => dropAt(W * (0.2 + Math.random() * 0.6)));
-
   const live = P.filter((p) => p.url).length;
   const tools = new Set(P.flatMap((p) => p.tags)).size;
   wireStats([[P.length, "slots on the board"], [live, "live right now"],
              [tools, "distinct tools"], [total, "tags in play"]]);
-
   const tick = () => $("#clock").textContent = new Date().toLocaleTimeString("en-AU",
     { timeZone: "Australia/Melbourne", hour: "2-digit", minute: "2-digit" });
   tick(); setInterval(tick, 30000);
-
   select(0);
 }
-
 init();

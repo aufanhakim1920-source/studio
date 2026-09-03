@@ -1,13 +1,5 @@
-/* ==========================================================================
-   Roster — land-a (CHILL lane)
-   Mobile-first. Base styles target ~375px; desktop rules live in the
-   min-width media queries below. See land-brief.md for content/product facts.
-   ========================================================================== */
-
 :root {
-  /* palette — warm paper ground, near-black warm ink, one saturated accent.
-     Deliberately not sage (#F1F2EA), not indigo-black (#0A0E1A), not warm
-     dark amber — the three recent grounds this build was told to avoid. */
+  
   --paper: #F6F3EC;
   --paper-soft: #EFEAE0;
   --card: #FFFFFF;
@@ -17,8 +9,8 @@
   --line: rgba(28, 27, 24, 0.12);
   --line-strong: rgba(28, 27, 24, 0.22);
 
-  --accent: #FF5A1F;        /* decorative only: dots, borders, focus ring, badge bg */
-  --accent-deep: #C63D0E;   /* text/button-safe darker accent */
+  --accent: #FF5A1F;        
+  --accent-deep: #C63D0E;   
   --accent-tint: #FFF1E8;
 
   --dark: #1C1A16;
@@ -30,8 +22,8 @@
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --radius-control: 999px;   /* buttons, chips, badges */
-  --radius-surface: 18px;    /* cards, panels — two tiers, never one number */
+  --radius-control: 999px;   
+  --radius-surface: 18px;    
 
   --shadow-card: 0 1px 2px rgba(28, 27, 24, 0.05), 0 20px 44px -20px rgba(28, 27, 24, 0.22);
   --shadow-card-hover: 0 1px 2px rgba(28, 27, 24, 0.06), 0 28px 56px -20px rgba(28, 27, 24, 0.3);
@@ -43,7 +35,6 @@
   --max-width: 1180px;
 }
 
-/* ---------- reset ---------- */
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 html, body { max-width: 100%; overflow-x: hidden; }
@@ -60,7 +51,6 @@ body {
   position: relative;
 }
 
-/* subtle grain, fixed, never causes overflow (inset:0, not 100vw) */
 body::before {
   content: '';
   position: fixed;
@@ -129,7 +119,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   margin-bottom: 40px;
 }
 
-/* ---------- buttons ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -169,7 +158,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
 }
 .btn--ghost:hover { background: var(--paper-soft); }
 
-/* ---------- header ---------- */
 .site-header {
   position: sticky;
   top: 0;
@@ -197,7 +185,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   min-height: 44px;
 }
 
-/* ---------- hero ---------- */
 .hero {
   position: relative;
   overflow: hidden;
@@ -277,7 +264,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   gap: 12px;
 }
 
-/* ---------- how it works ---------- */
 .how { padding: var(--pad-section) 0; }
 
 .steps {
@@ -325,7 +311,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   }
 }
 
-/* ---------- numbers band ---------- */
 .numbers {
   position: relative;
   overflow: hidden;
@@ -397,7 +382,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   color: var(--ink-soft-on-dark);
 }
 
-/* ---------- pricing ---------- */
 .pricing { padding: var(--pad-section) 0; }
 
 .plans {
@@ -485,7 +469,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   }
 }
 
-/* ---------- honest limitation ---------- */
 .honest { padding: 0 0 var(--pad-section); }
 
 .honest-card {
@@ -536,7 +519,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
 }
 .math-panel[hidden] { display: none; }
 
-/* ---------- footer ---------- */
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 44px 0;
@@ -563,9 +545,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   color: var(--ink-faint);
 }
 
-/* ==========================================================================
-   Desktop
-   ========================================================================== */
 @media (min-width: 720px) {
   .steps { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .numbers-grid { grid-template-columns: repeat(3, 1fr); gap: 40px; }
@@ -592,9 +571,6 @@ button { font: inherit; color: inherit; background: none; border: none; padding:
   .hero-title { font-size: 72px; }
 }
 
-/* ==========================================================================
-   Reduced motion — respected everywhere motion appears
-   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;

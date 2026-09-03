@@ -1,11 +1,3 @@
-/* ==========================================================================
-   Roster — land-b, MODERN-CREATIVE lane
-   Object: the swap ticket — perforated stub/tag, torn to post a shift,
-   travelled along a rail through POST / MATCH / APPROVE.
-   Palette: warm near-black ground + kraft ticket paper + one stamp-red signal.
-   Type: Space Grotesk (display) + Inter (ui) + JetBrains Mono (ticket data).
-   ========================================================================== */
-
 :root {
   --bg: #131013;
   --bg-raised: #1a1519;
@@ -83,7 +75,6 @@ p { margin: 0; }
 
 .tk-mono { font-family: var(--font-mono); }
 
-/* ---------- focus / a11y ---------- */
 a, button, [tabindex] {
   font: inherit;
   color: inherit;
@@ -96,7 +87,6 @@ button:focus-visible,
   border-radius: 4px;
 }
 
-/* ---------- grain overlay (static, single paint, no loop) ---------- */
 .grain {
   position: fixed;
   inset: 0;
@@ -107,7 +97,6 @@ button:focus-visible,
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ---------- nav ---------- */
 .nav {
   position: sticky;
   top: 0;
@@ -157,7 +146,6 @@ button:focus-visible,
 }
 .nav-links a:hover { color: var(--text); }
 
-/* ---------- buttons ---------- */
 .btn {
   appearance: none;
   border: none;
@@ -197,9 +185,6 @@ button:focus-visible,
   transform: none;
 }
 
-/* ==========================================================================
-   HERO
-   ========================================================================== */
 .hero { padding: clamp(56px, 9vw, 108px) 0 clamp(48px, 8vw, 88px); }
 .hero-inner {
   max-width: 1120px;
@@ -222,9 +207,6 @@ button:focus-visible,
   gap: 20px;
 }
 
-/* On a wide screen the chart sits BESIDE the ticket rather than under it —
-   the ticket is the object, the chart is the argument, and they belong on the
-   same eye-line. Also keeps the hero to one screen. */
 @media (min-width: 900px) {
   .ticket-stage {
     display: grid;
@@ -238,7 +220,6 @@ button:focus-visible,
   .ratio-chart { grid-column: 2; grid-row: 1 / span 2; max-width: none; margin-top: 0; }
 }
 
-/* --- the ticket object --- */
 .ticket-hero {
   display: flex;
   width: 100%;
@@ -312,7 +293,6 @@ button:focus-visible,
   transition: transform 0.45s var(--ease-overshoot), opacity 0.3s var(--ease-out);
 }
 
-/* torn state */
 .ticket-hero.torn .ticket-half.stub {
   transform: translateX(-6px) rotate(-2deg);
   box-shadow: 6px 0 14px rgba(0, 0, 0, 0.25);
@@ -328,14 +308,6 @@ button:focus-visible,
   opacity: 1;
 }
 
-/* --------------------------------------------------------------------------
-   THE RATIO CHART — 14 min vs 2 days, drawn on ONE linear 48h scale.
-   Construction borrowed from ref 31 Chroma: the `.ui-viz` graph-paper made of
-   two crossed repeating-linear-gradients, and an SVG axis on a fixed viewBox
-   with preserveAspectRatio="none" so tick coordinates never need recomputing.
-   The bar itself is ref 16's percentage-width div (Instruments §2a) with its
-   2px leading edge (§2b/§2c) so the 0.486% sliver is still findable.
-   -------------------------------------------------------------------------- */
 .ratio-chart {
   width: 100%;
   max-width: 560px;
@@ -356,7 +328,7 @@ button:focus-visible,
   color: var(--text-faint);
   margin-bottom: 16px;
 }
-/* the ratio must never wrap to "1 :" / "206" — it is one token */
+
 .ratio-cap-val { color: var(--stamp); font-weight: 500; white-space: nowrap; }
 
 .ratio-row {
@@ -378,7 +350,7 @@ button:focus-visible,
   display: block;
   height: 22px;
   border-radius: 2px;
-  /* ref 31 `.ui-viz` — graph paper, two crossed gradients, no image */
+  
   background:
     repeating-linear-gradient(0deg, transparent, transparent 10px, rgba(241,231,211,0.06) 10px, rgba(241,231,211,0.06) 11px),
     repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(241,231,211,0.06) 10px, rgba(241,231,211,0.06) 11px);
@@ -430,7 +402,6 @@ button:focus-visible,
   .ratio-axis-wrap { margin-left: 0; margin-right: 0; }
 }
 
-/* comparison device: reused in hero + numbers band */
 .compare {
   display: flex;
   flex-wrap: wrap;
@@ -452,9 +423,6 @@ button:focus-visible,
   max-width: 22ch;
 }
 
-/* ==========================================================================
-   HOW IT WORKS — the rail
-   ========================================================================== */
 .how { padding: clamp(48px, 8vw, 88px) 0; border-top: 1px solid var(--line-soft); }
 .how h2 { margin-top: 0; margin-bottom: 40px; max-width: 20ch; }
 
@@ -525,7 +493,6 @@ button:focus-visible,
 .station.reached { border-color: var(--matched); }
 .station.reached .station-mark { transform: scale(1); opacity: 1; }
 
-/* the taps each step actually costs — the copy says it, now it is a mark */
 .taps {
   display: flex;
   align-items: center;
@@ -558,9 +525,6 @@ button:focus-visible,
   .rail-chip { display: none; }
 }
 
-/* ==========================================================================
-   NUMBERS BAND — the receipt strip
-   ========================================================================== */
 .manifest-wrap { padding: clamp(48px, 8vw, 88px) 0; border-top: 1px solid var(--line-soft); }
 
 .manifest {
@@ -585,7 +549,6 @@ button:focus-visible,
 .manifest::before { top: -7px; }
 .manifest::after { bottom: -7px; }
 
-/* two columns of EQUAL width, so both 48h rules really are one shared scale */
 .manifest-head .compare-tight {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -606,17 +569,10 @@ button:focus-visible,
   flex-direction: column;
   gap: 10px;
 }
-/* --- the printed ledger rule ---------------------------------------------
-   Instruments §2g: the value bar is a fill BEHIND/BESIDE the row's own text
-   in normal flow — the row IS the chart, no separate bar element to lay out.
-   Length is log-scaled (100 -> 100,000) because the three counts differ by
-   two orders of magnitude and a linear rule would render 340 as a dot.
-   ------------------------------------------------------------------------- */
+
 .manifest-list li {
   display: grid;
-  /* the value column is a FIXED width, not `auto` — with `auto` the widest
-     number ("11,200") sized its own row's column and the three rules started
-     at three different x positions, which is a broken shared scale. */
+  
   grid-template-columns: minmax(120px, 1fr) minmax(90px, 1.6fr) 62px;
   align-items: center;
   gap: 14px;
@@ -696,17 +652,13 @@ button:focus-visible,
   .ledger-axis-row span:empty { display: none; }
 }
 
-/* ==========================================================================
-   PRICING
-   ========================================================================== */
 .pricing { padding: clamp(48px, 8vw, 88px) 0; border-top: 1px solid var(--line-soft); }
 .pricing h2 { margin-top: 0; }
 
 .plans {
   margin-top: 36px;
   display: grid;
-  /* 340px min needed 1060px of track inside a 1040px content column, so the
-     three tiers broke to 2 + 1 with a hole in the row. 300px fits all three. */
+  
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 20px;
 }
@@ -719,7 +671,7 @@ button:focus-visible,
   overflow: hidden;
   transition: border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 }
-/* the card is no longer focusable itself; lift it when its CTA takes focus */
+
 .plan:hover, .plan:focus-within { border-color: rgba(241,231,211,0.35); transform: translateY(-3px); }
 .plan h3 { color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); font-weight: 500; }
 .plan-price {
@@ -738,18 +690,14 @@ button:focus-visible,
 }
 .plan-for { margin-top: 14px; font-size: 14.5px; color: var(--text-muted); line-height: 1.55; }
 .plan-note { margin-top: 18px; font-size: 12.5px; color: var(--text-faint); font-family: var(--font-mono); }
-/* the tier's real, keyboard-operable CTA — .btn gives it the 44px floor */
+
 .plan-cta {
   margin-top: 22px;
   text-decoration: none;
 }
-/* the global a:focus-visible sets border-radius:4px, which would square off the
-   pill on focus; restore it so the focus ring traces the button's real shape. */
+
 .plan-cta:focus-visible { border-radius: var(--radius-pill); }
 
-/* ==========================================================================
-   HONEST LIMITATION
-   ========================================================================== */
 .limit { padding: clamp(48px, 8vw, 88px) 0 clamp(64px, 10vw, 108px); border-top: 1px solid var(--line-soft); }
 .limit h2 { margin-top: 0; max-width: 18ch; }
 
@@ -783,12 +731,6 @@ button:focus-visible,
 }
 .mini-ticket.shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97); }
 
-/* --------------------------------------------------------------------------
-   THE STRIP OF 50 — the 6% drawn in the ticket's own idiom.
-   Deliberately NOT land-c's dot grid: this is a perforated run of ticket cells
-   built from one SVG <pattern> (50 cells x 20 units = the 1000 viewBox), with
-   the 3 unfilled ones stamped VOID over a hatch pattern. No library, no loop.
-   -------------------------------------------------------------------------- */
 .roll-chart {
   margin: 0;
   width: 100%;
@@ -822,28 +764,16 @@ button:focus-visible,
 }
 .limit-result strong { color: var(--stamp); }
 
-/* ==========================================================================
-   FOOTER
-   ========================================================================== */
 .footer { border-top: 1px solid var(--line-soft); padding: 32px 0 40px; }
 .footer-inner { display: flex; flex-direction: column; gap: 6px; }
 .footer-label { font-size: 13.5px; color: var(--text-muted); }
 .footer-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
 
-/* ==========================================================================
-   Coarse pointer / touch — tap target floor
-   ========================================================================== */
-/* OR'd on purpose: a coarse pointer is the real trigger, but narrow-viewport is
-   the reliable one — some engines/emulators report `pointer: fine` on a phone-width
-   viewport, and the 44px floor must not depend on that detection succeeding. */
 @media (pointer: coarse), (max-width: 720px) {
   .btn { min-height: 44px; }
-  /* grow the tap region only — the type scale is untouched */
+  
   .logo { min-height: 44px; }
-  /* height alone is not a tap target — measured at 375px the three nav links
-     were squeezed to 37-43px WIDE while reporting a correct 44px height, so
-     the floor has to be set on both axes and the row has to stop competing
-     with the logo for width. */
+  
   .nav-inner { flex-wrap: wrap; row-gap: 2px; }
   .nav-links { width: 100%; gap: 18px; }
   .nav-links a {
@@ -859,19 +789,6 @@ button:focus-visible,
   .plan-cta { -webkit-tap-highlight-color: transparent; }
 }
 
-/* ==========================================================================
-   ENTRANCES — one vocabulary per section, all of it paper and print.
-
-   ⚠️ Every hiding rule below is scoped to `.motion`, which JavaScript adds to
-   <html> at runtime. No JS -> no `.motion` -> nothing is hidden and the page
-   renders complete. (How to Animate a Page Without Breaking It, rule 1.)
-   Reveal is driven by a rAF scroll sweep, not IntersectionObserver (rule 2).
-   Durations sit in the measured 0.1-0.3s band; only things that physically
-   travel go to 0.3s. (What the References Have in Common §12.)
-   ========================================================================== */
-
-/* 1 · STAMP STRIKE — the hero headline. Each word lands from above its own
-      size, slightly askew, and squares up. An ink stamp, not a fade-up. */
 .motion [data-enter="stamp"] .w {
   display: inline-block;
   opacity: 0;
@@ -880,8 +797,6 @@ button:focus-visible,
 }
 .motion [data-enter="stamp"].in .w { opacity: 1; transform: none; }
 
-/* 2 · PRESS ROLL — every h2. The word rises out of its own line box, masked,
-      with no opacity change at all: type coming up in a press. */
 .motion [data-enter="press"] .wl {
   display: inline-block;
   overflow: hidden;
@@ -897,14 +812,12 @@ button:focus-visible,
 }
 .motion [data-enter="press"].in .wl > i { transform: none; }
 
-/* 3 · WIPE — section labels print left to right, like a label printer. */
 .motion [data-enter="wipe"] {
   clip-path: inset(0 100% 0 0);
   transition: clip-path 0.22s var(--ease-out);
 }
 .motion [data-enter="wipe"].in { clip-path: inset(0 0 0 0); }
 
-/* 4 · LAY — the ticket is put down on the stage. */
 .motion [data-enter="lay"] {
   opacity: 0;
   transform: translateY(-12px) rotate(-1.4deg);
@@ -912,8 +825,6 @@ button:focus-visible,
 }
 .motion [data-enter="lay"].in { opacity: 1; transform: none; }
 
-/* 5 · DRAW — every rule and bar is drawn out from its own origin. The bar
-      arriving IS the measurement being taken, so this one is load-bearing. */
 .motion [data-enter="draw"] .ratio-bar,
 .motion [data-enter="draw"] .ledger-bar,
 .motion [data-enter="draw"] .compare-bar {
@@ -925,7 +836,6 @@ button:focus-visible,
 .motion [data-enter="draw"].in .ledger-bar,
 .motion [data-enter="draw"].in .compare-bar { transform: scaleX(1); }
 
-/* 6 · DEAL — cards put down one at a time, alternating tilt. */
 .motion [data-enter="deal"] > .station,
 .motion [data-enter="deal"] > .plan {
   opacity: 0;
@@ -937,15 +847,12 @@ button:focus-visible,
 .motion [data-enter="deal"].in > .station,
 .motion [data-enter="deal"].in > .plan { opacity: 1; transform: none; }
 
-/* 7 · PRINT — the receipt comes out of the band top-down, like a till roll. */
 .motion [data-enter="print"] {
   clip-path: inset(0 0 100% 0);
   transition: clip-path 0.3s var(--ease-out);
 }
 .motion [data-enter="print"].in { clip-path: inset(0 0 0 0); }
 
-/* 8 · STRIP — the run of 50 tickets feeds through left to right, then the
-      three unclaimed cells stamp in behind it. */
 .motion [data-enter="strip"] .roll-bar {
   clip-path: inset(0 100% 0 0);
   transition: clip-path 0.3s linear;
@@ -961,16 +868,12 @@ button:focus-visible,
 .motion .roll-chart.in .roll-void { opacity: 0.85; transform: none; }
 .motion .roll-chart.in.lit .roll-void { opacity: 1; stroke-width: 3; }
 
-/* the plan price resolves character by character on arrival (JS drum walk) */
 .plan-price .flap {
   display: inline-block;
   min-width: 0.62em;
   text-align: center;
 }
 
-/* ==========================================================================
-   Reduced motion
-   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

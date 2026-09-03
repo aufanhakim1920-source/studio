@@ -1,35 +1,19 @@
-/* ═══════════════════════════════════════════════════════════════════
-   SECOND RISE — Thornbury bakehouse
-   Palette "cold room": a pale cool blue-grey ground, steel, one ember.
-   Radius: a named three-tier system (none / edge / round). Never one value.
-   Motion: every transition is triggered by the visitor. Nothing loops.
-   ═══════════════════════════════════════════════════════════════════ */
-
 :root {
-  /* ground — tinted cool, deliberately NOT the bakery cream */
   --paper:    #D8DCE4;
   --paper-2:  #CBD1DC;
   --panel:    #E4E7EC;
   --panel-2:  #C2C9D5;
-
   --ink:      #14161C;
   --ink-2:    #454C5A;
   --ink-3:    #6B7383;
   --hair:     #A9B1BE;
-
-  /* the trolley */
   --steel:    #98A0AD;
   --steel-hi: #C6CDD7;
   --steel-lo: #5E6675;
   --steel-dk: #363C47;
-
-  /* the one saturated signal */
   --ember:    #E2401F;
   --ember-dk: #A82C11;
-
   --chalk:    #F5F7FA;
-
-  /* drawn goods */
   --crust:    #C08B4A;
   --crust-lo: #DCAE70;
   --crust-dk: #7A4B1C;
@@ -42,31 +26,23 @@
   --kraft:    #B99C74;
   --kraft-hi: #CFB58F;
   --kraft-lo: #94764F;
-
-  /* radius — three named tiers, three different jobs */
   --r-none:  0px;
-  --r-edge:  3px;   /* rolled steel edges, tray lips, cards */
-  --r-round: 999px; /* castor wheels, status pills only */
-
+  --r-edge:  3px;   
+  --r-round: 999px; 
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans:  "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono:  "Space Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-
-  /* trolley geometry — every level calculation reads these */
-  --rw:   380px;   /* rack width  */
-  --rd:   190px;   /* rack depth  */
-  --rh:   548px;   /* rack height */
-  --lvl:   94px;   /* level pitch */
-  --lv0:   74px;   /* first tray  */
-  --pull: 172px;   /* how far a tray comes out */
-  --push:  -26px;  /* how far the others retreat */
-  --spin:  22deg;  /* the rack's yaw — left edge nearest */
+  --rw:   380px;   
+  --rd:   190px;   
+  --rh:   548px;   
+  --lvl:   94px;   
+  --lv0:   74px;   
+  --pull: 172px;   
+  --push:  -26px;  
+  --spin:  22deg;  
 }
-
 * { box-sizing: border-box; }
-
 html { -webkit-text-size-adjust: 100%; }
-
 body {
   margin: 0;
   background: var(--paper);
@@ -75,34 +51,23 @@ body {
   font-size: 16px;
   line-height: 1.55;
   overflow-x: hidden;
-  /* the invisible gradient: ember bled in as light + a haze. Both under 8%.
-     Delete these two and the page goes flat and cheap. */
   background-image:
     radial-gradient(1100px 620px at 78% -8%, rgba(226,64,31,.075), transparent 62%),
     radial-gradient(900px 520px at 12% 4%, rgba(255,255,255,.5), transparent 65%);
   background-attachment: fixed;
 }
-
-/* flour-dust grain over everything — positive stacking order, never z-index:-1 */
 .grain {
   position: fixed; inset: 0; z-index: 2; pointer-events: none;
   opacity: .16; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.55'/></svg>");
 }
-
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
-
 ::selection { background: var(--ember); color: var(--chalk); }
-
 a { color: inherit; }
-
 :focus-visible {
   outline: 2px solid var(--ember);
   outline-offset: 3px;
 }
-
-/* ─────────── shared type ─────────── */
-
 .eyebrow, .sechead__no, .sechead__tail, .mono {
   font-family: var(--mono);
   font-size: 11px;
@@ -110,9 +75,7 @@ a { color: inherit; }
   text-transform: uppercase;
   color: var(--ink-3);
 }
-
 .small { font-size: 13.5px; line-height: 1.6; color: var(--ink-2); margin: 0 0 6px; }
-
 h1, h2, h3 {
   font-family: var(--serif);
   font-variation-settings: "SOFT" 22, "WONK" 1, "opsz" 100;
@@ -121,9 +84,6 @@ h1, h2, h3 {
   margin: 0;
   line-height: 1.02;
 }
-
-/* ─────────── top bar ─────────── */
-
 .topbar {
   position: relative; z-index: 3;
   display: flex; align-items: center; justify-content: space-between;
@@ -131,7 +91,6 @@ h1, h2, h3 {
   padding: 18px clamp(20px, 4.4vw, 64px);
   border-bottom: 1px solid var(--hair);
 }
-
 .wordmark {
   text-decoration: none;
   font-family: var(--serif);
@@ -141,7 +100,6 @@ h1, h2, h3 {
 }
 .wordmark__a { font-weight: 300; font-style: italic; }
 .wordmark__b { font-weight: 800; }
-
 .topnav { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); }
 .topnav a {
   font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em;
@@ -156,9 +114,6 @@ h1, h2, h3 {
   transition: background .16s ease;
 }
 .topnav__cta:hover { background: var(--ember); border-bottom-color: transparent !important; }
-
-/* ─────────── hero ─────────── */
-
 .hero {
   position: relative; z-index: 1;
   display: grid;
@@ -168,14 +123,12 @@ h1, h2, h3 {
   padding: clamp(44px, 6vw, 84px) clamp(20px, 4.4vw, 64px) clamp(30px, 4vw, 58px);
   max-width: 1420px; margin: 0 auto;
 }
-
 .hero__h1 {
   font-size: clamp(42px, 7.2vw, 92px);
   font-variation-settings: "SOFT" 12, "WONK" 1, "opsz" 144;
   font-weight: 700;
   margin: 16px 0 22px;
 }
-
 .hero__lede {
   font-size: clamp(15.5px, 1.25vw, 17.5px);
   line-height: 1.62;
@@ -183,9 +136,7 @@ h1, h2, h3 {
   max-width: 54ch;
   margin: 0 0 30px;
 }
-
 .hero__acts { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 34px; }
-
 .btn {
   display: inline-flex; align-items: center; gap: .5em;
   font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
@@ -200,7 +151,6 @@ h1, h2, h3 {
 .btn--ghost { background: transparent; color: var(--ink); }
 .btn--ghost:hover { background: var(--ink); color: var(--chalk); }
 .btn--full { width: 100%; justify-content: center; font-size: 12.5px; }
-
 .hero__note {
   font-size: 13.5px; line-height: 1.6; color: var(--ink-2);
   max-width: 46ch; margin: 0;
@@ -212,8 +162,6 @@ h1, h2, h3 {
   width: 7px; height: 7px; border-radius: var(--r-round);
   background: var(--ember);
 }
-
-/* hero specimen */
 .hero__spec { margin: 0; }
 .hero__loafwrap {
   position: relative;
@@ -233,7 +181,6 @@ h1, h2, h3 {
   transform: rotateX(var(--lx, 0deg)) rotateY(var(--ly, 0deg));
   transition: transform .28s cubic-bezier(.22,.61,.36,1);
 }
-/* light moving over the crust — only ever while the visitor is pointing at it */
 .hero__glare {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   opacity: var(--glare, 0); mix-blend-mode: soft-light;
@@ -245,17 +192,14 @@ h1, h2, h3 {
   background: linear-gradient(180deg, var(--steel-hi), var(--steel));
   border-top: 1px solid var(--steel-lo);
 }
-/* two brackets, not four — four in a gutter reads as noise */
 .bracket { position: absolute; width: 18px; height: 18px; }
 .bracket--tl { top: -1px; left: -1px; border-top: 2px solid var(--ember); border-left: 2px solid var(--ember); }
 .bracket--br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--ember); border-right: 2px solid var(--ember); }
-
 .hero__spec figcaption { padding: 14px 0 0; }
 .hero__spec figcaption b {
   display: block; font-family: var(--sans); font-size: 16px; font-weight: 600;
   color: var(--ink); margin-bottom: 10px;
 }
-/* hairline dividers made of gap — no double borders at the joins */
 .specline {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -271,16 +215,12 @@ h1, h2, h3 {
   color: var(--ink-3); margin-bottom: 2px;
 }
 .specline li:last-child { color: var(--ember); font-weight: 700; }
-
-/* ─────────── section furniture ─────────── */
-
 .section {
   position: relative; z-index: 1;
   max-width: 1420px; margin: 0 auto;
   padding: clamp(52px, 6.5vw, 92px) clamp(20px, 4.4vw, 64px);
 }
 .section + .section { border-top: 1px solid var(--hair); }
-
 .sechead {
   display: flex; align-items: baseline; gap: 16px;
   margin-bottom: 20px;
@@ -289,32 +229,23 @@ h1, h2, h3 {
 .sechead__title { font-size: clamp(27px, 3.4vw, 42px); font-weight: 600; }
 .sechead__rule { flex: 1; height: 1px; background: var(--hair); }
 .sechead__tail { white-space: nowrap; }
-
 .section__lede {
   max-width: 62ch; color: var(--ink-2);
   font-size: clamp(15px, 1.15vw, 16.5px);
   margin: 0 0 clamp(28px, 3.4vw, 44px);
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   THE BAKER'S RACK TROLLEY
-   ═══════════════════════════════════════════════════════════════ */
-
 .rackgrid {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
   gap: clamp(24px, 3.4vw, 56px);
   align-items: start;
 }
-
 .stage {
   position: relative;
   height: calc(var(--rh) + 122px);
   perspective: 1500px;
   perspective-origin: 44% 36%;
 }
-
-/* the floor the castors stand on: one hairline and one contact shadow */
 .stage__floor {
   position: absolute; left: 0; right: 0; top: calc(30px + var(--rh)); height: 1px;
   background: var(--hair);
@@ -326,35 +257,26 @@ h1, h2, h3 {
   background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(20,22,28,.34), transparent 70%);
   filter: blur(4px);
 }
-
 .stage__hint {
   position: absolute; left: 4px; bottom: 4px; margin: 0;
   font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em;
   text-transform: uppercase; color: var(--ink-3);
 }
-
 .rack {
   position: absolute;
   left: clamp(72px, 11%, 118px); top: 26px;
   width: var(--rw); height: var(--rh);
   transform-style: preserve-3d;
-  /* layer 1 — pointer parallax, written ONLY by JS */
   transform: rotateX(5deg) rotateY(var(--yaw, 0deg));
   transition: transform .4s cubic-bezier(.22,.61,.36,1);
 }
 .rack.is-tracking { transition: none; }
-
 .rack__body {
   position: absolute; inset: 0;
   transform-style: preserve-3d;
-  /* layer 2 — the fixed yaw plus the one-shot rock, written ONLY by CSS */
   transform: rotateY(var(--spin)) rotateZ(var(--rock, 0deg));
   transition: transform .5s cubic-bezier(.34,1.56,.64,1);
 }
-
-/* One-shot rock on the castors, fired by a pull. It writes the SAME transform
-   as .rack__body — deliberately, so no two systems ever fight over one property.
-   The pointer parallax lives one layer up on .rack instead. */
 @keyframes rock {
   0%   { transform: rotateY(var(--spin)) rotateZ(0deg); }
   26%  { transform: rotateY(var(--spin)) rotateZ(-.6deg); }
@@ -362,12 +284,9 @@ h1, h2, h3 {
   100% { transform: rotateY(var(--spin)) rotateZ(0deg); }
 }
 .rack__body.is-rocking { animation: rock .6s cubic-bezier(.3,.9,.4,1); }
-
-/* — frames — */
 .frame { position: absolute; inset: 0; transform-style: preserve-3d; }
 .frame--front { transform: translateZ(0); }
 .frame--back  { transform: translateZ(calc(var(--rd) * -1)); filter: brightness(.72); }
-
 .post {
   position: absolute; top: 0; bottom: 0; width: 11px;
   background: linear-gradient(90deg, var(--steel-lo) 0 2px, var(--steel-hi) 3px 5px, var(--steel) 6px 9px, var(--steel-dk) 10px 11px);
@@ -375,7 +294,6 @@ h1, h2, h3 {
 }
 .post--l { left: 0; }
 .post--r { left: calc(var(--rw) - 11px); }
-
 .rail {
   position: absolute; left: 0; width: var(--rw); height: 9px;
   background: linear-gradient(180deg, var(--steel-hi), var(--steel) 45%, var(--steel-dk));
@@ -383,7 +301,6 @@ h1, h2, h3 {
 }
 .rail--top { top: 0; }
 .rail--bot { bottom: 26px; }
-
 .mesh {
   position: absolute; left: 8px; right: 8px; top: 12px; bottom: 36px;
   transform: translateZ(calc(var(--rd) * -1 + 3px));
@@ -391,8 +308,6 @@ h1, h2, h3 {
     repeating-linear-gradient(90deg, rgba(94,102,117,.36) 0 1px, transparent 1px 19px),
     repeating-linear-gradient(0deg,  rgba(94,102,117,.28) 0 1px, transparent 1px 19px);
 }
-
-/* — head plate — */
 .plate {
   position: absolute; left: 26px; top: -34px;
   transform: translateZ(9px);
@@ -403,8 +318,6 @@ h1, h2, h3 {
 }
 .plate__name { font-family: var(--mono); font-weight: 700; font-size: 12px; letter-spacing: .2em; }
 .plate__sub  { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; color: var(--steel-hi); }
-
-/* — runners: bars that run front-to-back, so the slots are visible — */
 .runner {
   position: absolute; left: 9px;
   width: var(--rd); height: 5px;
@@ -413,8 +326,6 @@ h1, h2, h3 {
   background: linear-gradient(180deg, var(--steel-hi), var(--steel-lo));
 }
 .runner--r { left: calc(var(--rw) - 14px); }
-
-/* — chalk tags clipped to each runner — */
 .tag {
   position: absolute; left: -106px;
   width: 100px;
@@ -439,16 +350,12 @@ h1, h2, h3 {
 }
 .tag.is-open .tag__t { color: var(--chalk); }
 .tag.is-open .tag__l { color: var(--ember); }
-/* the pip: a clip that only the open tag shows */
 .tag::after {
   content: ""; position: absolute; right: -7px; top: 50%;
   width: 7px; height: 2px; background: var(--steel-lo);
   transform: translateY(-50%);
 }
-
-/* — trays — */
 .trays { position: absolute; inset: 0; transform-style: preserve-3d; }
-
 .tray {
   position: absolute; left: 14px;
   width: calc(var(--rw) - 28px); height: 15px;
@@ -460,8 +367,6 @@ h1, h2, h3 {
   touch-action: pan-y;
 }
 .tray.is-dragging { cursor: grabbing; transition: filter .4s ease; }
-
-/* the front lip — a real rolled edge, facing the visitor */
 .tray__lip {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, var(--steel-hi) 0 2px, var(--steel) 2px 9px, var(--steel-lo) 9px 13px, var(--steel-dk) 13px 15px);
@@ -469,8 +374,6 @@ h1, h2, h3 {
   box-shadow: 0 2px 5px rgba(20,22,28,.28);
 }
 .tray.is-open .tray__lip { background: linear-gradient(180deg, #DEE3EA 0 2px, var(--steel-hi) 2px 9px, var(--steel) 9px 13px, var(--steel-lo) 13px 15px); }
-
-/* the deck — a wire plane receding into the rack */
 .tray__deck {
   position: absolute; left: 0; bottom: 0;
   width: 100%; height: var(--rd);
@@ -481,14 +384,11 @@ h1, h2, h3 {
     repeating-linear-gradient(90deg, var(--steel-lo) 0 1.5px, transparent 1.5px 13px);
   border-bottom: 2px solid var(--steel-lo);
 }
-
-/* goods stand on the deck's front edge */
 .goods {
   position: absolute; left: 8px; right: 8px; bottom: 13px; height: 0;
   transform-style: preserve-3d;
 }
 .goods--back { transform: translateZ(calc(var(--rd) * -.52)); filter: brightness(.9) saturate(.9); }
-
 .good {
   position: absolute; bottom: 0;
   display: block; width: var(--w, 60px); height: auto;
@@ -501,8 +401,6 @@ h1, h2, h3 {
 }
 .good.is-lit { translate: 0 -9px 14px; filter: drop-shadow(0 9px 5px rgba(20,22,28,.30)) brightness(1.06); }
 .good__sold { opacity: .34; filter: grayscale(.75) drop-shadow(0 2px 1px rgba(20,22,28,.2)); }
-
-/* — castors — */
 .castor {
   position: absolute; width: 17px; height: 17px;
   border-radius: var(--r-round);
@@ -519,9 +417,6 @@ h1, h2, h3 {
 .castor--fr { left: calc(var(--rw) - 19px); transform: translateZ(0); }
 .castor--bl { left: 2px;  transform: translateZ(calc(var(--rd) * -1)); filter: brightness(.72); }
 .castor--br { left: calc(var(--rw) - 19px); transform: translateZ(calc(var(--rd) * -1)); filter: brightness(.72); }
-
-/* ─────────── the docket ─────────── */
-
 .docket {
   position: relative;
   background: var(--panel);
@@ -539,7 +434,6 @@ h1, h2, h3 {
   border-radius: var(--r-edge);
 }
 .docket > * { position: relative; z-index: 1; }
-
 .docket__head {
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
   padding-bottom: 12px; margin-bottom: 12px;
@@ -558,7 +452,6 @@ h1, h2, h3 {
 }
 .docket__status.is-now { background: var(--ember); border-color: var(--ember-dk); color: var(--chalk); }
 .docket__status.is-gone { background: transparent; color: var(--ink-3); border-color: var(--hair); text-decoration: line-through; }
-
 .docket__title {
   font-size: clamp(23px, 2.5vw, 31px);
   font-variation-settings: "SOFT" 30, "WONK" 1, "opsz" 90;
@@ -568,9 +461,6 @@ h1, h2, h3 {
   font-size: 14.5px; line-height: 1.6; color: var(--ink-2);
   margin: 0 0 18px; max-width: 46ch;
 }
-
-/* the specimen window: whatever loaf the visitor is pointing at, drawn big.
-   Default is the tray'''s first item, so it is never empty and never needs a hint. */
 .spec {
   position: relative; margin: 0 0 16px;
   display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 18px;
@@ -598,8 +488,6 @@ h1, h2, h3 {
   width: 16px; height: 16px;
   border-right: 2px solid var(--ember); border-bottom: 2px solid var(--ember);
 }
-
-/* dotted-leader rows — reskinned from the catalogue's technical index */
 .rows { list-style: none; margin: 0 0 16px; padding: 0; display: grid; }
 .rows li {
   position: relative;
@@ -617,14 +505,10 @@ h1, h2, h3 {
 .rows .p { font-family: var(--mono); font-size: 13px; font-weight: 700; white-space: nowrap; }
 .rows li.out .n { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--ember); }
 .rows li.out .p { color: var(--ink-3); font-weight: 400; }
-
 .docket__foot {
   font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
   text-transform: uppercase; color: var(--ink-3); margin: 0;
 }
-
-/* ─────────── story ─────────── */
-
 .story {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr);
@@ -641,8 +525,6 @@ h1, h2, h3 {
   font-weight: 400;
 }
 .story__col em { font-style: italic; color: var(--ink); }
-
-/* hairline dividers made of gap — no double borders, no :last-child resets */
 .facts {
   list-style: none; margin: 0; padding: 0;
   display: grid; gap: 1px; background: var(--hair);
@@ -660,9 +542,6 @@ h1, h2, h3 {
   line-height: 1; color: var(--ember);
 }
 .facts span { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
-
-/* ─────────── visit ─────────── */
-
 .visit {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
@@ -685,7 +564,6 @@ h1, h2, h3 {
   background: var(--panel); margin: 0; padding: 0 16px 14px;
   font-size: 14px; line-height: 1.6; color: var(--ink-2);
 }
-
 .visit__map { margin: 0; }
 .visit__map svg {
   width: 100%; height: auto; display: block;
@@ -697,9 +575,6 @@ h1, h2, h3 {
   font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
   text-transform: uppercase; color: var(--ink-3); padding-top: 10px;
 }
-
-/* ─────────── wholesale ─────────── */
-
 .wholesale {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
@@ -713,8 +588,6 @@ h1, h2, h3 {
   font-size: 14.5px; color: var(--ink-2);
 }
 .terms span { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--ink); }
-
-/* the order pad */
 .pad {
   position: relative; overflow: hidden;
   background: var(--chalk);
@@ -752,7 +625,6 @@ h1, h2, h3 {
 }
 .field-row { display: grid; grid-template-columns: 1fr 128px; gap: 14px; }
 .pad__err { margin: 0; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--ember-dk); }
-
 .stamp {
   position: absolute; right: 14px; bottom: 66px;
   display: grid; justify-items: center; gap: 2px;
@@ -768,9 +640,6 @@ h1, h2, h3 {
 .stamp.is-on { opacity: .92; scale: 1; }
 .stamp__l1 { font-size: 15px; font-weight: 700; }
 .stamp__l2 { font-size: 9.5px; }
-
-/* ─────────── footer ─────────── */
-
 .foot {
   position: relative; z-index: 1;
   background: var(--ink); color: var(--paper-2);
@@ -794,9 +663,6 @@ h1, h2, h3 {
   font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
   color: var(--steel-lo); line-height: 1.7;
 }
-
-/* ═══════════════ responsive ═══════════════ */
-
 @media (max-width: 1120px) {
   .hero { grid-template-columns: 1fr; }
   .hero__spec { max-width: 460px; }
@@ -804,7 +670,6 @@ h1, h2, h3 {
   .facts { grid-template-columns: repeat(2, 1fr); }
   .stage { margin-inline: auto; width: 100%; }
 }
-
 @media (max-width: 760px) {
   :root {
     --rw: 250px; --rd: 118px; --rh: 404px;
@@ -823,7 +688,6 @@ h1, h2, h3 {
   .plate__name { font-size: 10.5px; letter-spacing: .16em; }
   .plate__sub { font-size: 8px; letter-spacing: .08em; white-space: nowrap; }
 }
-
 @media (max-width: 430px) {
   :root { --rw: 214px; --rd: 100px; --rh: 372px; --lvl: 62px; --lv0: 50px; --pull: 76px; }
   .rack { left: 96px; }
@@ -831,9 +695,6 @@ h1, h2, h3 {
   .sechead { flex-wrap: wrap; gap: 10px; }
   .sechead__rule { display: none; }
 }
-
-/* Reduced motion: kill the DURATION, never the destination.
-   A hidden-by-default state that only motion reveals is a bug, not an animation. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: .001ms !important;

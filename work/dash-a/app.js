@@ -1,10 +1,3 @@
-/* WHOLESALE PERFORMANCE — dash-a
-   All numbers below come straight out of data.json (the shared cleaned UCI
-   Online Retail export). The only hardcoded figures are the two pulled from
-   data.findings[]'s prose (230/4,026 SKUs, 65.6%/93.1% repeat split) because
-   that file stores them as sentences rather than fields — they are marked
-   at point of use. Nothing here is invented. */
-
 (function () {
   "use strict";
 

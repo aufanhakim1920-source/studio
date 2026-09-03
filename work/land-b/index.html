@@ -10,9 +10,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="grain" aria-hidden="true"></div>
-
 <header class="nav">
   <div class="nav-inner">
     <a href="#" class="logo">Roster<span class="logo-tag">concept</span></a>
@@ -23,16 +21,12 @@
     </nav>
   </div>
 </header>
-
 <main>
-
-  <!-- ======================= HERO ======================= -->
   <section class="hero" id="top">
     <div class="hero-inner">
       <p class="eyebrow" data-enter="wipe">SHIFT SWAPPING FOR HOSPITALITY STAFF</p>
       <h1 data-enter="stamp">Can't work Thursday?<br>Tear it off.</h1>
       <p class="hero-copy">Post the shift you can't work. Roster shows who's actually free — swap in two taps, manager approves in one. No more asking forty people in a group chat.</p>
-
       <div class="ticket-stage">
         <div class="ticket-hero" id="heroTicket" data-enter="lay">
           <div class="ticket-half stub">
@@ -49,17 +43,14 @@
             <div class="stamp stamp-posted" aria-hidden="true">POSTED</div>
           </div>
         </div>
-
         <button type="button" class="btn btn-primary tear-btn" id="tearBtn" aria-pressed="false">
           Post Thursday night
         </button>
-
         <figure class="ratio-chart" id="ratioChart" data-enter="draw" aria-label="Median time to a confirmed swap: 14 minutes on Roster against 2 days over WhatsApp, both bars drawn on one linear 48-hour scale">
           <figcaption class="ratio-cap">
             <span class="ratio-cap-key">MEDIAN TIME TO A CONFIRMED SWAP</span>
             <span class="ratio-cap-val">1 : 206</span>
           </figcaption>
-
           <div class="ratio-row">
             <span class="ratio-key">Roster</span>
             <span class="ratio-track">
@@ -67,7 +58,6 @@
             </span>
             <span class="ratio-val ratio-val-win">14 min</span>
           </div>
-
           <div class="ratio-row">
             <span class="ratio-key">WhatsApp</span>
             <span class="ratio-track">
@@ -75,7 +65,6 @@
             </span>
             <span class="ratio-val">2 days</span>
           </div>
-
           <div class="ratio-axis-wrap" aria-hidden="true">
             <svg class="ratio-axis" viewBox="0 0 1000 8" preserveAspectRatio="none" focusable="false">
               <line class="ax-rule" x1="0" y1="0.5" x2="1000" y2="0.5"></line>
@@ -93,20 +82,16 @@
       </div>
     </div>
   </section>
-
-  <!-- ======================= HOW IT WORKS ======================= -->
   <section class="how" id="how">
     <div class="section-inner">
       <p class="eyebrow" data-enter="wipe">POST — MATCH — APPROVE</p>
       <h2 data-enter="press">How a shift changes hands</h2>
-
       <div class="rail" id="rail" data-enter="deal">
         <div class="track" id="track">
           <div class="rail-chip" id="railChip" aria-hidden="true">
             <span class="tk-id">00417</span>
           </div>
         </div>
-
         <div class="station" data-step="1">
           <span class="station-num">01</span>
           <span class="station-mark" aria-hidden="true">&#10003;</span>
@@ -117,7 +102,6 @@
             <span class="taps-label tk-mono">1 TAP</span>
           </div>
         </div>
-
         <div class="station" data-step="2">
           <span class="station-num">02</span>
           <span class="station-mark" aria-hidden="true">&#10003;</span>
@@ -128,7 +112,6 @@
             <span class="taps-label tk-mono">2 TAPS</span>
           </div>
         </div>
-
         <div class="station" data-step="3">
           <span class="station-num">03</span>
           <span class="station-mark" aria-hidden="true">&#10003;</span>
@@ -140,12 +123,9 @@
           </div>
         </div>
       </div>
-
       <button type="button" class="btn btn-secondary" id="railBtn">Find who's free</button>
     </div>
   </section>
-
-  <!-- ======================= NUMBERS BAND ======================= -->
   <section class="manifest-wrap">
     <div class="section-inner">
       <p class="eyebrow" data-enter="wipe">ON THE BOARD RIGHT NOW</p>
@@ -202,13 +182,10 @@
       </div>
     </div>
   </section>
-
-  <!-- ======================= PRICING ======================= -->
   <section class="pricing" id="pricing">
     <div class="section-inner">
       <p class="eyebrow" data-enter="wipe">PICK YOUR SIZE</p>
       <h2 data-enter="press">Pricing</h2>
-
       <div class="plans" data-enter="deal">
         <article class="plan">
           <h3>Solo</h3>
@@ -217,7 +194,6 @@
           <p class="plan-note">No card required.</p>
           <a class="btn btn-secondary plan-cta" href="#" aria-label="Start free on the Solo plan">Start free</a>
         </article>
-
         <article class="plan">
           <h3>Venue</h3>
           <p class="plan-price">A$4<span>/worker/mo</span></p>
@@ -225,7 +201,6 @@
           <p class="plan-note">Billed monthly, cancel anytime.</p>
           <a class="btn btn-secondary plan-cta" href="#" aria-label="Get Venue, the single-site plan">Get Venue</a>
         </article>
-
         <article class="plan">
           <h3>Group</h3>
           <p class="plan-price">A$3<span>/worker/mo</span></p>
@@ -236,20 +211,16 @@
       </div>
     </div>
   </section>
-
-  <!-- ======================= HONEST LIMITATION ======================= -->
   <section class="limit" id="limit">
     <div class="section-inner">
       <p class="eyebrow" data-enter="wipe">WHAT ROSTER CAN'T DO</p>
       <h2 data-enter="press">Roster cannot make anyone pick up your shift.</h2>
-
       <div class="limit-stage">
         <div class="mini-ticket" id="stuckTicket" data-enter="lay">
           <span class="tk-id">NO. 00512</span>
           <span class="tk-role">TAG — unclaimed</span>
           <span class="tk-line">SAT · 6:00P–close</span>
         </div>
-
         <figure class="roll-chart" id="rollChart" data-enter="strip" aria-label="A strip of 50 posted shifts: 47 get picked up, 3 do not. That is the 6 percent.">
           <svg class="roll-bar" viewBox="0 0 1000 92" focusable="false" aria-hidden="true">
             <defs>
@@ -268,25 +239,20 @@
           </svg>
           <figcaption class="roll-cap tk-mono">ONE STRIP OF 50 · 47 PICKED UP · 3 NOT</figcaption>
         </figure>
-
         <button type="button" class="btn btn-secondary" id="claimBtn">Try to claim it</button>
-
         <p class="limit-result" id="limitResult" hidden>
           No one's free. This one stays on the rail — <strong>6% of swaps end here</strong>. The app just stops you finding that out on Thursday morning.
         </p>
       </div>
     </div>
   </section>
-
 </main>
-
 <footer class="footer">
   <div class="section-inner footer-inner">
     <p class="footer-label">Roster is a concept built for Company 24/7 — not a real company, not for sale.</p>
     <p class="footer-meta">Spec work by Aufan Hakim.</p>
   </div>
 </footer>
-
 <script src="app.js"></script>
 </body>
 </html>

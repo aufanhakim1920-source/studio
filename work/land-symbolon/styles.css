@@ -1,19 +1,3 @@
-/* SYMBOLON — brand identity at the threshold
-   ---------------------------------------------------------------------------
-   Built in the register of gallery 67 (SIGNAL), which Aufan ranked #1: a raw
-   WebGL object in the hero, ONE committed accent on a near-black ground, and a
-   lean page underneath it. The recipe is written out in [[Generative Canvas
-   Studio]] §8 — this build follows §8.6 point by point.
-
-   Palette learned from reference 42 (Symbolon Branding Site 3), pulled from
-   Variant this session: warm near-black #0A0705, ember #D96B27, gold #C9A881,
-   cream #FFF7E0. 67 was near-black + electric BLUE; this is near-black + FIRE,
-   so the family is shared and the read is not.
-
-   Type: Cormorant Garamond (light, wide-tracked) for display, IBM Plex Mono for
-   the technical furniture. A serif + mono pair with no sans anywhere — which is
-   most of why it does not read as a startup page. */
-
 :root {
   --void: #0A0705;
   --void-2: #120C08;
@@ -24,15 +8,12 @@
   --mut: rgba(255,247,224,.56);
   --dim: rgba(255,247,224,.3);
   --line: rgba(255,247,224,.14);
-
   --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
   --ease: cubic-bezier(.2,.7,.3,1);
   --spring: cubic-bezier(.34,1.4,.64,1);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--void); color: var(--cream);
   font: 300 16px/1.7 var(--serif);
@@ -40,18 +21,12 @@ body {
   overflow-x: hidden; min-height: 100vh;
 }
 .mono { font-family: var(--mono); font-weight: 400; }
-
-/* ⚠️ THE CANVAS ALWAYS CARRIES A CSS FALLBACK OF ROUGHLY THE SAME IMAGE.
-   A full-viewport <canvas> that fails to composite paints WHITE, and cream text
-   on white is unreadable. Measured on the SIGNAL build, in headless. When WebGL
-   works it paints over this; when it does not, the page still reads. */
 #gl {
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block;
   background:
     radial-gradient(46% 34% at 50% 46%, rgba(217,107,39,.28), transparent 70%),
     radial-gradient(120% 90% at 50% 44%, #1A0E06 0%, #0E0805 46%, var(--void) 78%);
 }
-/* a still vignette + fine grain: texture without a second moving thing */
 .vig {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
   background:
@@ -59,12 +34,9 @@ body {
     radial-gradient(rgba(255,247,224,.045) .5px, transparent .5px);
   background-size: 100% 100%, 3px 3px;
 }
-
 .skip { position: absolute; left: -9999px; display: inline-flex; align-items: center; min-height: 44px; }
 .skip:focus { left: 18px; top: 18px; z-index: 60; background: var(--ember); color: var(--void); padding: 0 20px; }
 :is(a, button, [tabindex]):focus-visible { outline: 1px solid var(--ember); outline-offset: 4px; }
-
-/* ── bar ───────────────────────────────────────────────────────────────── */
 .bar { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between;
   gap: 20px; padding: 22px clamp(18px,4vw,54px); }
 .mark { font: 300 15px/1 var(--serif); letter-spacing: .46em; color: var(--gold); }
@@ -76,13 +48,8 @@ body {
 .stat { font-size: 11.5px; letter-spacing: .16em; color: var(--dim);
   min-height: 44px; display: inline-flex; align-items: center; transition: color .3s; }
 .stat.on { color: var(--ember); }
-
 main { position: relative; z-index: 5; }
 section { padding: 0 clamp(18px,4vw,54px); max-width: 1140px; margin: 0 auto; }
-
-/* ── hero ──────────────────────────────────────────────────────────────── */
-/* the hero is deliberately TALL and mostly empty: the object is the page, and
-   the copy sits under it rather than beside it */
 .hero { min-height: 78vh; display: flex; flex-direction: column; justify-content: flex-end;
   padding-top: clamp(40px,12vw,140px); padding-bottom: clamp(30px,5vw,70px); }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start;
@@ -90,12 +57,8 @@ section { padding: 0 clamp(18px,4vw,54px); max-width: 1140px; margin: 0 auto; }
   border: 1px solid var(--line); padding: 9px 16px; }
 .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ember);
   box-shadow: 0 0 10px 2px var(--ember-dim); }
-
 h1 { font: 300 clamp(40px,7.2vw,92px)/1.04 var(--serif); letter-spacing: -.005em;
   margin: 26px 0 22px;
-  /* ⚠️ a ch-based max-width does not know where the OBJECT is. On a wide screen
-     the italic line reached into the sign's half and the last word sat on the
-     ring. Cap the copy column at the midline as well. */
   max-width: min(17ch, 52%); }
 h1 em { font-style: italic; color: var(--gold); }
 .sub { font-size: clamp(15.5px,1.7vw,18px); color: var(--mut); max-width: min(54ch, 48%); }
@@ -114,14 +77,10 @@ h1 em { font-style: italic; color: var(--gold); }
 .ghost:hover { border-color: var(--ember); color: var(--ember); }
 .fine { font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 .fine b { color: var(--ember); font-weight: 400; font-variant-numeric: tabular-nums; }
-
-/* ── shared ────────────────────────────────────────────────────────────── */
 .tag { font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--ember); }
 h2 { font: 300 clamp(28px,4.4vw,52px)/1.12 var(--serif); margin: 18px 0 34px; max-width: 20ch; }
 h2 em { font-style: italic; color: var(--gold); }
 .method, .work, .engage, .faq { padding-top: clamp(60px,9vw,128px); }
-
-/* ── the three orders ──────────────────────────────────────────────────── */
 .orders { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line); }
 .order { background: rgba(10,7,5,.72); backdrop-filter: blur(6px); padding: 30px 26px 34px;
   transition: background .3s var(--ease); }
@@ -131,8 +90,6 @@ h2 em { font-style: italic; color: var(--gold); }
 .order p { font-size: 15px; color: var(--mut); }
 .order__e { display: block; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line);
   font: 400 11.5px/1.5 var(--mono); letter-spacing: .06em; color: var(--dim); }
-
-/* ── work ──────────────────────────────────────────────────────────────── */
 .jobs { list-style: none; border-top: 1px solid var(--line); }
 .jobs li { border-bottom: 1px solid var(--line); }
 .jobs a { display: grid; grid-template-columns: 54px 1fr auto; gap: clamp(12px,2.4vw,30px);
@@ -142,8 +99,6 @@ h2 em { font-style: italic; color: var(--gold); }
 .jobs .no { font: 400 11.5px/1 var(--mono); color: var(--dim); letter-spacing: .1em; }
 .jobs b { font: 300 clamp(21px,2.9vw,34px)/1.1 var(--serif); }
 .jobs .k { font: 400 11.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
-
-/* ── engagement ────────────────────────────────────────────────────────── */
 .tiers { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; background: var(--line); }
 .tier { background: rgba(10,7,5,.72); backdrop-filter: blur(6px); padding: 30px 26px 28px;
   display: flex; flex-direction: column; gap: 8px; transition: background .3s var(--ease); }
@@ -162,8 +117,6 @@ h2 em { font-style: italic; color: var(--gold); }
 .tier a:hover { background: var(--ember); border-color: var(--ember); color: #140A04; }
 .engage .fine { margin-top: 22px; text-transform: none; letter-spacing: 0; font-size: 13px;
   font-family: var(--serif); }
-
-/* ── enquiry (animated, per [[The Small Interactions Get the Craft Too]]) ── */
 .qa { border-top: 1px solid var(--line); }
 .qa details { border-bottom: 1px solid var(--line); position: relative; }
 .qa details::before {
@@ -189,13 +142,11 @@ h2 em { font-style: italic; color: var(--gold); }
   opacity: 0; transform: translateY(7px);
   transition: opacity .32s var(--ease), transform .45s var(--ease); }
 .qa details.is-open .a p { opacity: 1; transform: none; transition-delay: .12s; }
-
 .foot { position: relative; z-index: 5; display: flex; justify-content: space-between; gap: 18px;
   flex-wrap: wrap; padding: 30px clamp(18px,4vw,54px) 46px; margin-top: clamp(64px,9vw,130px);
   border-top: 1px solid var(--line); color: var(--dim);
   font-size: 11px; letter-spacing: .16em; }
 .foot b { color: var(--ember); font-weight: 400; font-variant-numeric: tabular-nums; }
-
 @media (max-width: 900px) {
   h1 { max-width: 17ch; }
   .sub { max-width: 54ch; }
@@ -205,7 +156,6 @@ h2 em { font-style: italic; color: var(--gold); }
   .jobs a { grid-template-columns: 40px 1fr; }
   .jobs .k { grid-column: 2; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
 }

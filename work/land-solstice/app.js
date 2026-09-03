@@ -1,20 +1,3 @@
-/* SOLSTICE — landing page 3 of 3
- * ---------------------------------------------------------------------------
- * Palette from reference 36. Three kinds of motion, each one a single legible
- * thing rather than a field of movers:
- *
- *   1. ⭐ THE SUN OPENS WITH THE SCROLL. Six concentric rings sharing one
- *      centre and one phase, driven by a --o custom property. They are one
- *      object seen at six radii, not six independent animations — which is the
- *      distinction that matters in [[Motion Must Be User Driven]].
- *   2. The headline drops in word by word, once, on arrival.
- *   3. ⭐ HOVERING AN ACT REPAINTS THE PAGE in that artist's colour. The
- *      --accent custom property is read by the rings, the pips, the buttons and
- *      the headline, so one hover moves the whole page's tint at once. That is
- *      the reference's six-colour palette actually doing work rather than
- *      sitting in a legend.
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;

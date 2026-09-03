@@ -1,20 +1,8 @@
-/* THROWN — a concept storefront.
-   =========================================================================
-   A real e-commerce front end: filter, sort, colourway selection, add to
-   cart, a cart drawer with quantities, a live subtotal, a free-shipping
-   threshold, and state that survives a reload.
-
-   The products are drawn as SVG vessels rather than photographed. We have no
-   product photography and no rights to anyone else's, and a stock photo of
-   someone else's pottery on a shop page would be a lie about the goods. The
-   glaze is a gradient, so switching colourway genuinely re-renders the pot. */
-
 const GLAZES = {
   sand: { name: "Sand", a: "#E7D8BE", b: "#C4AC85", rim: "#A8906A" },
   ash:  { name: "Ash",  a: "#C9CCC4", b: "#8E948C", rim: "#727A71" },
   clay: { name: "Clay", a: "#C98467", b: "#9B5A44", rim: "#7F4634" },
 };
-
 /* simple vessel silhouettes in a 100x100 box */
 const SHAPES = {
   bowl:    "M15,44 Q50,39 85,44 L77,74 Q50,87 23,74 Z",
@@ -24,7 +12,6 @@ const SHAPES = {
   jug:     "M27,31 L69,31 L73,39 L66,79 Q48,86 31,79 Z",
   planter: "M25,35 L75,35 L68,82 Q50,87 32,82 Z",
 };
-
 const PRODUCTS = [
   { id: "bowl",    name: "Rice Bowl",     price: 28, shape: "bowl",    glazes: ["sand", "ash", "clay"], note: "13cm · stacks" },
   { id: "mug",     name: "Morning Mug",   price: 34, shape: "mug",     glazes: ["clay", "sand"],        note: "300ml · handle" },
@@ -33,23 +20,18 @@ const PRODUCTS = [
   { id: "jug",     name: "Milk Jug",      price: 42, shape: "jug",     glazes: ["clay", "ash"],         note: "450ml · pours clean" },
   { id: "planter", name: "Squat Planter", price: 48, shape: "planter", glazes: ["sand", "clay"],        note: "16cm · no drain hole" },
 ];
-
 const FREE_SHIP = 80;
-
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const money = (n) => "$" + n.toFixed(n % 1 ? 2 : 0);
-
 /* ── state ───────────────────────────────────────────────────────────── */
 let filter = "all";
 let sort = "feat";
 const chosen = {};                      // product id -> glaze key
 PRODUCTS.forEach((p) => (chosen[p.id] = p.glazes[0]));
-
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem("thrown-cart") || "[]"); } catch { cart = []; }
 const save = () => localStorage.setItem("thrown-cart", JSON.stringify(cart));
-
 /* ── the pot ─────────────────────────────────────────────────────────── */
 function vessel(p, glazeKey) {
   const g = GLAZES[glazeKey];
@@ -71,7 +53,6 @@ function vessel(p, glazeKey) {
     ${p.shape === "jug" ? `<path d="M69,33 l9,-4 -3,9 z" fill="${g.b}" stroke="${g.rim}" stroke-width="1"/>` : ""}
   </svg>`;
 }
-
 /* ── grid ────────────────────────────────────────────────────────────── */
 function visible() {
   let list = PRODUCTS.filter((p) => filter === "all" || p.glazes.includes(filter));
@@ -79,7 +60,6 @@ function visible() {
   if (sort === "high") list = [...list].sort((a, b) => b.price - a.price);
   return list;
 }
-
 function drawGrid() {
   const list = visible();
   $("#count").textContent = list.length;
@@ -107,7 +87,6 @@ function drawGrid() {
       </div>
     </li>`;
   }).join("");
-
   $$("#products .dot").forEach((b) => b.addEventListener("click", () => {
     chosen[b.dataset.p] = b.dataset.g;
     drawGrid();
@@ -115,7 +94,6 @@ function drawGrid() {
   $$("#products .add").forEach((b) => b.addEventListener("click", () => add(b.dataset.add)));
   if (typeof scan === "function") scan();
 }
-
 /* ── cart ────────────────────────────────────────────────────────────── */
 function add(id) {
   const p = PRODUCTS.find((x) => x.id === id);
@@ -125,21 +103,17 @@ function add(id) {
   else cart.push({ id, glaze: gk, qty: 1 });
   save(); drawCart(); bump(); openCart();
 }
-
 function setQty(i, d) {
   cart[i].qty += d;
   if (cart[i].qty <= 0) cart.splice(i, 1);
   save(); drawCart();
 }
-
 const subtotal = () =>
   cart.reduce((s, l) => s + PRODUCTS.find((p) => p.id === l.id).price * l.qty, 0);
-
 function drawCart() {
   const n = cart.reduce((s, l) => s + l.qty, 0);
   $("#cartCount").textContent = n;
   $("#cartCount").classList.toggle("has", n > 0);
-
   $("#cartBody").innerHTML = cart.length ? cart.map((l, i) => {
     const p = PRODUCTS.find((x) => x.id === l.id);
     return `
@@ -157,10 +131,8 @@ function drawCart() {
       <p class="c-price">${money(p.price * l.qty)}</p>
     </div>`;
   }).join("") : `<p class="c-empty">Nothing in the cart yet.</p>`;
-
   $$("#cartBody [data-q]").forEach((b) =>
     b.addEventListener("click", () => setQty(+b.dataset.q, +b.dataset.d)));
-
   const s = subtotal();
   $("#sub").textContent = money(s);
   $("#ship").textContent = s === 0
@@ -170,7 +142,6 @@ function drawCart() {
   $("#ship").classList.toggle("ok", s >= FREE_SHIP);
   $("#checkout").disabled = cart.length === 0;
 }
-
 /* ── drawer ──────────────────────────────────────────────────────────── */
 let lastFocus = null;
 function openCart() {
@@ -194,7 +165,6 @@ $("#checkout").addEventListener("click", () => {
   $("#cartBody").innerHTML =
     `<p class="c-empty">This is a concept storefront &mdash; there is no real checkout behind this button.</p>`;
 });
-
 /* ── controls ────────────────────────────────────────────────────────── */
 $$(".chip").forEach((b) => b.addEventListener("click", () => {
   $$(".chip").forEach((x) => x.classList.toggle("on", x === b));
@@ -202,13 +172,11 @@ $$(".chip").forEach((b) => b.addEventListener("click", () => {
   drawGrid();
 }));
 $("#sort").addEventListener("change", (e) => { sort = e.target.value; drawGrid(); });
-
 $("#signup").addEventListener("submit", (e) => {
   e.preventDefault();
   $("#signupNote").textContent = "Concept page — nothing was sent, and no address was stored.";
   e.target.reset();
 });
-
 /* ── motion ──────────────────────────────────────────────────────────────
    Same rule as the other pages: the .motion class is added by this script,
    so with JavaScript off nothing is hidden and the shop still works. And
@@ -218,12 +186,10 @@ $("#signup").addEventListener("submit", (e) => {
    products permanently invisible, which on a shop means unsellable. */
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (!REDUCED) document.documentElement.classList.add("motion");
-
 document.querySelectorAll("[data-enter]").forEach((el) => {
   el.style.setProperty("--d", (el.dataset.enter - 1) * 90 + "ms");
   requestAnimationFrame(() => el.classList.add("in"));
 });
-
 let pending = [];
 function scan() {
   pending = [...document.querySelectorAll("[data-rise]:not(.in)")];
@@ -248,7 +214,6 @@ function sweep() {
 const ping = () => { if (!queued) { queued = true; requestAnimationFrame(sweep); } };
 addEventListener("scroll", ping, { passive: true });
 addEventListener("resize", ping);
-
 /* the cart badge kicks when something lands in it — feedback for an action
    whose result is otherwise off-screen behind the drawer */
 function bump() {
@@ -258,7 +223,6 @@ function bump() {
   void c.offsetWidth;
   c.classList.add("bump");
 }
-
 drawGrid();
 drawCart();
 scan();

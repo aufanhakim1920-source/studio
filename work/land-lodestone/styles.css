@@ -1,16 +1,3 @@
-/* LODESTONE — a payments router
-   ---------------------------------------------------------------------------
-   THE OBJECT: a field of iron filings that align to a magnet the visitor drags.
-   Raw WebGL, fullscreen triangle, the whole page background — never a box in a
-   column. The product's pitch is "everything points to the cheapest route", so
-   the visitor is doing what the product does.
-
-   Palette: acid lime #C6F135 on #07080A. ONE accent, no gradient hedging.
-   Type: Archivo + IBM Plex Mono (deliberately not 67's Space Grotesk + JetBrains).
-   Radius: a committed ZERO, declared as a token — the ledger/receipt register,
-   and the other permitted answer to the two-tiers-or-nothing rule.
-*/
-
 :root {
   --ground:  #07080A;
   --ground-2:#0B0D10;
@@ -24,14 +11,13 @@
   --line-2:  rgba(237,239,234,.07);
   --panel:   rgba(8,10,12,.66);
 
-  --radius-none: 0px;              /* committed zero, named — not an accident */
+  --radius-none: 0px;              
 
   --ui:   'Archivo', ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* declared explicitly, taken off a standard table — never the browser default */
-  --state: cubic-bezier(.4, 0, .2, 1);      /* Material standard, for state changes */
-  --travel: cubic-bezier(.16, 1, .3, 1);    /* for something that physically moves */
+  --state: cubic-bezier(.4, 0, .2, 1);      
+  --travel: cubic-bezier(.16, 1, .3, 1);    
   --t-state: .15s;
   --t-travel: .42s;
 }
@@ -46,17 +32,13 @@ body {
 }
 .mono { font-family: var(--mono); }
 
-/* ⚠️ The canvas ALWAYS carries a CSS fallback of roughly its own image. A
-   full-viewport <canvas> that fails to composite paints WHITE, and a dark page
-   turning white is the worst possible failure. WebGL paints over this; when it
-   cannot, the page degrades to a plainer dark page rather than a blank one. */
 #gl {
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block;
   background:
     radial-gradient(38% 34% at 66% 46%, rgba(198,241,53,.16), transparent 70%),
     radial-gradient(120% 90% at 62% 50%, #12160C 0%, #0A0C0B 42%, var(--ground) 78%);
 }
-/* still texture over the top: a hairline hatch + a dot grid. Nothing moves. */
+
 .grain {
   position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5;
   background-image:
@@ -70,7 +52,6 @@ body {
   padding: 0 20px; border-radius: var(--radius-none); }
 :is(a, button, summary, [tabindex]):focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
 
-/* ── nav ───────────────────────────────────────────────────────────────── */
 .nav { position: relative; z-index: 30; display: flex; align-items: center; gap: 20px;
   padding: 16px clamp(16px,4vw,52px); border-bottom: 1px solid var(--line-2); }
 .logo { display: inline-flex; align-items: center; gap: 10px; color: var(--pale); text-decoration: none;
@@ -85,7 +66,6 @@ body {
   transition: color var(--t-state) var(--state); }
 .nav__l a:hover, .menu__in a:not(.btn):hover { color: var(--lime); }
 
-/* the burger — three rules that become an x, on the same curve as everything else */
 .nav__menu { display: none; width: 46px; height: 46px; background: none; cursor: pointer;
   border: 1px solid var(--line); border-radius: var(--radius-none);
   flex-direction: column; align-items: center; justify-content: center; gap: 5px;
@@ -97,7 +77,6 @@ body {
 .nav__menu[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(.2); }
 .nav__menu[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* the panel opens on 0fr -> 1fr, so it works to a height nobody measured */
 .menu { position: absolute; left: 0; right: 0; top: 100%; z-index: 29;
   display: grid; grid-template-rows: 0fr; visibility: hidden;
   background: rgba(7,9,10,.94); backdrop-filter: blur(14px);
@@ -110,7 +89,6 @@ body {
 .menu__in a:not(.btn) { min-height: 50px; font-size: 15px; border-bottom: 1px solid var(--line-2); }
 .menu__cta { margin-top: 14px; align-self: flex-start; }
 
-/* ── buttons ───────────────────────────────────────────────────────────── */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px;
   min-height: 46px; padding: 0 22px; border-radius: var(--radius-none); cursor: pointer;
   text-decoration: none; font: 600 13.5px/1 var(--ui); letter-spacing: .02em;
@@ -126,7 +104,6 @@ body {
 .btn--solid:hover { background: #D4FA55; border-color: #D4FA55; color: #0A0F02; }
 .btn--lg { min-height: 54px; padding: 0 28px; font-size: 14.5px; }
 
-/* ── layout ────────────────────────────────────────────────────────────── */
 main { position: relative; z-index: 5; }
 section { padding: 0 clamp(16px,4vw,52px); max-width: 1220px; margin: 0 auto; }
 .route, .num, .faq, .cta { padding-top: clamp(56px,8vw,116px); }
@@ -146,7 +123,7 @@ h1 em { font-style: normal; color: var(--lime); text-shadow: 0 0 46px var(--lime
 .sub { font-size: clamp(15px,1.5vw,17px); color: var(--mut); max-width: min(52ch, 58%);
   text-shadow: 0 1px 22px rgba(7,8,10,.9); }
 .row { display: flex; gap: 10px; flex-wrap: wrap; margin: 28px 0 14px; }
-/* these sit directly on the field, so they carry their own contrast */
+
 .fine { font: 400 12px/1.5 var(--mono); color: rgba(237,239,234,.55); letter-spacing: .03em;
   text-shadow: 0 1px 12px rgba(7,8,10,.96), 0 0 4px rgba(7,8,10,.9); }
 .hint { display: inline-flex; align-items: center; gap: 9px; margin-top: 26px; max-width: 40ch;
@@ -154,7 +131,6 @@ h1 em { font-style: normal; color: var(--lime); text-shadow: 0 0 46px var(--lime
   color: rgba(237,239,234,.62); text-shadow: 0 1px 12px rgba(7,8,10,.96), 0 0 4px rgba(7,8,10,.9); }
 .hint i { width: 22px; height: 1px; background: var(--lime); box-shadow: 0 0 8px 1px var(--lime-d); }
 
-/* ── ticker: ONE strip translating, not many independent movers ────────── */
 .ticker { position: relative; z-index: 5; overflow: hidden;
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   background: rgba(8,10,12,.5); backdrop-filter: blur(8px); margin: clamp(18px,4vw,44px) 0; }
@@ -164,7 +140,6 @@ h1 em { font-style: normal; color: var(--lime); text-shadow: 0 0 46px var(--lime
 .ticker__t b { color: var(--lime); font-weight: 400; }
 @keyframes slide { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 
-/* ── sections ──────────────────────────────────────────────────────────── */
 .tag { font: 500 12px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--lime); }
 h2 { font: 700 clamp(27px,3.9vw,50px)/1.06 var(--ui); letter-spacing: -.035em;
   margin: 16px 0 18px; max-width: 21ch; text-shadow: 0 2px 30px rgba(7,8,10,.88); }
@@ -172,7 +147,6 @@ h2 em { font-style: normal; color: var(--lime); }
 .lede { color: var(--mut); max-width: 54ch; margin-bottom: 34px;
   text-shadow: 0 1px 20px rgba(7,8,10,.85); }
 
-/* ── the three routes ──────────────────────────────────────────────────── */
 .routes { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
 .rt { position: relative; overflow: hidden; text-align: left; cursor: pointer;
   display: flex; flex-direction: column; gap: 0;
@@ -183,7 +157,7 @@ h2 em { font-style: normal; color: var(--lime); }
   transition: border-color var(--t-state) var(--state), transform var(--t-travel) var(--travel),
               background var(--t-state) var(--state); }
 .rt:hover, .rt:focus-visible { border-color: var(--lime); transform: translateY(-4px); }
-/* the cursor is a light source on the card it is over */
+
 .rt::before { content: ""; position: absolute; inset: 0; opacity: 0; pointer-events: none;
   transition: opacity .3s var(--state);
   background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(198,241,53,.13), transparent 62%); }
@@ -210,7 +184,6 @@ h2 em { font-style: normal; color: var(--lime); }
 .rt.is-best .rt__n { color: var(--lime); }
 .rt.is-best .rt__bar i { background: var(--lime); }
 
-/* ── numbers ───────────────────────────────────────────────────────────── */
 .num__g { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px;
   background: var(--line-2); border: 1px solid var(--line); margin: 30px 0 16px; }
 .stat { background: var(--panel); backdrop-filter: blur(12px); padding: 28px 22px; }
@@ -218,9 +191,6 @@ h2 em { font-style: normal; color: var(--lime); }
 .stat b small { font-size: .44em; color: var(--lime); font-weight: 500; margin-left: 3px; letter-spacing: 0; }
 .stat span { display: block; margin-top: 10px; font: 400 12px/1.5 var(--mono); color: var(--mut); }
 
-/* ── questions ─────────────────────────────────────────────────────────── */
-/* a glass panel, same material as the route cards — a long text block cannot
-   sit straight on a field of moving light and stay readable */
 .qa { margin-top: 30px; border: 1px solid var(--line); background: var(--panel);
   backdrop-filter: blur(12px); padding: 0 clamp(18px,2.4vw,30px); }
 .qa details { border-bottom: 1px solid var(--line-2); position: relative; }
@@ -239,7 +209,7 @@ h2 em { font-style: normal; color: var(--lime); }
 .qa summary::after { content: "+"; font: 400 21px/1 var(--mono); color: var(--lime); flex: none;
   transition: transform var(--t-travel) cubic-bezier(.34,1.4,.64,1); }
 .qa details.is-open > summary::after { transform: rotate(135deg); }
-/* ⭐ 0fr -> 1fr is the only way to transition to a height you do not know */
+
 .qa .a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t-travel) var(--travel); }
 .qa details.is-open .a { grid-template-rows: 1fr; }
 .qa .a > div { overflow: hidden; }
@@ -248,7 +218,6 @@ h2 em { font-style: normal; color: var(--lime); }
   transition: opacity .3s var(--state), transform var(--t-travel) var(--travel); }
 .qa details.is-open .a p { opacity: 1; transform: none; transition-delay: .1s; }
 
-/* ── close / footer ────────────────────────────────────────────────────── */
 .cta { text-align: center; padding-bottom: clamp(60px,8vw,110px); }
 .cta h2 { margin-inline: auto; }
 .cta .fine { margin-top: 18px; }
@@ -264,7 +233,6 @@ h2 em { font-style: normal; color: var(--lime); }
 .foot__c { font-size: 12.5px; color: var(--dim); letter-spacing: .06em; }
 .foot__c b { color: var(--lime); font-weight: 500; }
 
-/* ── the decision panel — it grows out of the card you clicked ─────────── */
 .modal { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center;
   padding: clamp(14px,3vw,32px); }
 .modal[hidden] { display: none; }
@@ -302,12 +270,10 @@ h2 em { font-style: normal; color: var(--lime); }
 .m__w { font-size: 14px; color: var(--pale); margin-bottom: 12px; }
 .m__n { font-size: 13.5px; color: var(--mut); border-left: 2px solid var(--line); padding-left: 14px; }
 
-/* ── scroll reveal: fires once ─────────────────────────────────────────── */
 .rv { opacity: 0; transform: translateY(18px);
   transition: opacity .6s var(--travel), transform .6s var(--travel); }
 .rv.in { opacity: 1; transform: none; }
 
-/* ── responsive ────────────────────────────────────────────────────────── */
 @media (max-width: 1000px) {
   .routes { grid-template-columns: 1fr; }
   .num__g { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -329,6 +295,6 @@ h2 em { font-style: normal; color: var(--lime); }
   *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; }
   .rv { opacity: 1; transform: none; }
   .ticker__t { animation: none !important; }
-  /* the field is one still frame here, so do not promise it moves */
+  
   .hint { display: none; }
 }

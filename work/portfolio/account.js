@@ -1,28 +1,3 @@
-/* Aufan Rachmad — accounts and project briefs.
-   =========================================================================
-   Plain fetch against Supabase's REST and GoTrue endpoints. No SDK, no build
-   step, same as every other page in this studio.
-
-   THE SHAPE, and it is deliberate (see the vault note "How to Add Accounts to
-   a Guest-First App"):
-
-     guest first, account as an upgrade — never a gate.
-
-   A visitor gets a real ANONYMOUS auth user on load. Not a fake local id: a
-   real user with a signed JWT, which is what lets Row Level Security enforce
-   "you may only read your own enquiries" in the database instead of trusting
-   the browser. They can send a brief immediately, with no signup. If they
-   later make an account, the SAME user is converted — the uid does not
-   change, so the brief they already sent is simply already theirs. There is
-   no migration because nothing moves.
-
-   Start with a signup wall and you throw that away.
-   ========================================================================= */
-
-/* ── config ──────────────────────────────────────────────────────────────
-   The anon/publishable key is designed to be public — it identifies the
-   project, it does not authorise anything. Every actual permission is
-   enforced by RLS policies in Postgres. Never put a service_role key here. */
 const SB_URL = window.__SB_URL__ || "";
 const SB_KEY = window.__SB_KEY__ || "";
 

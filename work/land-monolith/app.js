@@ -1,22 +1,6 @@
-/* MONOLITH — landing page 2 of 3
- * ---------------------------------------------------------------------------
- * ⭐ THE OBJECT: a wireframe solid, hand-rolled. No three.js, no library.
- *
- * Technique from the vault's [[Hand Rolled 3D Wireframe]] template (ref 09):
- * an explicit vertex + edge list, raw rotation matrices, one-divide perspective
- * projection, and a painter's sort so the far edges draw first and read dimmer.
- * It is about forty lines and it cannot break because a CDN moved.
- *
- * The visitor turns it: SCROLL rotates it through the page, DRAG spins it
- * directly with momentum that decays to a stop. One object, one motion —
- * which is the actual constraint in [[Motion Must Be User Driven]] (the thing
- * that made Aufan ill was many independent movers, not motion itself).
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 /* ── an icosahedron, by hand ───────────────────────────────────────────── */
 const PHI = (1 + Math.sqrt(5)) / 2;
 const V = [];
@@ -36,12 +20,10 @@ const E = [];
       if (Math.abs(d - min) < 1e-6) E.push([i, j]);
     }
 }
-
 function solid() {
   const cv = $("#cv"), ctx = cv.getContext("2d");
   let W = 0, H = 0, rx = -0.5, ry = 0.4, vx = 0, vy = 0, drag = false, px = 0, py = 0;
   let scrollRot = 0;
-
   const size = () => {
     const r = cv.getBoundingClientRect();
     const d = Math.min(devicePixelRatio || 1, 2);
@@ -49,7 +31,6 @@ function solid() {
     cv.width = Math.round(W * d); cv.height = Math.round(H * d);
     ctx.setTransform(d, 0, 0, d, 0, 0);
   };
-
   const rot = (p, ax, ay) => {
     let [x, y, z] = p;
     let c = Math.cos(ay), s = Math.sin(ay);
@@ -58,23 +39,19 @@ function solid() {
     [y, z] = [y * c - z * s, y * s + z * c];
     return [x, y, z];
   };
-
   function draw() {
     if (!W) return;
     ctx.clearRect(0, 0, W, H);
     const R = Math.min(W, H) * 0.26, cx = W / 2, cy = H / 2, D = 4.6;
-
     const pts = V.map((p) => {
       const [x, y, z] = rot(p, rx + scrollRot * 0.6, ry + scrollRot);
       const k = D / (D + z);                       /* one divide = perspective */
       return { x: cx + x * R * k, y: cy + y * R * k, z, k };
     });
-
     /* painter's sort: far edges first, and dimmer, so depth reads without
        any shading model at all */
     const edges = E.map(([a, b]) => ({ a, b, z: (pts[a].z + pts[b].z) / 2 }))
                    .sort((m, n) => m.z - n.z);
-
     edges.forEach((e) => {
       const t = (e.z + 2) / 4;                     /* 0 far … 1 near */
       ctx.strokeStyle = t > .55 ? "#1C00FF" : "rgba(21,21,22," + (0.18 + t * 0.5).toFixed(2) + ")";
@@ -84,7 +61,6 @@ function solid() {
       ctx.lineTo(pts[e.b].x, pts[e.b].y);
       ctx.stroke();
     });
-
     /* the vertices, as squares, because circles would soften a brutalist page */
     pts.forEach((p) => {
       const t = (p.z + 2) / 4, s = 2.5 + t * 4;
@@ -92,7 +68,6 @@ function solid() {
       ctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
     });
   }
-
   const loop = () => {
     if (!drag) {
       rx += vy; ry += vx;
@@ -105,7 +80,6 @@ function solid() {
   };
   let running = false;
   const kick = () => { if (!running && !REDUCED) { running = true; requestAnimationFrame(loop); } };
-
   cv.addEventListener("pointerdown", (e) => {
     drag = true; px = e.clientX; py = e.clientY;
     cv.setPointerCapture(e.pointerId); kick();
@@ -118,15 +92,12 @@ function solid() {
     draw();
   });
   addEventListener("pointerup", () => { if (drag) { drag = false; kick(); } });
-
   size(); draw();
   addEventListener("resize", () => { size(); draw(); }, { passive: true });
-
   return {
     scroll(v) { scrollRot = v; draw(); },
   };
 }
-
 /* ── content ───────────────────────────────────────────────────────────── */
 const FACES = [
   ["01", "Monolith Text", 400, "Regular", "for reading"],
@@ -142,10 +113,8 @@ const SPEC = [
   ["2", "variable axes"],
   ["1", "price, once"],
 ];
-
 function init() {
   const S = solid();
-
   $("#faces-l").innerHTML = FACES.map(([n, name, w, label, use]) => `
     <li><button type="button">
       <span class="no">${n}</span>
@@ -153,14 +122,11 @@ function init() {
       <span class="sp" style="--w:${w}">Aa</span>
       <span class="fw">${label} &middot; ${use}</span>
     </button></li>`).join("");
-
   $("#spec-g").innerHTML = SPEC.map(([v, k]) =>
     `<div class="cell"><b>${v}</b><span>${k}</span></div>`).join("");
-
   const word = "MONOLITH — SIX FACES — ONE PRICE — ";
   $("#band").innerHTML = (word + word).split(" — ").filter(Boolean)
     .map((w, i) => (i % 2 ? `<i>${w}</i>` : `<span>${w}</span>`)).join("<span>—</span>");
-
   /* the headline rises out of its mask on arrival, once */
   const lns = $$(".ln");
   if (REDUCED || !("IntersectionObserver" in window)) lns.forEach((l) => l.classList.add("in"));
@@ -170,7 +136,6 @@ function init() {
     }), { threshold: .3 });
     lns.forEach((l) => io.observe(l));
   }
-
   /* scroll drives: the progress rule, the solid's rotation, the band */
   const band = $("#band");
   const onScroll = () => {
@@ -182,7 +147,6 @@ function init() {
   };
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-
   /* the price counts up, once */
   const amt = $("#amt");
   const runAmt = () => {
@@ -200,10 +164,8 @@ function init() {
     }), { threshold: .4 });
     io2.observe($(".price"));
   } else runAmt();
-
   const tick = () => $("#clock").textContent = new Date().toLocaleTimeString("en-AU",
     { timeZone: "Australia/Melbourne", hour: "2-digit", minute: "2-digit" });
   tick(); setInterval(tick, 30000);
 }
-
 init();

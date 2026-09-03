@@ -1,51 +1,19 @@
-/* ============================================================================
-   AUFAN — THE DESK, IN 3D
-
-   Geometry contract (derived, not guessed — the vault warns that guessing the
-   rotation signs ships an invisible edge):
-
-     .stage does rotateX(P). At P = 0 the desk plane faces the camera, i.e. we
-     look straight DOWN at it. At P = 90 it is edge-on, i.e. eye level. So
-     P = 62 is a three-quarter desk view, P = 12 is overhead, P = 80 faces the
-     wall.
-
-     Inside that, every object lives in the desk's own frame:
-       +X  right along the desk
-       +Y  toward the viewer (y = 0 far edge, y = 760 near edge)
-       +Z  UP off the desk surface
-     which is why "lift it toward the viewer" is just translateZ(+n).
-
-   Face transforms for a corner-origin box of W x D x H:
-       top    translateZ(H)
-       front  translate3d(0, D, H) rotateX(-90deg)
-       back   translate3d(0, 0, H) rotateX(-90deg)
-       left   translate3d(0, 0, H) rotateY(-90deg) rotateZ(90deg)
-       right  translate3d(W, 0, H) rotateY(-90deg) rotateZ(90deg)
-   rotateX(-90) is the one that keeps a wall the right way UP; rotateX(+90)
-   builds it upside down, which only shows once you put text on it.
-   ========================================================================== */
-
 'use strict';
-
 var props    = document.getElementById('props');
 var stage    = document.getElementById('stage');
 var room     = document.getElementById('room');
 var tag      = document.getElementById('tag');
 var tagKind  = document.getElementById('tagKind');
 var tagTitle = document.getElementById('tagTitle');
-
 var DESK = { W: 1400, D: 760, TH: 34, FLOOR: -452 };
 var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 /* ───────────────────────────── helpers ───────────────────────────── */
-
 function setP(el, x, y, z, rz) {
   el.style.setProperty('--x', x + 'px');
   el.style.setProperty('--y', y + 'px');
   el.style.setProperty('--z', z + 'px');
   if (rz !== undefined && rz !== null) el.style.setProperty('--rz', rz + 'deg');
 }
-
 function mkFace(name, w, h, tf, html) {
   var f = document.createElement('div');
   f.className = 'f f--' + name;
@@ -55,7 +23,6 @@ function mkFace(name, w, h, tf, html) {
   if (html) f.innerHTML = html;
   return f;
 }
-
 function mkBox(o) {
   var w = o.w, d = o.d, h = o.h;
   var b = document.createElement('div');
@@ -63,7 +30,6 @@ function mkBox(o) {
   b.style.width = w + 'px';
   b.style.height = d + 'px';
   setP(b, o.x || 0, o.y || 0, o.z || 0, o.rz || 0);
-
   var faces = o.faces || {};
   var defs = [
     ['top',    w, d, 'translateZ(' + h + 'px)'],
@@ -80,7 +46,6 @@ function mkBox(o) {
   }
   return b;
 }
-
 /* two-part shadow. This is the AMBIENT half, lying on the desk at z≈1.4, that
    the object lifts AWAY from — so the shadow grows and separates instead of
    travelling with the object. The contact half is a box-shadow on the object. */
@@ -102,7 +67,6 @@ function trackShade(s, x, y, z, ow, od) {
   s.style.setProperty('--sh', (1 + lift / 520).toFixed(3));
   s.style.opacity = Math.max(0.05, op - lift / 1100).toFixed(3);
 }
-
 function rgb(h) {
   return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
 }
@@ -112,7 +76,6 @@ function mix(a, b, t) {
                   Math.round(A[1] + (B[1] - A[1]) * t) + ',' +
                   Math.round(A[2] + (B[2] - A[2]) * t) + ')';
 }
-
 /* An N-sided prism standing on the desk — a mug, a trophy cup. Each wall runs
    vertex→vertex so its width is the chord 2r·sin(pi/n); shading comes from the
    wall's own outward normal, never from a gradient. */
@@ -123,7 +86,6 @@ function mkPrism(o) {
   p.style.width = 2 * r + 'px';
   p.style.height = 2 * r + 'px';
   setP(p, o.x - r, o.y - r, o.z || 0, 0);
-
   var chord = 2 * r * Math.sin(Math.PI / n) + 1.2;   // +1.2 closes the seams
   var LX = -0.62, LY = -0.78;                        // light from the back left
   for (var i = 0; i < n; i++) {
@@ -143,9 +105,7 @@ function mkPrism(o) {
   }
   return p;
 }
-
 /* ───────────────────────────── content ───────────────────────────── */
-
 var PROJECTS = [
   { n: '01', t: 'FanNest', st: 'live', stack: 'Shopify · Node · Meta Graph API',
     metric: 'Anime merch, end to end',
@@ -178,7 +138,6 @@ var PROJECTS = [
     metric: 'Every SFX pinned to a frame',
     note: 'Video rendered in Chrome, each sound tied to the frame its animation starts on.' }
 ];
-
 var PRINTS = [
   { src: 'cleanup.jpg',   cap: 'Cobra Cleanup',      pos: '50% 44%' },
   { src: 'water.jpg',     cap: 'Clean water',        pos: '50% 36%' },
@@ -187,32 +146,26 @@ var PRINTS = [
   { src: 'orphanage.jpg', cap: 'Community Build 28', pos: '50% 44%' },
   { src: 'coffee.jpg',    cap: 'Latte art',          pos: '50% 50%' }
 ];
-
 /* ═════════════════════════ build the room ═════════════════════════ */
-
 /* desk slab — its lid is z = 0, so every object's z is a real height */
 props.appendChild(mkBox({
   w: DESK.W, d: DESK.D, h: DESK.TH, x: 0, y: 0, z: -DESK.TH,
   cls: 'desk m-wood', skip: []
 }));
-
 /* two trestle panels down to the floor */
 [[76, 96], [1250, 96]].forEach(function (p) {
   props.appendChild(mkBox({
     w: 74, d: 570, h: -DESK.TH - DESK.FLOOR, x: p[0], y: p[1], z: DESK.FLOOR, cls: 'm-wood'
   }));
 });
-
 /* green baize inlay */
 props.appendChild(mkBox({ w: 920, d: 480, h: 3, x: 52, y: 196, cls: 'baize m-felt' }));
-
 /* ── lamp ─────────────────────────────────────────────────────────── */
 var lampShade = mkShade(330, 220, 0.6);
 props.appendChild(lampShade);
 trackShade(lampShade, 40, 20, 0, 170, 108);
 props.appendChild(mkBox({ w: 170, d: 108, h: 18, x: 40, y: 20, cls: 'm-slate' }));
 props.appendChild(mkBox({ w: 22, d: 22, h: 236, x: 114, y: 62, cls: 'm-slate' }));
-
 var arm = document.createElement('div');
 arm.className = 'lampArm';
 arm.style.transform = 'translate3d(125px,73px,240px) rotateX(-50deg)';
@@ -220,19 +173,16 @@ var shadeBox = mkBox({ w: 196, d: 152, h: 84, x: -52, y: -76, cls: 'm-slate lamp
 shadeBox.querySelector('.f--bottom').classList.add('f--bottomlit');
 arm.appendChild(shadeBox);
 props.appendChild(arm);
-
 var pool = document.createElement('div');
 pool.className = 'lampPool';
 pool.style.width = '1060px';
 pool.style.height = '760px';
 setP(pool, -120, -130, 1.9);
 props.appendChild(pool);
-
 /* ── the project deck ─────────────────────────────────────────────── */
 var CARD = { w: 420, d: 280, h: 8 };
 var PILE = { x: 132, y: 306 };
 var READ = { x: 500, y: 224, z: 392 };
-
 var cards = [], cardShades = [];
 PROJECTS.forEach(function (p, i) {
   var html =
@@ -254,7 +204,6 @@ PROJECTS.forEach(function (p, i) {
   cardShades.push(s); cards.push(c);
   props.appendChild(s); props.appendChild(c);
 });
-
 /* ── notebook ─────────────────────────────────────────────────────── */
 var BOOK = { w: 400, d: 320, h: 26, x: 756, y: 288 };
 var book = mkBox({
@@ -275,7 +224,6 @@ book.dataset.pick = 'book';
 book.setAttribute('role', 'button');
 book.setAttribute('tabindex', '0');
 book.setAttribute('aria-label', 'Notebook — skills and schooling');
-
 var cover = document.createElement('div');
 cover.className = 'cover';
 cover.style.width = BOOK.w + 'px';
@@ -284,16 +232,13 @@ cover.style.setProperty('--cz', (BOOK.h + 1.4) + 'px');
 cover.innerHTML = '<span class="cover__band"></span><span class="cover__mark">notebook</span>' +
   '<span class="cover__inner"><em>&ldquo;measure it, don&rsquo;t guess.&rdquo;</em></span>';
 book.appendChild(cover);
-
 var bookShade = mkShade(BOOK.w + 60, BOOK.d + 60, 0.66);
 props.appendChild(bookShade);
 props.appendChild(book);
-
 /* ── mug + the docket that lives under it ─────────────────────────── */
 var MUG = { r: 62, h: 116, x: 1252, y: 250 };
 var mugShade = mkShade(210, 210, 0.66);
 props.appendChild(mugShade);
-
 var mugDocket = mkBox({
   w: 380, d: 360, h: 4, cls: 'card card--docket m-paper',
   faces: {
@@ -309,42 +254,35 @@ var mugDocket = mkBox({
   }
 });
 props.appendChild(mugDocket);
-
 var mug = mkPrism({
   r: MUG.r, h: MUG.h, n: 16, x: MUG.x, y: MUG.y,
   cls: 'mug pick', dark: '#AC9B7E', light: '#F6EDDB'
 });
 props.appendChild(mug);
-
 /* brew surface + rim + handle, all children of the mug so they lift with it */
 var brew = document.createElement('div');
 brew.className = 'mug__brew';
 brew.style.cssText = 'left:' + (MUG.r - (MUG.r - 11)) + 'px;top:' + (MUG.r - (MUG.r - 11)) +
   'px;width:' + (MUG.r - 11) * 2 + 'px;height:' + (MUG.r - 11) * 2 + 'px;transform:translateZ(' + (MUG.h - 9) + 'px);';
 mug.appendChild(brew);
-
 var rim = document.createElement('div');
 rim.className = 'mug__rim';
 rim.style.cssText = 'left:0;top:0;width:' + MUG.r * 2 + 'px;height:' + MUG.r * 2 +
   'px;transform:translateZ(' + MUG.h + 'px);';
 mug.appendChild(rim);
-
 var ear = document.createElement('div');
 ear.className = 'mug__ear';
 ear.style.cssText = 'width:82px;height:82px;transform:translate3d(' + (MUG.r * 2 - 6) + 'px,' +
   MUG.r + 'px,' + (MUG.h - 45) + 'px) rotateZ(0deg) rotateX(-90deg) translate(-6px,-41px);';
 mug.appendChild(ear);
-
 mug.dataset.pick = 'mug';
 mug.setAttribute('role', 'button');
 mug.setAttribute('tabindex', '0');
 mug.setAttribute('aria-label', 'Coffee mug — bakery and barista work');
-
 /* ── trophy + its docket ──────────────────────────────────────────── */
 var TRO = { x: 1064, y: 84 };
 var troShade = mkShade(240, 240, 0.62);
 props.appendChild(troShade);
-
 var troDocket = mkBox({
   w: 380, d: 360, h: 4, cls: 'card card--docket m-paper',
   faces: {
@@ -360,7 +298,6 @@ var troDocket = mkBox({
   }
 });
 props.appendChild(troDocket);
-
 var trophy = document.createElement('div');
 trophy.className = 'box mv trophy pick';
 trophy.style.width = '1px';
@@ -384,7 +321,6 @@ cupTop.className = 'cup__mouth';
 cupTop.style.cssText = 'left:0;top:0;width:96px;height:96px;transform:translateZ(68px);';
 cup.appendChild(cupTop);
 props.appendChild(trophy);
-
 /* ── prints ───────────────────────────────────────────────────────── */
 var PRT = { w: 244, d: 182, h: 6, x: 556, y: 26 };
 var prints = [], printShades = [];
@@ -405,7 +341,6 @@ PRINTS.forEach(function (p, i) {
   prints.push(pr); printShades.push(s);
   props.appendChild(s); props.appendChild(pr);
 });
-
 /* ── phone ────────────────────────────────────────────────────────── */
 var PHN = { w: 210, d: 350, h: 13, x: 1174, y: 384 };
 var phoneShade = mkShade(220, 360, 0.6);
@@ -425,7 +360,6 @@ phone.setAttribute('role', 'button');
 phone.setAttribute('tabindex', '0');
 phone.setAttribute('aria-label', 'Phone — contact');
 props.appendChild(phone);
-
 /* ── sticky note + pen: dressing, not interactive ─────────────────── */
 props.appendChild(mkBox({
   w: 176, d: 176, h: 3, x: 226, y: 54, rz: -6, cls: 'sticky m-mint',
@@ -433,9 +367,7 @@ props.appendChild(mkBox({
 }));
 props.appendChild(mkBox({ w: 216, d: 14, h: 14, x: 560, y: 664, rz: -8, cls: 'm-slate' }));
 props.appendChild(mkBox({ w: 46, d: 14, h: 14, x: 776, y: 634, rz: -8, cls: 'm-brass' }));
-
 /* ═════════════════════════ state + layout ═════════════════════════ */
-
 var S = {
   deck: 'pile',     // pile | fan
   card: -1,         // index of the open card, -1 for none
@@ -444,19 +376,15 @@ var S = {
   printHover: -1,
   heldPrint: -1
 };
-
 /* deterministic jitter — a pile needs rotation, not just offset, or it reads
    as a neat stack of paper rather than something someone put down */
 function jit(i, k) { var v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); }
-
 function place(el, sh, x, y, z, rz, ow, od) {
   setP(el, x, y, z, rz);
   if (sh) trackShade(sh, x, y, z, ow, od);
 }
-
 function layout() {
   var i;
-
   /* ── project deck ── */
   for (i = 0; i < cards.length; i++) {
     var x, y, z, rz;
@@ -482,14 +410,12 @@ function layout() {
     place(cards[i], cardShades[i], x, y, z, rz, CARD.w, CARD.d);
     cards[i].classList.toggle('is-held', S.card === i);
   }
-
   /* ── notebook ── */
   var bOpen = S.held === 'book';
   place(book, bookShade, bOpen ? READ.x - 12 : BOOK.x, bOpen ? READ.y + 6 : BOOK.y,
         bOpen ? 372 : 0, 0, BOOK.w, BOOK.d);
   cover.style.setProperty('--ry', bOpen ? '-166deg' : '0deg');
   bookShade.dataset.op = bOpen ? 0.7 : 0.66;
-
   /* ── mug + docket ── */
   var mOpen = S.held === 'mug';
   place(mug, mugShade, mOpen ? MUG.x - MUG.r + 84 : MUG.x - MUG.r,
@@ -498,7 +424,6 @@ function layout() {
   setP(mugDocket, mOpen ? READ.x : MUG.x - 170, mOpen ? READ.y + 10 : MUG.y - 126,
        mOpen ? 384 : 1.8, mOpen ? 0 : -4);
   mugDocket.style.opacity = mOpen ? 1 : 0;
-
   /* ── trophy + docket ── */
   var tOpen = S.held === 'trophy';
   place(trophy, troShade, tOpen ? 190 : 0, tOpen ? -60 : 0, tOpen ? 232 : 0, 0, 132, 132);
@@ -508,13 +433,11 @@ function layout() {
   setP(troDocket, tOpen ? READ.x : TRO.x - 170, tOpen ? READ.y + 10 : TRO.y - 126,
        tOpen ? 384 : 1.8, tOpen ? 0 : 5);
   troDocket.style.opacity = tOpen ? 1 : 0;
-
   /* ── phone ── */
   var pOpen = S.held === 'phone';
   place(phone, phoneShade, pOpen ? READ.x + 90 : PHN.x, pOpen ? READ.y + 20 : PHN.y,
         pOpen ? 404 : 0, pOpen ? 0 : -7, PHN.w, PHN.d);
   phoneShade.dataset.op = pOpen ? 0.62 : 0.6;
-
   /* ── prints ── */
   for (i = 0; i < prints.length; i++) {
     var px, py, pz, prz;
@@ -536,7 +459,6 @@ function layout() {
     printShades[i].dataset.op = S.heldPrint === i ? 0.66 : (S.printsOut ? 0.3 : 0.14);
     place(prints[i], printShades[i], px, py, pz, prz, PRT.w, PRT.d);
   }
-
   /* the read-out that follows whatever is in your hand */
   var label = null;
   if (S.card > -1) label = ['Project ' + PROJECTS[S.card].n, PROJECTS[S.card].t];
@@ -548,11 +470,9 @@ function layout() {
   if (label) { tag.hidden = false; tagKind.textContent = label[0]; tagTitle.textContent = label[1]; }
   else tag.hidden = true;
 }
-
 /* ═════════════════════════ the camera ═════════════════════════
    ONE system owns the stage transform: this object. Nothing else writes it,
    which is what keeps drag and the pose presets from erasing each other. */
-
 var POSE = {
   desk: { p: 60, y: -10, panY: 232, dolly: -340 },
   wall: { p: 82, y: 0,   panY: 306, dolly: -840 },
@@ -561,7 +481,6 @@ var POSE = {
 };
 var cam = { p: 60, y: -10, panY: 232, dolly: -340, tp: 60, ty: -10, tpanY: 232, tdolly: -340 };
 var raf = 0;
-
 function zoomRatio() {
   var z = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--zoom'));
   return (z || 0.84) / 0.84;
@@ -596,7 +515,6 @@ function pose(name, instant) {
   });
 }
 apply();
-
 /* ── drag to orbit ── */
 var drag = null;
 room.addEventListener('pointerdown', function (e) {
@@ -631,10 +549,8 @@ room.addEventListener('pointerup', function (e) {
   else putBack();
 });
 room.addEventListener('pointercancel', function () { drag = null; room.classList.remove('is-dragging'); });
-
 /* ── picking things up ── */
 function clearHeld() { S.card = -1; S.held = null; S.heldPrint = -1; }
-
 /* mobile only: --zoom jumps when something is in hand, so recompute the pan
    scale straight after the class flips */
 function syncHold() {
@@ -642,7 +558,6 @@ function syncHold() {
   document.documentElement.classList.toggle('is-holding', holding);
   ZR = zoomRatio();
 }
-
 function act(kind, i) {
   if (kind === 'card') {
     if (S.deck === 'pile') { clearHeld(); S.deck = 'fan'; syncHold(); layout(); return; }
@@ -662,7 +577,6 @@ function putBack() {
   clearHeld(); S.deck = 'pile'; S.printsOut = false;
   syncHold(); layout(); pose('desk');
 }
-
 document.getElementById('tagClose').addEventListener('click', putBack);
 props.addEventListener('keydown', function (e) {
   if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -672,11 +586,9 @@ props.addEventListener('keydown', function (e) {
   act(hit.dataset.pick, hit.dataset.i ? +hit.dataset.i : -1);
 });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') putBack(); });
-
 document.querySelectorAll('[data-pose]').forEach(function (b) {
   b.addEventListener('click', function () { pose(b.dataset.pose); });
 });
-
 /* ── the lamp switch: one click repaints the whole room ── */
 var lampOn = true;
 var lampBtn = document.getElementById('lampBtn');
@@ -687,7 +599,6 @@ function setLamp(on) {
   lampBtn.setAttribute('aria-pressed', String(on));
 }
 lampBtn.addEventListener('click', function () { setLamp(!lampOn); });
-
 /* ═════════════════════════ the ledger ═════════════════════════ */
 var lp = document.getElementById('ledgerProjects');
 PROJECTS.forEach(function (p) {
@@ -696,10 +607,8 @@ PROJECTS.forEach(function (p) {
   li.innerHTML = '<span class="row__k">' + p.t + '</span><span class="row__v">' + p.stack + ' · ' + p.st + '</span>';
   lp.appendChild(li);
 });
-
 /* ═════════════════════════ boot ═════════════════════════ */
 layout();
-
 /* States worth screenshotting are behind a click, so give them a URL. */
 var H = {
   fan:   function () { S.deck = 'fan'; layout(); },
@@ -716,7 +625,6 @@ var H = {
   if (H[h]) H[h]();
   else if (/^card-\d+$/.test(h)) { S.deck = 'fan'; act('card', +h.split('-')[1]); }
 });
-
 window.__desk = {
   pose: pose, act: act, putBack: putBack, setLamp: setLamp, layout: layout, S: S, cam: cam,
   fan: function () { S.deck = 'fan'; layout(); },

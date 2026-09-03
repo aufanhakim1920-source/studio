@@ -1,26 +1,3 @@
-/* TWELVE MARKETS, THIRTEEN MONTHS — build 57, Claude's own pick
-   ---------------------------------------------------------------------------
-   The third lane, and a different SCHOOL of dashboard rather than a restyle of
-   the first two. 55 and 56 are both KPI-tile boards: a few headline numbers,
-   large. This one has no headline number at all.
-
-   It is small multiples (Tufte): one panel per market, all twelve on one
-   screen, drawn identically so the only thing that differs is the shape. You
-   read the business by scanning, not by reading.
-
-   The whole argument lives in ONE toggle:
-     · SHARED SCALE — every panel on the same axis. Eleven of twelve flatline
-       along the bottom. That IS the concentration finding, delivered as a
-       picture instead of the sentence "84.6% of revenue is one market".
-     · OWN SCALE — each panel fitted to itself. The eleven come alive and you
-       can finally see that Australia and Japan are lumpy while EIRE is steady.
-   Same 156 numbers, two completely different readings. One control.
-
-   Palette: cool near-white. 52 warm cream, 53 pure black, 54 cold paper,
-   55 dark slate, 56 warm black + amber — this is the lightest ground of the
-   set, with one saturated blue ([[Vary the Palette]]). It is the closest to
-   54 of any of them, which is noted rather than hidden. */
-
 :root {
   --paper: #F6F7F9;
   --card: #FFFFFF;
@@ -56,7 +33,6 @@ body {
 .skip:focus { left: 18px; top: 16px; z-index: 9; background: var(--ink); color: var(--paper); padding: 0 18px; border-radius: 6px; }
 :is(a, button, [tabindex]):focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
 
-/* ── header ──────────────────────────────────────────────────────────────── */
 .hd { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex: 0 0 auto; }
 h1 { font: 600 19px/1.2 var(--ui); letter-spacing: -.015em; }
 .sub { color: var(--mut); font-size: 12.5px; margin-top: 3px; }
@@ -73,7 +49,6 @@ h1 { font: 600 19px/1.2 var(--ui); letter-spacing: -.015em; }
 .seg__b:hover { color: var(--ink); }
 .seg__b.is-on { background: var(--sig); color: #fff; }
 
-/* ── the grid: twelve identical panels, so shape is the only variable ────── */
 .grid {
   flex: 1 1 auto; min-height: 0;
   display: grid; gap: 8px;
@@ -104,7 +79,6 @@ h1 { font: 600 19px/1.2 var(--ui); letter-spacing: -.015em; }
 .sm-pk { fill: var(--sig); }
 .sm-max { fill: var(--dim); font: 500 9.5px var(--num); }
 
-/* ── footer ──────────────────────────────────────────────────────────────── */
 .ft {
   display: flex; justify-content: space-between; align-items: center; gap: 18px;
   flex: 0 0 auto; color: var(--mut); font-size: 11.5px;
@@ -113,7 +87,6 @@ h1 { font: 600 19px/1.2 var(--ui); letter-spacing: -.015em; }
 .sw { width: 16px; height: 3px; background: var(--sig); border-radius: 2px; display: inline-block; }
 .sw--p { background: var(--part); margin-left: 8px; }
 
-/* ── narrow ──────────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
   body { min-height: 0; }
   .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: none; }

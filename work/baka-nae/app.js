@@ -1,25 +1,4 @@
-/* baka nae. — THE SPRUE
-   One object: a parts runner. Nip a part off it and it lands in the tray.
-
-   ── what changed, and why ────────────────────────────────────────────────
-   The first pass drew six near-identical cat-shaped blanks with a small
-   picture floating in the middle of each. That did not look like anything
-   she actually sells, which is what "not executed correctly" meant.
-
-   Now the four runners are four REAL product forms, so switching A→B→C→D
-   visibly changes the object in your hands:
-
-     A  GANTUNGAN  acrylic charm  — die-cut, glossy, punched hole + split ring
-     B  STIKER     die-cut sticker — same cut line, matte, no hole
-     C  CETAK      art print       — paper sheet, white margin
-     D  KARTU      photocard       — rounded card, glossy, caption band
-
-   The die-cut outline is generated from her own artwork's alpha channel
-   (assets/charm-cut.png), so the cut follows the character the way a real
-   acrylic charm is cut — it is not a generic silhouette we invented. */
-
 const SHOPEE = "https://shopee.co.id/baka_nae";
-
 /* ── strings ─────────────────────────────────────────────────── */
 const STR = {
   id: {
@@ -61,22 +40,17 @@ const STR = {
     ],
   },
 };
-
 /* Edition numbering, not series names. Her cat-eared line really is called
    "Nya! ver."; WHICH anime she draws could not be verified from the Shopee
    API, and naming third-party series on her shop page would be an invented
    claim about her catalogue. */
 const SERIES = ["01", "02", "03", "04", "05", "06"];
-
 const LETTERS = ["A", "B", "C", "D"];
-
 /* six colourways — the pocket each part sits in is tinted, which is how one
    design reads as a six-piece run without faking six designs we do not have */
 const TINTS = ["#F0CFE0", "#CFE6DA", "#F6E3C2", "#CFDAF2", "#E8CEF0", "#F2D5C6"];
-
 const ART = "assets/charm-art.png";
 const CUT = "assets/charm-cut.png";
-
 /* ── the four product forms ──────────────────────────────────── */
 const FORMS = [
   { kind: "diecut", w: 144, h: 144, hole: true,  gloss: 0.50 },  // A charm
@@ -87,7 +61,6 @@ const FORMS = [
 const form = () => FORMS[runner];
 const topOf = () => -form().h / 2;
 const botOf = () =>  form().h / 2;
-
 /* six cells on the runner */
 const CELLS = [
   { cx: 157.5, cy: 199, gt: 114, gb: 284 },
@@ -97,16 +70,13 @@ const CELLS = [
   { cx: 157.5, cy: 548, gt: 468, gb: 628 },
   { cx: 402.5, cy: 548, gt: 468, gb: 628 },
 ];
-
 /* ── state ───────────────────────────────────────────────────── */
 let lang = localStorage.getItem("bakanae-lang") || "id";
 let runner = 0;
 const snapped = [new Set(), new Set(), new Set(), new Set()];
 let open = null;
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-
 /* ── defs ────────────────────────────────────────────────────────
    ⚠️ A <g> is NOT a legal child of <clipPath> or <mask> content in the way
    it was used here before: a <g> inside <clipPath> is silently ignored,
@@ -128,7 +98,6 @@ function buildDefs() {
       <stop offset=".55"  stop-color="#fff" stop-opacity="0"/>
     </linearGradient>`;
 }
-
 /* six emptied runners behind the live one — one for every year of the shop */
 function buildSpent() {
   const now = 2026;
@@ -143,14 +112,12 @@ function buildSpent() {
   }
   $("#spent").innerHTML = out;
 }
-
 /* ── one part, drawn in whichever form this runner is ─────────── */
 function formMarkup(i, big) {
   const f = form();
   const x = -f.w / 2, y = -f.h / 2;
   const tint = TINTS[i];
   let s = "";
-
   if (f.kind === "diecut") {
     // the white acrylic/vinyl cut, then her artwork registered on top of it
     s += `<image class="p-cut-img" href="${CUT}" x="${x}" y="${y}" width="${f.w}" height="${f.h}"/>`;
@@ -178,13 +145,11 @@ function formMarkup(i, big) {
   }
   return s;
 }
-
 function partMarkup(i) {
   const c = CELLS[i], f = form();
   const pt = c.cy + topOf(), pb = c.cy + botOf();
   const gx1 = c.cx - 4, gx2 = c.cx - 4;
   const isGone = snapped[runner].has(i);
-
   return `<g class="slot">
     <rect class="pocket" x="${c.cx - 92}" y="${c.gt + 3}" width="184" height="${(c.gb - c.gt - 8).toFixed(0)}"
           rx="6" fill="${TINTS[i]}"/>
@@ -192,7 +157,6 @@ function partMarkup(i) {
     <rect class="gate" x="${gx2}" y="${pb.toFixed(1)}" width="8" height="${(c.gb - pb).toFixed(1)}"/>
     <rect class="gate-cut ${isGone ? "shown" : ""}" x="${gx1 - 1}" y="${(pt - 4.5).toFixed(1)}" width="10" height="4.5" rx="1.5"/>
     <rect class="gate-cut ${isGone ? "shown" : ""}" x="${gx2 - 1}" y="${pb.toFixed(1)}" width="10" height="4.5" rx="1.5"/>
-
     <g class="part ${isGone ? "gone" : ""}" data-i="${i}" role="button" tabindex="0"
        transform="translate(${c.cx},${c.cy})"
        aria-label="${LETTERS[runner]}${i + 1}">
@@ -205,7 +169,6 @@ function partMarkup(i) {
     </g>
   </g>`;
 }
-
 function drawParts(animate) {
   const g = $("#parts");
   g.innerHTML = CELLS.map((_, i) => partMarkup(i)).join("");
@@ -218,12 +181,10 @@ function drawParts(animate) {
   });
   updateCounter();
 }
-
 function updateCounter() {
   $("#counter").textContent = `${LETTERS[runner]} ${snapped[runner].size}/6`;
   updateTabCounts();
 }
-
 /* Only rewrite the numbers. Re-running drawTabs() here would rebuild the
    buttons and rebind every listener on each snap. */
 function updateTabCounts() {
@@ -232,12 +193,10 @@ function updateTabCounts() {
     if (c) c.textContent = `${snapped[+b.dataset.r].size}/6`;
   });
 }
-
 /* ── the mechanic: nip a part off ────────────────────────────── */
 function snap(i) {
   const slot = $$(".slot", $("#parts"))[i];
   const part = $(".part", slot);
-
   if (!snapped[runner].has(i)) {
     snapped[runner].add(i);
     part.classList.add("snapping");
@@ -250,7 +209,6 @@ function snap(i) {
   }
   fillTray(i);
 }
-
 /* ── the tray: exactly one part at a time ────────────────────── */
 function fillTray(i) {
   open = { r: runner, i };
@@ -258,9 +216,7 @@ function fillTray(i) {
   const code = `${LETTERS[runner]}${i + 1}`;
   const f = form();
   const vb = `${-f.w / 2 - 16} ${-f.h / 2 - 16} ${f.w + 32} ${f.h + 32}`;
-
   const nxt = (n) => (i + n + CELLS.length) % CELLS.length;
-
   tray.innerHTML = `
     <div class="deck">
       <div class="dcard back b2" aria-hidden="true" style="--tint:${TINTS[nxt(2)]}"></div>
@@ -290,21 +246,17 @@ function fillTray(i) {
         </div>
       </div>
     </div>`;
-
   tray.hidden = false;
   well.classList.add("full");
   $(".t-close", tray).addEventListener("click", closeTray);
   wireTilt($(".tilt", tray));
-
   /* step to the next/previous part without going back to the runner.
      snap() already handles "not taken yet", so stepping onto an untaken part
      nips it off too and the runner stays in sync with what you have seen. */
   $$(".t-step", tray).forEach((b) =>
     b.addEventListener("click", () => step(+b.dataset.step)));
-
   wireDrag($("#dtop", tray));
 }
-
 /* ── the card is a deck you actually drag ────────────────────────────────
    The first version only *measured* the gesture on pointerup and jumped to
    the next card. Nothing moved while your finger was down, so it felt dead —
@@ -313,12 +265,10 @@ function fillTray(i) {
 const THROW = 84;                  // px past which the card commits
 const DEAD  = 6;                   // px before a press counts as a drag, so
                                    // taps on the buttons inside still work
-
 function wireDrag(card) {
   if (!card) return;
   let x0 = 0, y0 = 0, dx = 0, dy = 0, active = false, moved = false;
   const tagL = $(".sw-tag.l", card), tagR = $(".sw-tag.r", card);
-
   const paint = () => {
     card.style.transform =
       `translate(${dx.toFixed(1)}px, ${(dy * 0.22).toFixed(1)}px) rotate(${(dx * 0.055).toFixed(2)}deg)`;
@@ -331,7 +281,6 @@ function wireDrag(card) {
     if (tagR) tagR.style.opacity = 0;
     if (tagL) tagL.style.opacity = 0;
   };
-
   card.addEventListener("pointerdown", (e) => {
     if (e.target.closest("button, a")) return;      // let the controls be pressed
     active = true; moved = false;
@@ -339,7 +288,6 @@ function wireDrag(card) {
     try { card.setPointerCapture(e.pointerId); } catch { /* synthetic events have no live pointer */ }
     card.classList.add("dragging");
   });
-
   card.addEventListener("pointermove", (e) => {
     if (!active) return;
     dx = e.clientX - x0; dy = e.clientY - y0;
@@ -349,7 +297,6 @@ function wireDrag(card) {
     moved = true;
     paint();
   });
-
   const release = () => {
     if (!active) return;
     active = false;
@@ -367,26 +314,22 @@ function wireDrag(card) {
   card.addEventListener("pointerup", release);
   card.addEventListener("pointercancel", () => { active = false; card.classList.remove("dragging"); reset(); });
 }
-
 function step(d) {
   if (!open) return;
   snap((open.i + d + CELLS.length) % CELLS.length);
 }
-
 document.addEventListener("keydown", (e) => {
   if (!open) return;
   if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
   if (e.key === "ArrowLeft")  { e.preventDefault(); step(-1); }
   if (e.key === "Escape")     { closeTray(); }
 });
-
 function closeTray() {
   open = null;
   $("#tray").hidden = true;
   $("#tray").innerHTML = "";
   $("#well").classList.remove("full");
 }
-
 /* the charm catches the light when you move over it — pointer driven only */
 function wireTilt(el) {
   if (!el || !matchMedia("(hover:hover)").matches) return;
@@ -403,7 +346,6 @@ function wireTilt(el) {
     if (svg) svg.style.transform = "";
   });
 }
-
 /* ── runner tabs ─────────────────────────────────────────────── */
 function drawTabs() {
   const t = STR[lang];
@@ -419,7 +361,6 @@ function drawTabs() {
     if (open) closeTray();
   }));
 }
-
 /* ── the QC mould stamp: press it, it inks the paper ─────────── */
 function wireQC() {
   const qc = $("#qc"), ink = $("#ink");
@@ -433,7 +374,6 @@ function wireQC() {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); press(); }
   });
 }
-
 /* ── language ────────────────────────────────────────────────── */
 function applyLang() {
   const t = STR[lang];
@@ -443,7 +383,6 @@ function applyLang() {
   drawTabs();
   if (open) fillTray(open.i);
 }
-
 function init() {
   buildDefs();
   buildSpent();
@@ -457,5 +396,4 @@ function init() {
   }));
   applyLang();
 }
-
 init();

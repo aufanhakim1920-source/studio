@@ -1,89 +1,51 @@
-/* ============================================================================
-   AUFAN — THE DESK, IN 3D
-   Direction A of three explorers. The page IS a room: one preserve-3d tree
-   you drag to orbit, with the content sitting on the desk as real objects.
-
-   Borrowed, and from where:
-     · box primitive, three-tone material shading, "geometry does the shading"
-                                              → Cardboard 3D Object Stage
-     · depth replaces scale · lifting one presses the others flat ·
-       two-part shadow split across two z-planes · perspective-origin is what
-       makes an edge visible                   → nocturne-a-paper-lift addendum
-     · wall + spot light · stacked-shadow chassis · dotted leader rows ·
-       two corner brackets not four · "a stack needs bigger offsets than feels
-       right" · photo colour-grading stack      → Web Elements Catalogue
-     · one tactile thing you pick up            → Aufan Shelf Portfolio (frozen)
-
-   Palette deliberately unused by the last five builds: a painted terracotta
-   room, walnut desk, green baize, brass, one mint signal.
-   ========================================================================== */
-
 @property --x  { syntax: '<length>'; inherits: false; initial-value: 0px; }
 @property --y  { syntax: '<length>'; inherits: false; initial-value: 0px; }
 @property --z  { syntax: '<length>'; inherits: false; initial-value: 0px; }
 @property --rz { syntax: '<angle>';  inherits: false; initial-value: 0deg; }
 @property --ry { syntax: '<angle>';  inherits: false; initial-value: 0deg; }
 @property --sh { syntax: '<number>'; inherits: false; initial-value: 1; }
-
 :root {
-  /* ── the room ───────────────────────────────────────── */
   --wall:       #A94F33;
   --wall-lit:   #C2664A;
   --wall-hi:    #C2664A;
   --wall-lo:    #7E3623;
   --floor:      #5E2B1C;
-
-  /* ── materials ──────────────────────────────────────── */
   --wood-top:   #5A3A22;
   --wood-face:  #402716;
   --wood-side:  #311D0F;
   --felt:       #204A3C;
   --felt-hi:    #2A5E4C;
   --felt-lo:    #163429;
-
   --paper:      #EFE3CB;
   --paper-face: #D6C6A6;
   --paper-side: #C0AE8B;
   --card-ink:   #23180F;
-
   --brass:      #C89A3F;
   --brass-hi:   #E8C877;
   --brass-lo:   #8E6A22;
-
   --slate:      #241C17;
   --slate-hi:   #35291F;
-
-  --signal:     #2FD8AE;     /* the one saturated signal */
+  --signal:     #2FD8AE;     
   --signal-dim: #1B8E73;
-
   --ink:        #201009;
   --ink-soft:   rgba(32,16,9,.6);
   --cream:      #F2E7D2;
-
-  /* ── radius: a named two-tier system, never one number ─ */
   --r-none:  0px;
   --r-paper: 2px;
   --r-obj:   7px;
   --r-pill:  100px;
-
   --f-disp: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --f-ui:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --f-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', monospace;
-
   --ease: cubic-bezier(.22,.72,.24,1);
   --ease-pop: cubic-bezier(.34,1.28,.5,1);
-
   --zoom: .84;
   --pitch: 62deg;
   --yaw: -15deg;
-
-  /* lamp */
-  --warm: 1;                 /* 1 = lamp on, 0 = off */
+  --warm: 1;                 
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { -webkit-text-size-adjust: 100%; }
-
 body {
   width: 100%;
   overflow-x: hidden;
@@ -94,20 +56,15 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-
-/* the second layer over the ground — required, never optional */
 .grain {
   position: fixed; inset: 0; z-index: 90; pointer-events: none;
   mix-blend-mode: multiply; opacity: .5;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
 }
-
 .mono {
   font-family: var(--f-mono);
   font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
 }
-
-/* ══════════════════════ CONTROL STRIP ══════════════════════ */
 .strip {
   position: relative; z-index: 40;
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
@@ -120,10 +77,8 @@ body {
 }
 .strip__name em { font-weight: 400; font-style: italic; opacity: .74; }
 .strip__dot { padding: 0 .45em; opacity: .5; }
-
 .strip__cams { display: flex; gap: 0; border: 1px solid rgba(242,231,210,.34); }
 .strip__cams .ctl + .ctl { border-left: 1px solid rgba(242,231,210,.24); }
-
 .ctl {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em;
   text-transform: uppercase;
@@ -135,7 +90,6 @@ body {
 .ctl:hover { color: var(--cream); background: rgba(242,231,210,.11); }
 .ctl.is-on { color: var(--ink); background: var(--cream); }
 .ctl:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
-
 .ctl--lamp {
   display: inline-flex; align-items: center; gap: 8px;
   border: 1px solid rgba(242,231,210,.34);
@@ -150,14 +104,11 @@ body {
   background: var(--brass-hi);
   box-shadow: 0 0 9px 2px rgba(232,200,119,.85);
 }
-
 .strip__hint {
   margin-left: auto;
   font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em;
   color: rgba(242,231,210,.6);
 }
-
-/* ══════════════════════ THE ROOM ══════════════════════ */
 .frame {
   position: relative;
   width: min(1320px, 100% - 2.6rem); margin: 0 auto;
@@ -165,12 +116,11 @@ body {
   border: 1px solid rgba(30,14,8,.4);
   box-shadow: 0 40px 90px -50px rgba(20,8,3,.9);
 }
-
 .room {
   position: relative;
   height: clamp(520px, 74vh, 780px);
   perspective: 2000px;
-  perspective-origin: 50% 30%;      /* ← the sightline that makes edges visible */
+  perspective-origin: 50% 30%;      
   background:
     radial-gradient(120% 90% at 50% 8%,  rgba(255,196,128,calc(.30 * var(--warm))) 0%, transparent 62%),
     radial-gradient(90% 70% at 50% 100%, rgba(20,7,2,.55) 0%, transparent 70%),
@@ -180,14 +130,12 @@ body {
   transition: background .5s var(--ease);
 }
 .room.is-dragging { cursor: grabbing; }
-/* lamp-off grading. Must NOT be a filter on .world — see the note there. */
 .room::after {
   content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
   background: linear-gradient(178deg, rgba(30,46,70,.34) 0%, rgba(12,18,32,.48) 100%);
   opacity: calc(1 - var(--warm));
   transition: opacity .5s var(--ease);
 }
-
 .stage {
   position: absolute; left: 50%; top: 50%;
   width: 0; height: 0;
@@ -200,8 +148,6 @@ body {
   transform-style: preserve-3d;
   transform: scale3d(var(--zoom), var(--zoom), var(--zoom)) translate3d(-700px, -380px, 0);
 }
-
-/* ── the shell of the room ───────────────────────────── */
 .floor {
   position: absolute; left: -900px; top: -240px;
   width: 3200px; height: 2400px;
@@ -212,7 +158,6 @@ body {
     linear-gradient(180deg, #4E2416 0%, #35180E 100%);
   transition: background .5s var(--ease);
 }
-
 .wall {
   position: absolute; left: -900px; top: -240px;
   width: 3200px; height: 1520px;
@@ -223,7 +168,6 @@ body {
     linear-gradient(178deg, var(--wall-hi) 0%, var(--wall) 44%, var(--wall-lo) 100%);
   transition: background .5s var(--ease);
 }
-/* plaster mottle — the wall is painted, not filled */
 .wall::after {
   content: ''; position: absolute; inset: 0; opacity: .5;
   background:
@@ -238,8 +182,6 @@ body {
   opacity: var(--warm);
   transition: opacity .5s var(--ease);
 }
-
-/* wall typography — net rotation is only −30°, so this reads */
 .wall__paint { position: absolute; left: 936px; top: 300px; width: 880px; }
 .wall__paint .kick {
   white-space: nowrap;
@@ -262,8 +204,6 @@ body {
   font-family: var(--f-ui); font-size: 27px; line-height: 1.44;
   margin-top: 18px; max-width: 700px; color: rgba(255,232,206,.62);
 }
-
-/* the pinboard */
 .pin { position: absolute; background: var(--cream); padding: 14px 14px 0; box-shadow: 0 26px 34px -22px rgba(30,10,2,.8); }
 .pin img {
   display: block; width: 100%; height: 200px; object-fit: cover;
@@ -284,18 +224,15 @@ body {
   background: rgba(240,226,196,.5);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.22);
 }
-/* two corner brackets, never four — four in one gutter reads as noise */
 .pin::before, .pin::after {
   content: ''; position: absolute; width: 26px; height: 26px;
   border: 3px solid rgba(47,216,174,.55);
 }
 .pin::before { left: -9px; top: -9px; border-right: 0; border-bottom: 0; }
 .pin::after  { right: -9px; bottom: -9px; border-left: 0; border-top: 0; }
-
 .pin--a { left: 1832px; top: 258px; width: 292px; transform: rotate(-2.6deg); }
 .pin--b { left: 2162px; top: 236px; width: 264px; transform: rotate(3.4deg); }
 .pin--c { left: 1846px; top: 536px; width: 282px; transform: rotate(1.8deg); }
-
 .clip {
   position: absolute; left: 2178px; top: 512px; width: 290px;
   transform: rotate(-1.4deg);
@@ -308,18 +245,12 @@ body {
 .clip__num  { font-family: var(--f-disp); font-weight: 900; font-size: 84px; line-height: 1; margin: 10px 0 6px; }
 .clip__num small { font-size: .32em; font-weight: 600; margin-left: .1em; }
 .clip__body { font-size: 19px; line-height: 1.42; color: var(--ink-soft); }
-
 .tack { position: absolute; width: 20px; height: 20px; border-radius: var(--r-pill);
   background: radial-gradient(circle at 34% 30%, var(--signal), var(--signal-dim));
   box-shadow: 0 3px 5px rgba(0,0,0,.4); }
 .tack--1 { left: 1968px; top: 248px; }
 .tack--2 { left: 1978px; top: 526px; }
-
-/* ══════════════════ THE BOX PRIMITIVE ══════════════════
-   Corner-origin, Z-is-up. Every object on the desk is one of these.
-   Faces are flat colour: the geometry does the shading, not gradients. */
 .props { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
-
 .box {
   position: absolute; transform-style: preserve-3d;
   --x: 0px; --y: 0px; --z: 0px; --rz: 0deg;
@@ -330,33 +261,24 @@ body {
   transform-origin: 0 0;
   overflow: hidden;
 }
-
-/* materials — lid lightest, front mid, sides darkest */
 .m-wood  .f--top { background: var(--wood-top); }
 .m-wood  .f--front, .m-wood .f--back { background: var(--wood-face); }
 .m-wood  .f--left, .m-wood .f--right { background: var(--wood-side); }
-
 .m-paper .f--top { background: var(--paper); }
 .m-paper .f--front, .m-paper .f--back { background: var(--paper-face); }
 .m-paper .f--left, .m-paper .f--right { background: var(--paper-side); }
-
 .m-brass .f--top { background: var(--brass-hi); }
 .m-brass .f--front, .m-brass .f--back { background: var(--brass); }
 .m-brass .f--left, .m-brass .f--right { background: var(--brass-lo); }
-
 .m-slate .f--top { background: var(--slate-hi); }
 .m-slate .f--front, .m-slate .f--back { background: var(--slate); }
 .m-slate .f--left, .m-slate .f--right { background: #150F0B; }
-
 .m-felt  .f--top { background: var(--felt); }
 .m-felt  .f--front, .m-felt .f--back { background: var(--felt-lo); }
 .m-felt  .f--left, .m-felt .f--right { background: var(--felt-lo); }
-
 .m-mint  .f--top { background: var(--signal); }
 .m-mint  .f--front, .m-mint .f--back { background: var(--signal-dim); }
 .m-mint  .f--left, .m-mint .f--right { background: #16705B; }
-
-/* the desk slab gets a real grain on its lid */
 .desk .f--top {
   background:
     repeating-linear-gradient(91deg, rgba(0,0,0,.16) 0 2px, transparent 2px 9px),
@@ -368,8 +290,6 @@ body {
 .desk .f--front {
   background: repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 2px, transparent 2px 10px), var(--wood-face);
 }
-
-/* the green baize inlay */
 .baize .f--top {
   background:
     radial-gradient(50% 62% at 40% 30%, rgba(255,214,164,calc(.2 * var(--warm))) 0%, transparent 74%),
@@ -378,9 +298,6 @@ body {
   box-shadow: inset 0 0 40px rgba(0,0,0,.35);
   transition: background .5s var(--ease);
 }
-
-/* ── shadows: two parts on two z-planes ─────────────────
-   contact half rides on the object, ambient half lies on the desk. */
 .shade {
   position: absolute; pointer-events: none;
   border-radius: 50%;
@@ -389,20 +306,13 @@ body {
   transform: translate3d(var(--x), var(--y), var(--z)) scale(var(--sh));
   transition: --x .62s var(--ease), --y .62s var(--ease), --sh .62s var(--ease), opacity .62s var(--ease);
 }
-
-/* ══════════════════ OBJECTS ══════════════════ */
 .pick { cursor: pointer; }
 .pick .f--top { transition: box-shadow .3s var(--ease), filter .3s var(--ease); }
 .pick:hover .f--top { filter: brightness(1.1); }
-
-/* every movable object animates only its own custom properties.
-   ONE system writes each transform — the camera never touches these. */
 .mv {
   transition: --x .62s var(--ease), --y .62s var(--ease),
               --z .62s var(--ease-pop), --rz .62s var(--ease);
 }
-
-/* ── project cards ── */
 .card .f--top {
   background: var(--paper);
   box-shadow: inset 0 0 0 1px rgba(90,60,30,.18);
@@ -427,8 +337,6 @@ body {
 .card__metric { font-family: var(--f-disp); font-weight: 900; font-size: 32px; line-height: 1.1; margin: 9px 0 8px; letter-spacing: -.02em; }
 .card__note { font-size: 16.5px; line-height: 1.4; color: rgba(35,24,15,.72); }
 .card__rule { height: 1px; background: rgba(35,24,15,.2); margin: 14px 18px 0; }
-
-/* ── notebook ── */
 .book .f--top {
   background:
     repeating-linear-gradient(180deg, transparent 0 33px, rgba(60,40,20,.14) 33px 34px),
@@ -441,7 +349,6 @@ body {
 .book__cols ul { list-style: none; }
 .book__cols li { font-size: 15.5px; line-height: 1.46; margin-bottom: 9px; color: rgba(35,24,15,.8); }
 .book__cols li b { font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--signal-dim); display: block; margin-bottom: 2px; }
-
 .cover {
   position: absolute; left: 0; top: 0;
   transform-origin: 0 50%;
@@ -466,8 +373,6 @@ body {
   display: flex; align-items: flex-end; padding: 26px;
   font-family: var(--f-disp); font-size: 20px; color: rgba(244,220,190,.52);
 }
-
-/* ── mug ── */
 .mug__wall { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .mug__brew {
   position: absolute; border-radius: 50%;
@@ -483,8 +388,6 @@ body {
   border: 13px solid var(--cream); border-radius: 50%;
   background: transparent;
 }
-
-/* ── prints ── */
 .print .f--top { background: var(--cream); padding: 9px 9px 0; }
 .print img {
   display: block; width: 100%; height: calc(100% - 34px); object-fit: cover;
@@ -499,8 +402,6 @@ body {
   content: ''; position: absolute; left: 9px; right: 9px; top: 9px; bottom: 34px;
   background: var(--wall); opacity: .09; pointer-events: none;
 }
-
-/* ── phone ── */
 .phone .f--top {
   background: #0D0A08; padding: 12px;
   box-shadow: inset 0 0 0 3px #2A211A;
@@ -511,23 +412,17 @@ body {
 .phone__scr .e { font-family: var(--f-mono); font-size: 15px; line-height: 1.5; color: var(--signal); margin-top: 12px; }
 .phone__scr .s { font-family: var(--f-ui); font-size: 15px; line-height: 1.4; color: rgba(240,226,200,.5); margin-top: 12px; }
 .phone__scr .b { display: inline-block; margin-top: 16px; font-family: var(--f-mono); font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: #08251E; background: var(--signal); padding: 8px 12px; }
-
-/* ── sticky note ── */
 .sticky .f--top { background: var(--signal); }
 .sticky__t {
   font-family: var(--f-disp); font-style: italic; font-weight: 600;
   font-size: 21px; line-height: 1.24; color: #07281F; padding: 16px 14px;
 }
-
-/* ── trophy plaque ── */
 .plinth .f--front { display: flex; align-items: center; justify-content: center; }
 .plinth__plate {
   font-family: var(--f-mono); font-size: 14px; letter-spacing: .14em;
   text-transform: uppercase; color: #2A1A06;
   background: var(--brass-hi); padding: 4px 10px; margin: auto;
 }
-
-/* ── the lamp ── */
 .lampArm { position: absolute; transform-origin: 0 0; transform-style: preserve-3d; }
 .shade .f--bottomlit {
   background: radial-gradient(ellipse at 50% 40%, rgba(255,232,186,calc(.2 + .8 * var(--warm))) 0%, rgba(255,196,122,calc(.1 + .6 * var(--warm))) 52%, rgba(90,50,20,.9) 100%);
@@ -539,8 +434,6 @@ body {
   opacity: var(--warm);
   transition: opacity .5s var(--ease);
 }
-
-/* ══════════════════ THE PICK-UP TAG ══════════════════ */
 .tag {
   position: absolute; left: 22px; bottom: 22px; z-index: 20;
   max-width: 320px;
@@ -557,8 +450,6 @@ body {
   padding: 7px 11px; cursor: pointer;
 }
 .tag__x:hover { background: var(--signal-dim); }
-
-/* ══════════════════ THE LEDGER ══════════════════ */
 .ledger {
   width: min(1320px, 100% - 2.6rem); margin: 0 auto;
   padding: 30px 0 64px;
@@ -580,7 +471,6 @@ body {
   letter-spacing: -.035em; line-height: .96; margin-top: 8px;
 }
 .ledger__head h2 em { font-style: italic; font-weight: 400; color: var(--signal-dim); }
-
 .ledger__grid { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 40px; }
 .col__h {
   font-family: var(--f-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
@@ -605,7 +495,6 @@ body {
   border-bottom: 1px dotted rgba(35,24,15,.42);
 }
 .row--live .row__v { color: var(--signal-dim); }
-
 .ledger__foot {
   margin-top: 40px; padding-top: 22px; border-top: 2px solid var(--ink);
   display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
@@ -618,17 +507,12 @@ body {
 }
 .mailto span { display: block; height: 3px; background: var(--signal); transform: scaleX(.16); transform-origin: 0 50%; transition: transform .4s var(--ease); }
 .mailto:hover span { transform: scaleX(1); }
-
-/* ══════════════════ RESPONSIVE ══════════════════ */
 @media (max-width: 1080px) {
   :root { --zoom: .6; }
   .room { height: clamp(440px, 62vh, 620px); }
   .ledger__grid { grid-template-columns: 1fr 1fr; gap: 30px; }
 }
 @media (max-width: 720px) {
-  /* the whole room has to fit a 358px frame, so the scene becomes a diorama…
-     …and picking something up zooms the room in, because at diorama scale the
-     object's own face is unreadable. */
   :root { --zoom: .29; }
   :root.is-holding { --zoom: .78; }
   .frame, .strip, .ledger { width: calc(100% - 1.6rem); }
@@ -638,20 +522,12 @@ body {
   .ledger__grid { grid-template-columns: 1fr; gap: 26px; }
   .tag { left: 12px; right: 12px; bottom: 12px; max-width: none; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .mv, .shade, .cover, .room, .world, .wall, .floor, .wall__lamp, .lampPool { transition-duration: .01ms !important; }
   .mailto span { transition-duration: .01ms !important; }
 }
-
-
-/* ══════════════ pieces app.js builds ══════════════ */
-
 .pick:focus-visible { outline: none; }
 .pick:focus-visible .f--top { box-shadow: 0 0 0 4px var(--signal); }
-
-/* dockets — the paper that lives UNDER the mug and the trophy and comes up
-   with them, so those objects open into real content instead of a HUD panel */
 .card--docket { transition: --x .62s var(--ease), --y .62s var(--ease),
                             --z .62s var(--ease-pop), --rz .62s var(--ease),
                             opacity .34s var(--ease); }
@@ -667,23 +543,13 @@ body {
   content: ''; position: absolute; left: 0; top: 9px;
   width: 8px; height: 8px; background: var(--signal-dim);
 }
-
-/* held object gets the CONTACT half of the shadow; the ambient half is a
-   separate plane lying on the desk that it lifts away from */
 .card.is-held .f--top { box-shadow: 0 0 0 1px rgba(90,60,30,.24), 0 18px 26px -14px rgba(20,8,2,.7); }
-
-/* trophy cup mouth */
 .cup__mouth {
   position: absolute; border-radius: 50%;
   background: radial-gradient(circle at 42% 36%, #4A3410 0%, #2C1E08 58%, #6B4E14 100%);
   box-shadow: inset 0 0 0 4px var(--brass-hi);
 }
-
-/* the lamp head: only the underside is a light source */
 .lampHead .f--top { background: linear-gradient(158deg, #453629 0%, #2C221A 100%); }
-
 @media (max-width: 720px) {
-  /* the grab target is the whole room, so give the page its vertical scroll
-     back and let a horizontal drag do the turning */
   .room { touch-action: pan-y; }
 }

@@ -1,11 +1,3 @@
-/* ═══════════════════════════════════════════════════════════
-   AUFAN GACHA — capsule-machine portfolio
-   Ground/type system from the recipe Aufan endorsed (warm neutral,
-   saturated colour blocks, big radii, friendly heavy sans, mono micro).
-   Chassis / knurled dial / physical buttons from the parts bin.
-   Nothing animates on its own except one status LED.
-   ═══════════════════════════════════════════════════════════ */
-
 :root{
   --paper:#F3EADA;
   --paper-2:#EADFC8;
@@ -13,7 +5,6 @@
   --ink:#191510;
   --ink-2:#6A6153;
   --line:#DDCEB2;
-
   --red:#DE4B3C;
   --red-dk:#A5301F;
   --red-lt:#F0705F;
@@ -21,23 +12,18 @@
   --gold-dk:#C99514;
   --teal:#0F9B8E;
   --violet:#6C4FD8;
-
   --steel:#CDD2D9;
   --steel-dk:#8B929C;
   --steel-lt:#EDF0F4;
-
   --r-lg:34px;
   --r-md:22px;
   --r-sm:14px;
-
   --pop:cubic-bezier(.22,1.4,.36,1);
   --ease:cubic-bezier(.22,.61,.36,1);
-
   --f-disp:"Fredoka","Trebuchet MS",sans-serif;
   --f-body:"Instrument Sans",system-ui,-apple-system,sans-serif;
   --f-mono:"Space Mono",ui-monospace,monospace;
 }
-
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -50,14 +36,10 @@ a{color:inherit}
 h1,h2,h3{font-family:var(--f-disp); font-weight:600; letter-spacing:-.02em; margin:0}
 kbd{font-family:var(--f-mono); font-size:.78em; background:var(--card);
   border:1px solid var(--line); border-bottom-width:2px; border-radius:6px; padding:1px 6px}
-
 .skip{position:absolute; left:-9999px; top:0; z-index:99;
   background:var(--ink); color:var(--paper); padding:10px 16px; border-radius:0 0 12px 0}
 .skip:focus{left:0}
-
 :focus-visible{outline:3px solid var(--violet); outline-offset:3px; border-radius:6px}
-
-/* ── ground texture: static, no motion ─────────────────────── */
 .grain{
   position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.30;
   mix-blend-mode:multiply;
@@ -68,16 +50,11 @@ kbd{font-family:var(--f-mono); font-size:.78em; background:var(--card);
   top:-12vw; right:-14vw; background:rgba(245,194,67,.34)}
 .wash--b{width:52vw; height:52vw; max-width:520px; max-height:520px;
   bottom:6vh; left:-16vw; background:rgba(15,155,142,.20)}
-
 main,.nav,.foot{position:relative; z-index:1}
-
-/* ── micro label used above every heading ──────────────────── */
 .micro{
   font-family:var(--f-mono); font-size:11px; letter-spacing:.20em;
   text-transform:uppercase; color:var(--ink-2); margin:0 0 14px;
 }
-
-/* ═══════════ NAV ═══════════ */
 .nav{position:sticky; top:0; z-index:40; padding:12px 0;
   backdrop-filter:blur(12px) saturate(1.2);
   background:linear-gradient(rgba(243,234,218,.92),rgba(243,234,218,.62));
@@ -97,8 +74,6 @@ main,.nav,.foot{position:relative; z-index:1}
   background:var(--ink); color:var(--paper); padding:6px 13px; border-radius:999px}
 .nav__countLabel{font-family:var(--f-mono); font-size:9px; letter-spacing:.16em; opacity:.65}
 .nav__count b{font-family:var(--f-disp); font-size:15px; font-weight:600}
-
-/* ═══════════ HERO ═══════════ */
 .hero{max-width:1180px; margin:0 auto; padding:64px 26px 40px;
   display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center}
 .hero__h1{font-size:clamp(38px,5.2vw,64px); line-height:1.04; letter-spacing:-.035em}
@@ -107,7 +82,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .hero__lede{max-width:50ch; color:#3A342B; margin:20px 0 24px}
 .hero__lede strong{font-weight:600}
 .hero__lede a{color:var(--teal); text-decoration-thickness:1px; text-underline-offset:3px}
-
 .pill{display:inline-flex; align-items:center; gap:9px;
   background:rgba(251,246,236,.75); backdrop-filter:blur(8px);
   border:1px solid var(--line); border-radius:999px; padding:7px 15px}
@@ -118,18 +92,13 @@ main,.nav,.foot{position:relative; z-index:1}
   50%{box-shadow:0 0 0 6px rgba(15,155,142,0)}
 }
 .pill__txt{font-family:var(--f-mono); font-size:10.5px; letter-spacing:.13em}
-
 .hero__facts{list-style:none; display:flex; gap:30px; margin:30px 0 0; padding:0; flex-wrap:wrap}
 .hero__facts li{display:flex; flex-direction:column}
 .hero__facts b{font-family:var(--f-disp); font-size:30px; font-weight:600; line-height:1}
 .hero__facts span{font-family:var(--f-mono); font-size:10px; letter-spacing:.11em;
   text-transform:uppercase; color:var(--ink-2); margin-top:5px}
-
-/* ═══════════ THE MACHINE ═══════════ */
 .stage{display:flex; flex-direction:column; align-items:center; gap:16px}
 .machine{width:min(330px,86vw); position:relative; user-select:none}
-
-/* dome ------------------------------------------------------ */
 .dome{
   position:relative; width:100%; aspect-ratio:1/.86;
   border-radius:50% 50% 16px 16px / 62% 62% 16px 16px;
@@ -147,22 +116,17 @@ main,.nav,.foot{position:relative; z-index:1}
 .dome__glass{position:absolute; inset:0;
   background:linear-gradient(120deg, rgba(255,255,255,.42) 0 26%, transparent 42%);
   pointer-events:none}
-/* pointer-driven specular — the only thing that moves on the dome */
 .dome__spec{position:absolute; inset:-20%; pointer-events:none;
   background:radial-gradient(circle 120px at var(--sx,30%) var(--sy,22%),
     rgba(255,255,255,.85), rgba(255,255,255,0) 68%);
   opacity:0; transition:opacity .3s var(--ease); mix-blend-mode:screen}
 .machine:hover .dome__spec,.machine.is-touched .dome__spec{opacity:1}
-
 .dcap{position:absolute; border-radius:50%; transform:translate(-50%,-50%) rotate(var(--rot,0deg));
   box-shadow:inset 0 -3px 5px rgba(0,0,0,.22), inset 0 2px 3px rgba(255,255,255,.7)}
 .dcap::after{content:""; position:absolute; left:18%; top:14%; width:34%; height:24%;
   border-radius:50%; background:rgba(255,255,255,.75)}
-
 .neck{width:74%; height:16px; margin:-6px auto 0;
   background:linear-gradient(var(--red-dk),var(--red)); border-radius:6px 6px 0 0}
-
-/* body ------------------------------------------------------ */
 .body{
   position:relative; padding:20px 20px 26px; border-radius:20px 20px 8px 8px;
   background:linear-gradient(178deg,var(--red-lt) 0%, var(--red) 22%, var(--red-dk) 100%);
@@ -174,7 +138,6 @@ main,.nav,.foot{position:relative; z-index:1}
 }
 .body__topline{position:absolute; left:14px; right:14px; top:9px; height:2px;
   background:rgba(255,255,255,.3); border-radius:2px}
-
 .plate{
   display:flex; align-items:center; gap:9px; margin:6px 0 18px;
   background:linear-gradient(#F6F1E6,#D9D2C4);
@@ -190,9 +153,7 @@ main,.nav,.foot{position:relative; z-index:1}
   color:#2A241B; flex:1}
 .plate__stock{font-family:var(--f-mono); font-size:9.5px; letter-spacing:.1em; color:#6C6355}
 .plate__stock b{color:#2A241B}
-
 .controls{display:flex; align-items:flex-end; justify-content:space-between; gap:10px}
-/* embossed maker's mark — fills the dead red panel between slot and dial */
 .brandplate{flex:1; text-align:center; padding-bottom:11px; line-height:1.28;
   font-family:var(--f-disp); font-weight:600; letter-spacing:.04em; font-size:11px;
   white-space:nowrap; color:rgba(116,24,13,.7); text-shadow:0 1px 0 rgba(255,255,255,.32)}
@@ -203,8 +164,6 @@ main,.nav,.foot{position:relative; z-index:1}
   letter-spacing:.07em; color:rgba(255,255,255,.62); text-shadow:none}
 .controls__cap{font-family:var(--f-mono); font-size:8.5px; letter-spacing:.14em;
   color:rgba(255,255,255,.72); text-align:center; margin:9px 0 0}
-
-/* coin + slot */
 .slotwrap{display:flex; flex-direction:column; align-items:center; position:relative}
 .slot{width:13px; height:34px; border-radius:7px;
   background:linear-gradient(#1A120C,#3A2A1E);
@@ -232,8 +191,6 @@ main,.nav,.foot{position:relative; z-index:1}
   40%{transform:translate(20px,6px) rotate(70deg) scale(.92)}
   100%{transform:translate(32px,44px) rotate(220deg) scale(.26); opacity:0}
 }
-
-/* knurled dial — knurl rotates, lighting layer must NOT */
 .knobwrap{display:flex; flex-direction:column; align-items:center}
 .knob{position:relative; width:88px; height:88px; border-radius:50%; cursor:grab;
   touch-action:none;
@@ -243,7 +200,6 @@ main,.nav,.foot{position:relative; z-index:1}
   transition:filter .25s var(--ease), opacity .25s var(--ease)}
 .knob.is-locked{filter:grayscale(.6) brightness(.8); opacity:.7; cursor:not-allowed}
 .knob:active{cursor:grabbing}
-/* teeth live on a ring only — a fully knurled disc reads as a paper fan */
 .knob__knurl{position:absolute; inset:0; border-radius:50%; will-change:transform;
   background:repeating-conic-gradient(from 0deg,
     #E9EEF4 0 6deg, #7F868F 6deg 12deg);
@@ -263,21 +219,17 @@ main,.nav,.foot{position:relative; z-index:1}
     0 0 0 2px rgba(70,76,84,.35)}
 .knob__hub::after{content:""; position:absolute; left:22%; right:22%; top:calc(50% - 1.5px);
   height:3px; border-radius:2px; background:rgba(80,86,94,.55)}
-/* turn progress: a thin ring outside the dial, filled by how far you have cranked */
 .knob::before{
   content:""; position:absolute; inset:-11px; border-radius:50%; pointer-events:none;
   background:conic-gradient(var(--gold) calc(var(--turn,0)*1deg), rgba(255,255,255,.22) 0);
   -webkit-mask:radial-gradient(circle, transparent 0 calc(50% - 4px), #000 calc(50% - 3px));
           mask:radial-gradient(circle, transparent 0 calc(50% - 4px), #000 calc(50% - 3px));
 }
-
 .chute{margin-top:18px; height:26px; border-radius:8px 8px 4px 4px;
   background:linear-gradient(#1D1209,#402C1C);
   box-shadow:inset 0 5px 10px rgba(0,0,0,.85), inset 0 -1px 0 rgba(255,255,255,.15);
   display:grid; place-items:center}
 .chute span{width:64%; height:5px; border-radius:4px; background:rgba(0,0,0,.6)}
-
-/* tray ------------------------------------------------------ */
 .tray{
   position:relative; margin:0 16px; min-height:124px; padding:14px;
   border-radius:0 0 20px 20px;
@@ -293,8 +245,6 @@ main,.nav,.foot{position:relative; z-index:1}
   background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,0))}
 .stage__note{font-family:var(--f-mono); font-size:10.5px; line-height:1.7;
   letter-spacing:.06em; color:var(--ink-2); text-align:center; max-width:34ch; margin:0}
-
-/* the capsule that drops into the tray */
 .drop{width:68px; animation:dropIn .78s var(--ease) both}
 @keyframes dropIn{
   0%{transform:translateY(-190px) rotate(-40deg); opacity:0}
@@ -315,13 +265,10 @@ main,.nav,.foot{position:relative; z-index:1}
 }
 .drop__tag{font-family:var(--f-mono); font-size:9px; letter-spacing:.14em;
   text-transform:uppercase; color:#5E6773; text-align:center; margin:6px 0 0}
-
-/* ═══════════ CAPSULE COMPONENT ═══════════ */
 .cap{position:relative; width:100%; aspect-ratio:1; container-type:inline-size}
 .cap__tilt{position:absolute; inset:0; transform-style:preserve-3d;
   transition:transform .32s var(--ease)}
 .cap__ball{position:absolute; inset:0}
-
 .cap__half{position:absolute; left:0; right:0; height:50%;
   transition:transform .55s var(--pop)}
 .cap__top{top:0; border-radius:50% 50% 0 0 / 100% 100% 0 0;
@@ -349,7 +296,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .capcell:hover .cap__gloss,.cap:hover .cap__gloss{opacity:1}
 .cap__shadow{position:absolute; left:12%; right:12%; bottom:-6%; height:9%;
   border-radius:50%; background:rgba(60,44,26,.26); filter:blur(6px); z-index:0}
-
 .cap__prize{
   position:absolute; left:15%; right:15%; top:3%; z-index:1;
   display:flex; flex-direction:column; align-items:center; gap:2cqw;
@@ -364,21 +310,15 @@ main,.nav,.foot{position:relative; z-index:1}
   font-family:var(--f-disp); font-weight:700; font-size:13cqw; color:var(--c)}
 .cap__prizeR{font-family:var(--f-mono); font-weight:700; font-size:7cqw;
   letter-spacing:.1em; color:var(--ink)}
-
-/* opened state — top half flips off, prize rises */
 .cap.is-open .cap__top{transform:translate(-12%,-54%) rotate(-20deg) scale(.92); z-index:0}
 .cap.is-open .cap__bot{transform:translateY(12%)}
 .cap.is-open .cap__rim{opacity:0}
 .cap.is-open .cap__prize{opacity:1; transform:translateY(0) scale(1)}
-
-/* ═══════════ SECTIONS ═══════════ */
 .sec{max-width:1180px; margin:0 auto; padding:74px 26px}
 .sechead{max-width:62ch; margin-bottom:30px}
 .sechead h2{font-size:clamp(27px,3.5vw,42px); line-height:1.1}
 .sechead__sub{color:var(--ink-2); margin:12px 0 0; font-size:15.5px}
 .sechead__sub b{color:var(--ink); font-weight:600}
-
-/* banners / filters */
 .banners{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:26px}
 .ban{
   font-family:var(--f-mono); font-size:11px; letter-spacing:.11em; text-transform:uppercase;
@@ -392,8 +332,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .ban:active{transform:translateY(1px); border-bottom-width:1px}
 .ban.is-on{background:var(--ink); color:var(--paper); border-color:var(--ink)}
 .ban.is-on b{opacity:.6}
-
-/* the grid of capsules */
 .capgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(178px,1fr)); gap:16px}
 .capcell{
   position:relative; background:var(--card); border:1px solid var(--line);
@@ -419,8 +357,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .capcell__state{
   position:absolute; left:14px; top:13px; z-index:6;
   font-family:var(--f-mono); font-size:9px; letter-spacing:.1em; color:var(--ink-2)}
-
-/* detail panel */
 .detail{margin-top:20px}
 .dpanel{
   display:grid; grid-template-columns:132px 1fr; gap:26px; align-items:start;
@@ -452,10 +388,7 @@ main,.nav,.foot{position:relative; z-index:1}
 .dpanel__tags li{font-family:var(--f-mono); font-size:10px; letter-spacing:.06em;
   background:var(--paper-2); border-radius:999px; padding:4px 11px}
 .dpanel__foot{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
-
 .rowbtns{display:flex; gap:10px; margin-top:22px; flex-wrap:wrap}
-
-/* ═══════════ BUTTONS ═══════════ */
 .btn{
   font-family:var(--f-disp); font-weight:600; font-size:14.5px;
   border:0; cursor:pointer; text-decoration:none; display:inline-flex;
@@ -486,8 +419,6 @@ main,.nav,.foot{position:relative; z-index:1}
   transition:left .6s var(--ease);
 }
 .btn--sheen:hover::after{left:120%}
-
-/* ═══════════ DROP RATES ═══════════ */
 .sec--rates{padding-top:20px}
 .rates{display:grid; gap:1px; background:var(--line);
   border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden}
@@ -505,8 +436,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .rate__stars{font-size:11px; letter-spacing:.08em; color:var(--gold-dk)}
 .rates__foot{font-family:var(--f-mono); font-size:10.5px; letter-spacing:.06em;
   color:var(--ink-2); margin:14px 0 0}
-
-/* ═══════════ PRIZE COUNTER (colour blocks) ═══════════ */
 .prizes{display:grid; grid-template-columns:repeat(auto-fit,minmax(232px,1fr)); gap:16px}
 .prize{position:relative; border-radius:var(--r-lg); padding:26px 24px 24px;
   overflow:hidden; display:flex; flex-direction:column}
@@ -525,8 +454,6 @@ main,.nav,.foot{position:relative; z-index:1}
   letter-spacing:-.03em}
 .prize__l{font-family:var(--f-disp); font-weight:600; font-size:16px; margin-top:10px}
 .prize__d{font-size:13.5px; line-height:1.5; opacity:.82; margin-top:8px}
-
-/* ═══════════ PROOF ═══════════ */
 .proof{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:34px}
 .shot{margin:0}
 .shot__img{position:relative; border-radius:var(--r-md); overflow:hidden;
@@ -539,7 +466,6 @@ main,.nav,.foot{position:relative; z-index:1}
   background:var(--red); mix-blend-mode:multiply; opacity:.10;
   transition:opacity .4s var(--ease)}
 .shot:hover .shot__img::after{opacity:0}
-/* corner brackets */
 .shot{position:relative}
 .shot::before,.shot::after{content:""; position:absolute; width:22px; height:22px;
   border:2px solid var(--ink); pointer-events:none}
@@ -549,8 +475,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .shot figcaption b{font-family:var(--f-disp); font-weight:600; font-size:15px}
 .shot figcaption span{font-family:var(--f-mono); font-size:10px; letter-spacing:.07em;
   color:var(--ink-2); margin-top:4px}
-
-/* ═══════════ DOTTED LEADERS ═══════════ */
 .leaders{margin:0; display:flex; flex-direction:column; gap:2px}
 .lead{position:relative; display:flex; justify-content:space-between; gap:16px;
   align-items:baseline; padding:9px 0}
@@ -560,8 +484,6 @@ main,.nav,.foot{position:relative; z-index:1}
 .lead dt{padding-right:10px; font-weight:500}
 .lead dd{padding-left:10px; font-family:var(--f-mono); font-size:11.5px;
   letter-spacing:.05em; color:var(--ink-2); white-space:nowrap}
-
-/* ═══════════ CONTACT ═══════════ */
 .sec--contact{padding-bottom:40px}
 .counterwin{
   background:var(--ink); color:var(--paper); border-radius:var(--r-lg);
@@ -581,17 +503,12 @@ main,.nav,.foot{position:relative; z-index:1}
   border-bottom:1px solid rgba(243,234,218,.28); padding-bottom:2px;
   transition:color .2s var(--ease), border-color .2s var(--ease)}
 .counterwin__links a:hover{color:var(--gold); border-color:var(--gold)}
-
 .foot{max-width:1180px; margin:0 auto; padding:26px; display:flex; gap:16px;
   justify-content:space-between; flex-wrap:wrap;
   font-size:13px; color:var(--ink-2); border-top:1px solid var(--line)}
 .foot__mono{font-family:var(--f-mono); font-size:10px; letter-spacing:.14em}
-
-/* ═══════════ SCROLL REVEAL (one-shot, JS-gated) ═══════════ */
 .js .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s var(--ease), transform .6s var(--ease)}
 .js .reveal.is-in{opacity:1; transform:none}
-
-/* ═══════════ RESPONSIVE ═══════════ */
 @media (max-width:920px){
   .hero{grid-template-columns:1fr; gap:44px; padding-top:40px}
   .stage{order:-1}
@@ -613,7 +530,6 @@ main,.nav,.foot{position:relative; z-index:1}
   .lead::after{display:none}
   .lead dd{padding-left:0}
 }
-
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{

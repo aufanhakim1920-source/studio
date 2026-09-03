@@ -1,20 +1,3 @@
-/* TWELVE MARKETS, THIRTEEN MONTHS — build 57, Claude's own pick
- * ---------------------------------------------------------------------------
- * Small multiples. Twelve panels, drawn identically, one per market, so the
- * only thing that differs between them is the SHAPE. There is no headline
- * number anywhere on this page, which is the point: 55 and 56 tell you the
- * answer, this one makes you see it.
- *
- * The argument is the toggle:
- *   SHARED — one axis across all twelve. Eleven flatline. That is the
- *            concentration finding as a picture rather than a sentence.
- *   OWN    — each panel fitted to itself. The eleven come alive and their
- *            individual seasonality becomes readable for the first time.
- *
- * Same 156 numbers both ways. Neither view is the honest one on its own,
- * which is exactly why the control exists and why it starts on SHARED.
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 

@@ -1,27 +1,11 @@
-/* ============================================================
-   AH-19 PORTFOLIO CONSOLE
-   Direction B — a machine you operate, not a page about one.
-
-   Palette: oxblood enamel chassis in an oxblood-black room.
-   Nothing near the recent grounds (cream / near-black+orange /
-   cobalt / plaster grey-green / indigo night). Two saturated
-   signals only: amber phosphor + brass, with one cold cyan for
-   live indicators.
-   ============================================================ */
-
 :root{
-  /* room ------------------------------------------------ */
   --room:        #130A0B;
   --room-lit:    #241214;
-
-  /* chassis enamel -------------------------------------- */
   --enamel:      #63302F;
   --enamel-hi:   #7E4340;
   --enamel-lo:   #4A211F;
   --enamel-edge: #2A0F0E;
   --enamel-deep: #180808;
-
-  /* metal ----------------------------------------------- */
   --steel:       #B4B8BD;
   --steel-hi:    #E9ECEF;
   --steel-lo:    #6B7076;
@@ -29,13 +13,9 @@
   --brass:       #C9A227;
   --brass-hi:    #F0D57A;
   --brass-lo:    #7C5E11;
-
-  /* ink ------------------------------------------------- */
   --silk:        #F0E5D2;
   --silk-dim:    #B29C82;
   --silk-faint:  #7C6A58;
-
-  /* signals --------------------------------------------- */
   --amber:       #FFB300;
   --amber-dim:   #8A6300;
   --amber-glow:  rgba(255,179,0,.40);
@@ -45,38 +25,28 @@
   --cyan:        #3ED9C9;
   --red:         #FF4133;
   --screen-bg:   #050300;
-
-  /* radius — named tiers, never one number -------------- */
   --r-none:      0px;
   --r-key:       3px;
   --r-screen:    10px;
   --r-chassis:   20px;
-
-  /* type ------------------------------------------------ */
   --f-disp: 'Saira Condensed', 'Arial Narrow', system-ui, sans-serif;
   --f-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
   --f-crt:  'VT323', 'Courier New', monospace;
-
   --pad: 26px;
   --tape-w: 320px;
   --ease: cubic-bezier(.2,.8,.28,1);
   --ease-back: cubic-bezier(.34,1.56,.5,1);
 }
-
 *{box-sizing:border-box}
 html,body{margin:0; padding:0; max-width:100%; overflow-x:hidden}
-
 body{
   background:var(--room);
   color:var(--silk);
   font-family:var(--f-disp);
   -webkit-text-size-adjust:100%;
 }
-
 .mono{font-family:var(--f-mono); font-weight:500;
   letter-spacing:.12em; text-transform:uppercase}
-
-/* room lighting: a wall + a spot, plus the sub-8% accent bleed --- */
 .room{
   position:fixed; inset:0; pointer-events:none; z-index:0;
   background:
@@ -89,12 +59,10 @@ body{
   mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
-
 .bench{
   position:relative; z-index:2;
   max-width:1300px; margin:0 auto; padding:26px 30px 70px;
 }
-
 .bench__tag,.bench__foot{
   display:flex; flex-wrap:wrap; gap:6px 24px; justify-content:space-between;
   font-family:var(--f-mono); font-size:10px; letter-spacing:.2em;
@@ -103,10 +71,6 @@ body{
 }
 .bench__tag-mid{color:var(--brass-lo)}
 .bench__foot{padding:36px 4px 0; border-top:1px solid rgba(240,229,210,.09); margin-top:34px}
-
-/* ══════════════════════════════════════════════════════════════
-   CHASSIS — the shadow stack does most of the work
-   ══════════════════════════════════════════════════════════════ */
 .console{
   position:relative;
   padding:var(--pad);
@@ -125,13 +89,11 @@ body{
     0 0 0 1px rgba(0,0,0,.55);
   display:grid; gap:18px;
 }
-/* crinkle paint */
 .console::before{
   content:""; position:absolute; inset:0; border-radius:var(--r-chassis);
   pointer-events:none; opacity:.16; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='turbulence' baseFrequency='.5 .55' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23c)'/%3E%3C/svg%3E");
 }
-
 .screw{
   position:absolute; width:13px; height:13px; border-radius:50%;
   background:radial-gradient(circle at 34% 28%, var(--steel-hi), var(--steel) 46%, var(--steel-lo) 78%, var(--steel-deep));
@@ -146,16 +108,12 @@ body{
 }
 .screw--chassis{width:16px; height:16px}
 .screw--chassis::after{transform:rotate(-14deg)}
-
-/* ── top rail ─────────────────────────────────────────────── */
 .toprail{
   display:grid; grid-template-columns:auto 1fr auto; gap:22px; align-items:center;
   padding:6px 34px 16px;
   border-bottom:1px solid rgba(0,0,0,.35);
   box-shadow:0 1px 0 rgba(255,255,255,.07);
 }
-
-/* etched brass maker's plate */
 .plate{
   display:grid; gap:2px; padding:10px 14px; border-radius:var(--r-key);
   background:linear-gradient(160deg, #E4C978 0%, var(--brass) 34%, #8E6D14 78%, #B9932A 100%);
@@ -168,7 +126,6 @@ body{
 }
 .plate b{font-size:10px; letter-spacing:.2em; text-shadow:0 1px 0 rgba(255,255,255,.45)}
 .plate em{font-style:normal; font-weight:700}
-
 .nameplate{text-align:center}
 .nameplate h1{
   margin:0; font-family:var(--f-disp); font-weight:800;
@@ -180,13 +137,11 @@ body{
   margin:7px 0 0; font-family:var(--f-mono); font-size:9.5px;
   letter-spacing:.19em; color:var(--silk-dim);
 }
-
 .statusblock{display:grid; gap:6px; justify-items:end}
 .statusline{display:flex; align-items:center; gap:8px;
   font-family:var(--f-mono); font-size:10px; letter-spacing:.16em;
   text-transform:uppercase; color:var(--silk-dim)}
 .statusline--dim{color:var(--silk-faint); font-size:9px}
-
 .led{width:7px; height:7px; border-radius:50%; flex:none}
 .led--pwr{background:var(--red);
   box-shadow:0 0 5px 1px rgba(255,65,51,.75), inset 0 -1px 1px rgba(0,0,0,.5);
@@ -194,23 +149,15 @@ body{
 .led--sig{background:var(--cyan);
   box-shadow:0 0 5px 1px rgba(62,217,201,.7), inset 0 -1px 1px rgba(0,0,0,.5)}
 @keyframes ledPulse{0%,100%{opacity:1}50%{opacity:.45}}
-
 .vents{
   width:112px; height:16px; border-radius:2px; margin-top:2px;
   background:repeating-linear-gradient(90deg,
     rgba(0,0,0,.62) 0 3px, transparent 3px 8px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.14);
 }
-
-/* ══════════════════════════════════════════════════════════════
-   DECK
-   ══════════════════════════════════════════════════════════════ */
-/* the tube stretches to whatever height the control column needs, so the
-   chassis never shows a dead panel of bare enamel next to a short screen */
 .deck{display:grid; grid-template-columns:1fr 372px; gap:18px; align-items:stretch}
 .bay--screen{display:flex; flex-direction:column}
 .bay--screen .bezel{flex:1 1 auto; display:flex; flex-direction:column}
-
 .panel{
   position:relative; padding:14px 15px 16px; border-radius:var(--r-key);
   background:linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.13));
@@ -227,8 +174,6 @@ body{
 .panel__note{margin:12px 0 0; font-size:9px; letter-spacing:.13em;
   color:var(--silk-faint); line-height:1.5}
 .panel__note b{color:var(--brass-hi); font-size:12px}
-
-/* dotted-leader index, silkscreened onto the chassis instead of the tube */
 .leaders{list-style:none; margin:14px 0 0; padding:12px 0 0; display:grid; gap:5px;
   border-top:1px solid rgba(0,0,0,.34); box-shadow:0 -1px 0 rgba(255,255,255,.06)}
 .leaders li{display:flex; align-items:baseline; gap:8px;
@@ -236,8 +181,6 @@ body{
 .leaders i{flex:1 1 auto; min-width:14px; border-bottom:1px dotted currentColor;
   opacity:.55; transform:translateY(-3px)}
 .leaders span:last-child{color:var(--silk-dim)}
-
-/* ── the tube ─────────────────────────────────────────────── */
 .bezel{
   position:relative; padding:22px; border-radius:14px;
   background:
@@ -269,8 +212,6 @@ body{
   inset 0 0 80px 12px rgba(0,0,0,.95),
   inset 0 0 0 1px rgba(116,245,138,.10),
   0 0 26px -4px rgba(116,245,138,.10)}
-
-/* scanlines AND subpixel stripe — the pair is what reads as a tube */
 .crt__scan{
   position:absolute; inset:0; z-index:40; pointer-events:none;
   background:
@@ -279,27 +220,22 @@ body{
   background-size:100% 4px, 6px 100%;
 }
 .crt[data-scan="0"] .crt__scan{display:none}
-
 .crt__vig{
   position:absolute; inset:0; z-index:41; pointer-events:none;
   background:radial-gradient(120% 120% at 50% 50%, transparent 52%, rgba(0,0,0,.72));
 }
-/* one thing, breathing — the only loop on the page besides the LED */
 .crt__flick{
   position:absolute; inset:0; z-index:39; pointer-events:none;
   background:var(--ph); opacity:.012;
   animation:flick 3.4s ease-in-out infinite;
 }
 @keyframes flick{0%,100%{opacity:.010}50%{opacity:.030}}
-
-/* decaying horizontal tear, driven entirely by --glitch */
 .crt__tear{
   position:absolute; left:0; right:0; top:var(--gy); z-index:38;
   height:calc(var(--glitch) * 22px);
   background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
   opacity:var(--glitch); pointer-events:none;
 }
-
 .crt__body{
   position:relative; z-index:20;
   padding:26px 30px 22px;
@@ -320,7 +256,6 @@ body{
   20%{opacity:1}
   100%{opacity:1}
 }
-
 .crt__row{
   display:flex; flex-wrap:wrap; gap:6px 22px; justify-content:space-between;
   font-size:17px; letter-spacing:.06em; color:var(--ph-dim);
@@ -337,18 +272,14 @@ body{
 }
 .crt__sub{margin:6px 0 0; font-size:19px; color:var(--ph-dim); letter-spacing:.08em}
 .crt__copy{margin:16px 0 0; font-size:21px; line-height:1.28; max-width:60ch}
-
 .crt__leaders{list-style:none; margin:18px 0 0; padding:0; display:grid; gap:3px}
 .crt__leaders li{display:flex; align-items:baseline; gap:9px; font-size:19px}
 .crt__leaders i{flex:1 1 auto; border-bottom:1px dotted currentColor;
   opacity:.55; transform:translateY(-4px); min-width:20px}
 .crt__leaders span:last-child{color:var(--ph)}
 .crt__leaders span:first-child{color:var(--ph-dim)}
-
 .crt__extra{margin:16px 0 0; font-size:18px; color:var(--ph-dim); line-height:1.32}
 .crt[data-verbose="0"] .crt__extra{display:none}
-
-/* the whole bank, printed on the tube, so the dial has a visible target */
 .crt__index{
   padding-top:22px;
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px 22px;
@@ -359,21 +290,15 @@ body{
   background:var(--ph); color:var(--screen-bg); text-shadow:none;
   padding-left:4px; margin-left:-4px;
 }
-/* prompt pinned to the bottom of the tube — a terminal fills from the top
-   and leaves its blank space above the cursor, not in the middle */
 .crt__cmd{margin-top:auto; padding-top:22px; font-size:19px; letter-spacing:.05em}
 .cur{display:inline-block; width:10px; height:16px; background:currentColor;
   vertical-align:-2px; margin-left:4px; animation:blink 1.1s steps(1,end) infinite}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-
 .bezel__strip{
   display:flex; flex-wrap:wrap; gap:6px 20px; justify-content:space-between;
   padding:9px 6px 0; font-size:9px; letter-spacing:.2em; color:var(--silk-faint);
 }
-
-/* ── channel selector ─────────────────────────────────────── */
 .bay--ctrl{display:grid; gap:18px}
-
 .segwrap{display:flex; align-items:center; gap:14px; margin-bottom:14px}
 .seg{
   position:relative; font-family:var(--f-crt); font-size:58px; line-height:.8;
@@ -391,12 +316,9 @@ body{
 .seg span{position:relative}
 .seg.is-step{animation:segStep .28s var(--ease)}
 @keyframes segStep{0%{opacity:.25; transform:translateY(-2px)}100%{opacity:1}}
-
 .segside{display:grid; gap:6px; font-size:9.5px; letter-spacing:.18em; color:var(--silk-dim)}
 .segside b{color:var(--brass-hi)}
 .segside span:last-child{color:var(--silk); font-size:11px; letter-spacing:.1em}
-
-/* the dial: knurl rotates, lighting layer never does */
 .dialwrap{position:relative; width:186px; height:186px; margin:6px auto 0}
 .detents{position:absolute; inset:0}
 .detents .dt{
@@ -411,7 +333,6 @@ body{
 }
 .detents .dn.is-on{color:var(--amber)}
 .detents .dn i{display:block; font-style:normal}
-
 .knob{
   position:absolute; left:50%; top:50%; width:126px; height:126px;
   margin:-63px 0 0 -63px; border-radius:50%; cursor:grab; touch-action:none;
@@ -426,8 +347,6 @@ body{
 .knob:focus-visible{box-shadow:
   0 7px 0 #3E4247, 0 16px 22px -8px rgba(0,0,0,.75),
   inset 0 2px 3px rgba(255,255,255,.85), 0 0 0 3px var(--amber)}
-
-/* teeth on a RING — a fully knurled disc renders as a paper fan */
 .knob__knurl{
   position:absolute; inset:0; border-radius:50%; will-change:transform;
   background:repeating-conic-gradient(from 0deg,
@@ -453,7 +372,6 @@ body{
   background:linear-gradient(var(--brass-hi), #A57F13);
   box-shadow:0 1px 3px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.8);
 }
-/* turn progress on a thin ring OUTSIDE the dial */
 .knob::before{
   content:""; position:absolute; inset:-13px; border-radius:50%; pointer-events:none;
   background:conic-gradient(var(--brass) calc(var(--turn,0) * 1deg), rgba(255,255,255,.14) 0);
@@ -462,8 +380,6 @@ body{
 }
 .hint{margin:14px 0 0; text-align:center; font-size:8.5px;
   letter-spacing:.2em; color:var(--silk-faint)}
-
-/* ── slide viewer ─────────────────────────────────────────── */
 .lightbox{
   position:relative; display:grid; place-items:center; padding:16px;
   border-radius:var(--r-key);
@@ -473,8 +389,6 @@ body{
   transition:filter .32s var(--ease);
 }
 .lightbox.is-changing{filter:brightness(.35) saturate(.4)}
-
-/* a real 50×50 slide mount: square card, aperture rotates with the frame */
 .mount{
   position:relative; width:196px; height:196px; padding:20px;
   display:grid; place-items:center;
@@ -482,13 +396,11 @@ body{
   background:linear-gradient(160deg, #F4F1EA, #CFC7B7 60%, #B4AC9C);
   box-shadow:0 5px 12px -3px rgba(60,40,20,.55), inset 0 1px 0 rgba(255,255,255,.9);
 }
-/* two corner brackets, not four */
 .mount::before,.mount::after{
   content:""; position:absolute; width:15px; height:15px; border:2px solid rgba(70,50,30,.45);
 }
 .mount::before{top:-6px; left:-6px; border-right:0; border-bottom:0}
 .mount::after{bottom:-6px; right:-6px; border-left:0; border-top:0}
-
 .mount__win{
   position:relative; overflow:hidden; background:#0E0B08;
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.7);
@@ -509,7 +421,6 @@ body{
 }
 .mount__brand{left:9px; bottom:6px}
 .mount__no{right:9px; bottom:6px; color:#8A3B33}
-
 .testcard{position:absolute; inset:0; display:grid; place-items:center; text-align:center}
 .testcard__bars{
   position:absolute; inset:0;
@@ -526,13 +437,10 @@ body{
 }
 .testcard b{font-size:9px; letter-spacing:.1em}
 .mount.has-slide .testcard{display:none}
-
 .slidecap{
   margin:12px 0 0; font-size:9px; letter-spacing:.13em; line-height:1.6;
   color:var(--silk-dim); min-height:2.6em;
 }
-
-/* the advance lever */
 .lever{
   margin-top:12px; width:100%; display:flex; align-items:center; gap:12px;
   padding:9px 12px; border:0; border-radius:var(--r-key); cursor:pointer;
@@ -551,14 +459,8 @@ body{
 }
 .lever:active{transform:translateY(3px); box-shadow:0 0 0 #1B1E22, inset 0 3px 7px rgba(0,0,0,.75)}
 .lever.is-thrown .lever__arm{transform:rotate(-26deg) translateX(-4px)}
-
-/* ══════════════════════════════════════════════════════════════
-   CONTROL RAIL
-   ══════════════════════════════════════════════════════════════ */
 .ctrlrail{display:grid; grid-template-columns:1fr 1fr 232px; gap:18px; align-items:stretch}
-
 .modebank{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
-
 .pbtn{
   position:relative; border:0; cursor:pointer;
   padding:13px 10px 12px; border-radius:var(--r-key);
@@ -582,7 +484,6 @@ body{
   box-shadow:0 0 6px rgba(255,65,51,.9);
 }
 .pbtn:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
-
 .pbtn--print{
   background:linear-gradient(180deg, #FF7A5C, #D93E20 60%, #A82A11);
   color:#2B0A02; box-shadow:0 4px 0 #6E1A08, 0 10px 16px -6px rgba(0,0,0,.75),
@@ -596,8 +497,6 @@ body{
   font-size:11px; letter-spacing:.2em;
 }
 .pbtn--ghost:active{transform:translateY(3px); box-shadow:0 0 0, inset 0 3px 7px rgba(0,0,0,.6)}
-
-/* toggles */
 .togglebank{display:grid; gap:12px}
 .sw{display:flex; align-items:center; gap:12px; cursor:pointer}
 .sw input{position:absolute; opacity:0; width:0; height:0}
@@ -619,15 +518,11 @@ body{
 .sw input:focus-visible + .sw__body{outline:3px solid var(--amber); outline-offset:2px}
 .sw__lbl{font-size:9.5px; letter-spacing:.18em; color:var(--silk-faint)}
 .sw input:checked ~ .sw__lbl{color:var(--brass-hi)}
-
-/* needle meter */
 .meter{position:relative; height:120px; border-radius:var(--r-key); overflow:hidden;
   background:linear-gradient(180deg, #EDE6D6, #C8BFAB);
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.5), inset 0 3px 8px rgba(0,0,0,.28)}
 .meter__face{position:absolute; inset:0}
 .meter__ticks{position:absolute; inset:0}
-/* the tick is a tall invisible spoke with a painted tip, so every tick
-   and the needle share one rotation origin at the hub */
 .meter__ticks .mt{
   position:absolute; left:50%; bottom:12px; width:1.5px; height:86px; margin-left:-.75px;
   background:linear-gradient(180deg, #4A3B2C 0 11px, transparent 11px);
@@ -655,10 +550,6 @@ body{
   position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(150deg, rgba(255,255,255,.55) 0 26%, transparent 46%);
 }
-
-/* ══════════════════════════════════════════════════════════════
-   GAUGE BANK — hairline dividers made of gap
-   ══════════════════════════════════════════════════════════════ */
 .gaugebank{
   display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
   background:rgba(0,0,0,.42); border:1px solid rgba(0,0,0,.42);
@@ -678,7 +569,6 @@ body{
   position:relative; height:13px;
   border-top:1px solid var(--silk-faint); border-bottom:1px solid var(--silk-faint);
 }
-/* drawn end-caps — without them it is a div, with them it is a gauge */
 .gauge__track::before,.gauge__track::after{
   content:""; position:absolute; top:-4px; bottom:-4px; width:2px;
   background:var(--silk-faint);
@@ -691,16 +581,11 @@ body{
   transition:width .7s var(--ease);
   box-shadow:0 0 10px -2px rgba(201,162,39,.7);
 }
-/* raster gaps inside the fill: drawn by the same beam as everything else */
 .gauge__fill::after{
   content:""; position:absolute; inset:0;
   background:repeating-linear-gradient(90deg,
     transparent 0 2px, rgba(19,10,11,.42) 2px 4px);
 }
-
-/* ══════════════════════════════════════════════════════════════
-   PRINTER DECK
-   ══════════════════════════════════════════════════════════════ */
 .printer{
   display:grid; grid-template-columns:var(--tape-w) 1fr; gap:20px 26px;
   align-items:center;
@@ -713,7 +598,6 @@ body{
 .printer__ctrl{grid-column:2; grid-row:1; display:flex; flex-wrap:wrap;
   align-items:center; gap:12px 14px}
 .printer__ctrl .panel__note{margin:0; flex:1 1 200px; text-align:right}
-
 .printer__slotplate p{
   margin:0 0 8px; font-size:8.5px; letter-spacing:.2em; color:var(--silk-faint);
 }
@@ -726,18 +610,12 @@ body{
 }
 .slot span{display:block; width:calc(100% - 22px); height:5px; border-radius:3px;
   background:#050202; box-shadow:inset 0 1px 2px rgba(0,0,0,.9)}
-
 .silk{
   grid-column:1 / -1; margin:0; padding-top:12px;
   border-top:1px solid rgba(0,0,0,.3);
   font-size:9px; letter-spacing:.18em; color:var(--silk-faint); text-align:center;
   text-shadow:0 1px 0 rgba(255,255,255,.07);
 }
-
-/* ── the tape ─────────────────────────────────────────────── */
-/* the tape leaves the slot and hangs into the page. .printer pulls itself
-   out to the chassis edge with a negative margin then re-pads by --pad, so
-   a single --pad here lines the strip up with the slot above it. */
 .tapewell{display:flex; padding-left:var(--pad)}
 .tape{
   position:relative; width:var(--tape-w); height:0; overflow:hidden;
@@ -756,10 +634,6 @@ body{
   color:#241A14;
   font-family:var(--f-mono); font-size:11.5px; line-height:1.55;
   padding:14px 16px 26px;
-  /* torn bottom edge: the body, plus a row of apex-down teeth. The conic
-     origin sits at the BOTTOM of each tile and the black sector is centred
-     on straight up — anchoring it at the tile top puts the wedge outside
-     the tile and the edge silently comes out flat. */
   -webkit-mask:
     linear-gradient(#000 0 0) top/100% calc(100% - 10px) no-repeat,
     conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/14px 10px repeat-x;
@@ -781,10 +655,6 @@ body{
   font-size:9px; letter-spacing:.2em; text-transform:uppercase;
   color:#8A7C6E; text-align:center; padding:6px 0 0;
 }
-
-/* ══════════════════════════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════════════════════════ */
 @media (max-width:1120px){
   .deck{grid-template-columns:1fr}
   .bay--ctrl{grid-template-columns:1fr 1fr; display:grid}
@@ -792,13 +662,11 @@ body{
   .panel--meter{grid-column:1 / -1}
   .meter{height:104px}
 }
-
 @media (max-width:900px){
   .toprail{grid-template-columns:1fr; justify-items:center; gap:14px; padding:6px 0 16px}
   .statusblock{justify-items:center}
   .gaugebank{grid-template-columns:repeat(2,1fr)}
 }
-
 @media (max-width:720px){
   :root{--pad:14px; --tape-w:288px}
   .bench{padding:16px 14px 54px}
@@ -809,7 +677,6 @@ body{
   .printer__slotplate,.printer__ctrl{grid-column:1; grid-row:auto}
   .printer__ctrl{order:-2}
   .printer__ctrl .panel__note{text-align:left}
-  /* 40 mono columns at .6em must still fit inside --tape-w */
   .tape__inner{font-size:10.5px; padding:12px 12px 24px}
   .crt__body{padding:18px 16px 16px; font-size:19px}
   .crt__copy{font-size:19px}
@@ -822,7 +689,6 @@ body{
   .nameplate h1{font-size:19px}
   .gaugebank{grid-template-columns:1fr}
 }
-
 @media (max-width:400px){
   :root{--tape-w:272px}
   .tape__inner{font-size:10px; padding:10px 10px 22px}
@@ -831,7 +697,6 @@ body{
   .detents .dt{margin-top:-84px; transform-origin:50% 84px}
   .detents .dn{margin-top:-99px; transform-origin:50% 99px}
 }
-
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important}
   .crt__body{opacity:1}

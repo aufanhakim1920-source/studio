@@ -1,9 +1,3 @@
-/* ============================================================
-   AUFAN — FOIL
-   Every motion in here is something the visitor causes.
-   Nothing animates on its own except the status LED.
-   ============================================================ */
-
 const PROJECTS = [
   {
     name: "FanNest", mono: "FN", c: "#B23A2E", status: "Live", year: "2026",
@@ -60,11 +54,9 @@ const PROJECTS = [
     tags: ["Remotion", "React", "Sound design"],
   },
 ];
-
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 /* ---------- the front of a card, shared by the pile and the grid ---------- */
 function faceHTML(p, i) {
   const size = p.mono.length > 2 ? 18 : 30;   // cqw — scales with whatever card holds it
@@ -81,7 +73,6 @@ function faceHTML(p, i) {
       <div class="glare"></div>
     </div>`;
 }
-
 /* ═══════════════ THE GRID ═══════════════ */
 function renderGrid() {
   $("#grid").innerHTML = PROJECTS.map((p, i) => {
@@ -112,13 +103,11 @@ function renderGrid() {
         </div>
       </div>`;
   }).join("");
-
   $("#grid").addEventListener("click", (e) => {
     if (e.target.closest("[data-stop]")) return;      // let the real link through
     const card = e.target.closest(".card");
     if (card) card.classList.toggle("is-flipped");
   });
-
   $("#grid").addEventListener("keydown", (e) => {
     if (e.key !== "Enter" && e.key !== " ") return;
     const card = e.target.closest(".card");
@@ -126,10 +115,8 @@ function renderGrid() {
     e.preventDefault();
     card.classList.toggle("is-flipped");
   });
-
   $$(".card").forEach(attachTilt);
 }
-
 /* ═══════════════ TILT + FOIL ═══════════════
    The foil is not decoration bolted on top — it reads the same pointer
    position the tilt does, so the sheen always tracks the angle you're
@@ -139,14 +126,11 @@ function attachTilt(host, opts = {}) {
   const tilt = opts.tiltEl || $(".card__tilt", host);
   const face = $(".cface", host);
   if (!face) return;
-
   const move = (e) => {
     const r = host.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;    // 0 → 1
     const py = (e.clientY - r.top) / r.height;
-
     if (tilt) tilt.style.transform = `rotateY(${(px - 0.5) * 15}deg) rotateX(${(0.5 - py) * 15}deg)`;
-
     // foil sweeps across a 260% background, so small pointer moves travel far
     face.style.setProperty("--fx", `${18 + px * 64}%`);
     face.style.setProperty("--fy", `${18 + py * 64}%`);
@@ -154,16 +138,13 @@ function attachTilt(host, opts = {}) {
     face.style.setProperty("--gy", `${py * 100}%`);
     face.classList.add("is-lit");
   };
-
   const leave = () => {
     if (tilt) tilt.style.transform = "";
     face.classList.remove("is-lit");
   };
-
   host.addEventListener("pointermove", move);
   host.addEventListener("pointerleave", leave);
 }
-
 /* ═══════════════ THE PILE ═══════════════ */
 const OFFSETS = [
   { x: 0, y: 0, r: 0, s: 1 },
@@ -172,16 +153,13 @@ const OFFSETS = [
   { x: 18, y: -45, r: -2.4, s: 0.87 },
   { x: -8, y: -56, r: 2.2, s: 0.83 },
 ];
-
 let order = PROJECTS.map((_, i) => i);
 let dcards = [];
-
 function layoutPile() {
   order.forEach((id, pos) => {
     const el = dcards[id];
     const d = Math.min(pos, OFFSETS.length - 1);
     const o = OFFSETS[d];
-
     if (el.dataset.jump) {
       el.style.transition = "none";
       requestAnimationFrame(() =>
@@ -191,29 +169,24 @@ function layoutPile() {
         })
       );
     }
-
     el.style.zIndex = String(60 - pos);
     el.style.opacity = pos >= OFFSETS.length ? "0" : "1";
     el.style.pointerEvents = pos === 0 ? "auto" : "none";
     el.style.transform = `translate3d(${o.x}px, ${o.y}px, 0) rotate(${o.r}deg) scale(${o.s})`;
   });
-
   const top = PROJECTS[order[0]];
   $("#deck-count").textContent = `${String(order[0] + 1).padStart(2, "0")} / 09 · ${top.name}`;
 }
-
 function renderPile() {
   const stack = $("#deck-stack");
   stack.innerHTML = PROJECTS.map(
     (p, i) => `<div class="dcard" data-i="${i}">${faceHTML(p, i)}</div>`
   ).join("");
-
   dcards = $$(".dcard", stack);
   dcards.forEach((el) => attachTilt(el, { tiltEl: null }));
   dcards.forEach(attachDrag);
   layoutPile();
 }
-
 /* throw the top card off and send it to the bottom */
 let busy = false;
 function throwTop(dir = 1) {
@@ -222,7 +195,6 @@ function throwTop(dir = 1) {
   const el = dcards[order[0]];
   el.classList.add("is-gone");
   el.style.transform = `translate3d(${dir * 640}px, -70px, 0) rotate(${dir * 24}deg)`;
-
   setTimeout(() => {
     order.push(order.shift());
     el.classList.remove("is-gone");
@@ -231,10 +203,8 @@ function throwTop(dir = 1) {
     busy = false;
   }, 430);
 }
-
 function attachDrag(el) {
   let sx = 0, sy = 0, dragging = false, moved = 0;
-
   el.addEventListener("pointerdown", (e) => {
     if (busy) return;
     dragging = true; moved = 0;
@@ -242,20 +212,17 @@ function attachDrag(el) {
     el.setPointerCapture(e.pointerId);
     el.classList.add("is-dragging");
   });
-
   el.addEventListener("pointermove", (e) => {
     if (!dragging) return;
     const dx = e.clientX - sx, dy = e.clientY - sy;
     moved = Math.max(moved, Math.hypot(dx, dy));
     el.style.transform = `translate3d(${dx}px, ${dy}px, 0) rotate(${dx * 0.05}deg)`;
   });
-
   const end = (e) => {
     if (!dragging) return;
     dragging = false;
     el.classList.remove("is-dragging");
     const dx = e.clientX - sx;
-
     if (Math.abs(dx) > 105) {
       throwTop(Math.sign(dx) || 1);
     } else if (moved < 7) {
@@ -266,11 +233,9 @@ function attachDrag(el) {
     }
     $("#hint").textContent = "Drag the top card off the pile. Or click it to open the full entry.";
   };
-
   el.addEventListener("pointerup", end);
   el.addEventListener("pointercancel", end);
 }
-
 /* tapping a pile card jumps to its entry in the collection and turns it over */
 function openInGrid(i) {
   const card = $(`.card[data-i="${i}"]`);
@@ -279,21 +244,18 @@ function openInGrid(i) {
   card.classList.add("is-flipped");
   card.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
 }
-
 /* ═══════════════ LEGEND / FILTER ═══════════════ */
 function renderLegend() {
   const seen = [];
   PROJECTS.forEach((p) => {
     if (!seen.some((s) => s.status === p.status)) seen.push({ status: p.status, c: p.c });
   });
-
   $("#legend").innerHTML = seen
     .map((s) => {
       const n = PROJECTS.filter((p) => p.status === s.status).length;
       return `<button class="chip" data-status="${s.status}" style="--c:${s.c}"><i></i>${s.status} · ${n}</button>`;
     })
     .join("");
-
   const off = new Set();
   $("#legend").addEventListener("click", (e) => {
     const chip = e.target.closest(".chip");
@@ -304,7 +266,6 @@ function renderLegend() {
     $$(".card").forEach((c) => c.classList.toggle("is-hidden", off.has(c.dataset.status)));
   });
 }
-
 /* ═══════════════ COUNTERS ═══════════════ */
 function initCounters() {
   const nums = $$(".num");
@@ -321,7 +282,6 @@ function initCounters() {
     };
     requestAnimationFrame(step);
   };
-
   if (!("IntersectionObserver" in window)) { nums.forEach(run); return; }
   const obs = new IntersectionObserver(
     (es) => es.forEach((e) => { if (e.isIntersecting) { run(e.target); obs.unobserve(e.target); } }),
@@ -329,7 +289,6 @@ function initCounters() {
   );
   nums.forEach((n) => obs.observe(n));
 }
-
 /* ═══════════════ REVEAL ═══════════════ */
 /* hidden ONLY after JS proves it can un-hide — never a CSS-only opacity:0 */
 function initReveal() {
@@ -344,7 +303,6 @@ function initReveal() {
     obs.observe(el);
   });
 }
-
 /* ═══════════════ CLOCK ═══════════════ */
 function initClock() {
   const el = $("#clock");
@@ -357,7 +315,6 @@ function initClock() {
   tick();
   setInterval(tick, 30000);
 }
-
 /* ═══════════════ BOOT ═══════════════ */
 renderGrid();
 renderLegend();
@@ -365,5 +322,4 @@ renderPile();
 initCounters();
 initReveal();
 initClock();
-
 $("#draw-btn").addEventListener("click", () => throwTop(1));

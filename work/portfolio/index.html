@@ -8,9 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111114'/%3E%3Cpath d='M6 24L16 7l10 17h-6l-4-7-4 7z' fill='%231B4DFF'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Non-blocking: a plain stylesheet link blocks SCRIPT EXECUTION until it
-     resolves, and a slow font host once stopped a build in this folder from
-     running at all. -->
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Black&family=DM+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Black&family=DM+Mono:wght@400;500&display=swap"></noscript>
 <link rel="stylesheet" href="styles.css">
@@ -35,7 +33,6 @@
 
 <main id="top">
 
-  <!-- ── hero ─────────────────────────────────────────────────────────── -->
   <section class="hero">
     <p class="avail" data-enter="1"><span class="dot" aria-hidden="true"></span>Available for freelance &amp; internships &mdash; Melbourne</p>
     <h1 data-enter="2">I build websites<br><em>that actually work.</em></h1>
@@ -50,11 +47,6 @@
     </div>
   </section>
 
-  <!-- ── proof ────────────────────────────────────────────────────────── -->
-  <!-- Every figure here is Aufan's own and independently checkable. An earlier
-       version borrowed his sister's Shopee follower count and rating, which
-       read as if he ran her shop — he built her site, not her shop. Borrowed
-       numbers are the fastest way to lose a client who checks. -->
   <section class="proof" aria-label="Track record">
     <div class="fig"><b data-count="2" data-suffix="&times;">2&times;</b><span>First place, CISSA Codebrew &mdash; both as a first-year, against masters teams</span></div>
     <div class="fig"><b data-count="26">26</b><span>Pages built by hand, every one open to click through</span></div>
@@ -62,7 +54,6 @@
     <div class="fig"><b>0</b><span>Templates, page builders or site generators used</span></div>
   </section>
 
-  <!-- ── work ─────────────────────────────────────────────────────────── -->
   <section class="section" id="work">
     <div class="s-head" data-rise>
       <p class="s-num">01</p>
@@ -111,7 +102,6 @@
     </ol>
   </section>
 
-  <!-- ── samples ──────────────────────────────────────────────────────── -->
   <section class="samples" id="samples">
     <div class="s-head" data-rise>
       <p class="s-num">02</p>
@@ -161,7 +151,6 @@
     </div>
   </section>
 
-  <!-- ── services ─────────────────────────────────────────────────────── -->
   <section class="section" id="services">
     <div class="s-head" data-rise>
       <p class="s-num">03</p>
@@ -213,7 +202,6 @@
     </div>
   </section>
 
-  <!-- ── start a project ──────────────────────────────────────────────── -->
   <section class="section start" id="start">
     <div class="s-head" data-rise>
       <p class="s-num">04</p>
@@ -276,7 +264,6 @@
     </div>
   </section>
 
-  <!-- ── about ────────────────────────────────────────────────────────── -->
   <section class="section" id="about">
     <div class="s-head" data-rise>
       <p class="s-num">05</p>
@@ -296,7 +283,6 @@
     </div>
   </section>
 
-  <!-- ── contact ──────────────────────────────────────────────────────── -->
   <section class="closer">
     <h2 data-rise>Got something that needs building?</h2>
     <p>Tell me what it is and roughly when you need it. I&rsquo;ll come back with a price and a plan.</p>
@@ -310,9 +296,6 @@
   <p>Built by hand, like everything else here.</p>
 </footer>
 
-<!-- ── account dialog ──────────────────────────────────────────────────────
-     A real <dialog>: focus trapping, Esc to close and the backdrop all come
-     from the platform rather than from js that has to be kept correct. -->
 <dialog class="sheet" id="accountSheet" aria-labelledby="sheetTitle">
   <form method="dialog" class="sheet-x"><button aria-label="Close">&times;</button></form>
   <h2 id="sheetTitle">Your projects</h2>

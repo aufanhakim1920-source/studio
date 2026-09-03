@@ -1,47 +1,25 @@
-/* ==========================================================================
-   NOCTURNE — direction B: the board, but not industrial.
-   Structure + technique: Template 13 (Split Flap Departure Board).
-   Visual language:      Template 02 (Pixel Bloom Cobalt Portfolio).
-   ========================================================================== */
-
 :root{
-  /* --- ground, from Template 02 verbatim ------------------------------- */
   --cobalt:      #0044CC;
   --cobalt-deep: #003399;
   --grid:        rgba(255,255,255,.08);
-
-  /* --- the flap is card stock, not a dark plastic leaf ------------------ */
-  --stock:       #EFEADA;          /* warm card stock, never #fff */
-  --ink:         #06266E;          /* cobalt ink printed on the card */
-  --slot:        rgba(0,16,62,.46);/* the dark drum behind an empty flap */
-
-  /* --- signals. Both hand-picked; T13's #4ade80 / #fbbf24 were stock
-         Tailwind and are the one true default in the whole reference set. */
-  --lamp:        #F7D046;          /* sodium platform lamp — THE accent */
-  --flare:       #FF4A2F;          /* used exactly once: the Albury stop */
-
-  /* --- rules. On cobalt these run hotter than T13's near-black values,
-         because a 5%-white hairline vanishes against a bright ground. --- */
+  --stock:       #EFEADA;          
+  --ink:         #06266E;          
+  --slot:        rgba(0,16,62,.46);
+  --lamp:        #F7D046;          
+  --flare:       #FF4A2F;          
   --rule:        rgba(255,255,255,.16);
   --rule-soft:   rgba(255,255,255,.10);
-
   --mono:  'Space Mono', ui-monospace, Consolas, monospace;
   --serif: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
-
-  /* Radius, two tiers by subtraction (T13 §8): the flap is the only
-     physical object on the page, so it is the only rounded thing. */
   --radius-flap: 3px;
   --radius-ui:   0;
 }
-
 *,*::before,*::after{ box-sizing:border-box }
-
 html,body{
   height:100%;
   margin:0;
-  overflow:hidden;                 /* kiosk skeleton, T13 — one viewport */
+  overflow:hidden;                 
 }
-
 body{
   background: var(--cobalt);
   color:#fff;
@@ -51,14 +29,7 @@ body{
   display:flex;
   flex-direction:column;
 }
-
 ::selection{ background: var(--lamp); color:#00307A }
-
-/* --------------------------------------------------------------------------
-   Backdrop. Two layers, both fixed, both pointer-events:none.
-   NOTE: never z-index:-1 (known-bad in this collection — it paints behind any
-   ancestor with a background). These sit at z-index 0 and every band sits at 1.
-   -------------------------------------------------------------------------- */
 .grid-layer{
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background-image:
@@ -77,11 +48,6 @@ body{
   shape-rendering: crispEdges;
   image-rendering: pixelated;
 }
-
-/* --------------------------------------------------------------------------
-   Chrome bands (header / footer). T13 device 5: the instrument register is
-   letter-spacing + opacity alone, no boxes, no borders, no icons.
-   -------------------------------------------------------------------------- */
 .chrome{
   position:relative; z-index:1;
   flex:0 0 auto;
@@ -96,7 +62,6 @@ body{
   font-size:10px; text-transform:uppercase; letter-spacing:.34em; opacity:.42;
 }
 .foot-mid{ display:flex; gap:32px }
-
 .brand{ display:flex; align-items:center; gap:12px }
 .brand-sq{
   width:20px; height:20px; background:var(--lamp); flex:0 0 auto;
@@ -105,7 +70,6 @@ body{
 .brand-id{
   font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.30em;
 }
-
 .nav{ display:flex; gap:30px }
 .nav a{
   position:relative;
@@ -114,16 +78,13 @@ body{
   opacity:.62; transition:opacity .18s ease, color .18s ease;
   padding-bottom:4px;
 }
-.nav a::after{                       /* T02: gold underline grows 0 -> 100% */
+.nav a::after{                       
   content:''; position:absolute; left:0; bottom:0; height:1px; width:0;
   background:var(--lamp); transition:width .28s cubic-bezier(.2,.8,.2,1);
 }
 .nav a:hover{ opacity:1; color:var(--lamp) }
 .nav a:hover::after{ width:100% }
-
 .head-right{ display:flex; align-items:center; gap:clamp(14px,2vw,30px) }
-
-/* The re-run control T13 leaves undiscoverable. Square: it is interface. */
 .ctl{
   font-family:var(--mono); font-size:10px; font-weight:700;
   text-transform:uppercase; letter-spacing:.2em;
@@ -140,17 +101,11 @@ body{
   border:1px solid rgba(255,255,255,.34); padding:1px 5px; opacity:.8;
 }
 .ctl[disabled]{ opacity:.4; cursor:default }
-
 .countdown{ text-align:right; line-height:1.25 }
 .cd-label{
   display:block; font-size:9px; text-transform:uppercase; letter-spacing:.34em; opacity:.5;
 }
 .cd-val{ display:block; font-size:19px; font-weight:700; letter-spacing:.02em }
-
-/* --------------------------------------------------------------------------
-   Stage. T13's board vignette, re-tinted: black would go muddy on cobalt,
-   so the pooled light is a deep blue.
-   -------------------------------------------------------------------------- */
 .stage{
   position:relative; z-index:1;
   flex:1 1 auto; min-height:0;
@@ -159,8 +114,6 @@ body{
   padding:clamp(14px,2.4vh,34px) clamp(18px,2.6vw,44px);
   box-shadow: inset 0 0 150px rgba(0,10,48,.55);
 }
-
-/* T02 signature device 4, at a scale that leaves room for the board. */
 .wordmark{
   margin:0;
   display:flex; align-items:baseline; justify-content:center;
@@ -171,18 +124,13 @@ body{
 .wm-glyph{
   display:inline-flex; align-items:center; justify-content:center;
   width:.60em; height:.52em;
-  /* Playfair's italic N throws a swash right into the substituted column —
-     pad asymmetrically rather than centring it (T02 §6). */
   margin-left:.11em; margin-right:.02em;
 }
 .wm-glyph svg{ width:100%; height:100%; shape-rendering:crispEdges }
-
 .tagline{
   margin:0; max-width:46ch; text-align:center;
   font-size:12px; line-height:1.7; letter-spacing:.02em; opacity:.62;
 }
-
-/* T13 meta row: justify-between split directly above the first flap row. */
 .meta{
   width:100%; max-width:1280px;
   display:flex; justify-content:space-between; align-items:flex-end; gap:16px;
@@ -193,27 +141,21 @@ body{
 .dot{
   width:8px; height:8px; border-radius:50%; display:inline-block;
   background:var(--lamp); box-shadow:0 0 10px rgba(247,208,70,.9);
-  opacity:.35;                       /* dark until the board has landed */
+  opacity:.35;                       
   transition:opacity .3s ease;
 }
 body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
 @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.32} }
-
-/* --------------------------------------------------------------------------
-   THE BOARD
-   -------------------------------------------------------------------------- */
 .rows{ display:flex; flex-direction:column; gap:clamp(6px,.9vh,10px) }
-
 .row{
   --gap:  clamp(3px,.5vw,8px);
   --side: clamp(36px,5.2vw,88px);
   --tw:   min(62px, calc((100vw - var(--side) - (var(--n) - 1) * var(--gap)) / var(--n)));
   display:flex; gap:var(--gap); justify-content:center;
 }
-
 .flap{
   position:relative; flex:0 0 auto;
-  width:var(--tw); height:calc(var(--tw) * 1.3);   /* T13: keep the 1:1.3 ratio */
+  width:var(--tw); height:calc(var(--tw) * 1.3);   
   border-radius:var(--radius-flap);
   overflow:hidden;
   background:var(--stock); color:var(--ink);
@@ -221,23 +163,17 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
   font-size:calc(var(--tw) * .74);
   line-height:1;
   display:flex; align-items:center; justify-content:center;
-  padding-top:calc(var(--tw) * .055);              /* drop the cap onto the seam */
+  padding-top:calc(var(--tw) * .055);              
   box-shadow:0 4px 10px rgba(0,12,52,.42);
   user-select:none;
-  transform-origin: top center;                    /* T13 upgrade 2: it falls */
-  transition: transform .05s ease-in-out;          /* longer than the 30ms hold */
+  transform-origin: top center;                    
+  transition: transform .05s ease-in-out;          
 }
-
-/* THE SEAM — on top of the glyph (z-index 10), so it cuts through the letter. */
 .flap::after{
   content:''; position:absolute; top:50%; left:0;
   width:100%; height:2px; z-index:10; pointer-events:none;
   background: rgba(8,40,112,.30);
 }
-
-/* THE LIGHT — inverted. T13 lifts the TOP half with white; on card stock a
-   white lift alone is nearly invisible, so the lower leaf gets an occlusion
-   shade under the seam instead. Same asymmetry, opposite operation. */
 .flap::before{
   content:''; position:absolute; inset:0; z-index:5; pointer-events:none;
   background: linear-gradient(180deg,
@@ -246,10 +182,6 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
     rgba(10,42,116,.17)   50.4%,
     rgba(10,42,116,0)     84%);
 }
-
-/* An empty flap is still an object in the rack (T13 device 4) — but it cannot
-   be a faded card here, because a translucent light card on saturated cobalt
-   disappears. It becomes the dark drum showing through an empty slot. */
 .flap.blank{
   background: var(--slot);
   color:transparent;
@@ -257,19 +189,14 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
 }
 .flap.blank::before{ opacity:0 }
 .flap.blank::after{ background: rgba(0,8,36,.45) }
-
-.flap.flipping{ transform: scaleY(.95) }      /* the mechanical click */
-.flap.settling{ transform: scaleY(1.035) }    /* T13 upgrade 3: the rattle */
-
-/* --------------------------------------------------------------------------
-   Journey line. Segment widths are the real running times (220 min / 355 min).
-   -------------------------------------------------------------------------- */
+.flap.flipping{ transform: scaleY(.95) }      
+.flap.settling{ transform: scaleY(1.035) }    
 .journey{ width:100%; max-width:1280px }
 .jline{ display:flex; align-items:center }
 .jr{ height:1px; background:var(--rule) }
 .jd{ width:9px; height:9px; flex:0 0 auto; border-radius:50%; }
 .d-dep{ background:var(--lamp) }
-.d-mid{ background:var(--flare) }              /* the only use of --flare */
+.d-mid{ background:var(--flare) }              
 .d-arr{ background:#EFEADA }
 .jlabels{
   display:grid; grid-template-columns:1fr 1fr 1fr; margin-top:11px;
@@ -280,11 +207,6 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
 .a-start{ text-align:left }
 .a-mid{ text-align:center }
 .a-end{ text-align:right }
-
-/* --------------------------------------------------------------------------
-   Fares — the board's control surface, not a section under it.
-   Dividers ARE the grid: 1px gaps over a rule-coloured background (T02 §5).
-   -------------------------------------------------------------------------- */
 .fares{
   position:relative; z-index:1; flex:0 0 auto;
   display:grid; grid-template-columns:repeat(3,1fr);
@@ -314,7 +236,6 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
   font-size:clamp(30px,3.4vw,50px); line-height:1; letter-spacing:-.01em;
 }
 .f-copy{ font-size:11px; line-height:1.65; opacity:.6; max-width:34ch }
-
 .fare.is-on{
   background: linear-gradient(180deg, rgba(0,26,92,.92), rgba(0,38,124,.62));
   box-shadow: inset 0 2px 0 var(--lamp);
@@ -324,8 +245,6 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
 .fare.is-on .f-copy{ opacity:.78 }
 .fare:focus-visible{ outline:2px solid var(--lamp); outline-offset:-3px }
 .ctl:focus-visible{ outline:2px solid var(--lamp); outline-offset:2px }
-
-/* -------------------------------------------------------------------------- */
 @media (max-width:900px){
   .nav{ display:none }
   .tagline{ display:none }
@@ -353,7 +272,6 @@ body.boarded .dot{ opacity:1; animation:blink 1.6s infinite }
   }
   .meta-l{ gap:14px }
 }
-
 @media (prefers-reduced-motion: reduce){
   .flap{ transition:none }
   body.boarded .dot{ animation:none }

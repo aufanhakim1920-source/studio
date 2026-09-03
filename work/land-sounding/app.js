@@ -1,31 +1,3 @@
-/* SOUNDING — subsea cable survey
- * ---------------------------------------------------------------------------
- * ⭐ THE OBJECT: a sonar ping the visitor fires into the dark.
- *
- * Click the background and a ring expands from that point across the whole
- * viewport. Where the front passes it lights up what is down there — seabed
- * contours, the cable route, two fault markers — and the swept ground stays
- * faintly charted behind it. Fire several and you gradually map the floor.
- * That is the company's job, performed by the visitor.
- *
- * ARCHITECTURE (Generative Canvas Studio §10.7 + §10.8):
- *   · NO per-cell state. There is no grid, no framebuffer, no ping-pong.
- *   · The CPU stores 12 vec4s: where a ping was fired, WHEN it was fired, and
- *     a recency weight. Nothing else. The shader computes every ring's radius
- *     from elapsed time, so nothing is stepped, nothing integrated, nothing
- *     can drift, and a dropped frame changes nothing.
- *   · Overlapping fronts are AVERAGED (sum of weighted returns over the sum of
- *     weights, floored at 1) and the charted memory is a max() — never a sum.
- *     Summing turns to chaos the moment two rings meet.
- *   · Tone mapped with 1 - exp(-c), never clamp (§8.3). The cable core and the
- *     fault markers blow past 1.0 and roll off to white on their own.
- *
- * The loop IDLES. When the last front has died and the pointer has settled,
- * rAF stops and the buffer is kept (preserveDrawingBuffer) so the chart stays
- * on screen. A timer wakes it for the automatic ping, so the page is breathing
- * on arrival without burning a permanent rAF.
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;

@@ -4,30 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aufan — twelve faces</title>
-<!--
-  Direction C — THE SOLID.
-
-  The portfolio is one hand-rolled object you turn in your hands. No 3D library:
-  a vertex list, three 2D rotations applied yaw -> pitch, one divide for
-  perspective, painter's-algorithm depth sort, filled + stroked on a 2D canvas.
-  Technique from Template 09 [[Hand Rolled 3D Wireframe]] — including the `heavy`
-  depth-fade idea (here it is the Lambert term), the ghost-layer stack, and the
-  HUD callout that runs horizontally out of the label before turning diagonal.
-
-  The system-level move: a regular dodecahedron has exactly twelve faces, and he
-  has exactly ten projects plus a name and an email. So the geometry is not a
-  container for the content, it IS the content — 1 top cap (who), 5 faces on the
-  upper ring tilted UP (things that shipped), 5 on the lower ring tilted DOWN
-  (things still being built), 1 bottom cap (how to reach him). Turn it over and
-  the unfinished work is literally the underside.
-
-  Palette is deliberately none of the last five grounds (warm cream, near-black +
-  orange, cobalt, plaster grey-green, indigo night): bottle-green case lining,
-  brass, bone, one vermilion signal. An instrument in its case.
-
-  Motion: nothing moves unless you move it. rAF only runs while something is
-  actually animating and stops dead when it settles.
--->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A1C14'/%3E%3Cpolygon points='16,5 27,13 23,26 9,26 5,13' fill='%23FF4B2B' stroke='%23C4923C'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,20 +11,15 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="grain" aria-hidden="true"></div>
 <div class="rules" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="vignette" aria-hidden="true"></div>
-
 <header class="masthead">
   <span class="mono">M. RAUFAN HAKIM RACHMAD</span>
   <span class="masthead__mid mono">CASE No. 12 &mdash; DODECAHEDRON, REGULAR</span>
   <span class="mono masthead__right"><i class="led"></i> MELBOURNE AU &middot; UTC+10</span>
 </header>
-
 <main>
-
-<!-- ═══════════════ 01 · THE SOLID ═══════════════ -->
 <section class="band">
   <div class="band__l">
     <p class="eyebrow mono">01 &mdash; the object</p>
@@ -61,17 +32,8 @@
       Grab it and turn it over.</p>
   </div>
 </section>
-
 <section class="stage" id="stage">
   <div class="stage__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
-  <!-- ── left: the index ── -->
-  <!-- the index used to live here as twelve rows of text. The object is the
-       index; a facet counter is all the orientation that is needed. -->
-  <!-- a facet counter lived here briefly and duplicated the callout label
-       anchored to the object itself. Removed: the callout already says it. -->
-
-  <!-- ── centre: the solid ── -->
   <div class="object">
     <canvas id="solid" width="800" height="620" role="application" tabindex="0"
             aria-label="A dodecahedron carrying twelve facets. Drag to turn it, arrow keys to step between facets, Enter to open the facet in front."></canvas>
@@ -84,11 +46,8 @@
     <p class="tag mono" id="tag-b">FACET <b id="tag-num">01</b>/12<br><span id="tag-sub">upper ring</span></p>
     <p class="hint mono">drag to turn &middot; <kbd>&larr;</kbd><kbd>&rarr;</kbd> step ring &middot; <kbd>&uarr;</kbd><kbd>&darr;</kbd> poles &middot; click a face</p>
   </div>
-
-  <!-- ── right: the dossier ── -->
   <div class="dossier" id="dossier">
     <p class="dossier__hd mono" id="dossier-hd">facet in front</p>
-
     <article class="dos" data-face="0">
       <p class="dos__k mono">00 &middot; north pole</p>
       <h2>Muhammad Raufan<br>Hakim Rachmad</h2>
@@ -98,7 +57,6 @@
         before he tunes it, and pulls the espresso at six in the morning either way.</p>
       <ul class="chips mono"><li>Indonesian &mdash; native</li><li>English &mdash; IELTS 7.0</li><li>Melbourne, AU</li></ul>
     </article>
-
     <article class="dos" data-face="1">
       <p class="dos__k mono">01 &middot; upper ring</p>
       <h2>FanNest</h2>
@@ -108,7 +66,6 @@
       <ul class="chips mono"><li>Shopify</li><li>Node</li><li>Meta Graph API</li></ul>
       <p class="dos__fig"><b>0</b><span>manual steps from product to posted reel</span></p>
     </article>
-
     <article class="dos" data-face="2">
       <p class="dos__k mono">02 &middot; upper ring</p>
       <h2>Week Board</h2>
@@ -119,7 +76,6 @@
       <ul class="chips mono"><li>Netlify Functions</li><li>Google Calendar API</li></ul>
       <p class="dos__fig"><b>1</b><span>source of truth, not two</span></p>
     </article>
-
     <article class="dos" data-face="3">
       <p class="dos__k mono">03 &middot; upper ring</p>
       <h2>Biomate</h2>
@@ -130,7 +86,6 @@
       <ul class="chips mono"><li>Supabase</li><li>Postgres RLS</li><li>GPS</li></ul>
       <p class="dos__fig"><b>50,000</b><span>GPS fixes carried</span></p>
     </article>
-
     <article class="dos" data-face="4">
       <p class="dos__k mono">04 &middot; upper ring</p>
       <h2>Pixel Dungeon Knight</h2>
@@ -142,7 +97,6 @@
         <span class="qty"><b>136</b><span>weapons</span></span><span class="qty"><b>98</b><span>enemies</span></span><span class="qty"><b>28</b><span>bosses</span></span><span class="qty"><b>17</b><span>biomes</span></span>
       </p>
     </article>
-
     <article class="dos" data-face="5">
       <p class="dos__k mono">05 &middot; upper ring</p>
       <h2>baka&nbsp;nae.</h2>
@@ -153,7 +107,6 @@
       <ul class="chips mono"><li>Bilingual EN / ID</li><li>Brand site</li></ul>
       <p class="dos__fig"><b>10.7k</b><span>followers on Shopee behind it</span></p>
     </article>
-
     <article class="dos" data-face="6">
       <p class="dos__k mono">06 &middot; lower ring</p>
       <h2>Untitled Game</h2>
@@ -164,7 +117,6 @@
       <ul class="chips mono"><li>Unity</li><li>C#</li><li>Co&#8209;op</li></ul>
       <p class="dos__fig"><b>8.0s &rarr; 2.2s</b><span>per kill, after instrumenting</span></p>
     </article>
-
     <article class="dos" data-face="7">
       <p class="dos__k mono">07 &middot; lower ring</p>
       <h2>Hollowborne</h2>
@@ -175,7 +127,6 @@
       <ul class="chips mono"><li>JavaScript</li><li>Action&#8209;RPG</li></ul>
       <p class="dos__fig"><b>Bible first</b><span>then the engine</span></p>
     </article>
-
     <article class="dos" data-face="8">
       <p class="dos__k mono">08 &middot; lower ring</p>
       <h2>AgentSentry</h2>
@@ -186,7 +137,6 @@
       <ul class="chips mono"><li>Next.js</li><li>Proxy</li><li>Kill switch</li></ul>
       <p class="dos__fig"><b>1</b><span>switch, and it is off by default</span></p>
     </article>
-
     <article class="dos" data-face="9">
       <p class="dos__k mono">09 &middot; lower ring</p>
       <h2>FreshTrack</h2>
@@ -197,7 +147,6 @@
       <ul class="chips mono"><li>Mobile</li><li>Computer vision</li></ul>
       <p class="dos__fig"><b>1 photo</b><span>is the entire input</span></p>
     </article>
-
     <article class="dos" data-face="10">
       <p class="dos__k mono">10 &middot; lower ring</p>
       <h2>Motion Pipeline</h2>
@@ -208,7 +157,6 @@
       <ul class="chips mono"><li>Remotion</li><li>Frame&#8209;timed audio</li></ul>
       <p class="dos__fig"><b>frame&#8209;exact</b><span>sound, deterministic renders</span></p>
     </article>
-
     <article class="dos" data-face="11">
       <p class="dos__k mono">11 &middot; south pole</p>
       <h2>Reach him</h2>
@@ -218,7 +166,6 @@
       <p class="dos__mail"><a href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a></p>
       <ul class="chips mono"><li>Melbourne, AU</li><li>Available 2026</li></ul>
     </article>
-
     <div class="legend">
       <p class="legend__hd mono">how to read the stone</p>
       <p><i class="idx__dot is-live"></i><span class="mono">bright brass &mdash; shipped, live</span></p>
@@ -228,8 +175,6 @@
     </div>
   </div>
 </section>
-
-<!-- ═══════════════ 02 · THE DRUM ═══════════════ -->
 <section class="off">
   <div class="off__head">
     <p class="eyebrow mono">02 &mdash; off the screen</p>
@@ -237,7 +182,6 @@
     <p class="lead">The stone above only holds the code. This one turns the other way &mdash;
       a drum of nine photographs, spun by hand. Front panel is the one talking.</p>
   </div>
-
   <div class="drumwrap">
     <canvas id="drum" width="1200" height="440" role="application" tabindex="0"
             aria-label="A drum of nine photographs. Drag sideways to spin it; the panel at the front is captioned below."></canvas>
@@ -258,14 +202,12 @@
     </div>
     <p class="hint mono">drag the drum sideways &middot; <kbd>&larr;</kbd><kbd>&rarr;</kbd> step panels</p>
   </div>
-
   <div class="stats">
     <div class="stat"><b>203.6</b><span class="unit mono">kg</span><span class="stat__l mono">waste sorted, Cobra Cleanup</span></div>
     <div class="stat"><b>2&times;</b><span class="stat__l mono">first place, CISSA Codebrew<br>&mdash; both in first year</span></div>
     <div class="stat"><b>06:00</b><span class="stat__l mono">front of house, Natural Tucker<br>&mdash; hired off a cold email</span></div>
     <div class="stat"><b>2&times;</b><span class="stat__l mono">a full&#8209;timer's pace on a trial<br>rush shift, La Spaghettata</span></div>
   </div>
-
   <div class="plates">
     <div class="plate"><span class="plate__k mono">Study</span><b>BSc Data Science</b><em class="mono">University of Melbourne &middot; first year</em></div>
     <div class="plate"><span class="plate__k mono">Home</span><b>Surabaya &rarr; Melbourne</b><em class="mono">Indonesia to Australia</em></div>
@@ -275,22 +217,17 @@
     <div class="plate"><span class="plate__k mono">Recognised</span><b>UniMelb Community Badge</b><em class="mono">featured in Jawa Pos</em></div>
   </div>
 </section>
-
-<!-- ═══════════════ 03 · CLOSE ═══════════════ -->
 <section class="close">
   <p class="eyebrow mono">03 &mdash; the underside</p>
   <p class="close__line">Turn the stone all the way over<br>and this is what is cut into the bottom.</p>
   <p class="close__mail"><a href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com</a></p>
   <button class="ghost mono" id="to-contact" type="button">&#9660; turn the solid to face 11</button>
 </section>
-
 </main>
-
 <footer class="foot mono">
   <span>Hand&#8209;rolled 3D &mdash; no library. 20 vertices, 12 faces, one divide for perspective.</span>
   <span>Melbourne &middot; 2026</span>
 </footer>
-
 <script src="app.js"></script>
 </body>
 </html>

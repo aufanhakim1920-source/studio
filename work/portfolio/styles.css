@@ -1,13 +1,3 @@
-/* Aufan Rachmad — portfolio.
-   A commercial page, not an experiment: it exists to get an enquiry.
-   Structure is conventional on purpose (hero, proof, work, services, about,
-   close) because that is what reads as trustworthy to someone deciding
-   whether to hire. The craft goes into type, spacing, colour and the
-   hover states, not into inventing a new object.
-
-   Motion: hover and focus only. Nothing animates on scroll and nothing
-   loops — Aufan gets motion sick from ambient movement. */
-
 :root{
   --paper:  #F4F4F1;
   --paper-2:#EAEAE5;
@@ -19,31 +9,19 @@
   --blue:   #1B4DFF;
   --blue-d: #0B33C4;
   --live:   #1B9E5A;
-
   --sans:  "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --black: "Archivo Black", "Archivo", ui-sans-serif, system-ui, sans-serif;
   --mono:  "DM Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-
   --r-sm: 6px;
   --r-md: 14px;
   --ease: cubic-bezier(.2,.8,.24,1);
   --pad:  clamp(18px, 4.6vw, 56px);
-
-  /* Ground texture. The collection's finding 4: a flat colour with no second
-     layer is the thing that reads as unfinished. Painted as a background-image
-     on the ground itself rather than an overlay div — no extra element, and
-     crucially no `z-index:-1`, which is a known-bad pattern here (it paints
-     behind any ancestor that has its own background). White cards sit on top
-     and stay clean, which is exactly the tinted-ground/white-card split the
-     real commerce sites use. */
   --tex: radial-gradient(rgba(17,17,20,.05) 1px, transparent 1px);
   --tex-size: 22px 22px;
 }
-
 *{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
 @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
-
 body{
   margin:0;
   background-color:var(--paper);
@@ -53,14 +31,11 @@ body{
   font:400 16px/1.55 var(--sans);
   -webkit-font-smoothing:antialiased;
 }
-
 .skip{
   position:absolute; left:-9999px; top:0;
   background:var(--ink); color:#fff; padding:12px 16px; z-index:99;
 }
 .skip:focus{ left:0; }
-
-/* ── bar ──────────────────────────────────────────────────────────────── */
 .bar{
   position:sticky; top:0; z-index:50;
   display:flex; align-items:center; gap:18px;
@@ -71,7 +46,7 @@ body{
 }
 .logo{
   display:flex; align-items:center; gap:10px;
-  min-height:44px;              /* thumb-sized: it is a link back to the top */
+  min-height:44px;              
   font:600 15px/1 var(--sans); letter-spacing:-.015em;
   color:var(--ink); text-decoration:none;
 }
@@ -95,8 +70,6 @@ body{
   transition:background .15s var(--ease);
 }
 .bar-cta:hover{ background:var(--blue); }
-
-/* ── hero ─────────────────────────────────────────────────────────────── */
 .hero{ padding:clamp(48px,9vw,104px) var(--pad) clamp(38px,6vw,64px); }
 .avail{
   display:inline-flex; align-items:center; gap:9px;
@@ -124,7 +97,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   color:var(--ink-2); max-width:52ch;
 }
 .cta-row{ display:flex; flex-wrap:wrap; gap:11px; margin-top:32px; }
-
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   min-height:50px; padding:0 22px;
@@ -140,15 +112,11 @@ h1 em{ font-style:normal; color:var(--blue); }
 .btn:active{ transform:translateY(1px); }
 .btn:focus-visible{ outline:3px solid var(--blue); outline-offset:3px; }
 .btn.big{ min-height:58px; padding:0 28px; font-size:clamp(15px,3.4vw,19px); font-family:var(--mono); }
-
-/* ── proof ────────────────────────────────────────────────────────────── */
 .proof{
   display:grid; grid-template-columns:repeat(4, 1fr);
   gap:1px; background:var(--rule);
   border-block:1px solid var(--rule);
 }
-/* the figures carry the same ground texture, otherwise this band reads as a
-   flat stripe cut out of a textured page */
 .fig{
   background-color:var(--paper);
   background-image:var(--tex);
@@ -165,8 +133,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   display:block; margin-top:10px;
   font-size:13px; line-height:1.45; color:var(--ink-3); max-width:26ch;
 }
-
-/* ── sections ─────────────────────────────────────────────────────────── */
 .section{ padding:clamp(52px,8vw,96px) var(--pad); }
 .s-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:34px; }
 .s-num{
@@ -176,8 +142,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   margin:0;
   font-size:clamp(24px,4vw,38px); font-weight:600; letter-spacing:-.028em;
 }
-
-/* ── work cards ───────────────────────────────────────────────────────── */
 .cards{ list-style:none; margin:0; padding:0; display:grid; gap:20px; }
 .card{
   display:grid; grid-template-columns:minmax(0,340px) 1fr; gap:0;
@@ -191,19 +155,14 @@ h1 em{ font-style:normal; color:var(--blue); }
     box-shadow:0 14px 30px rgba(17,17,20,.09);
   }
 }
-
-/* the thumbnails are drawn in CSS. No stock photography: we have no rights
-   to any, and a real photo of someone else's work on a portfolio is a lie. */
 .thumb{ position:relative; min-height:190px; overflow:hidden; }
 .t-shop{ background:linear-gradient(140deg,#EFD9E6,#D9E4F5 62%,#E7DCF2); }
 .t-brew{ background:linear-gradient(140deg,#12162A,#26346B 70%,#16204A); }
 .t-tools{ background:linear-gradient(140deg,#EDEDE7,#DADAD2); }
-
 .chip{ position:absolute; border-radius:8px; background:#fff; box-shadow:0 4px 12px rgba(60,40,80,.14); }
 .c1{ left:16%; top:20%; width:34%; height:44%; transform:rotate(-7deg); }
 .c2{ left:40%; top:32%; width:34%; height:44%; transform:rotate(5deg); background:#FFF6FB; }
 .c3{ left:28%; top:46%; width:34%; height:44%; transform:rotate(-2deg); background:#F6FAFF; }
-
 .bar-el, .t-brew .bar{ position:absolute; bottom:22%; width:13%; background:#4C6BE8; border-radius:3px 3px 0 0; }
 .t-brew .b1{ left:20%; height:26%; }
 .t-brew .b2{ left:37%; height:44%; background:#7C93F2; }
@@ -213,13 +172,11 @@ h1 em{ font-style:normal; color:var(--blue); }
   border-radius:999px; background:radial-gradient(circle at 34% 30%, #FFE9A8, #D4A02C 70%);
   box-shadow:0 6px 16px rgba(0,0,0,.3);
 }
-
 .t-tools .row{ position:absolute; left:14%; height:9px; border-radius:5px; background:#B9B9AF; }
 .t-tools .r1{ top:30%; width:56%; }
 .t-tools .r2{ top:44%; width:40%; background:#CBCBC2; }
 .t-tools .r3{ top:58%; width:64%; background:#CBCBC2; }
 .t-tools .cur{ position:absolute; left:64%; top:26%; width:3px; height:34%; background:var(--blue); }
-
 .c-body{ padding:26px 26px 28px; }
 .c-kind{
   margin:0 0 10px; font:500 11.5px/1 var(--mono);
@@ -227,25 +184,18 @@ h1 em{ font-style:normal; color:var(--blue); }
 }
 .c-body h3{ margin:0; font-size:clamp(20px,2.6vw,26px); font-weight:600; letter-spacing:-.022em; }
 .c-body p{ margin:11px 0 0; font-size:14.5px; line-height:1.6; color:var(--ink-2); max-width:60ch; }
-/* Provenance. Every card says plainly whether it was client work, team work
-   or self-initiated. The vault rule is absolute on this: never imply a client
-   that doesn't exist, because one invented claim, checked, ends the whole
-   thing. Quiet styling, but never hidden. */
 .c-prov{
   margin:12px 0 0 !important;
   padding-left:11px; border-left:2px solid var(--rule);
   font-size:12.5px !important; line-height:1.55; color:var(--ink-3) !important;
   max-width:56ch;
 }
-
 .c-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:16px !important; }
 .c-tags span{
   font:400 12px/1 var(--mono); color:var(--ink-2);
   border:1px solid var(--rule); background:var(--paper-2);
   padding:7px 10px; border-radius:999px;
 }
-
-/* ── tiers ────────────────────────────────────────────────────────────── */
 .tiers{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
 .tier{
   background:var(--card); border:1px solid var(--rule); border-radius:var(--r-md);
@@ -265,8 +215,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   background:var(--ink); color:#fff; padding:6px 10px; border-radius:999px;
   margin:0 !important;
 }
-
-/* ── about ────────────────────────────────────────────────────────────── */
 .about{ display:grid; grid-template-columns:1.35fr 1fr; gap:40px; align-items:start; }
 .big{
   margin:0; font-size:clamp(19px,2.6vw,26px); line-height:1.42;
@@ -276,8 +224,6 @@ h1 em{ font-style:normal; color:var(--blue); }
 .facts div{ background:var(--card); display:flex; justify-content:space-between; gap:16px; padding:14px 18px; }
 .facts dt{ font:500 11.5px/1.5 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
 .facts dd{ margin:0; font-size:14px; text-align:right; color:var(--ink); }
-
-/* ── closer ───────────────────────────────────────────────────────────── */
 .closer{
   padding:clamp(56px,9vw,110px) var(--pad);
   background:var(--ink); color:#fff; text-align:center;
@@ -290,34 +236,25 @@ h1 em{ font-style:normal; color:var(--blue); }
 }
 .closer p{ margin:20px auto 0; color:#A9A9B4; font-size:16px; max-width:46ch; }
 .closer .btn.primary{ margin-top:30px; }
-
 .foot{
   display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
   padding:22px var(--pad) 30px;
   border-top:1px solid var(--rule);
 }
 .foot p{ margin:0; font:400 12.5px/1.6 var(--mono); color:var(--ink-3); }
-
-/* ── narrower ─────────────────────────────────────────────────────────── */
 @media (max-width:940px){
   .proof{ grid-template-columns:repeat(2, 1fr); }
   .tiers{ grid-template-columns:1fr; }
   .about{ grid-template-columns:1fr; gap:26px; }
 }
 @media (max-width:720px){
-  .nav{ display:none; }          /* four links are not worth a burger menu */
+  .nav{ display:none; }          
   .bar-cta{ margin-left:auto; }
   .card{ grid-template-columns:1fr; }
-  /* stacked, the thumbnail is full width, so a landscape capture finally gets
-     to be landscape — give it the real ratio instead of a cropped strip */
   .thumb{ min-height:0; aspect-ratio:16/10; }
   .thumb img{ object-position:top center; }
   .c-body{ padding:20px 20px 24px; }
 }
-
-/* Three controls in the bar at phone width: the logo, the account button and
-   the CTA. Left to wrap they each break onto two lines and the header doubles
-   in height, so everything here is about keeping them on one line. */
 @media (max-width:560px){
   .bar{ gap:8px; padding-inline:14px; }
   .logo{ font-size:13.5px; white-space:nowrap; }
@@ -326,8 +263,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   .bar-cta{ margin-left:0; }
 }
 @media (max-width:400px){
-  /* last resort: the pip alone still shows signed-in state, and the whole
-     button stays a 44px target */
   .bar-account #accountLabel{ display:none; }
   .bar-account{ padding:0 12px; }
 }
@@ -335,17 +270,9 @@ h1 em{ font-style:normal; color:var(--blue); }
   .proof{ grid-template-columns:1fr; }
   .fig{ padding:20px var(--pad) 22px; }
 }
-
 @media (prefers-contrast:more){
   :root{ --ink-2:#26262C; --ink-3:#4A4A52; --rule:#B4B4AC; }
 }
-
-/* ── motion ───────────────────────────────────────────────────────────────
-   Everything below is scoped to .motion, a class app.js adds at runtime.
-   That is deliberate: if the script never runs, none of these rules apply
-   and the page renders fully visible. Hiding content in the stylesheet and
-   relying on JS to reveal it is how scroll animation takes a site down. */
-
 .motion [data-enter],
 .motion [data-rise]{
   opacity:0;
@@ -358,43 +285,31 @@ h1 em{ font-style:normal; color:var(--blue); }
              transform .55s var(--ease) var(--d,0ms);
 }
 .motion h1[data-enter]{ transform:translateY(22px); }
-
-/* the hero rule under the heading draws itself in */
 .motion .proof{ position:relative; }
-
 @media (prefers-reduced-motion:reduce){
   .motion [data-enter], .motion [data-rise]{ opacity:1 !important; transform:none !important; }
 }
-
-/* ── hover: the thumbnails come alive, but only while pointed at ───────── */
 @media (hover:hover) and (prefers-reduced-motion:no-preference){
   .chip{ transition:transform .38s var(--ease); }
   .card:hover .c1{ transform:rotate(-13deg) translate(-10px,-5px); }
   .card:hover .c2{ transform:rotate(10deg) translate(8px,-2px); }
   .card:hover .c3{ transform:rotate(-3deg) translate(-1px,7px); }
-
   .t-brew .bar{ transition:height .42s var(--ease); }
   .card:hover .b1{ height:40%; }
   .card:hover .b2{ height:26%; }
   .card:hover .b3{ height:50%; }
   .t-brew .medal{ transition:transform .42s var(--ease); }
   .card:hover .medal{ transform:rotate(-14deg) scale(1.07); }
-
   .t-tools .row{ transition:width .4s var(--ease); }
   .card:hover .r1{ width:64%; }
   .card:hover .r2{ width:52%; }
   .card:hover .r3{ width:44%; }
-  /* the caret only blinks while you are on the card — never ambiently */
   .card:hover .cur{ animation:caret 1s steps(1) infinite; }
   @keyframes caret{ 0%,55%{ opacity:1 } 56%,100%{ opacity:0 } }
-
   .tier{ transition:transform .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease); }
   .tier:hover{ transform:translateY(-4px); border-color:var(--ink); box-shadow:0 14px 30px rgba(17,17,20,.10); }
-
   .facts div{ transition:background .15s var(--ease); }
   .facts div:hover{ background:var(--paper-2); }
-
-  /* nav underline sweeps out from the left rather than just appearing */
   .nav a{ position:relative; border-bottom-color:transparent !important; }
   .nav a::after{
     content:""; position:absolute; left:0; right:0; bottom:8px; height:1.5px;
@@ -402,7 +317,6 @@ h1 em{ font-style:normal; color:var(--blue); }
     transition:transform .22s var(--ease);
   }
   .nav a:hover::after, .nav a:focus-visible::after{ transform:scaleX(1); }
-
   .btn.primary{ position:relative; overflow:hidden; }
   .btn.primary::after{
     content:""; position:absolute; inset:0;
@@ -411,31 +325,13 @@ h1 em{ font-style:normal; color:var(--blue); }
   }
   .btn.primary:hover::after{ transform:translateX(100%); transition:transform .6s var(--ease); }
 }
-
-/* ══ real screenshots ═════════════════════════════════════════════════════
-   The original thumbnails were drawn in CSS because there was nothing real to
-   show. There is now: every image below is a capture of a page that is live,
-   taken at 1440px. The old CSS-drawn thumbs are kept above for any card that
-   still has no live URL. */
 .thumb img{
   width:100%; height:100%;
   object-fit:cover;
-  /* left-top, not centre: these are captures of real pages, and the left is
-     where the headline and the main object live. Centring a 900x625 landscape
-     shot inside a ~320px portrait column crops away both edges and lands on
-     empty middle. */
   object-position:left top;
   display:block;
-  background:var(--paper-2);    /* so a failed load is a tinted panel, not white */
+  background:var(--paper-2);    
 }
-
-/* ── whole card is the link ────────────────────────────────────────────────
-   The stretched-link pattern: one real anchor on the heading (so it reads
-   correctly to a screen reader and shows a sane focus ring), with a
-   transparent ::after covering the card so the whole surface is clickable.
-   Deliberately NOT a <div onclick> and not an <a> wrapping everything — the
-   first is invisible to assistive tech, the second swallows the tags into the
-   link text. */
 .card{ position:relative; }
 .c-body h3 a{
   color:inherit; text-decoration:none;
@@ -448,8 +344,6 @@ h1 em{ font-style:normal; color:var(--blue); }
 .card:hover .c-body h3 a,
 .c-body h3 a:focus-visible{ background-size:100% 1.5px; }
 .c-body h3 a:focus-visible{ outline:3px solid var(--blue); outline-offset:4px; border-radius:2px; }
-
-/* the live pip, reused from the hero availability dot */
 .c-live{
   display:inline-flex; align-items:center; gap:7px;
 }
@@ -458,11 +352,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   background:var(--live); flex:none;
   box-shadow:0 0 0 3px rgba(27,158,90,.18);
 }
-
-/* ── service groups ───────────────────────────────────────────────────────
-   Two groups, because "build me a website" and "connect my systems together"
-   are different purchases at different prices, and putting them in one flat
-   row of four made the cheap integration read as a discount website. */
 .t-group + .t-group{ margin-top:38px; }
 .t-group-head{
   display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
@@ -476,11 +365,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   margin:0; font:400 13px/1.5 var(--sans); color:var(--ink-3); max-width:52ch;
 }
 .tiers.two{ grid-template-columns:repeat(2, 1fr); }
-
-/* ── samples band ─────────────────────────────────────────────────────────
-   The "what do your sites actually look like" answer. A strip of real
-   captures, each one its own link, over a dark ground so the light builds
-   read as objects sitting on it rather than merging into the page. */
 .samples{
   padding:clamp(52px,8vw,90px) var(--pad);
   background:var(--ink);
@@ -503,11 +387,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   background:#1A1A20;
   transition:border-color .18s var(--ease), transform .18s var(--ease);
 }
-/* ⚠️ height:auto is load-bearing, not tidiness. The <img> carries width/height
-   ATTRIBUTES (which are there so the browser reserves the right space and the
-   page doesn't jump as they load). Those attributes set a used height, and
-   they beat `aspect-ratio` unless height is explicitly released to auto —
-   without this line the 16/10 box renders as a 276x625 portrait sliver. */
 .shot img{
   display:block; width:100%; height:auto; aspect-ratio:16/10;
   object-fit:cover; object-position:top center;
@@ -523,7 +402,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   .shot a:hover span{ color:#fff; }
 }
 .shot a:focus-visible{ outline:3px solid #5E7DFF; outline-offset:3px; }
-
 .samples-cta{
   display:flex; align-items:center; gap:14px; flex-wrap:wrap;
   padding-top:26px; border-top:1px solid #2A2A33;
@@ -535,13 +413,10 @@ h1 em{ font-style:normal; color:var(--blue); }
   color:#fff; border-color:#4A4A55; margin-left:auto;
 }
 .samples-cta .btn.ghost:hover{ background:#fff; color:var(--ink); border-color:#fff; }
-
 @media (max-width:940px){
   .tiers.two{ grid-template-columns:1fr; }
   .samples-cta .btn.ghost{ margin-left:0; }
 }
-
-/* ══ account button in the bar ════════════════════════════════════════════ */
 .bar-account{
   display:inline-flex; align-items:center; gap:8px;
   min-height:44px; padding:0 14px;
@@ -559,8 +434,6 @@ h1 em{ font-style:normal; color:var(--blue); }
 .bar-account[data-signed="1"] .acc-pip{
   background:var(--live); box-shadow:0 0 0 3px rgba(27,158,90,.18);
 }
-
-/* ══ start a project ══════════════════════════════════════════════════════ */
 .start-grid{
   display:grid; grid-template-columns:1fr 1.1fr; gap:clamp(28px,5vw,64px);
   align-items:start;
@@ -580,11 +453,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   margin:24px 0 0; padding-top:18px; border-top:1px solid var(--rule);
   font-size:13.5px; line-height:1.6; color:var(--ink-3); max-width:44ch;
 }
-
-/* ── the brief form ───────────────────────────────────────────────────────
-   novalidate is on the form deliberately: native validation BLOCKS submit, so
-   our own handler never runs and a stale error message sits there looking
-   current. One authority for errors. `required` stays for semantics. */
 .brief{
   background:var(--card); border:1px solid var(--rule); border-radius:var(--r-md);
   padding:clamp(20px,3vw,30px);
@@ -623,12 +491,9 @@ h1 em{ font-style:normal; color:var(--blue); }
   margin:13px 0 0; font-size:12.5px; line-height:1.5; color:var(--ink-3); text-align:center;
 }
 .brief[data-busy="1"]{ opacity:.6; pointer-events:none; }
-
 @media (max-width:940px){
   .start-grid{ grid-template-columns:1fr; }
 }
-
-/* ══ account sheet ════════════════════════════════════════════════════════ */
 .sheet{
   width:min(460px, calc(100vw - 28px));
   border:1px solid var(--rule); border-radius:var(--r-md);
@@ -663,8 +528,6 @@ h1 em{ font-style:normal; color:var(--blue); }
   font:inherit; color:var(--blue); background:none; border:0; padding:0;
   cursor:pointer; text-decoration:underline; text-underline-offset:2px;
 }
-
-/* the enquiry list inside the sheet */
 .enq{ list-style:none; margin:16px 0 0; padding:0; display:grid; gap:10px; }
 .enq li{
   border:1px solid var(--rule); border-radius:var(--r-sm);

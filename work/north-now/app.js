@@ -1,19 +1,3 @@
-/* Northbound — LANE 3: Claude's pick.
-   =========================================================================
-   The idea: a café site built around the one question every visitor
-   actually has — "are you open, and can I still get food?" So the page
-   computes it live from the clock instead of printing a table of hours and
-   making you do the arithmetic. The menu then greys out whatever is not
-   being served at this minute.
-
-   That is the whole angle: not a decorative treatment, a functional one.
-   The hours ARE the design.
-
-   ⚠️ The static hours line is in the HTML and never hidden. If this script
-   fails, the visitor still sees "Mon-Fri 7:00-15:00 …" and the full menu —
-   the live layer only ever adds. A page that answers "are you open?" with
-   silence because a script broke would be worse than a plain table. */
-
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;

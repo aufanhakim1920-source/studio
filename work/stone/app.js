@@ -1,21 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   THE SOLID — hand-rolled 3D, no library.
-
-   Pipeline (Template 09 [[Hand Rolled 3D Wireframe]], extended from a stroked
-   wireframe to a FILLED solid):
-     1. geometry is a vertex list; faces are ordered vertex rings
-     2. rotation = two 2D rotations, yaw about Y then pitch about X
-     3. projection = one divide,  s = F / (F + z)
-     4. painter's algorithm — sort faces by centroid z, far first
-     5. per-face Lambert term takes the place of the wireframe's `heavy`
-        depth-fade multiplier: it is what stops the object reading as noise
-     6. ghost layers: the whole outline set drawn twice more, offset and faint
-
-   Nothing animates unless the visitor causes it. requestAnimationFrame is only
-   scheduled while something is genuinely in flight and stops dead on settle.
-   ═══════════════════════════════════════════════════════════════════════════ */
 'use strict';
-
 /* ── vector helpers ────────────────────────────────────────────────────── */
 const add   = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 const mul   = (a, s) => [a[0] * s, a[1] * s, a[2] * s];
@@ -24,11 +7,9 @@ const cross = (a, b) => [a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1]
 const len   = (a) => Math.hypot(a[0], a[1], a[2]);
 const norm  = (a) => { const l = len(a) || 1; return [a[0]/l, a[1]/l, a[2]/l]; };
 const clamp = (v, lo, hi) => v < lo ? lo : v > hi ? hi : v;
-
 /* ── 1 · geometry: a regular dodecahedron, then stood on a face ─────────── */
 function buildDodecahedron() {
   const P = (1 + Math.sqrt(5)) / 2, I = 1 / P;
-
   const verts = [];
   for (const a of [1, -1]) for (const b of [1, -1]) for (const c of [1, -1]) verts.push([a, b, c]);
   for (const a of [1, -1]) for (const b of [1, -1]) {
@@ -46,7 +27,6 @@ function buildDodecahedron() {
     dirs.push([a * P, b, 0]);
     dirs.push([a, 0, b * P]);
   }
-
   let faces = dirs.map((d) => {
     const n = norm(d);
     let max = -1e9;
@@ -59,7 +39,6 @@ function buildDodecahedron() {
     const c = ring.reduce(add, [0, 0, 0]).map((x) => x / ring.length);
     return { n, v: ring, c };
   });
-
   // Stand it on a face. NOTE the target is (0,-1,0), not (0,+1,0): canvas Y
   // grows DOWNWARD, so aligning the cap to +Y puts the "top" pole at the bottom
   // of the screen and silently inverts the whole shipped-up / unfinished-down
@@ -67,7 +46,6 @@ function buildDodecahedron() {
   const top = faces.reduce((a, b) => (b.n[1] > a.n[1] ? b : a));
   const R = alignRotation(top.n, [0, -1, 0]);
   faces = faces.map((f) => ({ n: R(f.n), v: f.v.map(R), c: R(f.c) }));
-
   // order: [north cap, upper ring by azimuth, lower ring by azimuth, south cap]
   const azi = (n) => { const a = Math.atan2(n[0], -n[2]); return a < 0 ? a + Math.PI * 2 : a; };
   const cap = (s) => faces.filter((f) => f.n[1] * s > 0.9);
@@ -75,7 +53,6 @@ function buildDodecahedron() {
                            .sort((a, b) => azi(a.n) - azi(b.n));
   return [...cap(-1), ...ring(-1), ...ring(1), ...cap(1)];
 }
-
 /* Rodrigues: the rotation taking unit a onto unit b, as a closure. */
 function alignRotation(a, b) {
   const v = cross(a, b), c = dot(a, b);
@@ -96,9 +73,7 @@ function alignRotation(a, b) {
     m[2][0]*p[0] + m[2][1]*p[1] + m[2][2]*p[2],
   ];
 }
-
 const FACES = buildDodecahedron();
-
 /* facet 00 = who · 01–05 upper ring, shipped · 06–10 lower ring, in build · 11 = contact */
 const TIER = ['cap', 'live', 'live', 'live', 'play', 'live',
               'build', 'build', 'build', 'build', 'build', 'cap'];
@@ -110,7 +85,6 @@ const BASE = {                     // one material, three states of finish
 };
 const SIGNAL = { h: 10, s: 100, l: 58 };            // vermilion — the one signal
 const LIGHT = norm([-0.42, -0.74, -0.52]);          // up, left, slightly toward us
-
 /* ── 2 · rotation + 3 · projection ─────────────────────────────────────── */
 function turn(p, yaw, pitch) {
   const cy = Math.cos(yaw), sy = Math.sin(yaw);
@@ -119,27 +93,22 @@ function turn(p, yaw, pitch) {
   const cp = Math.cos(pitch), sp = Math.sin(pitch);
   return [x, p[1] * cp - z * sp, p[1] * sp + z * cp];
 }
-
 /* the yaw/pitch that bring a face normal to face the camera (-Z). */
 function poseForNormal(n) {
   const r = Math.hypot(n[0], n[2]);
   return { yaw: Math.atan2(n[0], -n[2]), pitch: Math.atan2(-n[1], r) };
 }
-
 /* ═══════════════ the solid ═══════════════ */
 const canvas = document.getElementById('solid');
 const ctx = canvas.getContext('2d');
 const svg = document.getElementById('callouts');
 const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
 const PITCH_LIM = Math.PI / 2 + 0.42;
 const BIAS_Y = 0.30, BIAS_P = -0.16;   // never rest perfectly flat-on: keep it 3/4
-
 let yaw = 0, pitch = 0, vYaw = 0, vPitch = 0;
 let target = null, settledOn = -1, dragging = false, raf = null;
 let W = 0, H = 0, S = 1, F = 1;
 let hitFaces = [], frontFace = 1, shownFace = -1;
-
 function poseFor(i) {
   const p = poseForNormal(FACES[i].n);
   let ty = p.yaw + BIAS_Y;
@@ -155,7 +124,6 @@ function nearestFace() {
   }
   return best;
 }
-
 function sizeSolid() {
   W = canvas.clientWidth || 800;
   H = canvas.clientHeight || 620;
@@ -173,9 +141,7 @@ function sizeSolid() {
   svg.style.width = W + 'px';
   svg.style.height = H + 'px';
 }
-
 const project = (p, cx, cy) => { const s = F / (F + p[2]); return { x: p[0] * s + cx, y: p[1] * s + cy, s }; };
-
 function drawSolid() {
   // Never paint into a detached tree. A pending rAF can land after something has
   // swapped the canvas out (a screenshotter flattening canvases to <img>, a
@@ -187,7 +153,6 @@ function drawSolid() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, W, H);
   ctx.lineJoin = 'round';
-
   const fs = FACES.map((f, i) => {
     const n = turn(f.n, yaw, pitch);
     const c3 = turn(mul(f.c, S), yaw, pitch);
@@ -195,30 +160,25 @@ function drawSolid() {
     return { i, n, c3, pts: pts3.map((p) => project(p, cx, cy)), z: c3[2], facing: -n[2] };
   });
   fs.sort((a, b) => b.z - a.z);                        // 4 · painter's algorithm
-
   const path = (f, oy) => {
     ctx.beginPath();
     f.pts.forEach((p, k) => (k ? ctx.lineTo(p.x, p.y + oy) : ctx.moveTo(p.x, p.y + oy)));
     ctx.closePath();
   };
-
   /* 6 · ghost layers — the whole outline set twice more, offset and faint */
   for (const g of [{ o: 46, a: 0.05 }, { o: 22, a: 0.10 }]) {
     ctx.lineWidth = 1;
     ctx.strokeStyle = `rgba(233,192,112,${g.a})`;
     for (const f of fs) { path(f, g.o); ctx.stroke(); }
   }
-
   const front = fs.reduce((a, b) => (b.facing > a.facing ? b : a));
   frontFace = front.i;
   // sync BEFORE the callouts: they measure the label's box, and a label whose
   // text is one frame stale is a different width, so the run starts in mid-air.
   if (shownFace !== frontFace) { shownFace = frontFace; syncDossier(frontFace); }
-
   hitFaces = [];
   for (const f of fs) {
     const isFront = f.i === front.i;
-
     if (f.facing <= 0.02) {                            // 5 · far side: structure only
       path(f, 0);
       ctx.lineWidth = 1;
@@ -226,33 +186,27 @@ function drawSolid() {
       ctx.stroke();
       continue;
     }
-
     const lam = Math.max(0, dot(f.n, LIGHT));
     const b = isFront ? SIGNAL : BASE[TIER[f.i]];
     const light = clamp(b.l * (0.38 + 0.90 * lam), 5, 92);
     const sat = b.s * (0.70 + 0.30 * f.facing);
-
     path(f, 0);
     ctx.fillStyle = `hsla(${b.h}, ${sat}%, ${light}%, ${0.90 + 0.08 * f.facing})`;
     ctx.fill();
-
     // rim: bright on the lit side, and the front facet gets the signal
     ctx.lineWidth = isFront ? 2 : 1;
     ctx.strokeStyle = isFront
       ? 'rgba(255,120,86,.95)'
       : `hsla(${b.h}, ${Math.min(90, sat + 14)}%, ${clamp(light + 22, 12, 96)}%, ${0.35 + 0.5 * f.facing})`;
     ctx.stroke();
-
     // 0.32, not 0.18: below that the facet is oblique enough that its in-plane
     // basis foreshortens the numeral into an unreadable smear lying on its side.
     if (f.facing > 0.32) engrave(f, light, cx, cy);
     hitFaces.push(f);
   }
   hitFaces.reverse();                                  // nearest first for hit-testing
-
   drawCallouts(front, cx, cy);
 }
-
 /* the facet number, pasted INTO the plane of the face.
    the affine comes from projecting the face's own in-plane basis, so the
    numerals foreshorten with the facet instead of floating above it. */
@@ -268,11 +222,9 @@ function engrave(f, light, cx, cy) {
   const C = project(add(f.c3, mul(e2, K)), cx, cy);
   const ux = (B.x - A.x) / K, uy = (B.y - A.y) / K;
   const vx = (C.x - A.x) / K, vy = (C.y - A.y) / K;
-
   const label = String(f.i).padStart(2, '0');
   const ink = light > 44 ? 'rgba(12,30,20,' : 'rgba(239,233,217,';
   const alpha = clamp((f.facing - 0.30) * 2.6, 0, 1);
-
   ctx.save();
   ctx.setTransform(dpr * ux, dpr * uy, dpr * vx, dpr * vy, dpr * A.x, dpr * A.y);
   ctx.textAlign = 'center';
@@ -285,7 +237,6 @@ function engrave(f, light, cx, cy) {
   ctx.restore();
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
-
 /* ── HUD callouts: horizontal run out of the label, THEN the diagonal ──── */
 const el = (id) => document.getElementById(id);
 function drawCallouts(front, cx, cy) {
@@ -317,25 +268,21 @@ window.__callout = () => {
            svg: r('callouts'), hd: r('dossier-hd'), tag: r('tag-b'),
            a: el('co-a').getAttribute('d'), b: el('co-b').getAttribute('d') };
 };
-
 /* ── DOM sync ──────────────────────────────────────────────────────────── */
 function syncDossier(i) {
   // the facet counter replaced a twelve-row text index; it is the only
   // orientation aid left, so it must track every front-face change
   const fc = document.getElementById("fcNow");
   if (fc) fc.textContent = String(i).padStart(2, "0");
-
   document.querySelectorAll('.dos').forEach((d) => d.classList.toggle('is-on', +d.dataset.face === i));
   document.querySelectorAll('.idx').forEach((b) => b.classList.toggle('is-on', +b.dataset.face === i));
   el('tag-num').textContent = String(i).padStart(2, '0');
   el('tag-sub').innerHTML = i === 0 ? 'north pole' : i === 11 ? 'south pole'
                             : i <= 5 ? 'upper ring &middot; shipped' : 'lower ring &middot; in build';
 }
-
 /* ── the loop: only alive while something is genuinely moving ───────────── */
 function frame() { if (!raf) raf = requestAnimationFrame(tick); }
 function tick() { raf = null; const alive = advance(); drawSolid(); if (alive) frame(); }
-
 function advance() {
   if (dragging) return true;
   if (target) {
@@ -358,18 +305,15 @@ function advance() {
   target = poseFor(n);
   return true;
 }
-
 function selectFace(i, animate = true) {
   settledOn = -1; vYaw = vPitch = 0;
   const p = poseFor(i);
   if (animate) { target = p; frame(); }
   else { yaw = p.yaw; pitch = p.pitch; target = null; settledOn = i; drawSolid(); }
 }
-
 /* ── pointer: drag to turn ─────────────────────────────────────────────── */
 let px = 0, py = 0, travelled = 0;
 const TURN = 0.0088;
-
 canvas.addEventListener('pointerdown', (e) => {
   dragging = true; settledOn = -1; target = null; vYaw = vPitch = 0; travelled = 0;
   px = e.clientX; py = e.clientY;
@@ -394,7 +338,6 @@ function endDrag(e) {
 }
 canvas.addEventListener('pointerup', endDrag);
 canvas.addEventListener('pointercancel', endDrag);
-
 function pick(e) {
   const b = canvas.getBoundingClientRect();
   const x = e.clientX - b.left, y = e.clientY - b.top;
@@ -408,7 +351,6 @@ function inPoly(x, y, pts) {
   }
   return hit;
 }
-
 /* ── keyboard ──────────────────────────────────────────────────────────── */
 canvas.addEventListener('keydown', (e) => {
   const c = shownFace < 0 ? 1 : shownFace;
@@ -432,7 +374,6 @@ el('to-contact').addEventListener('click', () => {
   document.getElementById('stage').scrollIntoView({ behavior: 'smooth', block: 'center' });
   selectFace(11);
 });
-
 /* ═══════════════ the drum — nine photographs on a cylinder ═══════════════ */
 const drum = document.getElementById('drum');
 const dctx = drum.getContext('2d');
@@ -452,14 +393,12 @@ const PHOTOS = [
 const NP = PHOTOS.length, STEP = (Math.PI * 2) / NP, STRIPS = 46;
 let spin = 0, vSpin = 0, dTarget = null, dDrag = false, dRaf = null, dSettled = -1;
 let DW = 0, DH = 0, PW = 0, PH = 0, RAD = 0, FD = 1, shownPanel = -1;
-
 PHOTOS.forEach((p) => {
   const img = new Image();
   img.decoding = 'sync';
   img.onload = () => { p.img = img; drawDrum(); };
   img.src = p.src;
 });
-
 function sizeDrum() {
   DW = drum.clientWidth || 1200;
   DH = drum.clientHeight || 440;
@@ -470,15 +409,12 @@ function sizeDrum() {
   RAD = PW / (2 * Math.sin(Math.PI / NP) * 0.88);
   FD = RAD * 2.75;
 }
-
 function panelIndex() { return ((Math.round(-spin / STEP) % NP) + NP) % NP; }
-
 function drawDrum() {
   if (!drum.isConnected) return;
   const cx = DW / 2, cy = DH / 2;
   dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   dctx.clearRect(0, 0, DW, DH);
-
   const front = panelIndex();
   const order = [];
   for (let i = 0; i < NP; i++) {
@@ -488,22 +424,18 @@ function drawDrum() {
     order.push({ i, a, c, z: -RAD * c });
   }
   order.sort((p, q) => q.z - p.z);                       // painter's algorithm again
-
   for (const p of order) drawPanel(p, cx, cy, p.i === front);
-
   if (shownPanel !== front) {
     shownPanel = front;
     document.querySelectorAll('.cap').forEach((f) => f.classList.toggle('is-on', +f.dataset.panel === front));
   }
 }
-
 function drawPanel(p, cx, cy, isFront) {
   const ph = PHOTOS[p.i];
   const s = Math.sin(p.a), c = p.c;
   const centre = [RAD * s, 0, -RAD * c];
   const t = [c, 0, s];
   const half = PW / 2;
-
   const endScale = (u) => FD / (FD + centre[2] + t[2] * u);
   const endX = (u, sc) => (centre[0] + t[0] * u) * sc + cx;
   const sL = endScale(-half), sR = endScale(half);
@@ -513,7 +445,6 @@ function drawPanel(p, cx, cy, isFront) {
     [xR, cy + PH * sR / 2], [xL, cy + PH * sL / 2],
   ];
   const frontScale = FD / (FD - RAD);
-
   if (ph.img) {
     const iw = ph.img.naturalWidth, ih = ph.img.naturalHeight;
     const tr = ph.trim || [0, 0];
@@ -523,7 +454,6 @@ function drawPanel(p, cx, cy, isFront) {
     if (iw / avail > 1 / want) { sh = avail; sw = sh / want; } else { sw = iw; sh = sw * want; }
     const sx = (iw - sw) / 2;
     const sy = y0 + clamp(ph.focus * avail - sh / 2, 0, avail - sh);
-
     dctx.save();
     dctx.beginPath();
     quad.forEach((q, k) => (k ? dctx.lineTo(q[0], q[1]) : dctx.moveTo(q[0], q[1])));
@@ -552,14 +482,12 @@ function drawPanel(p, cx, cy, isFront) {
     dctx.globalCompositeOperation = 'source-over';
     dctx.restore();
   }
-
   dctx.beginPath();
   quad.forEach((q, k) => (k ? dctx.lineTo(q[0], q[1]) : dctx.moveTo(q[0], q[1])));
   dctx.closePath();
   dctx.lineWidth = isFront ? 2 : 1;
   dctx.strokeStyle = isFront ? 'rgba(255,75,43,.95)' : `rgba(196,146,60,${0.16 + 0.34 * c})`;
   dctx.stroke();
-
   if (isFront) {
     dctx.font = '500 11px "JetBrains Mono", monospace';
     dctx.fillStyle = 'rgba(233,192,112,.9)';
@@ -567,7 +495,6 @@ function drawPanel(p, cx, cy, isFront) {
     dctx.fillText(`${String(p.i + 1).padStart(2, '0')} / ${NP}`, quad[3][0] + 2, quad[3][1] + 18);
   }
 }
-
 function dFrame() { if (!dRaf) dRaf = requestAnimationFrame(dTick); }
 function dTick() { dRaf = null; const alive = dAdvance(); drawDrum(); if (alive) dFrame(); }
 function dAdvance() {
@@ -591,7 +518,6 @@ function goPanel(i) {
   dTarget = raw + Math.round((spin - raw) / (Math.PI * 2)) * Math.PI * 2;
   dFrame();
 }
-
 let dpx = 0;
 drum.addEventListener('pointerdown', (e) => {
   dDrag = true; dSettled = -1; dTarget = null; vSpin = 0; dpx = e.clientX;
@@ -613,18 +539,15 @@ drum.addEventListener('keydown', (e) => {
 });
 el('drum-next').addEventListener('click', () => goPanel(panelIndex() + 1));
 el('drum-prev').addEventListener('click', () => goPanel(panelIndex() - 1));
-
 /* ═══════════════ boot ═══════════════ */
 function layout() { sizeSolid(); sizeDrum(); drawSolid(); drawDrum(); }
 let rz;
 window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(layout, 140); });
-
 sizeSolid(); sizeDrum();
 selectFace(1, false);
 syncDossier(1); shownFace = 1;
 drawDrum();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { drawSolid(); drawDrum(); });
-
 /* headless verification hooks — no behaviour of its own */
 window.__solid = {
   get yaw() { return yaw; },

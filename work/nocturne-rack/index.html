@@ -11,9 +11,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="grain" aria-hidden="true"></div>
-
 <header class="band">
   <div class="band-group">
     <span class="mark">Nocturne</span>
@@ -24,12 +22,9 @@
     <span class="clock" id="clock" aria-label="Station clock">&mdash;&mdash;:&mdash;&mdash;:&mdash;&mdash;</span>
   </div>
 </header>
-
 <main class="stage">
-
   <p class="lede">Three ways to spend nine hours and thirty-five minutes lying down,
     or not. The price is not printed on the ticket &mdash; pick one and read the rack.</p>
-
   <section class="rackwrap" aria-label="Fare board">
     <div class="rack">
       <div class="rack-meta">
@@ -40,9 +35,7 @@
       <p class="sr-only" id="readout" role="status" aria-live="polite"></p>
     </div>
   </section>
-
   <section class="fares" id="fares" aria-label="Choose a fare">
-
     <button class="sheet" type="button" data-fare="seat" aria-pressed="false">
       <span class="sheet-tag">Fare A</span>
       <span class="sheet-name">Seat</span>
@@ -54,7 +47,6 @@
       </ul>
       <span class="sheet-cta" data-idle="Select to price" data-live="Priced above, on the rack">Select to price</span>
     </button>
-
     <button class="sheet" type="button" data-fare="berth" aria-pressed="true">
       <span class="sheet-tag">Fare B &middot; Most booked</span>
       <span class="sheet-name">Berth</span>
@@ -66,7 +58,6 @@
       </ul>
       <span class="sheet-cta" data-idle="Select to price" data-live="Priced above, on the rack">Priced above, on the rack</span>
     </button>
-
     <button class="sheet" type="button" data-fare="cabin" aria-pressed="false">
       <span class="sheet-tag">Fare C</span>
       <span class="sheet-name">Cabin</span>
@@ -78,15 +69,12 @@
       </ul>
       <span class="sheet-cta" data-idle="Select to price" data-live="Priced above, on the rack">Select to price</span>
     </button>
-
   </section>
 </main>
-
 <footer class="band">
   <span class="micro">963 km &middot; 9h 35m &middot; one stop</span>
   <span class="micro">Svc NOCT&mdash;01 &middot; Nightly, ex Sun</span>
 </footer>
-
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,28 +1,3 @@
-/* AUDIT DESK — dash-c, "claude's pick"
-   ---------------------------------------------------------------------------
-   The angle: dash-a answers "what does the data say" from a light, conventional
-   analyst tool. dash-b answers it from a dark showcase built around an invented
-   object. Neither, per the AI Product Patterns note, answers "should I trust
-   this number" — almost nothing in the reference library does. So every figure
-   here opens to the rows behind it: raw count, each cleaning rule that removed
-   rows, and an assertion that the parts sum to the whole. That IS the object;
-   dashboards are the one build type the object rule explicitly does not force
-   a metaphor onto (Invent a New Object Every Build's own carve-out).
-
-   Ground: warm ink #14110F — a fourth-plus ground, not cream (dash-chroma,
-   deleted), not brushed black (dash-metal, deleted), not cold paper
-   (dash-print, deleted), not dash-board's blue-slate #12161C. One signal hue:
-   ochre #E0A030, used for "this is real / this is provable" — never for value,
-   only ever green/red for direction of change, same discipline as build 55.
-
-   Type does two jobs on purpose. The dashboard chrome (labels, KPI values,
-   table rows) runs sans + mono at the "work" size band (13–14px, §41 of What
-   the References Have in Common) — this is a screen you SCAN. The moment you
-   open the drawer and ask "why", the register switches to a serif at the
-   "read" band (15–16px) — this is prose you READ once, closely. The typeface
-   change is not decoration; it is the same scan/read split the library
-   documents, made visible as the interaction that reveals it. */
-
 :root {
   --bg:      #14110F;
   --bg-2:    #191510;
@@ -36,7 +11,7 @@
   --dim:     #756757;
   --dim-2:   #55493C;
 
-  --sig:     #E0A030;   /* the one signal hue: "this is real" */
+  --sig:     #E0A030;   
   --sig-dim: rgba(224, 160, 48, .14);
   --up:      #4FAE72;
   --down:    #D9694F;
@@ -90,10 +65,6 @@ body {
 
 :is(a, button):focus-visible { outline: 2px solid var(--sig); outline-offset: 2px; }
 
-/* C1 — the drawer's other four trigger types are not <button>s, so they need
-   their own focus ring. Ochre, same as the chrome. Where the element sits
-   inside an overflow:hidden parent the ring is drawn INSIDE the box
-   (offset -2px) or it would be clipped away and effectively invisible. */
 .rowbar:focus-visible,
 .finding__head:focus-visible,
 .lineage-row:focus-visible {
@@ -101,11 +72,8 @@ body {
   outline-offset: -2px;
 }
 .lineage-row:focus-visible { outline-offset: 0; background: var(--panel-2); }
-/* the segments ARE ochre (kept) and red-hatched (cut), so an ochre ring
-   disappears into the 96.9% "Kept" block — cream reads against both. */
-.lineage-seg:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 
-/* ── topbar ─────────────────────────────────────────────────────────────── */
+.lineage-seg:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 
 .topbar {
   display: flex; align-items: center; gap: 20px;
@@ -148,8 +116,6 @@ body {
 .asof { display: flex; align-items: center; gap: 8px; font: 500 11.5px/1 var(--num); color: var(--mut); letter-spacing: .03em; }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--up); box-shadow: 0 0 6px var(--up); flex: none; }
 
-/* ── layout ─────────────────────────────────────────────────────────────── */
-
 main {
   max-width: 1240px; margin: 0 auto;
   padding: 22px; display: flex; flex-direction: column; gap: var(--gap);
@@ -171,8 +137,6 @@ main {
 }
 
 .grid2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--gap); }
-
-/* ── KPIs — three, each with a comparison, each provable ──────────────────── */
 
 .kpis { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap); }
 
@@ -199,8 +163,6 @@ main {
 .kpi__spark path.fill { fill: var(--sig-dim); }
 .kpi__spark path.line { fill: none; stroke: var(--sig); stroke-width: 1.6; }
 
-/* "Prove it" is now the affordance without the words: a chevron disc. The
-   phrase survives as the button's accessible name. */
 .proof {
   font: 600 15px/1 var(--num);
   color: var(--sig); background: transparent; border: 1px solid rgba(224,160,48,.35);
@@ -211,16 +173,13 @@ main {
 .proof:hover { background: var(--sig-dim); }
 .kpi .proof { align-self: flex-start; }
 
-/* ── revenue chart ──────────────────────────────────────────────────────── */
-
 .chartwrap { position: relative; }
 #revChart { width: 100%; height: 220px; display: block; }
 .bar { cursor: pointer; }
 .bar rect.fill { transition: opacity var(--t-fast) var(--ease); }
 .bar:hover rect.fill { opacity: 1 !important; }
 .bar rect.hatch { pointer-events: none; }
-/* focus ring for the SVG bars: a real rect, because `outline` on an SVG <g>
-   is not painted. Cream rather than ochre so it reads against an ochre bar. */
+
 .bar rect.focusring { fill: none; stroke: none; pointer-events: none; }
 .bar:focus { outline: none; }
 .bar:focus-visible { outline: none; }
@@ -233,7 +192,6 @@ main {
   letter-spacing: -.01em; color: var(--dim); text-transform: uppercase;
 }
 
-/* legend replaces the 38-word note under the chart */
 .legend { margin-top: 10px; display: flex; gap: 14px; }
 .legend__i {
   display: inline-flex; align-items: center; gap: 7px;
@@ -247,14 +205,11 @@ main {
   background-image: repeating-linear-gradient(45deg, transparent 0 2px, #6b6055 2px 3.4px);
 }
 
-/* the unit word printed once, as a column header, instead of on every row */
 .unit {
   margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--line);
   font: 600 11px/1 var(--num); letter-spacing: .1em; text-transform: uppercase;
   color: var(--dim-2);
 }
-
-/* ── row-bar lists — the bar sits BEHIND the label, not beside it ─────────── */
 
 .rowbars { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .rowbar {
@@ -287,8 +242,6 @@ main {
 .rowbar--other .rowbar__row { color: var(--dim); }
 .rowbar--other { border: 1px dashed var(--line-2); background: transparent; }
 
-/* ── findings ───────────────────────────────────────────────────────────── */
-
 .findings { display: flex; flex-direction: column; gap: 10px; }
 .finding {
   border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
@@ -306,7 +259,6 @@ main {
 .finding__conf.high   { color: var(--sig); border: 1px solid rgba(224,160,48,.4); }
 .finding__conf.medium { color: var(--dim); border: 1px solid var(--line-2); }
 
-/* the stat and the mark — what the collapsed card shows instead of a sentence */
 .finding__head { align-items: center; }
 .finding__stat {
   flex: none; width: 4.4em;
@@ -336,8 +288,6 @@ main {
 .finding__toggle { flex: none; font: 600 11px var(--num); color: var(--dim); align-self: center; transition: transform var(--t-fast) var(--ease); }
 .finding.is-open .finding__toggle { transform: rotate(90deg); color: var(--sig); }
 
-/* The read-mode surface. Its contents are built on first open, so the board
-   itself carries none of this text at rest. */
 .finding__why {
   max-height: 0; overflow: hidden; transition: max-height var(--t-med) var(--ease);
   border-top: 1px solid var(--line);
@@ -355,8 +305,6 @@ main {
   margin-top: 10px; font: 600 11px var(--num); letter-spacing: .04em; text-transform: uppercase; color: var(--dim);
 }
 .finding__why-in .basis--act { color: var(--sig); }
-
-/* ── lineage ────────────────────────────────────────────────────────────── */
 
 .lineage-bar {
   display: flex; height: 30px; border-radius: var(--r-sm); overflow: hidden;
@@ -387,15 +335,11 @@ main {
 }
 .assert .ok { color: var(--up); }
 
-/* ── footer ─────────────────────────────────────────────────────────────── */
-
 .foot {
   max-width: 1240px; margin: 6px auto 30px; padding: 0 22px;
   display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
   font: 500 11.5px var(--num); color: var(--dim); letter-spacing: .02em;
 }
-
-/* ── drawer — the mechanism ─────────────────────────────────────────────── */
 
 .drawer { position: fixed; inset: 0; z-index: 60; visibility: hidden; }
 .drawer.is-open { visibility: visible; }
@@ -448,17 +392,12 @@ main {
 }
 .drawer__body .sum .ok { color: var(--up); }
 
-/* ── responsive ─────────────────────────────────────────────────────────── */
-
 @media (max-width: 900px) {
   .kpis { grid-template-columns: minmax(0,1fr); }
   .grid2 { grid-template-columns: minmax(0,1fr); }
   .kpi__value { font-size: 30px; }
 }
 
-/* Narrow: the mark drops to its own full-width row under the stat. Squeezed
-   into the same line, a 60px track can't show a 2.7% bar at all — which is
-   exactly the information the card exists to carry. */
 @media (max-width: 760px) {
   .finding__head { flex-wrap: wrap; row-gap: 10px; }
   .finding__stat { width: auto; }

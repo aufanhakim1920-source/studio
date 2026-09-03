@@ -11,21 +11,15 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="dotgrid" aria-hidden="true"></div>
-
 <a class="skip" href="#stalls">Skip to the stalls</a>
-
 <nav class="pillnav" aria-label="Sections">
   <a class="is-active" href="#top">Tonight</a>
   <a href="#stalls">Stalls</a>
   <a href="#programme">Programme</a>
   <a href="#getting-there">Getting there</a>
 </nav>
-
 <main class="bento" id="top">
-
-  <!-- ───────── hero ───────── -->
   <section class="card hero" style="grid-column:span 8">
     <div>
       <p class="label">
@@ -47,8 +41,6 @@
       <a class="pillbtn" href="#programme">Programme →</a>
     </div>
   </section>
-
-  <!-- ───────── side stats ───────── -->
   <div class="sidestats" style="grid-column:span 4">
     <article class="card card--mango">
       <p class="label">Traders confirmed</p>
@@ -62,8 +54,6 @@
       <p class="card__note">Last orders 22:30, lights out at 23:00. Entry is free before 18:00, then $5 on the gate.</p>
     </article>
   </div>
-
-  <!-- ───────── the lantern ───────── -->
   <section class="card lanterncard" style="grid-column:span 7">
     <p class="label">
       <span>The lantern — drag it</span>
@@ -82,8 +72,6 @@
       clock below — indigo at five, ember by nine.
     </p>
   </section>
-
-  <!-- ───────── what's cooking (donut) ───────── -->
   <section class="card" style="grid-column:span 5">
     <p class="label">What is cooking</p>
     <div class="donutwrap">
@@ -93,8 +81,6 @@
     <div class="hashbox" aria-hidden="true"></div>
     <p class="card__note">Two of the dessert carts only turn up if it is not raining. It is Melbourne, so plan accordingly.</p>
   </section>
-
-  <!-- ───────── crowd ───────── -->
   <section class="card card--pandan" style="grid-column:span 5">
     <p class="label">
       <span>How busy, by hour</span>
@@ -105,16 +91,12 @@
     <div class="chart" id="chart"></div>
     <ul class="chart__axis" id="chartAxis"></ul>
   </section>
-
-  <!-- ───────── right now ───────── -->
   <section class="card" style="grid-column:span 7">
     <p class="label"><span>Right now on the square</span><span class="mono" id="nowClock">17:00</span></p>
     <h2 class="now__title" id="nowTitle">Gates open</h2>
     <p class="now__sub" id="nowSub">Gamelan warm-up by the fountain. Nothing has sold out yet — this is the good hour.</p>
     <ul class="nowlist" id="nowList"></ul>
   </section>
-
-  <!-- ───────── programme ───────── -->
   <section class="card schedcard" style="grid-column:span 12" id="programme">
     <p class="label"><span>Programme — one evening</span><span class="mono">17:00 → 23:00</span></p>
     <div class="sched" id="sched">
@@ -123,16 +105,12 @@
     <span class="curl-target" aria-hidden="true"></span>
     <span class="curl" aria-hidden="true"></span>
   </section>
-
-  <!-- ───────── stalls ───────── -->
   <section class="card" style="grid-column:span 12" id="stalls">
     <p class="label"><span>The stalls</span><span class="mono" id="stallCount">18 SHOWN</span></p>
     <h2 class="sec__h2">Eighteen kitchens, one square</h2>
     <div class="filters" id="filters" role="tablist" aria-label="Filter stalls by kitchen"></div>
     <div class="stallgrid" id="stallgrid"></div>
   </section>
-
-  <!-- ───────── getting there ───────── -->
   <section class="card" style="grid-column:span 7" id="getting-there">
     <p class="label">Getting there</p>
     <h2 class="sec__h2">Argyle Square, Carlton</h2>
@@ -144,23 +122,17 @@
       <div><dt>Weather</dt><dd>Runs rain or shine; the marquee row is along the north edge</dd></div>
     </dl>
   </section>
-
   <section class="card card--mango" style="grid-column:span 5">
     <p class="label">Bring</p>
     <ul class="checks" id="checks"></ul>
     <p class="card__note card__note--tight">Tick them off. Nothing is saved anywhere — this is a poster, not an app.</p>
   </section>
-
-  <!-- ───────── footer pill ───────── -->
   <footer class="card foot" style="grid-column:span 12">
     <span class="foot__mark">PASAR&nbsp;MALAM CARLTON</span>
     <span class="mono">SAT 30 AUG 2026 · 17:00–23:00 · ARGYLE SQUARE</span>
     <a class="pillbtn" href="mailto:aufanhakim1920@gmail.com">Trade with us</a>
   </footer>
-
 </main>
-
-<!-- ───────── the clock: it drives everything above ───────── -->
 <div class="clockbar">
   <div class="clockbar__in">
     <label class="clockbar__lab" for="scrub">Run the night</label>
@@ -172,7 +144,6 @@
     <output class="clockbar__out" id="scrubOut" for="scrub">17:00</output>
   </div>
 </div>
-
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,10 +1,3 @@
-/* AUDIT DESK — dash-c
-   One mechanism, five triggers: every "prove it" control, every lineage
-   segment, every flagged product row and every "other markets" row opens the
-   SAME drawer component, built from the SAME retail.json the KPIs are
-   computed from. Nothing here is invented copy — every number in the drawer
-   traces to a field in data.json. */
-
 const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
 function monthLabel(m) {           // "2011-03" -> "MAR 2011"

@@ -1,21 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════
-   PASAR MALAM CARLTON
-
-   One system-level property runs the whole page: the CLOCK.
-   Dragging the scrubber at the bottom moves the current-time line in the
-   programme, highlights the live event, switches the busy-hour bar, flips
-   every stall between OPEN / OPENS AT / SOLD OUT, rewrites the "right now"
-   card, and warms the lantern's wire from indigo to ember.
-
-   That is the remix rule from the catalogue: keep one reference's structure
-   (ref 24's bento), take another's material (ref 25's schedule devices),
-   then change ONE system-level property so it reads as a single idea.
-
-   All motion is visitor-caused. The lantern turns only while you drag it.
-   ═══════════════════════════════════════════════════════════════ */
-
 const OPEN = 1020, CLOSE = 1380;          // 17:00 → 23:00, in minutes
-
 const KITCHENS = {
   Indonesian: "#FF7A3D",
   Malaysian:  "#C4B2E8",
@@ -23,7 +6,6 @@ const KITCHENS = {
   Drinks:     "#7C8CE0",
   Snacks:     "#A9DCB4",
 };
-
 const STALLS = [
   { n: "Warung Ibu Sri",       d: "Nasi goreng kambing, fried egg on top", p: 14, k: "Indonesian", from: 1020, out: null },
   { n: "Sate Cak Man",         d: "Sate ayam madura, ten sticks",          p: 16, k: "Indonesian", from: 1020, out: 1290 },
@@ -44,7 +26,6 @@ const STALLS = [
   { n: "Es Campur Ratu",       d: "Shaved ice, eight toppings, chaos",     p:  8, k: "Dessert",    from: 1140, out: null },
   { n: "Sambal Society",       d: "Six sambals. Bring your own bread",     p: 11, k: "Snacks",     from: 1020, out: null },
 ];
-
 const PROGRAMME = [
   { s: 1020, e: 1065, t: "Gamelan warm-up",        w: "By the fountain. The gong is louder than you expect." },
   { s: 1080, e: 1120, t: "Sambal Society tasting", w: "Six sambals, one spoon each, a queue for water afterwards." },
@@ -53,12 +34,10 @@ const PROGRAMME = [
   { s: 1275, e: 1335, t: "Acoustic — Senja Trio",  w: "Quieter set while the kitchens catch up on orders." },
   { s: 1350, e: 1380, t: "Last orders, lights out", w: "Kitchens close at 22:30. The square is empty by eleven." },
 ];
-
 const CROWD = [
   { h: 17, v: 22 }, { h: 18, v: 48 }, { h: 19, v: 86 },
   { h: 20, v: 100 }, { h: 21, v: 74 }, { h: 22, v: 40 },
 ];
-
 const BRING = [
   "Cash — six stalls only take it",
   "A jumper. It is August in Melbourne",
@@ -66,23 +45,18 @@ const BRING = [
   "Someone who handles chilli better than you",
   "Patience, specifically for the sate queue",
 ];
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 document.documentElement.classList.replace("no-js", "js");
-
 const hhmm = (m) => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
 let now = OPEN;
-
 /* ═══════════════ 1 · THE LANTERN ═══════════════
    Hand-rolled 3D: an edge list, three rotations, one divide for the
    projection, painter's-algorithm depth sort, stroked on 2D canvas.
    No library. Pipeline per the Hand Rolled 3D Wireframe template — the
    only change is that yaw/pitch come from a drag rather than from time. */
-
 const R = 104, SQUASH = 0.74, FOCAL = 780;
 const edges = [];
 const push = (p1, p2, type) => edges.push({ p1, p2, type: type || "normal" });
@@ -92,7 +66,6 @@ const surf = (phi, a) => ({
   y: -R * SQUASH * Math.sin(phi),
   z: R * Math.cos(phi) * Math.sin(a),
 });
-
 (function buildLantern() {
   const RIBS = 18, SEG = 16;
   for (let i = 0; i < RIBS; i++) {
@@ -109,7 +82,6 @@ const surf = (phi, a) => ({
       push(surf(phi, a1), surf(phi, a2));
     }
   });
-
   const yTop = -R * SQUASH * Math.sin(PHI), yBot = -yTop;
   const rCap = R * Math.cos(PHI);
   const ring = (radius, y, n, type) => {
@@ -134,18 +106,15 @@ const surf = (phi, a) => ({
          { x: r0 * 1.9 * Math.cos(a), y: yBot + 46, z: r0 * 1.9 * Math.sin(a) });
   }
 })();
-
 const ANCHORS = {
   hud00: surf(0.3, Math.PI * 0.92),                                  // silk shade
   hud01: { x: R * Math.cos(PHI) * 0.9, y: R * SQUASH * Math.sin(PHI), z: 0 },   // lower ring
   hud02: { x: 0, y: R * SQUASH * Math.sin(PHI) + 42, z: 0 },         // tassel tip
   hud03: { x: 0, y: -R * SQUASH * Math.sin(PHI) - 60, z: 0 },        // cord, mid-run
 };
-
 const cv = $("#lantern"), ctx = cv.getContext("2d");
 const stage = $("#lanternStage"), svg = $("#lanternSvg");
 let yaw = -0.5, pitch = -0.12, restPitch = -0.12, dirty = true, dragging = false;
-
 function rot(p) {
   let { x, y, z } = p;
   let c = Math.cos(yaw), s = Math.sin(yaw);
@@ -158,7 +127,6 @@ function project(p) {
   const scale = FOCAL / (FOCAL + p.z);
   return { x: p.x * scale + cv.clientWidth / 2, y: p.y * scale + cv.clientHeight / 2 + 8, z: p.z };
 }
-
 /* the wire warms as the evening does — the clock reaching into the hero object */
 const DUSK = [
   { m: 1020, c: [124, 140, 224] },   // 17:00 indigo
@@ -176,7 +144,6 @@ function wireColour() {
   }
   return DUSK[DUSK.length - 1].c;
 }
-
 function sizeCanvas() {
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const w = stage.clientWidth, h = stage.clientHeight;
@@ -185,17 +152,14 @@ function sizeCanvas() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   dirty = true;
 }
-
 function draw() {
   const w = cv.clientWidth, h = cv.clientHeight;
   ctx.clearRect(0, 0, w, h);
   const [cr, cg, cb] = wireColour();
-
   const tf = edges.map((e) => {
     const p1 = rot(e.p1), p2 = rot(e.p2);
     return { a: project(p1), b: project(p2), avgZ: (p1.z + p2.z) / 2, type: e.type };
   }).sort((m, n) => n.avgZ - m.avgZ);              // painter's algorithm
-
   // ghost layers: the same edge list drawn three times, offset and faded.
   // Best effort-to-payoff ratio in the reference — two extra loops, and the
   // object reads as a holographic stack instead of a flat drawing.
@@ -219,7 +183,6 @@ function draw() {
   }
   drawCallouts(`rgb(${cr},${cg},${cb})`);
 }
-
 /* HUD callouts: a horizontal run out of the label, then one diagonal to the
    3D anchor. The horizontal run is what makes it read as annotation rather
    than a piece of string tied to the model. */
@@ -243,7 +206,6 @@ function drawCallouts(colour) {
   }
   svg.innerHTML = out;
 }
-
 function loop() {
   if (!dragging) {
     const d = restPitch - pitch;
@@ -252,7 +214,6 @@ function loop() {
   if (dirty) { draw(); dirty = false; }
   requestAnimationFrame(loop);
 }
-
 (function initDrag() {
   let px = 0, py = 0;
   stage.addEventListener("pointerdown", (e) => {
@@ -276,7 +237,6 @@ function loop() {
   stage.setAttribute("role", "img");
   stage.setAttribute("aria-label", "A wireframe schematic of a paper lantern. Drag it, or use the arrow keys, to turn it.");
 })();
-
 /* ═══════════════ 2 · STALLS ═══════════════ */
 function stallState(s) {
   if (now < s.from) return { cls: "s-soon", txt: `OPENS ${hhmm(s.from)}` };
@@ -295,14 +255,12 @@ function renderStalls() {
         <span class="stall__state"></span>
       </div>
     </article>`).join("");
-
   const kinds = ["All", ...Object.keys(KITCHENS)];
   $("#filters").innerHTML = kinds.map((k, i) => {
     const n = k === "All" ? STALLS.length : STALLS.filter((s) => s.k === k).length;
     return `<button class="filt${i === 0 ? " is-on" : ""}" role="tab"
       aria-selected="${i === 0}" data-f="${k}" type="button">${k} · ${n}</button>`;
   }).join("");
-
   $$(".filt").forEach((b) => b.addEventListener("click", () => {
     $$(".filt").forEach((x) => { x.classList.remove("is-on"); x.setAttribute("aria-selected", "false"); });
     b.classList.add("is-on"); b.setAttribute("aria-selected", "true");
@@ -315,7 +273,6 @@ function renderStalls() {
     $("#stallCount").textContent = `${shown} SHOWN`;
   }));
 }
-
 /* ═══════════════ 3 · PROGRAMME ═══════════════ */
 const ROW = 52;
 function renderProgramme() {
@@ -333,7 +290,6 @@ function renderProgramme() {
   html += `<div class="sched__line" id="schedLine" aria-hidden="true"></div>`;
   sched.innerHTML = html;
 }
-
 /* ═══════════════ 4 · CROWD + DONUT ═══════════════ */
 function renderCrowd() {
   $("#chart").innerHTML = CROWD.map((c) => `<b data-h="${c.h}" data-v="${c.v}"></b>`).join("");
@@ -375,7 +331,6 @@ function fillDonut() {
     }, i * 90);
   });
 }
-
 /* ═══════════════ 5 · AVATARS + CHECKS ═══════════════ */
 function renderAvatars() {
   $("#avatars").innerHTML = ["IS", "CM", "KT", "BM", "RJ"]
@@ -396,22 +351,18 @@ function renderChecks() {
     });
   });
 }
-
 /* ═══════════════ 6 · THE CLOCK — drives everything above ═══════════════ */
 function setNow(m) {
   now = clamp(m, OPEN, CLOSE);
-
   $("#scrubOut").textContent = hhmm(now);
   $("#scrub").setAttribute("aria-valuetext", hhmm(now));
   $("#nowClock").textContent = hhmm(now);
   $("#lanternTime").textContent = `SPEC ${hhmm(now)}`;
-
   // programme: the line, and which event is live
   const line = $("#schedLine");
   if (line) line.style.top = `${((now - OPEN) / 60) * ROW}px`;
   const live = PROGRAMME.findIndex((p) => now >= p.s && now < p.e);
   $$(".ev").forEach((e) => e.classList.toggle("is-live", +e.dataset.i === live));
-
   // stalls
   $$(".stall").forEach((c, i) => {
     const st = stallState(STALLS[i]);
@@ -419,14 +370,12 @@ function setNow(m) {
     el.className = `stall__state ${st.cls}`;
     el.textContent = st.txt;
   });
-
   // busy-hour bar
   const hr = Math.floor(now / 60);
   const band = CROWD.find((c) => c.h === hr) || CROWD[CROWD.length - 1];
   $$("#chart b").forEach((b) => b.classList.toggle("is-now", +b.dataset.h === hr));
   $("#crowdVal").textContent = band.v;
   $("#crowdNow").textContent = now >= CLOSE - 30 ? "WINDING DOWN" : `NOW ${hhmm(hr * 60)}`;
-
   // the "right now" card
   const nextUp = PROGRAMME.filter((p) => p.s > now).slice(0, 3);
   if (live >= 0) {
@@ -448,15 +397,12 @@ function setNow(m) {
     opening.length
       ? `<li><span>Still to open: ${opening.map((s) => s.n).join(", ")}</span><span class="tag tag--off">SOON</span></li>` : "",
   ].filter(Boolean).join("");
-
   // hero status line
   $("#heroStatus").textContent = live >= 0
     ? `ON NOW · ${PROGRAMME[live].t.toUpperCase()}`
     : `SAT 30 AUG · ARGYLE SQUARE, CARLTON`;
-
   dirty = true;                                   // the lantern warms with the hour
 }
-
 /* ═══════════════ 7 · REVEAL, ONCE ═══════════════ */
 function initReveal() {
   $$(".card").forEach((el) => el.classList.add("rv"));
@@ -471,7 +417,6 @@ function initReveal() {
   }, { threshold: 0.08, rootMargin: "0px 0px -4% 0px" });
   $$(".rv").forEach((el) => io.observe(el));
 }
-
 /* ═══════════════ BOOT ═══════════════ */
 renderStalls();
 renderProgramme();
@@ -480,11 +425,9 @@ renderDonut();
 renderAvatars();
 renderChecks();
 initReveal();
-
 $("#scrubTicks").innerHTML = [17, 18, 19, 20, 21, 22, 23]
   .map((h) => `<li>${h}</li>`).join("");
 $("#scrub").addEventListener("input", (e) => setNow(+e.target.value));
-
 sizeCanvas();
 window.addEventListener("resize", sizeCanvas);
 setNow(OPEN);

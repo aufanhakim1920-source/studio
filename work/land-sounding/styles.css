@@ -1,25 +1,3 @@
-/* SOUNDING — subsea cable survey
-   ---------------------------------------------------------------------------
-   Structure learned from build 67 (land-aurora / SIGNAL): a full-bleed living
-   canvas behind the WHOLE page, short sharp sections floating over it. Nothing
-   else is carried across — the object, the palette, the type and the corner
-   system are all deliberately different.
-
-   Palette: one accent, no hedging. Coral #FF5D57 on ink #05070B, pale #E9EEF2,
-   muted #7D8894. 67 is electric blue; three near-black pages in one register is
-   what [[Vary the Palette]] exists to prevent, so the HUE moves even though the
-   value key does not.
-
-   Corners: a COMMITTED ZERO, named as a token the way reference 26 does it.
-   [[What the References Have in Common]] §3 permits exactly two answers — two
-   named tiers, or a committed zero — and zero is the one that reads as survey
-   equipment rather than as a consumer app. 67 uses 18px cards + 999px pills, so
-   this is also the half of the rule 67 did not use.
-
-   Type: Archivo + IBM Plex Mono. Explicitly NOT Space Grotesk + JetBrains Mono
-   (67's pair). Mono carries micro-labels and instrument readouts only, never
-   body copy.                                                                  */
-
 :root {
   --ink:      #05070B;
   --ink-2:    #090C12;
@@ -34,11 +12,11 @@
   --ui:   'Archivo', ui-sans-serif, system-ui, -apple-system, Helvetica, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 
-  --radius-none: 0px;                       /* the whole corner system */
+  --radius-none: 0px;                       
   --ease:   cubic-bezier(.16, 1, .3, 1);
   --snap:   cubic-bezier(.2, .9, .25, 1);
-  --t-fast: .15s;                           /* hover / state change */
-  --t-move: .44s;                           /* something that physically travels */
+  --t-fast: .15s;                           
+  --t-move: .44s;                           
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; border-radius: var(--radius-none); }
@@ -52,18 +30,13 @@ body {
 body.is-modal { overflow: hidden; }
 .mono { font-family: var(--mono); }
 
-/* ── the sonar field ───────────────────────────────────────────────────────
-   ⚠️ The canvas ALWAYS carries a CSS background approximating the shader's own
-   image. A full-viewport <canvas> that fails to composite paints WHITE, and on
-   a near-black page with pale text that is the worst possible failure. This way
-   a WebGL failure degrades to a plainer dark page, never a blank white one.   */
 #gl {
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block;
   background:
     radial-gradient(46% 34% at 50% 47%, rgba(255, 93, 87, .13), transparent 70%),
     radial-gradient(120% 88% at 50% 50%, #0A0E16 0%, #06080D 46%, var(--ink) 80%);
 }
-/* horizontal hatch — a display, not a page. Texture without a second mover. */
+
 .hatch {
   position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5;
   background-image: repeating-linear-gradient(
@@ -75,7 +48,6 @@ body.is-modal { overflow: hidden; }
 .skip:focus { left: 16px; top: 16px; z-index: 90; background: var(--coral); color: #0A0405; }
 :is(a, button, summary, [tabindex]):focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
 
-/* ── nav ───────────────────────────────────────────────────────────────── */
 .nav { position: relative; z-index: 20; display: flex; align-items: center;
   justify-content: space-between; gap: 20px;
   padding: 16px clamp(16px, 4vw, 52px);
@@ -101,7 +73,6 @@ body.is-modal { overflow: hidden; }
 .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.25px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] span:last-child  { transform: translateY(-3.25px) rotate(-45deg); }
 
-/* the mobile menu is a real panel that really opens */
 .menu { position: relative; z-index: 19; display: grid; grid-template-rows: 0fr;
   transition: grid-template-rows var(--t-move) var(--ease);
   border-bottom: 1px solid var(--line); background: rgba(5,7,11,.94);
@@ -117,13 +88,11 @@ body.is-modal { overflow: hidden; }
   transition: opacity .3s var(--ease), transform .3s var(--ease), color var(--t-fast); }
 .menu.on a { opacity: 1; transform: none; }
 .menu a:hover { color: var(--pale); }
-/* ⚠️ `.menu a` (0,1,1) outranks `.btn--solid` (0,1,0), so the solid button in the
-   menu inherited the muted link colour and went grey-on-coral. Restate it here. */
+
 .menu a.btn { margin: 14px clamp(16px, 4vw, 52px) 18px; justify-content: center;
   border-top: 0; color: #100404; min-height: 50px; }
 .menu a.btn:hover { color: #100404; }
 
-/* ── buttons ───────────────────────────────────────────────────────────── */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 46px; padding: 0 22px; text-decoration: none; cursor: pointer;
   font: 500 13.5px/1 var(--ui); letter-spacing: .04em;
@@ -139,7 +108,6 @@ body.is-modal { overflow: hidden; }
 .btn--solid:hover { background: #FF7671; border-color: #FF7671; color: #100404; }
 .btn--lg { min-height: 56px; padding: 0 30px; font-size: 15px; }
 
-/* ── page frame ────────────────────────────────────────────────────────── */
 main { position: relative; z-index: 5; }
 section { padding: 0 clamp(16px, 4vw, 52px); max-width: 1220px; margin: 0 auto; }
 
@@ -155,10 +123,7 @@ section { padding: 0 clamp(16px, 4vw, 52px); max-width: 1220px; margin: 0 auto; 
 h1 { font: 700 clamp(38px, 6.6vw, 86px)/1.0 var(--ui); letter-spacing: -.042em;
   margin: 24px 0 20px; max-width: 16ch; }
 h1 em { font-style: normal; color: var(--coral); text-shadow: 0 0 48px var(--coral-dim); }
-/* ⚠️ [[What the References Have in Common]] §7: a live field behind body copy
-   is a VALUE problem, not a hue one. The hero copy sits directly on the shader,
-   so it gets its own value separation — a lighter tone and a soft ink halo —
-   while --mut stays the token for text that sits on a blurred panel. */
+
 .sub { font-size: clamp(15.5px, 1.5vw, 18px); color: rgba(233, 238, 242, .72);
   max-width: 58ch; }
 .hero h1, .hero .sub, .cta h2 { text-shadow: 0 1px 26px rgba(5, 7, 11, .92); }
@@ -170,7 +135,6 @@ h1 em { font-style: normal; color: var(--coral); text-shadow: 0 0 48px var(--cor
   border-left: 2px solid var(--coral); padding: 7px 12px;
   background: rgba(5,7,11,.6); }
 
-/* one strip translating as a single object, not a marquee of many movers */
 .ticker { position: relative; z-index: 5; overflow: hidden;
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   background: rgba(5,7,11,.5); backdrop-filter: blur(8px);
@@ -182,7 +146,6 @@ h1 em { font-style: normal; color: var(--coral); text-shadow: 0 0 48px var(--cor
 @keyframes tick { to { transform: translateX(-50%); } }
 .ticker__t b { color: var(--coral); font-weight: 400; }
 
-/* ── sections ──────────────────────────────────────────────────────────── */
 .tag { font: 500 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase;
   color: var(--coral); }
 h2 { font: 600 clamp(27px, 4.1vw, 52px)/1.06 var(--ui); letter-spacing: -.035em;
@@ -190,7 +153,6 @@ h2 { font: 600 clamp(27px, 4.1vw, 52px)/1.06 var(--ui); letter-spacing: -.035em;
 h2 em { font-style: normal; color: var(--coral); }
 .cap, .num, .del, .faq, .cta { padding-top: clamp(44px, 7vw, 100px); }
 
-/* ── capability cards → each opens the detail panel ────────────────────── */
 .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
   background: var(--line-2); border: 1px solid var(--line); }
 .card { position: relative; overflow: hidden; text-align: left; cursor: pointer;
@@ -220,7 +182,6 @@ h2 em { font-style: normal; color: var(--coral); }
 .card:hover .card__go { color: var(--coral); }
 .card:hover .card__go i { width: 26px; }
 
-/* ── the record ────────────────────────────────────────────────────────── */
 .num__g { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px;
   background: var(--line-2); border: 1px solid var(--line); }
 .stat { background: var(--panel); backdrop-filter: blur(10px); padding: 28px 22px; }
@@ -230,7 +191,6 @@ h2 em { font-style: normal; color: var(--coral); }
 .stat span { display: block; margin-top: 10px; font: 400 12px/1.45 var(--mono);
   color: var(--mut); }
 
-/* ── deliverables ──────────────────────────────────────────────────────── */
 .del__g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 clamp(20px, 4vw, 56px); border-top: 1px solid var(--line); }
 .del__i { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px;
@@ -240,7 +200,6 @@ h2 em { font-style: normal; color: var(--coral); }
 .del__i h4 { font: 500 16px/1.3 var(--ui); letter-spacing: -.015em; }
 .del__i p { font-size: 13.5px; color: var(--mut); }
 
-/* ── questions ─────────────────────────────────────────────────────────── */
 .qa { border-top: 1px solid var(--line); }
 .qa details { border-bottom: 1px solid var(--line); position: relative; }
 .qa details::before { content: ""; position: absolute; left: -14px; top: 12px; bottom: 12px;
@@ -259,9 +218,6 @@ h2 em { font-style: normal; color: var(--coral); }
   transition: transform .42s var(--snap); }
 .qa details.is-open > summary::after { transform: rotate(135deg); }
 
-/* ⭐ 0fr → 1fr is the only way to transition to a height you do not know.
-   max-height guesses a number and either clips the text or eases against a
-   value that is not there; grid rows interpolate the real measured height. */
 .qa .a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .42s var(--ease); }
 .qa details.is-open .a { grid-template-rows: 1fr; }
 .qa .a > div { overflow: hidden; }
@@ -279,7 +235,6 @@ h2 em { font-style: normal; color: var(--coral); }
   border-top: 1px solid var(--line); color: rgba(233,238,242,.32);
   font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
 
-/* ── the ping HUD ──────────────────────────────────────────────────────── */
 .hud { position: fixed; left: clamp(12px, 3vw, 28px); bottom: clamp(12px, 3vw, 24px);
   z-index: 30; pointer-events: none; display: grid; gap: 8px; max-width: 340px; }
 .hud__hint { font: 400 12px/1.5 var(--mono); color: rgba(233,238,242,.5);
@@ -297,7 +252,6 @@ h2 em { font-style: normal; color: var(--coral); }
 .hud__slots i.on { background: var(--coral); box-shadow: 0 0 7px var(--coral-dim); }
 #pcount { color: var(--coral); }
 
-/* ── the detail panel ──────────────────────────────────────────────────── */
 .ovl { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center;
   padding: clamp(12px, 4vw, 40px); }
 .ovl[hidden] { display: none; }
@@ -330,24 +284,20 @@ h2 em { font-style: normal; color: var(--coral); }
   font-variant-numeric: tabular-nums; }
 .sheet__note { font: 400 12px/1.6 var(--mono); color: rgba(233,238,242,.34); }
 
-/* ── reveal on arrival, once ───────────────────────────────────────────── */
 .rv { opacity: 0; transform: translateY(20px);
   transition: opacity .65s var(--ease), transform .65s var(--ease); }
 .rv.in { opacity: 1; transform: none; }
 
-/* ── responsive ────────────────────────────────────────────────────────── */
 @media (max-width: 980px) {
   .del__g { grid-template-columns: 1fr; }
   .num__g { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
-  /* ⚠️ The nav LINKS collapse, the NAVIGATION does not. Builds 82-84 were
-     rejected partly for `nav { display: none }` with nothing put back. */
+  
   .nav__l, .nav__cta { display: none; }
   .nav-toggle { display: inline-flex; }
   .cards { grid-template-columns: 1fr; }
-  /* a fixed HUD covers the bottom of every screen on a phone, so on a phone the
-     hint moves INTO the hero and only the compact readout stays pinned */
+  
   .hud__hint { display: none; }
   .hint-m { display: block; }
   .foot { padding-bottom: 96px; }

@@ -12,39 +12,29 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="room" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
-
 <div class="bench">
-
   <div class="bench__tag">
     <span>RACHMAD INSTRUMENTS</span>
     <span class="bench__tag-mid">SINGLE-UNIT BENCH CONSOLE · NOT FOR RESALE</span>
     <span>MELBOURNE VIC / SURABAYA JI</span>
   </div>
-
-  <!-- ═══════════════════════ THE MACHINE ═══════════════════════ -->
   <section class="console" id="console" aria-label="AH-19 portfolio console">
-
     <span class="screw screw--chassis" style="top:14px;left:14px"></span>
     <span class="screw screw--chassis" style="top:14px;right:14px"></span>
     <span class="screw screw--chassis" style="bottom:14px;left:14px"></span>
     <span class="screw screw--chassis" style="bottom:14px;right:14px"></span>
-
-    <!-- ── top rail ───────────────────────────────────────────── -->
     <header class="toprail">
       <div class="plate">
         <b>RACHMAD INSTRUMENTS</b>
         <span>MODEL <em>AH&#8209;19</em> · PORTFOLIO CONSOLE</span>
         <span>SER. 19·11·2006 &nbsp;·&nbsp; MADE IN SURABAYA</span>
       </div>
-
       <div class="nameplate">
         <h1>MUHAMMAD RAUFAN HAKIM RACHMAD</h1>
         <p>“AUFAN” — BSc DATA SCIENCE, UNIVERSITY OF MELBOURNE · FIRST YEAR</p>
       </div>
-
       <div class="statusblock">
         <div class="statusline">
           <span class="led led--pwr"></span>
@@ -56,18 +46,13 @@
         <div class="vents" aria-hidden="true"></div>
       </div>
     </header>
-
-    <!-- ── main deck ──────────────────────────────────────────── -->
     <div class="deck">
-
-      <!-- SCREEN BAY -->
       <div class="bay bay--screen">
         <div class="bezel">
           <span class="screw" style="top:9px;left:9px"></span>
           <span class="screw" style="top:9px;right:9px"></span>
           <span class="screw" style="bottom:9px;left:9px"></span>
           <span class="screw" style="bottom:9px;right:9px"></span>
-
           <div class="crt" id="crt" data-scan="1" data-ph="amber" data-verbose="1">
             <div class="crt__flick" aria-hidden="true"></div>
             <div class="crt__tear" id="crtTear" aria-hidden="true"></div>
@@ -81,14 +66,9 @@
           <span class="mono" id="bezelMode">MODE / PROJECTS</span>
         </div>
       </div>
-
-      <!-- CONTROL BAY -->
       <aside class="bay bay--ctrl">
-
-        <!-- selector -->
         <div class="panel panel--dial">
           <p class="panel__cap mono">CHANNEL SELECT</p>
-
           <div class="segwrap">
             <div class="seg" data-ghost="88"><span id="chNum">01</span></div>
             <div class="segside mono">
@@ -96,7 +76,6 @@
               <span id="chName">FANNEST</span>
             </div>
           </div>
-
           <div class="dialwrap">
             <div class="detents" id="detents" aria-hidden="true"></div>
             <div class="knob" id="knob" role="slider" tabindex="0"
@@ -110,11 +89,8 @@
           </div>
           <p class="hint mono">▸ DRAG THE DIAL &nbsp;·&nbsp; ARROW KEYS</p>
         </div>
-
-        <!-- slide viewer -->
         <div class="panel panel--viewer">
           <p class="panel__cap mono">SLIDE VIEWER · 24×36</p>
-
           <div class="lightbox" id="lightbox">
             <div class="mount" id="mount" data-orient="land">
               <div class="mount__win">
@@ -128,9 +104,7 @@
               <span class="mount__no mono" id="mountNo">— —</span>
             </div>
           </div>
-
           <p class="slidecap mono" id="slideCap">NO SLIDE LOADED</p>
-
           <button class="lever" id="lever" type="button">
             <span class="lever__arm" aria-hidden="true"></span>
             <span class="lever__txt">ADVANCE</span>
@@ -138,10 +112,7 @@
         </div>
       </aside>
     </div>
-
-    <!-- ── control rail ───────────────────────────────────────── -->
     <div class="ctrlrail">
-
       <div class="panel panel--modes">
         <p class="panel__cap mono">BANK SELECT</p>
         <div class="modebank" id="modebank">
@@ -156,7 +127,6 @@
           <li><span>BANK C · PROOF</span><i></i><span>09 CH</span></li>
         </ul>
       </div>
-
       <div class="panel panel--toggles">
         <p class="panel__cap mono">TUBE</p>
         <div class="togglebank">
@@ -187,7 +157,6 @@
           <li><span>DETAIL</span><i></i><span id="stVerbose">FULL</span></li>
         </ul>
       </div>
-
       <div class="panel panel--meter">
         <p class="panel__cap mono" id="meterCap">OUTPUT</p>
         <div class="meter">
@@ -203,44 +172,34 @@
         <p class="panel__note mono"><b id="meterVal">88</b> / 100</p>
       </div>
     </div>
-
-    <!-- ── gauges ─────────────────────────────────────────────── -->
     <div class="gaugebank" id="gaugebank" aria-label="channel levels"></div>
-
-    <!-- ── printer deck ───────────────────────────────────────── -->
     <div class="printer">
       <div class="printer__ctrl">
         <button class="pbtn pbtn--print" type="button" id="printBtn">PRINT</button>
         <button class="pbtn pbtn--ghost" type="button" id="tearBtn">TEAR OFF</button>
         <p class="panel__note mono" id="printNote">FEEDS THE SELECTED CHANNEL ONTO TAPE.</p>
       </div>
-
       <div class="printer__slotplate">
         <p class="mono">PAPER TAPE · 40 COL · THERMAL</p>
         <div class="slot" aria-hidden="true"><span></span></div>
       </div>
-
       <p class="silk mono">
         aufanhakim1920@gmail.com &nbsp;·&nbsp; INDONESIAN (NATIVE) / ENGLISH IELTS 7.0
         &nbsp;·&nbsp; MELBOURNE, AUSTRALIA
       </p>
     </div>
   </section>
-
-  <!-- ── the tape hangs out of the slot ───────────────────────── -->
   <div class="tapewell">
     <div class="tape" id="tape">
       <div class="tape__lip" aria-hidden="true"></div>
       <div class="tape__inner" id="tapeInner"></div>
     </div>
   </div>
-
   <footer class="bench__foot mono">
     <span>AH-19 · BUILT BY HAND, NO FRAMEWORK</span>
     <span>EVERY MOVEMENT ON THIS PAGE IS ONE YOU CAUSED</span>
   </footer>
 </div>
-
 <script src="app.js"></script>
 </body>
 </html>

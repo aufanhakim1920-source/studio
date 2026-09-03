@@ -1,18 +1,3 @@
-/* Northbound — LANE 2: modern creative.
-   =========================================================================
-   The centrepiece is a coffee cup drawn in hand-rolled 3D: a yaw+pitch
-   projection and a painter's algorithm, no library. You drag it to turn it,
-   and it FILLS as you scroll the hero — the coffee level is bound to how far
-   down the page you are, so the animation is driven by the visitor rather
-   than by a timer.
-
-   Function first, same two rules as every page here:
-   - the .motion class is added by this script, so with JavaScript off
-     nothing is hidden and the whole menu still reads;
-   - reveals use a rAF position sweep, never IntersectionObserver alone,
-     because IO delivers asynchronously and a fast scroll or an anchor jump
-     can pass an element without it ever being reported. */
-
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (!REDUCED) document.documentElement.classList.add("motion");
 

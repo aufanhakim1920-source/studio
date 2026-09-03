@@ -1,29 +1,7 @@
-/* PRESS A KEY — the keyboard portfolio
- * ---------------------------------------------------------------------------
- * Nine real projects from projects.json.
- *
- * ⭐ THE OBJECT: a mechanical keyboard, and the reason it earns the metaphor is
- * that THE KEYS ACTUALLY WORK. Every project gets a real letter, and pressing
- * that letter on a physical keyboard presses the cap on screen — travel,
- * shadow collapse and all. It is not a themed button grid; it is an input
- * device you can already use without being told how.
- *
- * Load-bearing, so the object carries information rather than decorating it:
- *   · KEY WIDTH  = how big the build was (tag count → flex-grow), the way a
- *                  spacebar is wide. Scope is readable before any word is.
- *   · KEY COLOUR = the discipline.
- *   · THE LETTER = real, and unique — assigned from the project's own name,
- *                  falling back through the alphabet if two collide.
- *
- * Motion is all user-driven: hover lifts a cap, press drops it 6px onto its
- * stem, the printout springs in. Only a 7px LED animates by itself.
- */
-
 const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
 const CAPS = {
   web:    ["var(--acid)",   "#23260A"],
   game:   ["var(--orange)", "#2A1B10"],
@@ -37,9 +15,7 @@ function discipline(p) {
   if (/proxy|observability|composio|automation|vision|serverless/.test(t)) return "ai";
   return "web";
 }
-
 let P = [], byKey = new Map(), current = -1;
-
 /* one unique letter per project, taken from its own name where possible */
 function assignLetters(list) {
   const used = new Set();
@@ -51,20 +27,16 @@ function assignLetters(list) {
     return L;
   });
 }
-
 function press(i, { fromKeyboard = false } = {}) {
   const p = P[i];
   if (!p) return;
   current = i;
-
   const cap = $$(".key")[i];
   $$(".key").forEach((k, n) => k.classList.toggle("is-on", n === i));
-
   /* the physical travel — held briefly so a keyboard press feels like a press */
   cap.classList.add("is-down");
   setTimeout(() => cap.classList.remove("is-down"), REDUCED ? 0 : 130);
   if (fromKeyboard) cap.scrollIntoView({ block: "nearest", behavior: REDUCED ? "auto" : "smooth" });
-
   $("#cue").textContent = `key ${cap.dataset.letter} · ${String(i + 1).padStart(2, "0")} of ${String(P.length).padStart(2, "0")}`;
   $("#oName").textContent = p.name;
   $("#oDesc").textContent = p.desc;
@@ -74,13 +46,11 @@ function press(i, { fromKeyboard = false } = {}) {
   const a = $("#oLink");
   a.hidden = !p.url;
   if (p.url) { a.href = p.url; a.target = "_blank"; a.rel = "noopener"; }
-
   const out = $("#out");
   out.classList.remove("is-hit");
   void out.offsetWidth;                 /* restart the spring */
   out.classList.add("is-hit");
 }
-
 function wireStats(rows) {
   $("#stats").innerHTML = rows.map(([v, k]) =>
     `<div class="stat"><b data-to="${v}">0</b><span>${k}</span></div>`).join("");
@@ -101,7 +71,6 @@ function wireStats(rows) {
   }), { threshold: .35 });
   io.observe($("#stats"));
 }
-
 async function init() {
   try {
     const r = await fetch("projects.json");
@@ -112,10 +81,8 @@ async function init() {
     $("#oDesc").textContent = e.message;
     return;
   }
-
   const letters = assignLetters(P);
   const maxTags = Math.max(...P.map((p) => p.tags.length));
-
   $("#keys").innerHTML = P.map((p, i) => {
     const d = discipline(p);
     const [cap, ink] = CAPS[d];
@@ -133,10 +100,8 @@ async function init() {
         </span>
       </button>`;
   }).join("");
-
   $$(".key").forEach((k) => k.addEventListener("click", () => press(+k.dataset.i)));
   P.forEach((_, i) => byKey.set(letters[i], i));
-
   /* ⭐ the real keyboard. This is the whole idea, so it has to actually work. */
   addEventListener("keydown", (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -148,17 +113,13 @@ async function init() {
     if (e.key === "ArrowRight") { e.preventDefault(); press((current + 1) % P.length); }
     if (e.key === "ArrowLeft")  { e.preventDefault(); press((current - 1 + P.length) % P.length); }
   });
-
   const live = P.filter((p) => p.url).length;
   const tools = new Set(P.flatMap((p) => p.tags)).size;
   wireStats([[P.length, "projects mapped"], [live, "live right now"],
              [tools, "distinct tools"], [2, "hackathons won"]]);
-
   const tick = () => $("#clock").textContent = new Date().toLocaleTimeString("en-AU",
     { timeZone: "Australia/Melbourne", hour: "2-digit", minute: "2-digit" });
   tick(); setInterval(tick, 30000);
-
   press(0);         /* one key is already down, so the printout is never empty */
 }
-
 init();

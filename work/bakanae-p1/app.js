@@ -1,28 +1,14 @@
-/* ============================================================
-   baka nae. — lane 01 "atelier"
-   Vanilla. No framework, no build step.
-
-   Motion policy (hard):
-   · nothing animates on its own — every transition is caused by
-     scroll-into-view (one shot), hover, or a click.
-   · no setInterval loops, no infinite keyframes, no autoplay.
-   · reveals opt IN at runtime via the `.motion` class, so with
-     JavaScript off nothing on the page is hidden.
-   ============================================================ */
 (function () {
   "use strict";
-
   var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-
   /* ---------------------------------------------------------
      1 · reveal engine — rAF sweep, never IntersectionObserver
      (IO delivers async and can be outrun by a fast scroll or an
      in-page anchor jump; asking for positions cannot miss.)
      --------------------------------------------------------- */
   var queued = false;
-
   /* The worklist is derived from the DOM on every sweep rather than cached in
      an array. A cached list goes stale the moment a filter re-renders the grid,
      which is how cards end up stuck at opacity 0 forever. Querying costs one
@@ -41,7 +27,6 @@
     }
   }
   function ping() { if (!queued) { queued = true; requestAnimationFrame(sweep); } }
-
   function register() {
     if (REDUCED) {
       // no reveal, no count-up — the HTML already holds every final value
@@ -50,13 +35,11 @@
     }
     sweep(); // catch whatever is already above the fold
   }
-
   if (!REDUCED) {
     document.documentElement.classList.add("motion");
     window.addEventListener("scroll", ping, { passive: true });
     window.addEventListener("resize", ping, { passive: true });
   }
-
   /* ---------------------------------------------------------
      2 · counters — animate TOWARDS the value already in the HTML
      --------------------------------------------------------- */
@@ -81,21 +64,18 @@
       requestAnimationFrame(step);
     });
   }
-
   /* ---------------------------------------------------------
      3 · drawn product forms — CSS/SVG only, no photography,
         no external image host. Every form carries the same
         "Nya! ver." cat-ear mark, tinted with the series hue.
      --------------------------------------------------------- */
   var INK = "#6B4A15", PAPER = "#FFFFFF", GROUND = "#D2C3EA";
-
   function head(x, y, s) {
     return '<use href="#nya-head" transform="translate(' + x + ' ' + y + ') scale(' + s + ')"/>';
   }
   function wrap(hue, inner) {
     return '<svg viewBox="0 0 200 240" style="--art-hue:' + hue + '" role="img" aria-hidden="true">' + inner + "</svg>";
   }
-
   var FORMS = {
     "Keychain": function (hue) {
       return wrap(hue,
@@ -165,26 +145,21 @@
         '<path d="M120 200h40" stroke="' + INK + '" stroke-width="2" opacity=".35"/>');
     }
   };
-
   function artFor(type, hue) {
     return (FORMS[type] || FORMS["Photocard"])(hue);
   }
-
   /* ---------------------------------------------------------
      4 · data
      --------------------------------------------------------- */
   var DATA = null, QUOTES = null;
   var state = { type: "all", series: null };
-
   var rupiah = function (n) { return "Rp " + n.toLocaleString("id-ID"); };
-
   /* Her real listing convention is "<Series> Nya! ver. <Type>";
      products.json drops the "ver." — restore it without touching
      titles that never carried the marker. */
   function realTitle(name) {
     return name.replace(/\bNya!(?!\s*ver\.)\s+/g, "Nya! ver. ");
   }
-
   Promise.all([
     fetch("data/products.json").then(function (r) { return r.json(); }),
     fetch("data/testimonials.json").then(function (r) { return r.json(); })
@@ -204,7 +179,6 @@
       '<a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.</p>';
     register();
   });
-
   function fillShopMeta() {
     var m = DATA.shop_meta;
     $$("[data-shop]").forEach(function (el) {
@@ -218,14 +192,12 @@
     if (lead) lead.setAttribute("data-counts", "");
     $$(".proof-list > div").forEach(function (d) { d.setAttribute("data-counts", ""); });
   }
-
   /* ---------------------------------------------------------
      5 · series — the cards double as catalogue filters
      --------------------------------------------------------- */
   function countFor(slug) {
     return DATA.featured.filter(function (p) { return p.series === slug; }).length;
   }
-
   function renderSeries() {
     var grid = $("#seriesGrid");
     var slugs = Object.keys(DATA.series_meta);
@@ -238,7 +210,6 @@
         '<span class="series-meta">' + (n ? n + " di katalog" : "di Shopee") + "</span>" +
         "</button>";
     }).join("");
-
     $$(".series-card", grid).forEach(function (btn) {
       btn.addEventListener("click", function () {
         var slug = btn.getAttribute("data-series");
@@ -253,13 +224,11 @@
       });
     });
   }
-
   function syncSeriesButtons() {
     $$(".series-card").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-series") === state.series));
     });
   }
-
   /* ---------------------------------------------------------
      6 · catalogue
      --------------------------------------------------------- */
@@ -270,14 +239,12 @@
       : DATA.featured;
     var present = {};
     pool.forEach(function (p) { present[p.type_id] = true; });
-
     box.innerHTML = DATA.type_filters.filter(function (t) {
       return t.id === "all" || present[t.id];
     }).map(function (t) {
       return '<button class="pill" type="button" data-type="' + t.id + '" aria-pressed="' +
         (state.type === t.id) + '">' + t.name_id + "</button>";
     }).join("");
-
     $$(".pill", box).forEach(function (btn) {
       btn.addEventListener("click", function () {
         state.type = btn.getAttribute("data-type");
@@ -288,18 +255,15 @@
       });
     });
   }
-
   function visible() {
     return DATA.featured.filter(function (p) {
       return (state.type === "all" || p.type_id === state.type) &&
              (!state.series || p.series === state.series);
     });
   }
-
   function renderCatalogue() {
     var grid = $("#catGrid");
     var list = visible();
-
     grid.innerHTML = list.map(function (p, i) {
       var s = DATA.series_meta[p.series] || { name_id: p.series, hue: "#7A5518" };
       return '<article class="card" data-rise style="--d:' + Math.min(i, 5) * 60 + 'ms">' +
@@ -322,9 +286,7 @@
         "</div>" +
         "</article>";
     }).join("");
-
     $("#catEmpty").hidden = list.length > 0;
-
     $$(".detail-toggle", grid).forEach(function (btn) {
       btn.addEventListener("click", function () {
         var panel = document.getElementById(btn.getAttribute("aria-controls"));
@@ -333,7 +295,6 @@
         panel.setAttribute("data-open", String(!open));
       });
     });
-
     var srs = state.series ? (DATA.series_meta[state.series] || {}).name_id : null;
     $("#filterState").innerHTML =
       "Menampilkan " + list.length + " dari " + DATA.featured.length +
@@ -346,12 +307,10 @@
       state.series = null; state.type = "all";
       syncSeriesButtons(); renderPills(); renderCatalogue();
     });
-
     // new nodes appear immediately if they are already above the fold;
     // the DOM-derived sweep picks up the rest on the next scroll
     register();
   }
-
   /* ---------------------------------------------------------
      7 · reviews (explicitly labelled placeholder)
      --------------------------------------------------------- */
@@ -367,7 +326,6 @@
         "</footer></figure>";
     }).join("");
   }
-
   /* ---------------------------------------------------------
      8 · header nav (click-driven)
      --------------------------------------------------------- */
@@ -383,7 +341,6 @@
       nav.classList.remove("open");
     }
   });
-
   /* ---------------------------------------------------------
      9 · hero charm — pointer-driven tilt only. It never moves
         unless the visitor moves the pointer over it.

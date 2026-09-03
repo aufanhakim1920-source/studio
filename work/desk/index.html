@@ -12,85 +12,62 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="grain" aria-hidden="true"></div>
-
-<!-- ══════════════ CONTROL STRIP ══════════════ -->
 <header class="strip">
   <span class="strip__name">Aufan<span class="strip__dot">·</span><em>the desk</em></span>
-
   <nav class="strip__cams" aria-label="Camera">
     <button type="button" class="ctl is-on" data-pose="desk">Desk</button>
     <button type="button" class="ctl" data-pose="wall">Wall</button>
     <button type="button" class="ctl" data-pose="over">Overhead</button>
   </nav>
-
   <button type="button" class="ctl ctl--lamp is-on" id="lampBtn" aria-pressed="true">
     <span class="ctl__led"></span>Lamp
   </button>
-
   <p class="strip__hint" id="hint">drag anywhere to turn the room · click an object to pick it up</p>
 </header>
-
-<!-- ══════════════ THE ROOM ══════════════ -->
 <div class="frame">
   <div class="room" id="room">
     <div class="stage" id="stage">
       <div class="world" id="world">
-
-        <!-- floor -->
         <div class="floor"></div>
-
-        <!-- back wall + everything pinned to it -->
         <div class="wall">
           <div class="wall__lamp" id="wallGlow"></div>
-
           <div class="wall__paint">
             <p class="kick">Melbourne · from Surabaya</p>
             <h1>AUFAN</h1>
             <p class="wall__full">Muhammad Raufan Hakim Rachmad</p>
             <p class="wall__line">BSc Data Science at UniMelb. Ten things shipped, a 6&nbsp;a.m. shift, and two first places &mdash; both as a first-year.</p>
           </div>
-
           <figure class="pin pin--a">
             <span class="tape"></span>
             <img src="assets/codebrew.jpg" alt="Aufan's team on stage after winning CISSA Codebrew" loading="eager">
             <span class="pin__tint"></span>
             <figcaption>1st — CISSA Codebrew</figcaption>
           </figure>
-
           <figure class="pin pin--b">
             <span class="tape"></span>
             <img src="assets/wyf.jpg" alt="Aufan as a delegate at World Youth Forum Asia 2025" loading="eager">
             <span class="pin__tint"></span>
             <figcaption>Delegate — WYF Asia '25</figcaption>
           </figure>
-
           <figure class="pin pin--c">
             <span class="tape"></span>
             <img src="assets/oweek.jpg" alt="Aufan volunteering at University of Melbourne O-Week" loading="eager">
             <span class="pin__tint"></span>
             <figcaption>O-Week — Community Badge</figcaption>
           </figure>
-
           <article class="clip">
             <p class="clip__head">JAWA POS</p>
             <p class="clip__lede">Cobra Cleanup Committee</p>
             <p class="clip__num">203.6<small>kg</small></p>
             <p class="clip__body">Waste collected and sorted under Aufan as Head Assistant. Community Build 28 followed — housing built and painted — then Clean Water Access Outreach.</p>
           </article>
-
           <div class="tack tack--1"></div>
           <div class="tack tack--2"></div>
         </div>
-
-        <!-- everything on and under the desk is built by app.js -->
         <div class="props" id="props"></div>
-
       </div>
     </div>
-
-    <!-- read-out that follows whatever is picked up -->
     <div class="tag" id="tag" hidden>
       <p class="tag__k" id="tagKind">PICKED UP</p>
       <p class="tag__t" id="tagTitle"></p>
@@ -98,23 +75,17 @@
     </div>
   </div>
 </div>
-
-<!-- ══════════════ THE LEDGER ══════════════ -->
 <section class="ledger" id="ledger">
   <div class="ledger__sheet">
-
     <header class="ledger__head">
       <p class="mono">Everything on the desk, written down</p>
       <h2>The <em>ledger</em></h2>
     </header>
-
     <div class="ledger__grid">
-
       <div class="col">
         <h3 class="col__h"><span>01</span> Shipped</h3>
         <ul class="rows" id="ledgerProjects"></ul>
       </div>
-
       <div class="col">
         <h3 class="col__h"><span>02</span> Hands</h3>
         <ul class="rows">
@@ -126,7 +97,6 @@
           <li class="row"><span class="row__k">NASM</span><span class="row__v">personal-training theory</span></li>
         </ul>
       </div>
-
       <div class="col">
         <h3 class="col__h"><span>03</span> Record</h3>
         <ul class="rows">
@@ -138,17 +108,13 @@
           <li class="row"><span class="row__k">UniMelb</span><span class="row__v">Community Badge</span></li>
         </ul>
       </div>
-
     </div>
-
     <footer class="ledger__foot">
       <p class="mono">Indonesian native · English IELTS 7.0 · Melbourne, Australia</p>
       <a class="mailto" href="mailto:aufanhakim1920@gmail.com">aufanhakim1920@gmail.com<span></span></a>
     </footer>
-
   </div>
 </section>
-
 <script src="app.js"></script>
 </body>
 </html>

@@ -1,9 +1,3 @@
-/* =========================================================
-   FATHOM — swell-a
-   Runtime-opt-in motion (Rule 1), rAF scroll sweep (Rule 2),
-   flap-tile digit resolve (borrowed mechanism from template 13,
-   reskinned for light stock), user-driven only, nothing loops.
-   ========================================================= */
 (() => {
   "use strict";
 

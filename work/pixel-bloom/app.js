@@ -1,29 +1,19 @@
-/* ============================================================
-   Raufan Hakim — Portfolio
-   parallax flowers · works filter · reveal · sticky nav
-   ============================================================ */
-
 (() => {
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   const state = { data: null, filter: "all" };
-
   /* ---------------- parallax (scoped to the flower layer only) ---------------- */
   function initParallax() {
     if (reduced) return;
     const flowers = $$("#bg-flowers > div");
     if (!flowers.length) return;
-
     let targetX = 0, targetY = 0, curX = 0, curY = 0, raf = null;
-
     document.addEventListener("mousemove", (e) => {
       targetX = (window.innerWidth / 2 - e.clientX) / 50;
       targetY = (window.innerHeight / 2 - e.clientY) / 50;
       if (!raf) raf = requestAnimationFrame(step);
     });
-
     function step() {
       curX += (targetX - curX) * 0.08;
       curY += (targetY - curY) * 0.08;
@@ -37,16 +27,13 @@
         : null;
     }
   }
-
   /* ---------------- works ---------------- */
   function renderWorks() {
     const list = $("#works-list");
     if (!list || !state.data) return;
-
     const items = state.data.projects.filter(
       (p) => state.filter === "all" || p.category === state.filter
     );
-
     list.innerHTML = items
       .map((p, i) => {
         const no = String(i + 1).padStart(2, "0");
@@ -68,15 +55,12 @@
           : `<div class="work-row">${inner}</div>`;
       })
       .join("");
-
     $$(".filter-btn").forEach((b) => b.classList.toggle("is-on", b.dataset.filter === state.filter));
   }
-
   function setFilter(f) {
     state.filter = f;
     renderWorks();
   }
-
   /* ---------------- track record ---------------- */
   function renderRecord() {
     const tl = $("#timeline");
@@ -95,7 +79,6 @@
         )
         .join("");
     }
-
     const aw = $("#awards");
     if (aw) {
       aw.innerHTML = state.data.awards
@@ -103,12 +86,10 @@
         .join("");
     }
   }
-
   /* ---------------- toolkit ---------------- */
   function renderToolkit() {
     const sk = $("#skills");
     if (sk) sk.innerHTML = state.data.skills.map((s) => `<span class="tag">${s}</span>`).join("");
-
     const ce = $("#certs");
     if (ce) {
       ce.innerHTML = state.data.certs
@@ -116,13 +97,11 @@
         .join("");
     }
   }
-
   /* ---------------- reveal ---------------- */
   function initReveal() {
     // Only arm the hidden state once we know we can undo it.
     if (reduced || !("IntersectionObserver" in window)) return;
     document.documentElement.classList.add("anim-ready");
-
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -136,7 +115,6 @@
     );
     $$(".reveal").forEach((el) => obs.observe(el));
   }
-
   /* ---------------- sticky nav ---------------- */
   function initNav() {
     const nav = $("#site-nav");
@@ -145,37 +123,30 @@
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
   }
-
   /* ---------------- boot ---------------- */
   async function boot() {
     initParallax();
     initNav();
-
     const y = $("#year");
     if (y) y.textContent = new Date().getFullYear();
-
     $("#filter-row")?.addEventListener("click", (e) => {
       const btn = e.target.closest(".filter-btn");
       if (btn) setFilter(btn.dataset.filter);
     });
-
     $$(".nav-filter").forEach((a) =>
       a.addEventListener("click", () => setFilter(a.dataset.filter))
     );
-
     try {
       state.data = await fetch("data/content.json").then((r) => r.json());
     } catch (err) {
       console.error("[portfolio] failed to load content:", err);
       return;
     }
-
     renderWorks();
     renderRecord();
     renderToolkit();
     initReveal();
   }
-
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();

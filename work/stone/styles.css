@@ -1,16 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════════
-   THE SOLID — an instrument in its case.
-   Ground is bottle green (none of the last five builds' grounds).
-   Large neutral field of green + brass; ONE saturated signal, vermilion.
-   Radius is a two-tier named system: --r-none (everything) and --r-pill.
-   ═══════════════════════════════════════════════════════════════════ */
-
 :root {
   --ground:    #0A1C14;
   --ground-2:  #0D2419;
   --felt:      #112B1E;
   --felt-hi:   #163826;
-
   --brass:     #C4923C;
   --brass-hi:  #E9C070;
   --bronze:    #7B5A2E;
@@ -18,29 +10,20 @@
   --bone-2:    rgba(239,233,217,.60);
   --bone-3:    rgba(239,233,217,.34);
   --signal:    #FF4B2B;
-
   --line:      rgba(196,146,60,.24);
   --line-2:    rgba(196,146,60,.13);
-
   --r-none: 0px;
   --r-pill: 999px;
-
   --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --sans:  "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
   --mono:  "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-
   --gut: 34px;
 }
-
 * { box-sizing: border-box; }
-
-/* deliberately NO overflow-x:hidden — it would make the overflow test lie */
 html, body { max-width: 100%; }
-
 body {
   margin: 0;
   background: var(--ground);
-  /* the invisible gradient — a warm spot bled from above, under 8% */
   background-image:
     radial-gradient(1100px 620px at 52% -10%, rgba(233,192,112,.075), transparent 70%),
     radial-gradient(760px 520px at 90% 18%, rgba(255,255,255,.028), transparent 70%);
@@ -51,8 +34,6 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
-
-/* ── overlays ─────────────────────────────────────────────── */
 .grain {
   position: fixed; inset: 0; z-index: 60; pointer-events: none;
   opacity: .30; mix-blend-mode: soft-light;
@@ -62,7 +43,6 @@ body {
   position: fixed; inset: 0; z-index: 61; pointer-events: none;
   background: radial-gradient(120% 90% at 50% 40%, transparent 42%, rgba(3,10,7,.72) 100%);
 }
-/* fixed hairline technical grid */
 .rules { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 .rules i {
   position: absolute; top: 0; bottom: 0; width: 1px;
@@ -71,8 +51,6 @@ body {
 .rules i:nth-child(1) { left: 40px; }
 .rules i:nth-child(2) { left: 50%; }
 .rules i:nth-child(3) { right: 40px; }
-
-/* ── type utilities ───────────────────────────────────────── */
 .mono {
   font-family: var(--mono);
   font-size: 11px; letter-spacing: .13em; text-transform: uppercase;
@@ -85,8 +63,6 @@ h1, h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; }
 h1 { font-size: clamp(38px, 4.4vw, 66px); line-height: 1.02; margin: 0; }
 h1 em { font-style: italic; color: var(--brass-hi); }
 a { color: var(--brass-hi); text-underline-offset: 4px; }
-
-/* ── masthead ─────────────────────────────────────────────── */
 .masthead {
   position: relative; z-index: 3;
   display: flex; justify-content: space-between; align-items: center;
@@ -103,16 +79,12 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .28 } }
-
-/* ── title band ───────────────────────────────────────────── */
 .band {
   position: relative; z-index: 3;
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
   gap: 40px; align-items: end;
   padding: 46px var(--gut) 30px;
 }
-
-/* ═══════════ the stage ═══════════ */
 .stage {
   position: relative; z-index: 3;
   display: grid;
@@ -127,15 +99,12 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   border: 1px solid var(--line);
   border-radius: var(--r-none);
 }
-/* four corner brackets — one object, so four is right */
 .stage__frame { position: absolute; inset: 8px; pointer-events: none; }
 .stage__frame i { position: absolute; width: 16px; height: 16px; border: 1px solid var(--brass); opacity: .8; }
 .stage__frame i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
 .stage__frame i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
 .stage__frame i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
 .stage__frame i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-
-/* ── index ── */
 .index { min-width: 0; }
 .index__head {
   display: flex; justify-content: space-between; gap: 8px;
@@ -169,13 +138,10 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
 .idx.is-on { background: var(--signal); color: #150703; padding-left: 15px; }
 .idx.is-on .idx__n { color: rgba(21,7,3,.72); }
 .idx.is-on .idx__dot { background: #150703; border-color: #150703; box-shadow: none; }
-
-/* ── object ── */
 .object { position: relative; min-width: 0; }
 #solid { display: block; width: 100%; height: 660px; touch-action: none; cursor: grab; }
 #solid:active { cursor: grabbing; }
 #solid:focus-visible { outline: 1px solid var(--brass-hi); outline-offset: 4px; }
-/* overflow:visible so a callout can run out of the canvas box to the dossier */
 .callouts { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .co { fill: none; stroke: var(--brass-hi); stroke-width: 1.1; opacity: .82; }
 .dia { fill: var(--ground-2); stroke: var(--signal); stroke-width: 1.4; }
@@ -194,8 +160,6 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   border: 1px solid var(--line); padding: 1px 4px; margin: 0 1px;
   border-radius: var(--r-none);
 }
-
-/* ── dossier ── */
 .dossier { position: relative; min-width: 0; border-left: 1px solid var(--line); padding-left: 22px;
            display: flex; flex-direction: column; }
 .legend { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--line); }
@@ -237,12 +201,9 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
 .dos__fig--split b { font-size: 26px; }
 .dos__fig--split span { margin-top: 3px; font-size: 8.5px; }
 .dos__mail { margin: 0 0 18px; font-family: var(--mono); font-size: 13px; word-break: break-all; }
-
-/* ═══════════ off the screen ═══════════ */
 .off { position: relative; z-index: 3; padding: 0 var(--gut) 90px; }
 .off__head { max-width: 720px; margin: 0 0 34px; }
 .off__head h2 { font-size: clamp(30px, 3.2vw, 48px); margin: 0 0 14px; line-height: 1.05; }
-
 .drumwrap {
   position: relative; padding: 18px 18px 40px;
   border: 1px solid var(--line);
@@ -271,8 +232,6 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
 }
 .cap span { display: block; color: var(--bone-2); font-size: 14.5px; max-width: 66ch; }
 .drumwrap .hint { bottom: 14px; }
-
-/* ── stats ── */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line);
   border: 1px solid var(--line); margin-bottom: 30px; }
 .stat { background: var(--felt); padding: 22px 20px 20px; }
@@ -282,15 +241,11 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
 }
 .stat .unit { color: var(--brass); font-size: 13px; margin-left: 5px; }
 .stat .stat__l { display: block; margin-top: 12px; color: var(--bone-3); line-height: 1.7; }
-
-/* ── ledger: hairline dividers made of gap ── */
 .ledger { display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
   background: var(--line); border: 1px solid var(--line); }
 .lrow { background: var(--ground-2); padding: 15px 18px; display: grid; gap: 4px; }
 .lrow span { color: var(--brass); }
 .lrow b { font-weight: 400; color: var(--bone-2); font-size: 14px; }
-
-/* ═══════════ close ═══════════ */
 .close { position: relative; z-index: 3; padding: 0 var(--gut) 80px; text-align: center; }
 .close__line {
   font-family: var(--serif); font-size: clamp(26px, 3.4vw, 46px); line-height: 1.14;
@@ -304,14 +259,11 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
 }
 .ghost:hover { background: var(--brass); color: #150703; }
 .ghost:focus-visible { outline: 1px solid var(--brass-hi); outline-offset: 3px; }
-
 .foot {
   position: relative; z-index: 3;
   display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
   padding: 16px var(--gut); border-top: 1px solid var(--line); color: var(--bone-3);
 }
-
-/* ═══════════ responsive ═══════════ */
 @media (max-width: 1180px) {
   .stage { grid-template-columns: 220px minmax(0, 1fr); }
   .dossier { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line);
@@ -319,7 +271,6 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   .callouts { display: none; }
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 860px) {
   :root { --gut: 18px; }
   .rules i:nth-child(1) { left: 16px; } .rules i:nth-child(3) { right: 16px; }
@@ -339,26 +290,15 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   .ledger { grid-template-columns: 1fr; }
   .foot { font-size: 9.5px; }
 }
-
 @media (max-width: 520px) {
   .index__list { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr; }
   .dos__fig--split { grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .led { animation: none; }
   .dos.is-on, .cap.is-on { animation: none; }
 }
-
-
-/* ═══════════ REVISION 2026-08-24 ═══════════
-   Aufan: "the object is the good thing on project C — in project C too much
-   word at once and lacking in visuals."
-   So: the twelve-row text index is gone (the solid IS the index), the stage is
-   near-full-height with the canvas dominant, and the text ledger became
-   engraved plates. Words down, object up. */
-
 .facetcount{
   position: absolute; left: 22px; top: 22px; z-index: 4;
   display: flex; align-items: baseline; gap: 4px; pointer-events: none;
@@ -370,12 +310,8 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   background: linear-gradient(90deg, var(--vermilion), transparent);
   align-self: center;
 }
-
-/* the canvas takes the room it deserves */
 .stage__canvaswrap, .stage canvas{ height: 100% }
 .stage canvas{ width: 100%; display: block }
-
-/* engraved plates instead of a table of sentences */
 .plates{
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 14px; margin-top: 28px;
@@ -386,7 +322,6 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   border: 1px solid rgba(200,154,63,.28);
   box-shadow: inset 0 1px 0 rgba(255,232,180,.22), inset 0 -1px 0 rgba(0,0,0,.35);
 }
-/* two screws, because a plate is fixed to something */
 .plate::before, .plate::after{
   content: ""; position: absolute; width: 5px; height: 5px; border-radius: 50%;
   background: radial-gradient(circle at 34% 30%, #E9D6A6, #8A6C2C 62%, #4A3812);
@@ -406,11 +341,9 @@ a { color: var(--brass-hi); text-underline-offset: 4px; }
   display: block; font-style: normal; font-size: 10.5px; letter-spacing: .05em;
   color: var(--bone-2); opacity: .62; margin-top: 5px;
 }
-
 @media (max-width: 940px){
   .plates{ grid-template-columns: 1fr 1fr }
   .stage{ grid-template-columns: minmax(0,1fr) !important; min-height: 0 }
   .facetcount{ left: 14px; top: 14px }
 }
-
 @media (max-width: 560px){ .plates{ grid-template-columns: 1fr } }

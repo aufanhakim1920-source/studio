@@ -1,13 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   PASAR MALAM CARLTON — night market landing page
-
-   Deliberately NOT the warm-cream + saturated-block recipe used on the
-   last three portfolio builds. Ground system is ref 24 (Aether dark
-   bento): near-black, 12-col bento, pastel WHOLE cards with black text,
-   two radii doing different jobs (32px card / 100px pill), dot grid.
-   Schedule devices are ref 25 (paper planner), reskinned dark.
-   ═══════════════════════════════════════════════════════════════ */
-
 :root{
   --bg:#0C0C10;
   --card:#151519;
@@ -16,27 +6,20 @@
   --border-2:#3A3A45;
   --text:#FFFFFF;
   --text-2:#8E8E9A;
-
-  /* pastels are whole-card backgrounds, never small accents */
   --mango:#F2C879;
   --taro:#C4B2E8;
   --pandan:#A9DCB4;
-  /* one high-saturation signal colour, used sparingly */
   --ember:#FF7A3D;
   --indigo:#7C8CE0;
-
   --r-card:32px;
   --r-pill:100px;
   --r-sm:14px;
-
   --ease:cubic-bezier(.22,.61,.36,1);
   --pop:cubic-bezier(.22,1.4,.36,1);
-
   --f-disp:"Syne","Trebuchet MS",sans-serif;
   --f-body:"Manrope",system-ui,-apple-system,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,monospace;
 }
-
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -49,18 +32,13 @@ h1,h2,h3{font-family:var(--f-disp); margin:0; letter-spacing:-.03em; line-height
 img,canvas,svg{display:block; max-width:100%}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--ember); outline-offset:3px; border-radius:8px}
-
 .skip{position:absolute; left:-9999px; top:0; z-index:99;
   background:var(--mango); color:#000; padding:10px 18px; border-radius:0 0 12px 0}
 .skip:focus{left:0}
-
 .dotgrid{position:fixed; inset:0; z-index:-1; opacity:.4; pointer-events:none;
   background-image:radial-gradient(var(--border) 1px, transparent 1px);
   background-size:40px 40px}
-
 .mono{font-family:var(--f-mono)}
-
-/* ═══════ floating pill nav ═══════ */
 .pillnav{
   position:fixed; top:22px; left:50%; transform:translateX(-50%); z-index:1000;
   display:flex; gap:6px; padding:7px;
@@ -74,8 +52,6 @@ a{color:inherit}
 }
 .pillnav a:hover:not(.is-active){color:var(--text); background:rgba(255,255,255,.05)}
 .pillnav a.is-active{background:var(--mango); color:#000; font-weight:600}
-
-/* ═══════ bento ═══════ */
 .bento{
   max-width:1220px; margin:96px auto 0;
   display:grid; grid-template-columns:repeat(12,1fr); gap:20px;
@@ -87,7 +63,6 @@ a{color:inherit}
 .card--mango{background:var(--mango); color:#000; border-color:transparent}
 .card--taro{background:var(--taro); color:#000; border-color:transparent}
 .card--pandan{background:var(--pandan); color:#000; border-color:transparent}
-
 .label{
   font-family:var(--f-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
   color:var(--text-2); margin:0 0 22px;
@@ -98,21 +73,14 @@ a{color:inherit}
   box-shadow:0 0 12px var(--ember); animation:pulse 2.4s ease-in-out infinite; margin-right:9px}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 .label .dot + span{flex:1}
-
 .big{font-family:var(--f-disp); font-weight:700; font-size:60px; letter-spacing:-.045em;
   line-height:.92; display:block; margin:6px 0 14px}
 .card__note{font-size:13.5px; line-height:1.55; color:var(--text-2); margin:0}
 .card--mango .card__note,.card--taro .card__note,.card--pandan .card__note{color:rgba(0,0,0,.66)}
 .card__note--tight{margin-top:12px; font-size:12px}
-
 .sec__h2{font-size:clamp(24px,3vw,34px); margin:0 0 20px}
-
-/* ═══════ hero ═══════ */
 .hero{display:flex; flex-direction:column; justify-content:space-between; min-height:430px}
 .hero__h1{font-size:clamp(32px,3.6vw,50px); font-weight:800; margin-bottom:20px; line-height:1.06}
-/* highlighter stroke, not a border — ref 25, reskinned to ember on dark.
-   NOT a z-index:-1 pseudo-element: that paints behind the card's own
-   background and disappears entirely. A gradient on the span works anywhere. */
 .hero__h1 .hl{
   display:inline; padding:0 4px; box-decoration-break:clone;
   -webkit-box-decoration-break:clone;
@@ -120,8 +88,6 @@ a{color:inherit}
 }
 .hero__lede{color:var(--text-2); max-width:46ch; margin:0; font-size:16.5px}
 .hero__cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:30px}
-
-/* brushed-metal button — ref 18, the best one in the library */
 .metal{
   font-family:var(--f-body); font-weight:600; font-size:14.5px; text-decoration:none;
   color:#111; padding:14px 26px; border-radius:var(--r-pill); border:1px solid #9A9AA6;
@@ -135,7 +101,6 @@ a{color:inherit}
              0 4px 0 #6E6E7A, 0 14px 22px -8px rgba(0,0,0,.8)}
 .metal:active{transform:translateY(2px);
   box-shadow:inset 0 2px 4px rgba(0,0,0,.4), 0 0 0 #6E6E7A}
-
 .pillbtn{
   font-size:14px; font-weight:500; text-decoration:none; color:var(--text);
   background:#232329; border:1px solid var(--border); border-radius:var(--r-pill);
@@ -143,8 +108,6 @@ a{color:inherit}
   transition:.2s var(--ease); cursor:pointer;
 }
 .pillbtn:hover{border-color:var(--border-2); background:#2B2B33}
-
-/* ═══════ side stats ═══════ */
 .sidestats{display:flex; flex-direction:column; gap:20px}
 .sidestats .card{flex:1}
 .avatars{display:flex; align-items:center; margin-top:20px}
@@ -156,8 +119,6 @@ a{color:inherit}
 }
 .avatars__more{font-style:normal; font-family:var(--f-mono); font-size:11px;
   color:rgba(0,0,0,.6); margin-left:22px; white-space:nowrap}
-
-/* ═══════ the lantern ═══════ */
 .lanterncard{display:flex; flex-direction:column}
 .lantern{position:relative; flex:1; min-height:372px; touch-action:none; cursor:grab}
 .lantern:active{cursor:grabbing}
@@ -169,8 +130,6 @@ a{color:inherit}
 .hud span{display:block; font-family:var(--f-mono); font-size:10px; line-height:1.45;
   color:rgba(255,255,255,.55); margin-top:3px}
 .lantern__note{font-size:13px; color:var(--text-2); margin:18px 0 0; max-width:52ch}
-
-/* ═══════ donut ═══════ */
 .donutwrap{display:flex; gap:22px; align-items:center; flex-wrap:wrap}
 .donut{width:150px; height:150px; flex:none}
 .legend{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:9px; flex:1}
@@ -182,8 +141,6 @@ a{color:inherit}
   background:repeating-linear-gradient(45deg,
     rgba(255,255,255,.055), rgba(255,255,255,.055) 10px, transparent 10px, transparent 20px);
 }
-
-/* ═══════ crowd chart ═══════ */
 .chart{display:flex; align-items:flex-end; gap:8px; height:118px; margin-top:24px}
 .chart b{
   flex:1; display:block; height:0; min-height:18px; border-radius:var(--r-pill);
@@ -193,8 +150,6 @@ a{color:inherit}
 .chart__axis{list-style:none; display:flex; gap:8px; padding:0; margin:10px 0 0}
 .chart__axis li{flex:1; text-align:center; font-family:var(--f-mono); font-size:10px;
   color:rgba(0,0,0,.5)}
-
-/* ═══════ right now ═══════ */
 .now__title{font-size:32px; font-weight:700; margin-bottom:8px}
 .now__sub{color:var(--text-2); margin:0 0 20px; font-size:15px}
 .nowlist{list-style:none; padding:0; margin:0}
@@ -204,8 +159,6 @@ a{color:inherit}
 .nowlist .tag{font-family:var(--f-mono); font-size:11px; padding:4px 9px;
   background:#232329; border-radius:6px; color:var(--mango); white-space:nowrap}
 .nowlist .tag--off{color:var(--text-2)}
-
-/* ═══════ programme (ref 25 hour rows, reskinned dark) ═══════ */
 .schedcard{padding-bottom:38px}
 .sched{position:relative; margin-top:6px}
 .hour{display:flex; height:52px; position:relative}
@@ -228,16 +181,12 @@ a{color:inherit}
 .sched__line::before{content:""; position:absolute; left:-5px; top:-4.5px;
   width:10px; height:10px; border-radius:50%; background:var(--ember);
   box-shadow:0 0 10px var(--ember)}
-
-/* page curl — ref 25, adjacent-sibling hover */
 .curl-target{position:absolute; right:0; bottom:0; width:96px; height:96px; z-index:6}
 .curl{position:absolute; right:0; bottom:0; width:0; height:0; pointer-events:none;
   border-bottom-right-radius:var(--r-card); border-top-left-radius:12px;
   background:linear-gradient(135deg, transparent 45%, #33333D 50%, #1A1A20 56%, transparent 60%);
   box-shadow:-6px -6px 14px rgba(0,0,0,.5); transition:all .4s var(--pop)}
 .curl-target:hover + .curl{width:64px; height:64px}
-
-/* ═══════ stalls ═══════ */
 .filters{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}
 .filt{
   font-family:var(--f-mono); font-size:11.5px; letter-spacing:.05em; text-transform:uppercase;
@@ -246,7 +195,6 @@ a{color:inherit}
 }
 .filt:hover{color:var(--text); border-color:var(--border-2)}
 .filt.is-on{background:var(--taro); color:#000; border-color:transparent; font-weight:500}
-
 .stallgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:14px}
 .stall{
   background:var(--card-2); border:1px solid var(--border); border-radius:20px;
@@ -267,15 +215,12 @@ a{color:inherit}
 .s-soon{background:rgba(255,255,255,.06); color:var(--text-2)}
 .s-out{background:rgba(255,122,61,.14); color:var(--ember)}
 .stall__kit{position:absolute; right:16px; top:16px; width:9px; height:9px; border-radius:3px}
-
-/* ═══════ facts + checks ═══════ */
 .facts{margin:0}
 .facts > div{display:flex; gap:18px; padding:14px 0; border-bottom:1px solid var(--border)}
 .facts > div:last-child{border-bottom:0}
 .facts dt{width:96px; flex:none; font-family:var(--f-mono); font-size:11.5px;
   letter-spacing:.06em; text-transform:uppercase; color:var(--text-2); padding-top:3px}
 .facts dd{margin:0; font-size:15px}
-
 .checks{list-style:none; padding:0; margin:0}
 .checks li{display:flex; align-items:flex-start; gap:12px; padding:11px 0;
   border-bottom:1px solid rgba(0,0,0,.13); cursor:pointer; font-size:14.5px}
@@ -291,16 +236,12 @@ a{color:inherit}
   border:solid var(--mango); border-width:0 1.5px 1.5px 0; transform:rotate(45deg);
 }
 .checks li.is-done span{text-decoration:line-through; opacity:.5}
-
-/* ═══════ footer pill ═══════ */
 .foot{
   border-radius:var(--r-pill); padding:22px 34px;
   display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
 }
 .foot__mark{font-family:var(--f-disp); font-weight:700; font-size:15px; letter-spacing:.02em}
 .foot .mono{font-size:11px; color:var(--text-2); letter-spacing:.05em}
-
-/* ═══════ the clock bar — it drives the whole page ═══════ */
 .clockbar{
   position:fixed; left:0; right:0; bottom:0; z-index:900; padding:14px 26px 20px;
   background:linear-gradient(rgba(12,12,16,0), rgba(12,12,16,.86) 34%, rgba(12,12,16,.97));
@@ -315,7 +256,6 @@ a{color:inherit}
 .scrubwrap{flex:1; position:relative; padding-bottom:14px}
 .clockbar__out{font-family:var(--f-disp); font-weight:700; font-size:22px;
   letter-spacing:-.02em; min-width:74px; text-align:right}
-
 .scrub{
   -webkit-appearance:none; appearance:none; width:100%; background:transparent;
   margin:0; cursor:grab; display:block;
@@ -337,13 +277,9 @@ a{color:inherit}
 .scrub__ticks{list-style:none; display:flex; justify-content:space-between;
   padding:0; margin:6px 2px 0; position:absolute; left:0; right:0; bottom:0}
 .scrub__ticks li{font-family:var(--f-mono); font-size:9.5px; color:var(--text-2)}
-
-/* ═══════ scroll reveal, one-shot, JS-gated ═══════ */
 .js .rv{opacity:0; transform:translateY(16px);
   transition:opacity .55s var(--ease), transform .55s var(--ease)}
 .js .rv.is-in{opacity:1; transform:none}
-
-/* ═══════ responsive ═══════ */
 @media (max-width:1000px){
   .bento > *{grid-column:span 12 !important}
   .sidestats{flex-direction:row}
@@ -366,7 +302,6 @@ a{color:inherit}
   .hud{max-width:104px}
   .hud span{display:none}
 }
-
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important;

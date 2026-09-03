@@ -1,17 +1,3 @@
-/* Calendar — LANE 1: chill.
-   =========================================================================
-   A real calendar, not a mockup: month grid, a day panel, add / edit /
-   delete, and everything persisted to localStorage so it survives a reload.
-
-   The three lanes share this exact feature set on purpose — "function same,
-   everything else new" — so the only thing being compared is the design.
-
-   ⚠️ No ambient motion anywhere. The vault records that a previous calendar
-   front-end ("The Stream") was rejected outright with "it makes me
-   nauseous", and the standing rule from that is: show availability without
-   full-screen movement the viewer never asked for. Every animation here is
-   caused by a click. */
-
 const KEY = "cal-chill-events";
 const KINDS = {
   class:    { label: "Class",    color: "#3E63DD" },

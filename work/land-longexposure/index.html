@@ -15,10 +15,6 @@
 
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- ⭐ THE OBJECT: a long-exposure photograph of the visitor's own cursor.
-     Raw WebGL, ping-pong frame feedback (two FBOs swapped each frame) so the
-     shader reads the previous frame and the light accumulates. Full viewport,
-     behind the whole page — the exposure IS the page, not a box in a column. -->
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 
@@ -38,7 +34,6 @@
   </button>
 </header>
 
-<!-- mobile navigation, animated open/close - never display:none with nothing behind it -->
 <div class="navsheet" id="navsheet" hidden>
   <a href="#captures">Captures</a>
   <a href="#signals">Signals</a>
@@ -68,8 +63,6 @@
       Move the cursor &mdash; that light is your own path, held open like a long exposure.</p>
   </section>
 
-  <!-- the rail is the live event stream of whatever session is playing: the ghost
-       replay when you are idle, YOUR session the moment you move -->
   <div class="rail" aria-hidden="true">
     <div class="rail__t" id="rail"></div>
   </div>
@@ -110,7 +103,6 @@
   <span class="mono" id="clock">&mdash;</span>
 </footer>
 
-<!-- the capture detail panel: grows out of the card that opened it -->
 <div class="ov" id="ov" hidden>
   <div class="ov__bg" id="ovBg"></div>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">

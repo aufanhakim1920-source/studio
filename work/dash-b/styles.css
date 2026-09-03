@@ -1,14 +1,5 @@
-/* ============================================================
-   THE ANNUAL SKYLINE — dash-b, modern-creative lane
-   Object: a 13-tower CSS-3D skyline, one tower per month.
-   Height = that month's revenue. Turning the dial (or clicking
-   a tower) selects a month and rewrites the console readout.
-   ============================================================ */
-
 :root{
-  /* ground: deep indigo-black — distinct from the three retired
-     grounds (warm cream, brushed-metal black, cold paper) and
-     from dash-board's neutral slate */
+  
   --ground:      #0A0E1A;
   --ground-2:    #0D1322;
   --panel:       #10192E;
@@ -61,7 +52,6 @@ body{
 
 ::selection{ background: var(--amber); color: #1a1200; }
 
-/* ---------- texture: a fixed grain layer, never optional ---------- */
 .grain{
   position: fixed;
   inset: 0;
@@ -82,7 +72,6 @@ body::before{
     radial-gradient(ellipse 1000px 700px at 50% 100%, rgba(0,0,0,0.5), transparent 60%);
 }
 
-/* ---------- layout shell ---------- */
 main, header, footer{ position: relative; z-index: 1; }
 
 .topbar{
@@ -121,10 +110,7 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   line-height: 1.02;
   margin: 0 0 14px;
 }
-/* ---------- year totals: three numbers, each with its own shape ----------
-   This block replaced the intro paragraph. Same slot, same width, no prose:
-   the label is one word, the value is the number, and the row of micro
-   towers is the month-by-month shape that produced it. */
+
 .yearstats{
   display: flex;
   flex-wrap: wrap;
@@ -161,7 +147,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
 }
 .microbars__b:last-child{ background: var(--amber-dim); }
 
-/* ---------- the instrument: skyline + console ---------- */
 .instrument{
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.9fr);
@@ -224,10 +209,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
 }
 .building:focus-visible{ outline: 2px solid var(--amber); outline-offset: 4px; }
 
-/* Invisible expanded tap target. The tower stays exactly the size it is —
-   this pseudo-element only grows the touch region. It lives in the same 3D
-   space as the faces, so the local height has to be ~1/cos(rotateX) larger
-   than the on-screen target it projects to; see the mobile block below. */
 .building::after{
   content: '';
   position: absolute;
@@ -249,7 +230,7 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   overflow: hidden;
 }
 .face.front::before{
-  /* dim window bands — always present */
+  
   content: '';
   position: absolute; inset: 3px;
   background-image: repeating-linear-gradient(
@@ -260,7 +241,7 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   opacity: 0.7;
 }
 .face.front::after{
-  /* amber window bands — fades in when selected */
+  
   content: '';
   position: absolute; inset: 3px;
   background-image: repeating-linear-gradient(
@@ -309,8 +290,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   margin-top: 54px;
 }
 
-/* The plaque was a line of type listing 38 markets and a share. It is now
-   the share itself — one bar, two segments, a two-item key. */
 .plaque{
   margin: 14px 2px 0;
   font-family: var(--mono);
@@ -343,7 +322,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
 .sharekey .sw.is-home{ background: var(--amber); }
 .sharekey .sw.is-rest{ background: var(--tower-top); }
 
-/* ---------- console: dial + readout ---------- */
 .console{
   display: flex;
   flex-direction: column;
@@ -361,10 +339,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   gap: 10px;
 }
 
-/* Positioning context for .dial, sized to the ring so the knob centres on it.
-   .dial is absolutely positioned; as a bare sibling of .tick-ring it had no
-   positioned ancestor and resolved against <main>, putting the knob 380px away
-   on top of the skyline (where it also swallowed tower clicks). */
 .dial-stage{
   position: relative;
   width: 128px; height: 128px;
@@ -546,7 +520,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   color: var(--ink);
 }
 
-/* ---------- findings ---------- */
 .findings{
   max-width: 1180px;
   margin: clamp(48px, 7vw, 80px) auto 0;
@@ -573,8 +546,7 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   letter-spacing: -0.02em;
   color: var(--amber);
 }
-/* Each finding used to carry a sentence under its stat. It now carries the
-   bars the sentence was describing — same information, no reading. */
+
 .fbars{ display: flex; flex-direction: column; gap: 7px; max-width: 42ch; }
 .fbar{ display: flex; align-items: center; gap: 10px; }
 .fbar__lab{
@@ -613,7 +585,6 @@ main{ padding: clamp(28px, 5vw, 64px) clamp(20px, 4vw, 56px) 8px; }
   text-align: right;
 }
 
-/* ---------- provenance strip: the source note, drawn ---------- */
 footer{
   max-width: 1180px;
   margin: clamp(36px, 6vw, 60px) auto 0;
@@ -647,16 +618,10 @@ footer{
 }
 .prov__chip--warn{ color: var(--amber); border-color: var(--amber-dim); }
 
-/* ---------- responsive ---------- */
 @media (max-width: 860px){
   .instrument{ grid-template-columns: 1fr; }
   .city{ transform: rotateX(48deg) rotateY(-10deg); }
-  /* B2: "pick a tower" is the primary interaction, so the touch region has to
-     clear 44px even though the visible tower must stay narrow enough that all
-     13 fit a phone. The tower itself is untouched; only this invisible box
-     grows — downward (toward the viewer in the rotated plane) so short towers
-     get a target too, and just into the plot gutters so neighbours never
-     overlap. Measured at 375/390/768: 34px tall before, 67px+ after. */
+  
   .building::after{
     width: calc(100% + 3px);
     bottom: -46px;
@@ -676,7 +641,7 @@ footer{
   .value{ font-size: 28px; }
   .finding-grid{ grid-template-columns: 1fr; }
   .dial-unit{ padding: 16px; }
-  /* The stage carries the size now; .tick-ring fills it via inset:0. */
+  
   .dial-stage{ width: 104px; height: 104px; }
   .tick-ring .t{
     height: 46px;
@@ -697,7 +662,6 @@ footer{
   .tick-ring{ margin-bottom: 2px; }
 }
 
-/* ---------- motion discipline ---------- */
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{
     animation-duration: 0.001ms !important;

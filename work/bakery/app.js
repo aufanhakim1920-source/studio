@@ -1,18 +1,5 @@
-/* ═══════════════════════════════════════════════════════════════════
-   SECOND RISE — the baker's rack trolley.
-
-   Five trays, one per hour of the bake. Pull one forward and the other
-   four push back. The rack carries the menu AND the timetable, so there
-   is no hours block and no product list anywhere else on the page.
-
-   MOTION POLICY: nothing in this file starts on its own. Every transform
-   written here is the direct result of a click, a drag, a key or the
-   pointer. There is no rAF loop, no interval, no autoplay.
-   ═══════════════════════════════════════════════════════════════════ */
-
 (() => {
   "use strict";
-
   // ── the bake ───────────────────────────────────────────────────────
   const TRAYS = [
     {
@@ -125,25 +112,20 @@
       ]
     }
   ];
-
   const $  = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
   const rackEl   = $("#rackMount");
   const bodyEl   = $("#rackBody");
   const runnerWr = $("#runners");
   const trayWr   = $("#trays");
   const stage    = $("#stage");
   if (!rackEl || !trayWr) return;
-
   // deterministic scatter — jitter needs ROTATION, not just position
   const jitter = (n) => {
     const v = Math.sin(n * 127.1) * 43758.5453;
     return (v - Math.floor(v)) * 2 - 1;                // −1 … 1
   };
-
   const px = (v) => `calc(var(--lv0) + ${v} * var(--lvl))`;
-
   // viewBoxes must match the <symbol> definitions in index.html
   const VB = {
     "g-boule": "0 0 104 82", "g-batard": "0 0 136 66", "g-olive": "0 0 90 68",
@@ -152,7 +134,6 @@
     "g-focaccia": "0 0 132 46", "g-roll": "0 0 110 48", "g-pasty": "0 0 104 58",
     "g-half": "0 0 76 80", "g-bag": "0 0 80 86"
   };
-
   /* Every symbol is drawn from --crust / --crust-lo / --crust-dk, so one line
      per product repaints it. A rack where everything is the same brown reads as
      one lump; pale milk bread next to dark rye is what makes it read as a bake. */
@@ -178,11 +159,9 @@
     const c = COL[k] || COL.country;
     return `--crust:${c[0]};--crust-lo:${c[1]};--crust-dk:${c[2]};`;
   };
-
   // ── build the rack ─────────────────────────────────────────────────
   const tags = [];
   const trays = [];
-
   TRAYS.forEach((t, i) => {
     // runners: two bars per level, running front to back, so the slot is visible
     ["l", "r"].forEach((side) => {
@@ -192,7 +171,6 @@
       r.style.marginTop = "10px";
       runnerWr.appendChild(r);
     });
-
     // chalk tag clipped to the runner
     const tag = document.createElement("button");
     tag.type = "button";
@@ -205,14 +183,12 @@
     tag.setAttribute("aria-label", `Pull out the ${t.time} tray — ${t.title}`);
     bodyEl.appendChild(tag);
     tags.push(tag);
-
     // the tray itself
     const tray = document.createElement("div");
     tray.className = "tray";
     tray.style.top = px(i);
     tray.dataset.i = String(i);
     tray.tabIndex = -1;
-
     const goodsHTML = (list, cls, seed) => {
       const inner = list.map((g, n) => {
         const rot = (jitter(seed * 31 + n * 7) * 4.5).toFixed(2);
@@ -221,22 +197,18 @@
       }).join("");
       return `<div class="goods ${cls}">${inner}</div>`;
     };
-
     tray.innerHTML =
       `<div class="tray__deck"></div>` +
       goodsHTML(t.back,  "goods--back",  i * 2 + 1) +
       goodsHTML(t.front, "goods--front", i * 2) +
       `<div class="tray__lip"></div>`;
-
     trayWr.appendChild(tray);
     trays.push(tray);
   });
-
   function labelOf(t, k) {
     const it = t.items.find((x) => x.k === k);
     return it ? it.n.replace(/&amp;/g, "&") : "baked good";
   }
-
   // ── time in Melbourne, read once on load (a ticking clock would loop) ──
   function melbourne() {
     const f = new Intl.DateTimeFormat("en-AU", {
@@ -256,29 +228,24 @@
   }
   const NOW = melbourne();
   const SHUT = NOW.day.startsWith("MON");
-
   function statusOf(t) {
     if (SHUT)              return { text: `Tomorrow ${t.time}`, cls: "" };
     if (NOW.mins < t.out)  return { text: `Out at ${t.time}`,   cls: "" };
     if (NOW.mins < t.gone) return { text: "On the rack now",    cls: "is-now" };
     return { text: "Gone for today", cls: "is-gone" };
   }
-
   // ── the docket reads whatever tray is out ──────────────────────────
   const dTime = $("#dTime"), dStatus = $("#dStatus"), dTitle = $("#dTitle"),
         dNote = $("#dNote"), dRows = $("#dRows"), dFoot = $("#dFoot");
-
   // ── the specimen window ────────────────────────────────────────────
   // It is what makes the good ↔ row link load-bearing rather than a highlight:
   // pointing at anything on the tray draws that thing at full size with its price.
   const sSvg = $("#dSpecSvg"), sUse = $("#dSpecUse"), sLab = $("#dSpecLabel"),
         sName = $("#dSpecName"), sSub = $("#dSpecSub"), sPrice = $("#dSpecPrice");
-
   const symbolFor = (t, k) => {
     const hit = t.front.find((g) => g.k === k) || t.back.find((g) => g.k === k);
     return hit ? hit.g : "g-boule";
   };
-
   function setSpec(i, key, pointed) {
     const t = TRAYS[i];
     const it = t.items.find((x) => x.k === key) || t.items[0];
@@ -291,7 +258,6 @@
     sSub.textContent = it.s;
     sPrice.textContent = it.p;
   }
-
   function renderDocket(i) {
     const t = TRAYS[i];
     const st = statusOf(t);
@@ -301,7 +267,6 @@
     dTitle.textContent = t.title;
     dNote.textContent  = t.note;
     dFoot.textContent  = SHUT ? "Shut today — " + t.foot : t.foot;
-
     const sold = st.cls === "is-gone";
     dRows.innerHTML = t.items.map((it) =>
       `<li data-item="${it.k}" class="${sold ? "out" : ""}">
@@ -309,16 +274,12 @@
          <span class="dots"></span>
          <span class="p">${it.p}</span>
        </li>`).join("");
-
     // sold-out trays grey their own goods — state you can see on the object
     trays[i].querySelectorAll(".good").forEach((g) => g.classList.toggle("good__sold", sold));
-
     setSpec(i, t.items[0].k, false);
   }
-
   // ── the mechanic: pull one tray out, push the rest back ────────────
   let openIndex = -1;
-
   function openTray(i, { focusTag = false } = {}) {
     openIndex = i;
     trays.forEach((el, k) => {
@@ -333,7 +294,6 @@
     renderDocket(i);
     if (focusTag) tags[i].focus();
   }
-
   // one-shot rock of the whole trolley on its castors. Caused by the pull.
   function rock() {
     bodyEl.classList.remove("is-rocking");
@@ -341,7 +301,6 @@
     bodyEl.classList.add("is-rocking");
   }
   bodyEl.addEventListener("animationend", () => bodyEl.classList.remove("is-rocking"));
-
   tags.forEach((tag) => {
     tag.addEventListener("click", () => openTray(+tag.dataset.i));
     tag.addEventListener("keydown", (e) => {
@@ -352,16 +311,13 @@
       openTray(next, { focusTag: true });
     });
   });
-
   // ── drag a tray out by hand ────────────────────────────────────────
   // The rack is yawed, so local +Z maps to (sin(yaw), 0, cos(yaw)) on screen:
   // horizontal pointer travel is only sin(yaw) of the real pull distance.
   const YAW = 22 * Math.PI / 180;
   const HSCALE = Math.sin(YAW);              // ≈ 0.375
-
   trays.forEach((tray) => {
     let id = null, x0 = 0, base = 0, moved = 0, max = 0;
-
     tray.addEventListener("pointerdown", (e) => {
       if (e.button !== undefined && e.button !== 0) return;
       const cs = getComputedStyle(tray);
@@ -371,14 +327,12 @@
       tray.setPointerCapture(id);
       tray.classList.add("is-dragging");
     });
-
     tray.addEventListener("pointermove", (e) => {
       if (id === null || e.pointerId !== id) return;
       moved = e.clientX - x0;
       const z = Math.max(-26, Math.min(max, base + moved / HSCALE));
       tray.style.setProperty("--z", z.toFixed(1) + "px");
     });
-
     const end = (e) => {
       if (id === null || (e.pointerId !== undefined && e.pointerId !== id)) return;
       try { tray.releasePointerCapture(id); } catch (_) {}
@@ -395,7 +349,6 @@
     tray.addEventListener("pointerup", end);
     tray.addEventListener("pointercancel", end);
   });
-
   // ── two-way link: a drawn good and its priced row are the same thing ──
   function light(key, on) {
     if (openIndex < 0) return;
@@ -406,7 +359,6 @@
     setSpec(openIndex, on ? key : TRAYS[openIndex].items[0].k, on);
   }
   const keyOf = (el) => el && el.dataset ? el.dataset.item : null;
-
   trayWr.addEventListener("pointerover", (e) => {
     const g = e.target.closest(".good"); if (g && +g.dataset.tray === openIndex) light(keyOf(g), true);
   });
@@ -419,7 +371,6 @@
   dRows.addEventListener("pointerout", (e) => {
     const li = e.target.closest("li"); if (li) light(keyOf(li), false);
   });
-
   // ── pointer parallax: the trolley turns to face you, ±4°, then settles ──
   stage.addEventListener("pointermove", (e) => {
     const r = stage.getBoundingClientRect();
@@ -427,19 +378,16 @@
     rackEl.style.setProperty("--yaw", (t * -8).toFixed(2) + "deg");
   });
   stage.addEventListener("pointerleave", () => rackEl.style.setProperty("--yaw", "0deg"));
-
   // ── open on the tray that matters right now ────────────────────────
   let start = 0;
   for (let i = 0; i < TRAYS.length; i++) if (NOW.mins >= TRAYS[i].out) start = i;
   openTray(start);
-
   const hint = $("#stageHint");
   if (hint) {
     hint.textContent = SHUT
       ? "Closed Mondays · click a chalk tag to see the week's bake"
       : "Click a chalk tag · drag a tray · ↑ ↓ to step";
   }
-
   // ── the hero specimen turns to face the pointer, and the light with it ──
   const lw = $(".hero__loafwrap"), loaf = $(".hero__loaf");
   if (lw && loaf) {
@@ -459,21 +407,18 @@
       lw.style.setProperty("--glare", "0");
     });
   }
-
   // ── the order pad ──────────────────────────────────────────────────
   const pad = $("#pad");
   if (pad) {
     $("#padNo").textContent = "No. 0" + (412 + (NOW.mins % 77));
     $("#stampDate").textContent = NOW.stamp;
     const err = $("#padErr"), stamp = $("#stamp");
-
     pad.addEventListener("submit", (e) => {
       e.preventDefault();                       // nothing leaves this page
       const missing = ["business", "suburb", "units", "product", "email"]
         .filter((n) => !String(pad.elements[n].value).trim());
       const email = String(pad.elements.email.value);
       const units = parseInt(pad.elements.units.value, 10);
-
       if (missing.length) {
         err.hidden = false;
         err.textContent = "Fill in " + missing.join(", ") + " and try again.";
@@ -495,7 +440,6 @@
       pad.querySelector("button").textContent = "Kate has it";
     });
   }
-
   // exposed for the verification harness only — no page code reads this
   window.__rack = { openTray, open: () => openIndex, count: TRAYS.length };
 })();
