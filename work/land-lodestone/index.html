@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LODESTONE — the cheapest way through</title>
+<meta name="description" content="LODESTONE is a payments router. It prices every transaction across 14 card acquirers and 28 local rails in 31 countries, then sends it down the path that costs least.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2307080A'/%3E%3Cg stroke='%23C6F135' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M8 24V13a8 8 0 0 1 16 0v11'/%3E%3Cpath d='M8 24h5M19 24h5'/%3E%3C/g%3E%3C/svg%3E">
+</head>
+<body id="top">
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ THE OBJECT: a field of iron filings that lie along a magnetic field.
+     Raw WebGL, one fullscreen triangle, no library. It is the whole page
+     background, and the magnet is the cheapest route. -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="logo" href="#top"><i></i>LODESTONE</a>
+
+  <nav class="nav__l" aria-label="Primary">
+    <a href="#route">Routing</a>
+    <a href="#num">Numbers</a>
+    <a href="#faq">Questions</a>
+  </nav>
+
+  <a class="btn btn--solid mag nav__cta" href="#cta">Get API keys</a>
+
+  <button class="nav__menu" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="menu" id="menu">
+    <div class="menu__in">
+      <a href="#route">Routing</a>
+      <a href="#num">Numbers</a>
+      <a href="#faq">Questions</a>
+      <a class="btn btn--solid menu__cta" href="#cta">Get API keys</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="eyebrow rv"><i class="dot"></i>Live &middot; 42 endpoints &middot; 31 countries</p>
+    <h1 class="rv">Every payment finds<br>the <em>cheapest</em> way<br>through.</h1>
+    <p class="sub rv">LODESTONE is a payments router. It prices each transaction across
+      14 card acquirers and 28 local rails, then sends it down the path that costs least and
+      clears fastest &mdash; 9&nbsp;ms added, one API, your existing agreements.</p>
+    <div class="row rv">
+      <a class="btn btn--solid btn--lg mag" href="#cta">Get API keys <span>&rarr;</span></a>
+      <a class="btn btn--ghost btn--lg mag" href="#route">See a routing decision</a>
+    </div>
+    <p class="fine rv">Test keys in 4 minutes &middot; no volume minimum &middot; PCI&nbsp;DSS Level 1</p>
+    <p class="hint rv" aria-hidden="true"><i></i>Drag anywhere &mdash; the filings turn to the cheapest route</p>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker__t" id="tick"></div></div>
+
+  <section class="route" id="route">
+    <p class="tag rv">01 &mdash; one payment, three ways</p>
+    <h2 class="rv">A$240.00, Sydney to Singapore.<br>Three paths. <em>Six times</em> the spread.</h2>
+    <p class="lede rv">Same card on file, same customer, same second. LODESTONE prices all three
+      and commits in 9&nbsp;ms. Open one to see the decision it wrote down.</p>
+    <div class="routes" id="routes"></div>
+  </section>
+
+  <section class="num" id="num">
+    <p class="tag rv">02 &mdash; what it changes</p>
+    <div class="num__g" id="nums"></div>
+    <p class="fine rv">Median merchant, first 90 days on production keys. 214 merchants, FY25.</p>
+  </section>
+
+  <section class="faq" id="faq">
+    <p class="tag rv">03 &mdash; questions</p>
+    <h2 class="rv">The ones treasury asks first.</h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+  <section class="cta" id="cta">
+    <h2 class="rv">Point it at one corridor.<br><em>Watch the bill.</em></h2>
+    <a class="btn btn--solid btn--lg mag" href="#top">Get API keys <span>&rarr;</span></a>
+    <p class="fine rv">Read-only in shadow mode for 30 days &middot; no traffic moves until you say so</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="foot__b">LODESTONE</span>
+  <nav class="foot__l" aria-label="Footer">
+    <a href="#route">Docs</a><a href="#num">Status</a><a href="#faq">Security</a>
+  </nav>
+  <span class="foot__c mono">Blended rate today &middot; <b>152 bps</b></span>
+</footer>
+
+<!-- the decision panel: it grows out of the card you clicked -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__scrim" id="scrim"></div>
+  <div class="modal__panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="modal__x" id="mClose" aria-label="Close">&times;</button>
+    <div class="modal__body" id="mBody"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

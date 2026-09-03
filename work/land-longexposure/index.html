@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AFTERIMAGE — session replay for web apps</title>
+<meta name="description" content="AFTERIMAGE records what a real user did — every move, hesitation and rage-click — and plays it back next to the console log.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0908'/%3E%3Cpath d='M5 25C9 9 17 27 27 7' stroke='%23FF7A2F' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ⭐ THE OBJECT: a long-exposure photograph of the visitor's own cursor.
+     Raw WebGL, ping-pong frame feedback (two FBOs swapped each frame) so the
+     shader reads the previous frame and the light accumulates. Full viewport,
+     behind the whole page — the exposure IS the page, not a box in a column. -->
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="logo" href="#top"><i></i>AFTERIMAGE</a>
+
+  <nav class="nav__l" id="navlinks" aria-label="Sections">
+    <a href="#captures">Captures</a>
+    <a href="#signals">Signals</a>
+    <a href="#questions">Questions</a>
+  </nav>
+
+  <a class="btn btn--solid mag nav__cta" href="#start">Start recording <span>&rarr;</span></a>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navsheet">
+    <i></i><i></i>
+  </button>
+</header>
+
+<!-- mobile navigation, animated open/close - never display:none with nothing behind it -->
+<div class="navsheet" id="navsheet" hidden>
+  <a href="#captures">Captures</a>
+  <a href="#signals">Signals</a>
+  <a href="#questions">Questions</a>
+  <a class="btn btn--solid" href="#start">Start recording <span>&rarr;</span></a>
+</div>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <p class="eyebrow rv"><i class="dot"></i><span id="replayLabel">Replaying session 4182</span></p>
+
+    <h1 class="rv">The eleven seconds<br><em>before</em> the error.</h1>
+
+    <p class="sub rv">AFTERIMAGE records what a real person did in your app — every move,
+      every hesitation, every rage-click — and plays it back beside the console log from the
+      same millisecond. You stop guessing which click produced the stack trace.</p>
+
+    <div class="row rv">
+      <a class="btn btn--solid btn--lg mag" href="#start">Start recording <span>&rarr;</span></a>
+      <a class="btn btn--ghost btn--lg mag" href="#captures">Open a capture</a>
+    </div>
+
+    <p class="fine rv">1,000 sessions free every month &middot; 38&nbsp;KB each &middot; no card</p>
+
+    <p class="hint rv" id="hint"><span class="hint__k">&#9679;</span> This page is recording you.
+      Move the cursor &mdash; that light is your own path, held open like a long exposure.</p>
+  </section>
+
+  <!-- the rail is the live event stream of whatever session is playing: the ghost
+       replay when you are idle, YOUR session the moment you move -->
+  <div class="rail" aria-hidden="true">
+    <div class="rail__t" id="rail"></div>
+  </div>
+
+  <section class="cap" id="captures">
+    <p class="tag rv"><b>001</b> / captures</p>
+    <h2 class="rv">Three sessions we kept.<br>Open one.</h2>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="sig" id="signals">
+    <p class="tag rv"><b>002</b> / signals</p>
+    <div class="sig__g" id="nums"></div>
+    <p class="foot-note rv">Measured across 4.1&nbsp;million sessions on the Sydney and Frankfurt
+      regions, last 30 days.</p>
+  </section>
+
+  <section class="faq" id="questions">
+    <p class="tag rv"><b>003</b> / questions</p>
+    <h2 class="rv">Asked by every team that installs it.</h2>
+    <div class="qa" id="qa"></div>
+  </section>
+
+  <section class="cta" id="start">
+    <h2 class="rv">Put the script on one page.<br><em>Break it on purpose.</em></h2>
+    <a class="btn btn--solid btn--lg mag" href="#top">Start recording <span>&rarr;</span></a>
+    <p class="fine rv">One &lt;script&gt; tag &middot; 14&nbsp;KB gzipped &middot; keystrokes masked by default</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span class="mono">AFTERIMAGE &mdash; Sydney &middot; Frankfurt</span>
+  <span class="foot__l">
+    <a href="#questions">Security</a>
+    <a href="#signals">Status</a>
+    <a href="#start">Docs</a>
+  </span>
+  <span class="mono" id="clock">&mdash;</span>
+</footer>
+
+<!-- the capture detail panel: grows out of the card that opened it -->
+<div class="ov" id="ov" hidden>
+  <div class="ov__bg" id="ovBg"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet__in" id="sheetIn">
+      <button class="sheet__x" id="sheetX" aria-label="Close capture">&times;</button>
+      <div class="sheet__c" id="sheetC"></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

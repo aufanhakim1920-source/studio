@@ -330,5 +330,29 @@
     "blurb": "a mass of cold metal that heats where you rub it, then cools on its own",
     "date": "3 Sep",
     "kind": "landing"
+  },
+  {
+    "n": "85",
+    "slug": "land-lodestone",
+    "title": "LODESTONE",
+    "blurb": "a payments router &mdash; drag the magnet and a field of iron filings turns to the cheapest route",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "86",
+    "slug": "land-longexposure",
+    "title": "AFTERIMAGE",
+    "blurb": "session replay &mdash; the page light-paints your own cursor, because recording you is the product",
+    "date": "3 Sep",
+    "kind": "landing"
+  },
+  {
+    "n": "87",
+    "slug": "land-sounding",
+    "title": "SOUNDING",
+    "blurb": "subsea cable survey &mdash; fire a sonar ping into the dark and it charts the seabed it passes",
+    "date": "3 Sep",
+    "kind": "landing"
   }
 ]

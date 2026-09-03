@@ -1,0 +1,459 @@
+/* AFTERIMAGE — session replay for web apps
+   ===========================================================================
+   THE OBJECT: a long-exposure photograph of the visitor's own cursor.
+
+   Built on ping-pong frame feedback (Generative Canvas Studio §10.2): two
+   framebuffers swapped every frame, so the shader reads the frame it drew last
+   and light ACCUMULATES instead of being redrawn. The 12% new / 88% history
+   ratio from that note is in app.js verbatim, time-stretched so the exposure
+   lasts seconds rather than a tenth of a second.
+
+   Why this object and not a particle field / gradient mesh / node graph — the
+   three stock shapes that read as AI-made (§8.1): the product records what a
+   user did, and the hero literally records what YOU just did. Delete the object
+   and the page loses its argument, not just its decoration.
+
+   PALETTE — one committed accent, no multi-stop hedging (§8.1 pt 3):
+     ground  #0B0908  warm charcoal
+     ember   #FF7A2F  the only accent on the page
+     pale    #F2EDE7  text
+     muted   #948C84  secondary
+
+   TYPE — two families, one of them a mono (pre-flight rule 2). Bricolage
+   Grotesque + IBM Plex Mono, deliberately NOT the Space Grotesk + JetBrains
+   Mono pair that build 67 used.
+
+   RADIUS — two tiers, never one value everywhere (pre-flight rule 3):
+     2px on surfaces (a photographic print has near-square corners)
+     999px on controls
+=========================================================================== */
+
+:root {
+  --ground: #0B0908;
+  --ground-2: #120C09;
+  --ember: #FF7A2F;
+  --ember-dim: rgba(255,122,47,.38);
+  --ember-ghost: rgba(255,122,47,.12);
+  --pale: #F2EDE7;
+  --mut: #948C84;
+  --dim: rgba(148,140,132,.62);
+  --line: rgba(242,237,231,.12);
+  --line-2: rgba(242,237,231,.07);
+  --glass: rgba(11,9,8,.58);
+
+  --ui: 'Bricolage Grotesque', ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --r: 2px;            /* surfaces */
+  --pill: 999px;       /* controls */
+
+  --ease: cubic-bezier(.2,.9,.25,1);
+  --spring: cubic-bezier(.34,1.3,.5,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ground);
+  color: var(--pale);
+  font: 400 16px/1.62 var(--ui);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  /* touch story: vertical drags still scroll, sideways drags reach the canvas
+     and paint. pinch-zoom is left alone on purpose. */
+  touch-action: pan-y pinch-zoom;
+}
+.mono { font-family: var(--mono); }
+
+/* ── the exposure ─────────────────────────────────────────────────────────
+   ⚠️ §8.5: a full-viewport <canvas> that fails to composite paints WHITE, and
+   pale text on white is the worst possible failure on a dark page. The canvas
+   element carries a CSS gradient approximating the shader's own image, so a
+   WebGL failure degrades to a plainer warm-charcoal page instead of a blank
+   white one. Measured in headless, not theorised.                          */
+#gl {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 0; display: block; pointer-events: none;
+  background:
+    radial-gradient(44% 36% at 52% 42%, rgba(255,122,47,.15), transparent 70%),
+    radial-gradient(120% 92% at 50% 46%, #1A120C 0%, var(--ground-2) 44%, var(--ground) 80%);
+}
+/* a still film grain over the top — texture, not another moving thing */
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .42;
+  background-image:
+    radial-gradient(rgba(255,255,255,.055) .5px, transparent .5px),
+    radial-gradient(rgba(0,0,0,.14) .5px, transparent .5px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1px 2px;
+}
+
+.skip { position: absolute; left: -9999px; display: inline-flex; align-items: center;
+  min-height: 46px; padding: 0 20px; border-radius: var(--pill); }
+.skip:focus { left: 16px; top: 16px; z-index: 90; background: var(--ember); color: #17100A; }
+:is(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 1px; }
+
+/* ── nav ─────────────────────────────────────────────────────────────────── */
+.nav {
+  position: relative; z-index: 30;
+  display: flex; align-items: center; gap: 20px;
+  padding: 16px clamp(16px,4vw,52px);
+}
+.logo {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--pale); text-decoration: none; min-height: 46px;
+  font: 800 14px/1 var(--ui); letter-spacing: .2em;
+}
+.logo i {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--ember);
+  box-shadow: 0 0 14px 3px var(--ember-dim);
+}
+.nav__l { display: flex; gap: clamp(12px,2vw,28px); margin-left: auto; }
+.nav__l a {
+  color: var(--mut); text-decoration: none; font-size: 14px;
+  min-height: 46px; display: inline-flex; align-items: center;
+  position: relative; transition: color .2s var(--ease);
+}
+/* hover grammar, used identically everywhere: an ember rule wipes in from the left */
+.nav__l a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 12px; height: 1px;
+  background: var(--ember); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform .22s var(--ease);
+}
+.nav__l a:hover { color: var(--pale); }
+.nav__l a:hover::after { transform: scaleX(1); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 48px; padding: 0 22px; border-radius: var(--pill);
+  text-decoration: none; font: 600 14.5px/1 var(--ui); letter-spacing: -.005em;
+  cursor: pointer; border: 1px solid var(--line); color: var(--pale);
+  background: rgba(242,237,231,.045); backdrop-filter: blur(10px);
+  transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+}
+.btn span { transition: transform .22s var(--ease); }
+.btn:hover span { transform: translateX(4px); }
+.btn--ghost:hover { border-color: rgba(255,122,47,.5); background: rgba(255,122,47,.08); }
+.btn--solid {
+  background: var(--ember); border-color: var(--ember); color: #180F08; font-weight: 800;
+  box-shadow: 0 0 34px -8px rgba(255,122,47,.85);
+}
+.btn--solid:hover { background: #FF8E4D; border-color: #FF8E4D; }
+.btn--lg { min-height: 56px; padding: 0 28px; font-size: 15.5px; }
+
+.nav-toggle {
+  display: none; width: 48px; height: 48px; margin-left: auto;
+  align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+  background: rgba(242,237,231,.045); border: 1px solid var(--line);
+  border-radius: var(--pill); cursor: pointer;
+}
+.nav-toggle i {
+  display: block; width: 17px; height: 1.5px; background: var(--pale); border-radius: 2px;
+  transition: transform .3s var(--spring), opacity .2s var(--ease);
+}
+.nav-toggle[aria-expanded="true"] i:first-child { transform: translateY(3.25px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] i:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+.navsheet {
+  position: relative; z-index: 25;
+  display: flex; flex-direction: column; gap: 4px;
+  margin: 0 clamp(16px,4vw,52px) 8px; padding: 10px 14px 16px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--glass); backdrop-filter: blur(18px);
+  overflow: hidden;
+  transition: opacity .28s var(--ease), transform .34s var(--spring);
+}
+.navsheet[hidden] { display: none; }
+.navsheet.is-shut { opacity: 0; transform: translateY(-10px); }
+.navsheet a:not(.btn) {
+  color: var(--pale); text-decoration: none; font-size: 16px;
+  min-height: 50px; display: flex; align-items: center;
+  border-bottom: 1px solid var(--line-2);
+}
+.navsheet .btn { margin-top: 12px; }
+
+/* ── page shell ──────────────────────────────────────────────────────────── */
+main { position: relative; z-index: 5; }
+section { padding-inline: clamp(16px,4vw,52px); max-width: 1180px; margin-inline: auto; }
+
+.hero { position: relative; padding-top: clamp(34px,7vw,92px); padding-bottom: clamp(28px,5vw,64px); }
+/* ⚠️ the exposure runs under the words, so the words need a graduated scrim —
+   the photographer's answer, not a box. Without it a bright trail crossing the
+   sub-heading makes pale text on pale light, which is the §7 legibility fault. */
+/* ⚠️ full-bleed on purpose. A scrim that stopped at the content column's left
+   edge drew a hard vertical seam down the whole hero — the undimmed strip
+   outside it was brighter than the page. A graduated filter has no edge. */
+.hero::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  left: 50%; transform: translateX(-50%); width: 100vw; top: -10%; height: 120%;
+  background: radial-gradient(54% 78% at 32% 48%,
+    rgba(11,9,8,.9) 0%, rgba(11,9,8,.68) 40%, rgba(11,9,8,.26) 68%, transparent 84%);
+}
+.hero > * { position: relative; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  font: 400 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--mut); border: 1px solid var(--line); border-radius: var(--pill);
+  padding: 9px 15px; background: var(--glass); backdrop-filter: blur(8px);
+}
+.dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--ember);
+  box-shadow: 0 0 9px 1px var(--ember-dim); animation: blip 2.6s ease-in-out infinite;
+}
+@keyframes blip { 0%,100% { opacity: 1 } 50% { opacity: .28 } }
+
+h1 {
+  font: 800 clamp(40px,7.6vw,94px)/.96 var(--ui); letter-spacing: -.045em;
+  margin: 24px 0 20px; max-width: 14ch;
+  text-shadow: 0 2px 40px rgba(11,9,8,.75);
+}
+h1 em { font-style: normal; color: var(--ember); text-shadow: 0 0 48px rgba(255,122,47,.55); }
+
+.sub { font-size: clamp(15.5px,1.6vw,17px); color: var(--mut); max-width: 54ch; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin: 28px 0 14px; }
+.fine { font: 400 12.5px/1.5 var(--mono); color: var(--dim); letter-spacing: .03em; }
+
+.hint {
+  margin-top: clamp(26px,5vw,58px); max-width: 46ch;
+  font: 400 12.5px/1.7 var(--mono); color: var(--dim); letter-spacing: .02em;
+}
+.hint__k { color: var(--ember); margin-right: 7px; }
+
+/* ── the live event rail ─────────────────────────────────────────────────
+   Not a marquee of canned strings. Events are emitted by whatever session is
+   currently painting the exposure — the ghost replay when you are idle, YOUR
+   session the moment you move. New entries arrive at the right and push the
+   old ones off the left edge.                                             */
+.rail {
+  position: relative; z-index: 5; overflow: hidden;
+  border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2);
+  background: rgba(11,9,8,.45); backdrop-filter: blur(9px);
+  margin: clamp(16px,3vw,38px) 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 100%);
+}
+.rail__t {
+  display: flex; justify-content: flex-end; align-items: center; gap: 30px;
+  min-width: 100%; white-space: nowrap; padding: 13px clamp(16px,4vw,52px);
+  font: 400 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim);
+}
+.ev { flex: none; opacity: 0; transform: translateX(16px); }
+.ev.in { opacity: 1; transform: none; transition: opacity .3s var(--ease), transform .4s var(--ease); }
+.ev b { color: var(--ember); font-weight: 500; }
+.ev.is-you b { color: var(--pale); }
+.ev.is-bad b { color: #FF4D3D; }
+
+/* ── section heads ───────────────────────────────────────────────────────── */
+.tag { font: 400 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--mut); }
+.tag b { color: var(--ember); font-weight: 500; }
+h2 { font: 800 clamp(28px,4.4vw,52px)/1.05 var(--ui); letter-spacing: -.04em;
+  margin: 16px 0 36px; max-width: 19ch; }
+h2 em { font-style: normal; color: var(--ember); }
+.cap, .sig, .faq, .cta { padding-top: clamp(46px,7vw,102px); }
+
+/* ── captures ────────────────────────────────────────────────────────────── */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.card {
+  position: relative; overflow: hidden; text-align: left; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 22px 22px 24px; min-height: 188px;
+  background: linear-gradient(180deg, rgba(242,237,231,.055), rgba(242,237,231,.012));
+  backdrop-filter: blur(14px); color: var(--pale); font-family: var(--ui);
+  display: flex; flex-direction: column;
+  transition: border-color .22s var(--ease), transform .28s var(--ease), background .22s var(--ease);
+}
+.card:hover { border-color: rgba(255,122,47,.45); transform: translateY(-4px); }
+.card.is-open { opacity: 0; pointer-events: none; }
+/* the cursor is a light source on the card it is over — same logic as the hero */
+.card::before {
+  content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity .28s var(--ease);
+  background: radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(255,122,47,.15), transparent 62%);
+}
+.card:hover::before { opacity: 1; }
+.card__id { position: relative; font: 400 11.5px/1 var(--mono); letter-spacing: .16em;
+  color: var(--ember); text-transform: uppercase; }
+.card__t { position: relative; font: 600 20px/1.18 var(--ui); letter-spacing: -.025em; margin: 15px 0 9px; }
+.card__d { position: relative; font-size: 14px; color: var(--mut); }
+.card__m { position: relative; margin-top: auto; padding-top: 18px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font: 400 11.5px/1 var(--mono); letter-spacing: .1em; color: var(--dim); text-transform: uppercase; }
+.card__m em { font-style: normal; color: var(--pale); }
+.card__go { display: inline-flex; align-items: center; gap: 6px; color: var(--ember); }
+.card__go i { display: block; width: 14px; height: 1px; background: var(--ember);
+  transition: width .24s var(--ease); }
+.card:hover .card__go i { width: 24px; }
+
+/* ── signals ─────────────────────────────────────────────────────────────── */
+.sig__g {
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px;
+  background: var(--line-2); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
+}
+.stat { background: rgba(11,9,8,.6); backdrop-filter: blur(10px); padding: 28px 22px 26px; }
+.stat b { display: block; font: 400 clamp(34px,4.6vw,54px)/1 var(--ui);
+  letter-spacing: -.045em; color: var(--pale); }
+.stat b small { font-size: .42em; color: var(--ember); font-weight: 600; margin-left: 3px;
+  letter-spacing: -.01em; }
+.stat span { display: block; margin-top: 12px; font: 400 12.5px/1.45 var(--mono); color: var(--mut); }
+.foot-note { margin-top: 18px; font: 400 12px/1.6 var(--mono); color: var(--dim); }
+
+/* ── questions ───────────────────────────────────────────────────────────── */
+.qa { border-top: 1px solid var(--line); }
+.qa details { border-bottom: 1px solid var(--line); position: relative; }
+.qa summary {
+  list-style: none; cursor: pointer; min-height: 66px; padding: 20px 0;
+  display: flex; align-items: center; gap: 18px;
+  font: 600 17px/1.35 var(--ui); letter-spacing: -.02em;
+  transition: color .22s var(--ease);
+}
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary:hover { color: var(--ember); }
+/* a frame number instead of build 67's left rail — same idea, different device */
+.qa .n { flex: none; font: 400 11.5px/1 var(--mono); color: var(--dim); letter-spacing: .12em;
+  transition: color .24s var(--ease); }
+.qa details.is-open .n { color: var(--ember); }
+.qa .q { flex: 1; }
+.qa summary::after {
+  content: ""; flex: none; width: 13px; height: 13px; margin-left: auto;
+  border-right: 1.5px solid var(--ember); border-bottom: 1.5px solid var(--ember);
+  transform: rotate(45deg) translate(-3px,-3px);
+  transition: transform .4s var(--spring);
+}
+.qa details.is-open summary::after { transform: rotate(225deg) translate(-3px,-3px); }
+
+/* ⭐ 0fr -> 1fr is the only way to transition to a height you do not know.
+   max-height guesses a number and either clips or eases against nothing. */
+.qa .a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); }
+.qa details.is-open .a { grid-template-rows: 1fr; }
+.qa .a > div { overflow: hidden; }
+.qa .a p {
+  padding: 0 0 24px 44px; color: var(--mut); font-size: 15px; max-width: 68ch;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .28s var(--ease), transform .4s var(--ease);
+}
+.qa details.is-open .a p { opacity: 1; transform: none; transition-delay: .1s; }
+
+/* ── closing ─────────────────────────────────────────────────────────────── */
+.cta { text-align: center; padding-bottom: clamp(52px,8vw,110px); }
+.cta h2 { margin-inline: auto; }
+.cta .fine { margin-top: 18px; }
+
+.foot {
+  position: relative; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px 26px;
+  flex-wrap: wrap; padding: 22px clamp(16px,4vw,52px) 34px;
+  border-top: 1px solid var(--line-2);
+  font: 400 12px/1 var(--mono); letter-spacing: .13em; text-transform: uppercase; color: var(--dim);
+}
+.foot__l { display: flex; gap: 20px; }
+.foot__l a {
+  color: var(--dim); text-decoration: none; min-height: 46px;
+  display: inline-flex; align-items: center; transition: color .2s var(--ease);
+}
+.foot__l a:hover { color: var(--ember); }
+
+/* ── the capture panel ───────────────────────────────────────────────────
+   It grows out of the card that opened it (FLIP: measure the card, invert to
+   it, then release). The inner element counter-scales so the text is never
+   squashed on the way, and the content fades in a beat after the box lands. */
+.ov { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center;
+  padding: clamp(14px,3vw,40px); }
+.ov[hidden] { display: none; }
+.ov__bg { position: absolute; inset: 0; background: rgba(6,5,4,.72);
+  backdrop-filter: blur(7px); opacity: 0; transition: opacity .36s var(--ease); }
+.ov.is-in .ov__bg { opacity: 1; }
+
+.sheet {
+  position: relative; width: min(700px, 100%); max-height: min(88vh, 780px);
+  border: 1px solid rgba(255,122,47,.34); border-radius: var(--r);
+  background: linear-gradient(180deg, #16100C, #0C0908);
+  box-shadow: 0 40px 120px -30px rgba(0,0,0,.9), 0 0 90px -40px rgba(255,122,47,.55);
+  transform-origin: 0 0; overflow: hidden;
+}
+.sheet__in { transform-origin: 0 0; height: 100%; overflow: auto;
+  padding: clamp(22px,3.4vw,34px); }
+.sheet__c { opacity: 0; transform: translateY(10px);
+  transition: opacity .26s var(--ease), transform .38s var(--ease); }
+.ov.is-in .sheet__c { opacity: 1; transform: none; transition-delay: .13s; }
+
+.sheet__x {
+  position: absolute; top: 12px; right: 12px; z-index: 3;
+  width: 44px; height: 44px; border-radius: var(--pill);
+  background: rgba(242,237,231,.06); border: 1px solid var(--line);
+  color: var(--pale); font: 400 20px/1 var(--ui); cursor: pointer;
+  transition: background .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.sheet__x:hover { background: rgba(255,122,47,.16); border-color: rgba(255,122,47,.55); transform: rotate(90deg); }
+
+.sh__id { font: 400 11.5px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--ember); }
+.sh__t { font: 800 clamp(24px,3.2vw,34px)/1.08 var(--ui); letter-spacing: -.04em; margin: 11px 42px 10px 0; }
+.sh__s { font-size: 15px; color: var(--mut); max-width: 56ch; }
+.sh__meta { display: flex; flex-wrap: wrap; gap: 1px; margin: 18px 0 16px;
+  background: var(--line-2); border: 1px solid var(--line-2); border-radius: var(--r); overflow: hidden; }
+.sh__meta div { flex: 1 1 120px; background: rgba(255,255,255,.018); padding: 10px 14px; }
+.sh__meta dt { font: 400 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+.sh__meta dd { margin-top: 7px; font: 500 14px/1 var(--mono); color: var(--pale); }
+.sh__h { font: 400 11.5px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--dim); margin: 20px 0 9px; }
+.log { border: 1px solid var(--line-2); border-radius: var(--r); overflow: hidden; }
+.log__r { display: grid; grid-template-columns: 62px 1fr; gap: 14px;
+  padding: 7px 14px; font: 400 12.5px/1.5 var(--mono); border-bottom: 1px solid var(--line-2); }
+.log__r:last-child { border-bottom: 0; }
+.log__r i { font-style: normal; color: var(--dim); }
+.log__r span { color: var(--mut); }
+.log__r.hot { background: rgba(255,122,47,.09); }
+.log__r.hot span { color: var(--pale); }
+.log__r.bad span { color: #FF6A57; }
+.sh__out { margin-top: 22px; padding: 16px 18px; border-left: 2px solid var(--ember);
+  background: rgba(255,122,47,.07); font-size: 14.5px; color: var(--pale); }
+
+/* ── scroll reveal ───────────────────────────────────────────────────────
+   ⚠️ The hidden state lives under .motion, a class JS adds at runtime. If the
+   script never runs, nothing is ever stuck at opacity 0. And the sweep below
+   is driven by rAF, not IntersectionObserver, which a fast scroll or an anchor
+   jump can outrun.                                                          */
+.motion .rv { opacity: 0; transform: translateY(18px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.motion .rv.in { opacity: 1; transform: none; }
+
+/* ── responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 940px) {
+  .cards { grid-template-columns: 1fr; }
+  .card { min-height: 0; }
+  .sig__g { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 780px) {
+  /* the desktop links collapse into a REAL menu button that opens — never
+     display:none with nothing put back (that is what stranded builds 82-84) */
+  .nav__l, .nav__cta { display: none; }
+  .nav-toggle { display: flex; }
+  h1 { max-width: 100%; }
+  .qa .a p { padding-left: 0; }
+}
+@media (max-width: 520px) {
+  .sig__g { grid-template-columns: 1fr; }
+  .foot { justify-content: flex-start; }
+  .log__r { grid-template-columns: 54px 1fr; gap: 10px; font-size: 12px; }
+}
+
+/* ── reduced motion ──────────────────────────────────────────────────────
+   The exposure still renders — it is the page — but as ONE developed frame:
+   the ghost session is run through the buffer in a single burst at load and
+   then the loop stops. A finished photograph instead of a live one.        */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 1ms !important; animation: none !important; }
+  .motion .rv { opacity: 1; transform: none; }
+  .ev { opacity: 1; transform: none; }
+}
+
+/* the same scrim logic, at text scale — every pale run of copy that sits over
+   the exposure carries a soft shadow so a bright trail can never erase it */
+.sub, .fine, .hint, .eyebrow, h2, .foot-note, .stat span, .qa summary, .qa .a p {
+  text-shadow: 0 1px 16px rgba(11,9,8,.92), 0 0 4px rgba(11,9,8,.7);
+}
