@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Motion — one night</title>
+<style>
+  :root{
+    --ink:#0A0B0E; --paper:#F2EDE1; --grain:#CFC6B4;
+    --a1:#E8481F; --a2:#1B4DE4; --a3:#0E8F63; --a4:#12121A; --a5:#FFB020;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ink); color:var(--paper);
+    font-family:"Segoe UI",Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:64px 28px 120px}
+  header{border-bottom:1px solid rgba(242,237,225,.16); padding-bottom:38px; margin-bottom:54px}
+  .kicker{font-family:Consolas,monospace; font-size:13px; letter-spacing:.28em; color:var(--a5)}
+  h1{font-size:clamp(38px,7vw,82px); line-height:.98; letter-spacing:-.035em; margin:18px 0 0; font-weight:800}
+  .lede{max-width:62ch; margin:22px 0 0; font-size:17px; line-height:1.65; color:rgba(242,237,225,.72)}
+  .lede b{color:var(--paper); font-weight:600}
+
+  .film{margin:0 0 92px}
+  .head{display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin:0 0 16px}
+  .num{font-family:Consolas,monospace; font-size:13px; letter-spacing:.2em; color:rgba(242,237,225,.4)}
+  h2{font-size:clamp(26px,3.6vw,40px); letter-spacing:-.02em; margin:0; font-weight:800}
+  .what{font-family:Consolas,monospace; font-size:13px; letter-spacing:.16em; color:rgba(242,237,225,.5)}
+  video{width:100%; display:block; border-radius:4px; background:#000}
+  .note{max-width:70ch; margin:18px 0 0; font-size:15px; line-height:1.7; color:rgba(242,237,225,.68)}
+  .note b{color:var(--paper); font-weight:600}
+  .stats{display:flex; gap:26px; flex-wrap:wrap; margin:16px 0 0; font-family:Consolas,monospace; font-size:12px; letter-spacing:.1em; color:rgba(242,237,225,.42)}
+  .stats i{font-style:normal; color:var(--a5)}
+
+  footer{border-top:1px solid rgba(242,237,225,.16); padding-top:38px; margin-top:24px;
+         font-size:15px; line-height:1.75; color:rgba(242,237,225,.62); max-width:72ch}
+  footer b{color:var(--paper); font-weight:600}
+  @media (max-width:640px){ .wrap{padding:40px 18px 80px} .film{margin-bottom:64px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">5 SEPTEMBER 2026 · ONE SESSION</div>
+  <h1>Motion,<br>measured.</h1>
+  <p class="lede">Five short films built in one night, each one gated against fourteen reference
+  reels. The measuring found something I could not see by eye: <b>every video I had ever made
+  without real screen-recording footage was frozen</b> — up to 93% of frames identical to the one
+  before. The footage had been doing the moving. My animation never was.</p>
+</header>
+
+<section class="film">
+  <div class="head"><span class="num">01</span><h2>LINE</h2><span class="what">A PRODUCTION LINE</span></div>
+  <video src="line.mp4" controls preload="metadata" playsinline></video>
+  <p class="note">A belt that never stops, because an object that <b>cannot</b> be still cannot have
+  a frozen frame. It carries real builds from the folder — each colour block's height is that
+  folder's actual size on disk. The zone changes rotate the cards edge-on in 3D while the ground
+  inverts, a technique read off a reference's own peak-motion frame.</p>
+  <div class="stats"><span>frozen frames <i>33.5%</i></span><span>reference band <i>5–35%</i></span><span>palette travel <i>29.5</i></span></div>
+</section>
+
+<section class="film">
+  <div class="head"><span class="num">02</span><h2>MORPH</h2><span class="what">ONE PANEL BECOMING ANOTHER</span></div>
+  <video src="morph.mp4" controls preload="metadata" playsinline></video>
+  <p class="note">Commit → stage → build → deploy → check → live, as a single object continuously
+  transforming. The same four files exist in every state and physically travel between layouts.
+  The panel also <b>bends</b> — a real mesh warp, built by slicing the element into 64 columns and
+  offsetting each along a curve, because CSS transforms are affine and physically cannot bend
+  anything.</p>
+  <div class="stats"><span>frozen frames <i>9.4%</i></span><span>motion shape <i>2.40</i></span><span>all five techniques</span></div>
+</section>
+
+<section class="film">
+  <div class="head"><span class="num">03</span><h2>PLOT</h2><span class="what">A CHART RECORDER</span></div>
+  <video src="plot.mp4" controls preload="metadata" playsinline></video>
+  <p class="note">Paper scrolling under a fixed pen, plotting the night's <b>real measurements</b>:
+  how frozen each of the fourteen reference reels is, against the 45% pass line. The last one
+  shoots off the top at 85%. The trace is the evidence, not a picture of it.</p>
+  <div class="stats"><span>frozen frames <i>0.0%</i></span><span>lower than every reference</span></div>
+</section>
+
+<section class="film">
+  <div class="head"><span class="num">04</span><h2>QUIET</h2><span class="what">SILENCE AS MATERIAL</span></div>
+  <video src="quiet.mp4" controls preload="metadata" playsinline></video>
+  <p class="note">No voice, no music. <b>48% of it is actual silence.</b> Sound arrives in tight
+  clusters on the moments that move and the holds are left completely empty — which is not the same
+  as spreading a few sounds thinly. Averaged they measure identically; one is a rhythm and the
+  other is a metronome.</p>
+  <div class="stats"><span>frozen frames <i>19.3%</i></span><span>silence <i>48.1%</i></span><span>palette travel <i>39.2</i></span></div>
+</section>
+
+<section class="film">
+  <div class="head"><span class="num">05</span><h2>PULL</h2><span class="what">A SCREEN-PRINTING SQUEEGEE</span></div>
+  <video src="pull.mp4" controls preload="metadata" playsinline></video>
+  <p class="note">Each transition is a blade dragged across the whole frame, laying the next print
+  down and taking the last one with it. Built to reach the motion target <b>by design rather than
+  by repair</b> — the high-energy passage is not an effect applied to the object, it is the object
+  doing its one job.</p>
+  <div class="stats"><span>frozen frames <i>14.4%</i></span><span>four prints, real ink</span></div>
+</section>
+
+<footer>
+  <p><b>What the measuring could not do.</b> Twice in one hour a gate rewarded change while the film
+  fell apart — once a departure board that scored beautifully and read <b>“AUFAN HA5EM”</b>, once a
+  fix that slid the words clean off the frame for a perfect score. Every gate here counts changed
+  pixels; none can tell a working film from a disintegrating one. Only looking caught both.</p>
+  <p>And the mistake I made seven times in one night: confusing amplitude with speed. A “7px float”
+  over 26 frames is 0.27 pixels per frame — invisible. It was <b>area</b> every single time, never
+  count and never speed.</p>
+</footer>
+
+</div>
+</body>
+</html>
