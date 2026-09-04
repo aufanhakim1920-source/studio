@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Kettle &amp; Kin — the week</title>
-<meta name="description" content="One café, one week. Which hours paid for themselves and which ones did not.">
+<meta name="description" content="One café, one week. Which way it is going, where the money went, and the hours that cost more than they took.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,9 +18,8 @@
     <span class="mark">Kettle &amp; Kin</span>
     <span class="sub mono">Brunswick &middot; week of 25 Aug</span>
   </div>
-  
   <nav class="jump mono" aria-label="Sections">
-    <a href="#find">Problem</a><a href="#hours">Hours</a><a href="#earns">What earns</a><a href="#week">vs last week</a>
+    <a href="#find">Problem</a><a href="#trend">Trend</a><a href="#where">Where it went</a><a href="#hours">Hours</a>
   </nav>
   <div class="bar__live">
     <span class="lbl mono">Today so far</span>
@@ -36,30 +35,41 @@
   <p class="find__act mono" id="findAct">&mdash;</p>
 </section>
 
+<section class="two" id="trend">
+  <div class="half">
+    <p class="k mono">Twelve weeks &mdash; taken, and what was left after everything</p>
+    <div class="ch" id="trendCh"></div>
+    <p class="k mono lg"><i class="sw sw--take"></i>taken<i class="sw sw--profit"></i>left over<i class="sw sw--now"></i>this week</p>
+  </div>
+  
+  <div class="half" id="where">
+    <p class="k mono">Where this week&rsquo;s takings went</p>
+    <div class="ch" id="fallCh"></div>
+    <p class="k mono lg" id="fallNote">&mdash;</p>
+  </div>
+</section>
+
 <section class="wk" id="hours">
   <div class="wk__h">
-    <p class="k mono">Every hour, all week &mdash; what came in against what it cost to be open</p>
+    <p class="k mono">Every hour &mdash; what came in against what it cost to be open</p>
     <div class="days mono" id="days" role="group" aria-label="Choose a day"></div>
   </div>
   <div class="chart" id="chart"></div>
-  <p class="k mono legend">
+  <p class="k mono lg">
     <i class="sw sw--take"></i>taken
     <i class="sw sw--wage"></i>wages
     <i class="sw sw--loss"></i>the hour cost more than it took
   </p>
 </section>
 
-<section class="grid2" id="earns">
-  <div class="col">
-    <p class="k mono">What actually earns &mdash; ranked by profit, not by how many you sell</p>
-    <table class="tbl" id="items">
-      <thead><tr><th>Item</th><th class="n">Sold</th><th class="n">Each</th><th class="n">Profit</th></tr></thead>
-      <tbody></tbody>
-    </table>
+<section class="two">
+  <div class="half">
+    <p class="k mono">What actually earns &mdash; profit for the week, ranked</p>
+    <div class="ch" id="itemsCh"></div>
   </div>
-  <div class="col">
-    <p class="k mono" id="week">The week, against the one before</p>
-    <dl class="cmp" id="cmp"></dl>
+  <div class="half">
+    <p class="k mono">Against last week</p>
+    <div class="ch" id="devCh"></div>
     <p class="k mono waste">Thrown out at close</p>
     <p class="waste__v"><b class="mono" id="wasteV">&mdash;</b> <span class="mono dim" id="wasteN">&mdash;</span></p>
   </div>

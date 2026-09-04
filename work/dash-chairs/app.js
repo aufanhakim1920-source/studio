@@ -226,4 +226,91 @@
     paint();
     if (!reduced) setInterval(() => { if (!document.hidden) paint(); }, 30000);
   })();
+
+  /* ── CHANGE OVER TIME and PART-TO-WHOLE ─────────────────────────────────
+     Added after the CEO test. Note the part-to-whole here is CHAIR TIME, not
+     money: for an appointment business the thing being spent is hours, and a
+     money waterfall would hide the actual asset. The FT vocabulary picks the
+     chart from the question, and the question here is "where did the week go". */
+  const TEAL = "#0F766E", TEAL_L = "#7FB0AC", AMBER = "#B45309";
+  const chartSvg = (w, h, inner, label) =>
+    '<svg viewBox="0 0 ' + w + " " + h + '" role="img" aria-label="' + label + '">' +
+    '<style>.ax{font:400 11px "IBM Plex Mono",monospace;fill:#7C878F}' +
+    '.vl{font:500 11px "IBM Plex Mono",monospace;fill:#10161A}' +
+    '.vo{font:500 11px "IBM Plex Mono",monospace;fill:#B45309}</style>' + inner + "</svg>";
+
+  (() => {
+    const TAKEN = [24980, 25640, 24310, 26120, 25880, 26740, 27310, 26980, 27620, 28140, 27180, tot.taken];
+    /* busy % moves with takings, because the chairs are the only thing sold */
+    const BUSY = TAKEN.map((t, i) => (i === TAKEN.length - 1 ? tot.busy * 100 : (t / 39600) * 100));
+
+    const W = 520, L = 62, R = 12, Ht = 244;
+    const panel = (vals, top, h, colour, label, fmt) => {
+      const lo = Math.min(...vals), hi = Math.max(...vals);
+      const pad = (hi - lo) * 0.35 || 1, min = lo - pad, max = hi + pad;
+      const x = (i) => L + (i / (vals.length - 1)) * (W - L - R);
+      const y = (v) => top + h - ((v - min) / (max - min)) * h;
+      let p = '<line x1="' + L + '" y1="' + (top + h) + '" x2="' + (W - R) + '" y2="' + (top + h) +
+        '" stroke="rgba(16,22,26,.10)"/>';
+      p += '<text x="' + (L - 7) + '" y="' + (y(hi) + 4).toFixed(1) + '" text-anchor="end" class="ax">' + fmt(hi) + "</text>";
+      p += '<text x="' + (L - 7) + '" y="' + (y(lo) + 4).toFixed(1) + '" text-anchor="end" class="ax">' + fmt(lo) + "</text>";
+      p += '<path d="' + vals.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1)).join("") +
+        '" fill="none" stroke="' + colour + '" stroke-width="2" stroke-linejoin="round"/>';
+      const li = vals.length - 1;
+      p += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(vals[li]).toFixed(1) + '" r="4" fill="' + AMBER + '"/>';
+      p += '<text x="' + (x(li) - 7).toFixed(1) + '" y="' + (y(vals[li]) - 9).toFixed(1) +
+        '" text-anchor="end" class="vo">' + fmt(vals[li]) + "</text>";
+      p += '<text x="' + L + '" y="' + (top - 5) + '" class="ax">' + label + "</text>";
+      return p;
+    };
+    let p = panel(TAKEN, 30, 68, TEAL, "TAKEN", money);
+    p += panel(BUSY, 158, 62, TEAL_L, "CHAIRS BUSY", (v) => Math.round(v) + "%");
+    p += '<text x="' + L + '" y="' + (Ht - 4) + '" class="ax">12 weeks ago</text>';
+    p += '<text x="' + (W - R) + '" y="' + (Ht - 4) + '" text-anchor="end" class="ax">this week</text>';
+    document.querySelector("#trendCh").innerHTML = chartSvg(W, Ht, p, "Takings and chair occupancy, twelve weeks");
+  })();
+
+  (() => {
+    /* hours, not dollars — the thing this business actually spends */
+    const H4 = (n) => n / 4;                                  // slots -> hours
+    const booked = BARBERS.reduce((s, b) => s + per[b].booked, 0);
+    const walk = BARBERS.reduce((s, b) => s + per[b].walk, 0);
+    const steps = [
+      ["Chair hours open", H4(tot.shift), "in"],
+      ["Booked", -H4(booked), "out"],
+      ["Walk-ins", -H4(walk), "out"],
+      ["No-shows", -H4(tot.ns), "out"],
+      ["Sat empty", H4(tot.empty), "end"],
+    ];
+    const W = 520, H = 210, L = 8, R = 8, T = 10, B = 40;
+    const iw = W - L - R, ih = H - T - B, bw = iw / steps.length;
+    const max = H4(tot.shift) * 1.05, yy = (v) => T + ih - (v / max) * ih;
+    let run = 0, p = "";
+    steps.forEach(([label, v, kind], i) => {
+      const x = L + i * bw + bw * 0.17, w = bw * 0.66;
+      let top, bot;
+      if (kind === "in") { top = yy(v); bot = yy(0); run = v; }
+      else if (kind === "out") { top = yy(run); bot = yy(run + v); run += v; }
+      else { top = yy(v); bot = yy(0); }
+      /* the empty block is the leak, so it is the one loud thing here */
+      const fill = kind === "end" ? AMBER : kind === "in" ? TEAL_L : TEAL;
+      p += '<rect x="' + x.toFixed(1) + '" y="' + Math.min(top, bot).toFixed(1) +
+        '" width="' + w.toFixed(1) + '" height="' + Math.max(2, Math.abs(bot - top)).toFixed(1) +
+        '" fill="' + fill + '" opacity="' + (kind === "end" ? ".95" : ".85") + '"/>';
+      p += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (Math.min(top, bot) - 6).toFixed(1) +
+        '" text-anchor="middle" class="' + (kind === "end" ? "vo" : "vl") + '">' +
+        Math.round(Math.abs(v)) + "h</text>";
+      const words = label.split(" ");
+      const lines = words.length > 2 ? [words.slice(0, 2).join(" "), words.slice(2).join(" ")] : [label];
+      lines.forEach((ln, k) => {
+        p += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (H - 22 + k * 12) +
+          '" text-anchor="middle" class="ax">' + ln + "</text>";
+      });
+    });
+    document.querySelector("#fallCh").innerHTML = chartSvg(W, H, p, "Where the week's chair time went");
+    document.querySelector("#fallNote").innerHTML = "Empty is <b>" +
+      Math.round((tot.empty / tot.shift) * 100) + "%</b> of the hours you paid to be open, worth <b>" +
+      money(tot.emptyCost) + "</b> if it had been sold.";
+  })();
+
 })();

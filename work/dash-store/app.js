@@ -171,4 +171,93 @@
     paintLive();
     if (!reduced) setInterval(() => { if (!document.hidden) paintLive(); }, 15000);
   })();
+
+  /* ── CHANGE OVER TIME and PART-TO-WHOLE ─────────────────────────────────
+     Added after Aufan's CEO test: "if i were ceo i would not know a damn
+     thing, it should be streamlined and graph". The FT Visual Vocabulary sorts
+     charts by the question they answer, and the two an owner asks first are
+     "which way is it going" (change over time) and "where did the money go"
+     (part-to-whole). This board had neither — only tables. */
+  const BLUE = "#4F8DF7", BLUE_L = "#7FB2E8", RED = "#F2544B";
+  const chartSvg = (w, h, inner, label) =>
+    '<svg viewBox="0 0 ' + w + " " + h + '" role="img" aria-label="' + label + '">' +
+    '<style>.ax{font:400 11px "JetBrains Mono",monospace;fill:#6B7280}' +
+    '.vl{font:500 11px "JetBrains Mono",monospace;fill:#EDEEF0}' +
+    '.vo{font:500 11px "JetBrains Mono",monospace;fill:#F2544B}</style>' + inner + "</svg>";
+
+  (() => {
+    /* twelve months of revenue, this month last. Profit is derived at the same
+       margin the current month actually runs at, so the two panels agree with
+       the waterfall and with the totals. */
+    const REV = [98400, 104200, 112800, 108900, 117600, 121300, 119800, 126400, 131900, 128700, 134500, tot.revenue];
+    const margin = tot.profit / tot.revenue;
+    const PRO = REV.map((r, i) => (i === REV.length - 1 ? tot.profit : r * (margin * (0.92 + i * 0.014))));
+
+    const W = 520, L = 66, R = 12, Ht = 244;
+    const panel = (vals, top, h, colour, label) => {
+      const lo = Math.min(...vals), hi = Math.max(...vals);
+      const pad = (hi - lo) * 0.35 || 1, min = lo - pad, max = hi + pad;
+      const x = (i) => L + (i / (vals.length - 1)) * (W - L - R);
+      const y = (v) => top + h - ((v - min) / (max - min)) * h;
+      let p = '<line x1="' + L + '" y1="' + (top + h) + '" x2="' + (W - R) + '" y2="' + (top + h) +
+        '" stroke="rgba(237,238,240,.10)"/>';
+      p += '<text x="' + (L - 7) + '" y="' + (y(hi) + 4).toFixed(1) + '" text-anchor="end" class="ax">' + money(hi) + "</text>";
+      p += '<text x="' + (L - 7) + '" y="' + (y(lo) + 4).toFixed(1) + '" text-anchor="end" class="ax">' + money(lo) + "</text>";
+      p += '<path d="' + vals.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1)).join("") +
+        '" fill="none" stroke="' + colour + '" stroke-width="2" stroke-linejoin="round"/>';
+      const li = vals.length - 1;
+      p += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(vals[li]).toFixed(1) + '" r="4" fill="' + RED + '"/>';
+      p += '<text x="' + (x(li) - 7).toFixed(1) + '" y="' + (y(vals[li]) - 9).toFixed(1) +
+        '" text-anchor="end" class="vo">' + money(vals[li]) + "</text>";
+      p += '<text x="' + L + '" y="' + (top - 5) + '" class="ax">' + label + "</text>";
+      return p;
+    };
+    let p = panel(REV, 30, 68, BLUE, "REVENUE");
+    p += panel(PRO, 158, 62, BLUE_L, "PROFIT AFTER EVERYTHING");
+    p += '<text x="' + L + '" y="' + (Ht - 4) + '" class="ax">12 months ago</text>';
+    p += '<text x="' + (W - R) + '" y="' + (Ht - 4) + '" text-anchor="end" class="ax">this month</text>';
+    document.querySelector("#trendCh").innerHTML = chartSvg(W, Ht, p, "Revenue and profit, twelve months");
+  })();
+
+  (() => {
+    const cogs = rows.reduce((s, r) => s + r.u * r.cogs, 0);
+    const post = rows.reduce((s, r) => s + r.u * r.post, 0);
+    const steps = [
+      ["Revenue", tot.revenue, "in"],
+      ["Cost of goods", -cogs, "out"],
+      ["Postage", -post, "out"],
+      ["Ads", -tot.ads, "out"],
+      ["Returns", -tot.retCost, "out"],
+      ["Profit", tot.profit, "end"],
+    ];
+    const W = 520, H = 210, L = 8, R = 8, T = 10, B = 40;
+    const iw = W - L - R, ih = H - T - B, bw = iw / steps.length;
+    const max = tot.revenue * 1.05, yy = (v) => T + ih - (v / max) * ih;
+    let run = 0, p = "";
+    steps.forEach(([label, v, kind], i) => {
+      const x = L + i * bw + bw * 0.17, w = bw * 0.66;
+      let top, bot;
+      if (kind === "in") { top = yy(v); bot = yy(0); run = v; }
+      else if (kind === "out") { top = yy(run); bot = yy(run + v); run += v; }
+      else { top = yy(v); bot = yy(0); }
+      const fill = kind === "out" ? RED : kind === "end" ? BLUE : BLUE_L;
+      p += '<rect x="' + x.toFixed(1) + '" y="' + Math.min(top, bot).toFixed(1) +
+        '" width="' + w.toFixed(1) + '" height="' + Math.max(2, Math.abs(bot - top)).toFixed(1) +
+        '" fill="' + fill + '" opacity="' + (kind === "out" ? ".88" : ".95") + '"/>';
+      p += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (Math.min(top, bot) - 6).toFixed(1) +
+        '" text-anchor="middle" class="' + (kind === "out" ? "vo" : "vl") + '">' +
+        (kind === "out" ? "−" : "") + money(Math.abs(v)) + "</text>";
+      const words = label.split(" ");
+      const lines = words.length > 2 ? [words.slice(0, 2).join(" "), words.slice(2).join(" ")] : [label];
+      lines.forEach((ln, k) => {
+        p += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (H - 22 + k * 12) +
+          '" text-anchor="middle" class="ax">' + ln + "</text>";
+      });
+    });
+    document.querySelector("#fallCh").innerHTML = chartSvg(W, H, p, "Where the month's revenue went");
+    document.querySelector("#fallNote").innerHTML = "Profit is <b>" +
+      ((tot.profit / tot.revenue) * 100).toFixed(1) + "%</b> of revenue. Ads alone are <b>" +
+      ((tot.ads / tot.revenue) * 100).toFixed(1) + "%</b>.";
+  })();
+
 })();

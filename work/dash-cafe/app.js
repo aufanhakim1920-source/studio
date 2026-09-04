@@ -112,7 +112,7 @@
       /* takings */
       p.push('<rect x="' + (cx - w).toFixed(1) + '" y="' + y(r.take).toFixed(1) +
         '" width="' + w.toFixed(1) + '" height="' + (ih + T - y(r.take)).toFixed(1) +
-        '" fill="' + (loss ? "#C2410C" : "#4D7C0F") + '" opacity="' + (loss ? ".95" : ".82") + '"/>');
+        '" fill="' + (loss ? "#C2410C" : "#1D4E89") + '" opacity="' + (loss ? ".95" : ".82") + '"/>');
       /* wages */
       p.push('<rect x="' + cx.toFixed(1) + '" y="' + y(r.wage).toFixed(1) +
         '" width="' + w.toFixed(1) + '" height="' + (ih + T - y(r.wage)).toFixed(1) +
@@ -149,38 +149,150 @@
   });
   pick(day);
 
-  /* ── 3. what actually earns ──────────────────────────────────────────── */
+  /* ── shared chart helpers ────────────────────────────────────────────────
+     Colours follow Datawrapper's rule: blue and orange, never green against
+     red, because that pair is the one colour-blind readers cannot separate.
+     One series is allowed to be loud; the rest sit at equal, moderate weight. */
+  const BLUE = "#1D4E89", BLUE_L = "#7FA8D4", ORANGE = "#C2410C", INK = "#16232E", DIMC = "#8496A1";
+  const svg = (w, h, inner, label) =>
+    '<svg viewBox="0 0 ' + w + " " + h + '" role="img" aria-label="' + label + '">' +
+    '<style>.ax{font:400 11px "IBM Plex Mono",monospace;fill:#8496A1}' +
+    '.vl{font:500 11px "IBM Plex Mono",monospace;fill:#16232E}' +
+    '.vo{font:500 11px "IBM Plex Mono",monospace;fill:#C2410C}</style>' + inner + "</svg>";
+
+  /* ── 3. CHANGE OVER TIME — the first thing anyone wants to know ─────────
+     ⚠️ First version plotted takings (~$17k) and what was left (~$2k) on ONE
+     axis. Both lines went flat: the big series pinned to the top, the small one
+     to the bottom, and neither shape could be read. Two series an order of
+     magnitude apart must not share a scale. Two stacked panels, one x-axis,
+     each with its own range — the honest fix, and the readable one. */
   (() => {
-    const rows = ITEMS.map((it) => ({ ...it, margin: it.price - it.cost, profit: (it.price - it.cost) * it.sold }))
-      .sort((a, b) => b.profit - a.profit);
-    const most = rows.reduce((a, b) => (b.sold > a.sold ? b : a));
-    $("#items tbody").innerHTML = rows.map((r, i) =>
-      '<tr class="' + (i === 0 ? "best" : r === most ? "most" : "") + '">' +
-      '<td class="nm">' + r.n + "</td>" +
-      '<td class="n">' + r.sold.toLocaleString("en-AU") + "</td>" +
-      '<td class="n">' + money2(r.margin) + "</td>" +
-      '<td class="n"><b>' + money(r.profit) + "</b></td></tr>").join("");
+    const H = [16420, 16880, 16310, 17020, 17460, 16940, 17310, 17880, 17240, 17690, 17410, totTake];
+    const fixed = 4100;
+    /* ⚠️ must subtract waste too, or this line disagrees with the waterfall
+       sitting beside it — two numbers for the same thing on one screen. */
+    const wRate = WASTE.value / totTake;
+    const left = H.map((t, i) => t - (i === H.length - 1 ? totWage : t * 0.297) - t * 0.31 - fixed
+      - (i === H.length - 1 ? WASTE.value : t * wRate));
+
+    const W = 520, L = 62, R = 12;
+    const panel = (vals, top, h, colour, label) => {
+      const lo = Math.min(...vals), hi = Math.max(...vals);
+      const pad = (hi - lo) * 0.35 || 1;
+      const min = lo - pad, max = hi + pad;
+      const x = (i) => L + (i / (vals.length - 1)) * (W - L - R);
+      const y = (v) => top + h - ((v - min) / (max - min)) * h;
+      let p = '<line x1="' + L + '" y1="' + (top + h) + '" x2="' + (W - R) + '" y2="' + (top + h) +
+        '" stroke="rgba(22,35,46,.10)"/>';
+      /* only two ticks: the range is the point, not the gridlines */
+      p += '<text x="' + (L - 7) + '" y="' + (y(hi) + 4).toFixed(1) + '" text-anchor="end" class="ax">' +
+        money(hi) + "</text>";
+      p += '<text x="' + (L - 7) + '" y="' + (y(lo) + 4).toFixed(1) + '" text-anchor="end" class="ax">' +
+        money(lo) + "</text>";
+      p += '<path d="' + vals.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1)).join("") +
+        '" fill="none" stroke="' + colour + '" stroke-width="2" stroke-linejoin="round"/>';
+      const li = vals.length - 1;
+      p += '<circle cx="' + x(li).toFixed(1) + '" cy="' + y(vals[li]).toFixed(1) + '" r="4" fill="' + ORANGE + '"/>';
+      p += '<text x="' + (x(li) - 7).toFixed(1) + '" y="' + (y(vals[li]) - 9).toFixed(1) +
+        '" text-anchor="end" class="vo">' + money(vals[li]) + "</text>";
+      p += '<text x="' + L + '" y="' + (top - 5) + '" class="ax">' + label + "</text>";
+      return p;
+    };
+
+    const Ht = 244;
+    let p = panel(H, 30, 68, BLUE, "TAKEN");
+    p += panel(left, 158, 62, BLUE_L, "LEFT OVER AFTER EVERYTHING");
+    p += '<text x="' + L + '" y="' + (Ht - 4) + '" class="ax">12 weeks ago</text>';
+    p += '<text x="' + (W - R) + '" y="' + (Ht - 4) + '" text-anchor="end" class="ax">this week</text>';
+    $("#trendCh").innerHTML = svg(W, Ht, p, "Takings and what was left over, twelve weeks");
   })();
 
-  /* ── 4. against last week ────────────────────────────────────────────── */
+  /* ── 4. PART-TO-WHOLE — where the takings actually went ──────────────── */
+  (() => {
+    const goods = totTake * 0.31, fixed = 4100;
+    const profit = totTake - totWage - goods - fixed - WASTE.value;
+    const steps = [
+      ["Taken", totTake, "in"],
+      ["Wages", -totWage, "out"],
+      ["Coffee, milk, food", -goods, "out"],
+      ["Rent and power", -fixed, "out"],
+      ["Thrown out", -WASTE.value, "out"],
+      ["Left over", profit, "end"],
+    ];
+    const W = 520, H = 210, L = 8, R = 8, T = 10, B = 40;
+    const iw = W - L - R, ih = H - T - B;
+    const bw = iw / steps.length, max = totTake * 1.05;
+    const yy = (v) => T + ih - (v / max) * ih;
+    let run = 0, p = "";
+    steps.forEach(([label, v, kind], i) => {
+      const x = L + i * bw + bw * 0.17, w = bw * 0.66;
+      let top, bot;
+      if (kind === "in") { top = yy(v); bot = yy(0); run = v; }
+      else if (kind === "out") { top = yy(run); bot = yy(run + v); run += v; }
+      else { top = yy(v); bot = yy(0); }
+      const fill = kind === "out" ? ORANGE : kind === "end" ? BLUE : BLUE_L;
+      p += '<rect x="' + x.toFixed(1) + '" y="' + Math.min(top, bot).toFixed(1) +
+        '" width="' + w.toFixed(1) + '" height="' + Math.max(2, Math.abs(bot - top)).toFixed(1) +
+        '" fill="' + fill + '" opacity="' + (kind === "out" ? ".88" : ".95") + '"/>';
+      p += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (Math.min(top, bot) - 6).toFixed(1) +
+        '" text-anchor="middle" class="' + (kind === "out" ? "vo" : "vl") + '">' +
+        (kind === "out" ? "−" : "") + money(Math.abs(v)) + "</text>";
+      /* the label, wrapped onto two lines where it needs it */
+      const words = label.split(" ");
+      const lines = words.length > 2 ? [words.slice(0, 2).join(" "), words.slice(2).join(" ")] : [label];
+      lines.forEach((ln, k) => {
+        p += '<text x="' + (x + w / 2).toFixed(1) + '" y="' + (H - 22 + k * 12) +
+          '" text-anchor="middle" class="ax">' + ln + "</text>";
+      });
+    });
+    $("#fallCh").innerHTML = svg(W, H, p, "Where the week's takings went");
+    $("#fallNote").innerHTML = "Left over is <b>" + ((profit / totTake) * 100).toFixed(1) +
+      "%</b> of takings. Wages alone are <b>" + ((totWage / totTake) * 100).toFixed(1) + "%</b>.";
+  })();
+
+  /* ── 5. RANKING — profit by item, as bars rather than a table ────────── */
+  (() => {
+    const rows = ITEMS.map((it) => ({ ...it, profit: (it.price - it.cost) * it.sold }))
+      .sort((a, b) => b.profit - a.profit);
+    const max = rows[0].profit;
+    const W = 520, rowH = 26, H = rows.length * rowH + 8, L = 132, R = 62;
+    let p = "";
+    rows.forEach((r, i) => {
+      const y = i * rowH + 6, w = ((r.profit / max) * (W - L - R));
+      p += '<text x="' + (L - 9) + '" y="' + (y + 12) + '" text-anchor="end" class="ax">' + r.n + "</text>";
+      p += '<rect x="' + L + '" y="' + y + '" width="' + w.toFixed(1) +
+        '" height="15" fill="' + (i === 0 ? BLUE : BLUE_L) + '" opacity="' + (i === 0 ? ".95" : ".7") + '"/>';
+      p += '<text x="' + (L + w + 7).toFixed(1) + '" y="' + (y + 12) + '" class="vl">' + money(r.profit) + "</text>";
+    });
+    $("#itemsCh").innerHTML = svg(W, H, p, "Profit by item for the week, ranked");
+  })();
+
+  /* ── 6. DEVIATION — against last week, as a shape not a percentage ───── */
   (() => {
     const covers = ITEMS.reduce((s, i) => s + i.sold, 0);
-    const rows = [
-      ["Taken", totTake, LAST_WEEK.take, money, true],
-      ["Wages", totWage, LAST_WEEK.wages, money, false],
-      ["Wages as % of takings", (totWage / totTake) * 100, (LAST_WEEK.wages / LAST_WEEK.take) * 100,
-        (v) => v.toFixed(1) + "%", false],
-      ["Items sold", covers, LAST_WEEK.covers, (v) => Math.round(v).toLocaleString("en-AU"), true],
-      ["Thrown out", WASTE.value, LAST_WEEK.waste, money, false],
-    ];
-    $("#cmp").innerHTML = rows.map(([label, now, then, fmt, upGood]) => {
-      const pc = ((now - then) / then) * 100;
-      const up = pc >= 0;
-      const cls = (up === upGood) ? "up" : "down";
-      return "<div><dt>" + label + "</dt><dd>" +
-        '<span class="v">' + fmt(now) + "</span>" +
-        '<span class="d ' + cls + '">' + (up ? "+" : "") + pc.toFixed(1) + "%</span></dd></div>";
-    }).join("");
+    const items = [
+      ["Taken", totTake, LAST_WEEK.take, true],
+      ["Wages", totWage, LAST_WEEK.wages, false],
+      ["Items sold", covers, LAST_WEEK.covers, true],
+      ["Thrown out", WASTE.value, LAST_WEEK.waste, false],
+    ].map(([k, now, then, upGood]) => ({ k, pc: ((now - then) / then) * 100, upGood }));
+    const max = Math.max(...items.map((i) => Math.abs(i.pc))) * 1.25;
+    const W = 520, rowH = 30, H = items.length * rowH + 10, L = 108, mid = L + (W - L - 20) / 2;
+    const half = (W - L - 20) / 2;
+    let p = '<line x1="' + mid + '" y1="4" x2="' + mid + '" y2="' + (H - 8) +
+      '" stroke="rgba(22,35,46,.22)"/>';
+    items.forEach((it, i) => {
+      const y = i * rowH + 8, w = (Math.abs(it.pc) / max) * half;
+      const good = (it.pc >= 0) === it.upGood;
+      const x = it.pc >= 0 ? mid : mid - w;
+      p += '<text x="' + (L - 9) + '" y="' + (y + 13) + '" text-anchor="end" class="ax">' + it.k + "</text>";
+      p += '<rect x="' + x.toFixed(1) + '" y="' + y + '" width="' + Math.max(1.5, w).toFixed(1) +
+        '" height="16" fill="' + (good ? BLUE : ORANGE) + '" opacity="' + (good ? ".8" : ".9") + '"/>';
+      p += '<text x="' + (it.pc >= 0 ? mid + w + 7 : mid - w - 7).toFixed(1) + '" y="' + (y + 13) +
+        '" text-anchor="' + (it.pc >= 0 ? "start" : "end") + '" class="' + (good ? "vl" : "vo") + '">' +
+        (it.pc >= 0 ? "+" : "") + it.pc.toFixed(1) + "%</text>";
+    });
+    $("#devCh").innerHTML = svg(W, H, p, "Change against last week");
     $("#wasteV").textContent = money(WASTE.value);
     $("#wasteN").textContent = WASTE.note + " · " + ((WASTE.value / totTake) * 100).toFixed(1) + "% of takings";
   })();
