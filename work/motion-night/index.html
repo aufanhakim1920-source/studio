@@ -3,233 +3,255 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
-<title>Motion — one night</title>
+<title>Motion Night — Aufan Rachmad</title>
+<meta name="description" content="Fifteen short films made to learn motion design. Filter by kind, sort by what they measure.">
 <style>
   :root{
     --ink:#0A0B0E; --paper:#F2EDE1; --grain:#CFC6B4;
     --a1:#E8481F; --a2:#1B4DE4; --a3:#0E8F63; --a4:#12121A; --a5:#FFB020;
+    --line:rgba(242,237,225,.14);
   }
-  *{box-sizing:border-box}
+  *,*::before,*::after{box-sizing:border-box}
   body{
     margin:0; background:var(--ink); color:var(--paper);
     font-family:"Segoe UI",Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1180px; margin:0 auto; padding:64px 28px 120px}
-  header{border-bottom:1px solid rgba(242,237,225,.16); padding-bottom:38px; margin-bottom:54px}
+  .wrap{max-width:1240px; margin:0 auto; padding:clamp(28px,5vw,72px) clamp(18px,4vw,42px) 120px}
   .kicker{font-family:Consolas,monospace; font-size:13px; letter-spacing:.28em; color:var(--a5)}
   h1{font-size:clamp(38px,7vw,82px); line-height:.98; letter-spacing:-.035em; margin:18px 0 0; font-weight:800}
   .lede{max-width:62ch; margin:22px 0 0; font-size:17px; line-height:1.65; color:rgba(242,237,225,.72)}
   .lede b{color:var(--paper); font-weight:600}
 
-  .film{margin:0 0 92px}
-  .head{display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin:0 0 16px}
-  .num{font-family:Consolas,monospace; font-size:13px; letter-spacing:.2em; color:rgba(242,237,225,.4)}
-  h2{font-size:clamp(26px,3.6vw,40px); letter-spacing:-.02em; margin:0; font-weight:800}
-  .what{font-family:Consolas,monospace; font-size:13px; letter-spacing:.16em; color:rgba(242,237,225,.5)}
-  video{width:100%; display:block; border-radius:4px; background:#000}
-  .note{max-width:70ch; margin:18px 0 0; font-size:15px; line-height:1.7; color:rgba(242,237,225,.68)}
-  .note b{color:var(--paper); font-weight:600}
-  .stats{display:flex; gap:26px; flex-wrap:wrap; margin:16px 0 0; font-family:Consolas,monospace; font-size:12px; letter-spacing:.1em; color:rgba(242,237,225,.42)}
-  .stats i{font-style:normal; color:var(--a5)}
+  /* ── the control bar: this page is a rack, not a scroll ─────────────── */
+  .rack{
+    position:sticky; top:0; z-index:20; margin:44px 0 0;
+    background:linear-gradient(var(--ink) 72%, rgba(10,11,14,0));
+    padding:18px 0 22px;
+  }
+  .row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+  .row + .row{margin-top:12px}
+  .lab{
+    font-family:Consolas,monospace; font-size:11px; letter-spacing:.22em;
+    color:rgba(242,237,225,.42); margin-right:4px; min-width:52px;
+  }
+  button{
+    font-family:Consolas,monospace; font-size:12px; letter-spacing:.14em;
+    color:rgba(242,237,225,.72); background:transparent; border:1px solid var(--line);
+    padding:8px 14px; border-radius:999px; cursor:pointer;
+    transition:color .18s cubic-bezier(.2,.8,.2,1), border-color .18s, background .18s, transform .12s;
+  }
+  button:hover{color:var(--paper); border-color:rgba(242,237,225,.4); transform:translateY(-1px)}
+  button[aria-pressed="true"]{
+    color:var(--ink); background:var(--a5); border-color:var(--a5); font-weight:700;
+  }
+  .count{
+    margin-left:auto; font-family:Consolas,monospace; font-size:12px;
+    letter-spacing:.16em; color:rgba(242,237,225,.42);
+  }
 
-  footer{border-top:1px solid rgba(242,237,225,.16); padding-top:38px; margin-top:24px;
-         font-size:15px; line-height:1.75; color:rgba(242,237,225,.62); max-width:72ch}
-  footer b{color:var(--paper); font-weight:600}
-  @media (max-width:640px){ .wrap{padding:40px 18px 80px} .film{margin-bottom:64px} }
+  /* ── the grid ────────────────────────────────────────────────────────── */
+  .grid{
+    display:grid; gap:clamp(14px,2vw,24px); margin-top:26px;
+    grid-template-columns:repeat(auto-fill,minmax(268px,1fr));
+  }
+  .card{
+    border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    background:#0E1014; cursor:pointer; text-align:left; padding:0;
+    display:flex; flex-direction:column;
+    transition:border-color .2s, transform .2s cubic-bezier(.2,.8,.2,1);
+  }
+  .card:hover{border-color:rgba(255,176,32,.5); transform:translateY(-3px)}
+  .card.vert .shot{aspect-ratio:9/16}
+  .shot{aspect-ratio:16/9; width:100%; object-fit:cover; display:block; background:#000}
+  .meta{padding:14px 16px 16px}
+  .meta .n{font-family:Consolas,monospace; font-size:11px; letter-spacing:.2em; color:rgba(242,237,225,.38)}
+  .meta h3{margin:6px 0 0; font-size:21px; letter-spacing:-.02em; font-weight:800}
+  .meta p{margin:6px 0 0; font-size:13px; line-height:1.5; color:rgba(242,237,225,.55)}
+  .tags{display:flex; gap:6px; margin-top:11px; flex-wrap:wrap}
+  .tag{
+    font-family:Consolas,monospace; font-size:10px; letter-spacing:.14em;
+    border:1px solid var(--line); border-radius:999px; padding:3px 9px; color:rgba(242,237,225,.5);
+  }
+  .tag.k{color:var(--a5); border-color:rgba(255,176,32,.34)}
+
+  /* ── the viewer ──────────────────────────────────────────────────────── */
+  dialog{
+    border:0; padding:0; background:transparent; max-width:min(94vw,1160px); width:100%;
+  }
+  dialog::backdrop{background:rgba(6,7,9,.86); backdrop-filter:blur(6px)}
+  .view{border:1px solid var(--line); border-radius:16px; overflow:hidden; background:#0E1014}
+  .view video{width:100%; display:block; background:#000; max-height:76vh}
+  .view .meta{padding:18px 20px 22px}
+  .view .meta h3{font-size:28px}
+  .view .meta p{font-size:14px; max-width:70ch}
+  .close{
+    position:absolute; top:-46px; right:0;
+    font-family:Consolas,monospace; font-size:12px; letter-spacing:.18em;
+  }
+  .shell{position:relative}
+  .empty{
+    grid-column:1/-1; padding:60px 0; text-align:center;
+    font-family:Consolas,monospace; font-size:13px; letter-spacing:.16em; color:rgba(242,237,225,.4);
+  }
+  footer{
+    margin-top:80px; padding-top:26px; border-top:1px solid var(--line);
+    font-size:15px; line-height:1.7; color:rgba(242,237,225,.6); max-width:74ch;
+  }
+  footer b{color:var(--paper)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<header>
-  <div class="kicker">4–5 SEPTEMBER 2026 · ONE SESSION</div>
-  <h1>Motion,<br>measured.</h1>
-  <p class="lede">Seventeen short films made in one night, in the order they were made. They are not
-  a portfolio — they are a record of learning something the hard way, and several of them are here
-  precisely because they failed.<br><br>
-  The measuring found what the eye could not: <b>every video made without real screen-recording
-  footage was frozen</b>, up to 93% of frames identical to the one before. The footage had been
-  doing the moving; the animation never was. Then the measuring itself turned out to be the
-  problem — <b>the film with the most genuine craft scored worst of everything</b>, and a film
-  containing no animation at all scored the highest number recorded.</p>
-</header>
+  <p class="kicker">MOTION NIGHT</p>
+  <h1>Fifteen short films,<br>made to learn one thing at a time.</h1>
+  <p class="lede">Every one is a <b>Remotion</b> build — React that renders to video, frame by frame.
+  They are exercises, not products: each was made to answer one question, measured against real
+  reference films, and several were deleted the same night for failing. <b>Filter and sort them
+  below</b> rather than scrolling — the numbers are the point.</p>
 
-<section class="film">
-  <div class="head"><span class="num">01</span><h2>DEAL</h2><span class="what">THE FIRST ONE</span></div>
-  <video src="deal.mp4" poster="deal.jpg" controls preload="none" playsinline></video>
-  <p class="note">The first thing made that night, and the one Aufan said was better than everything that came after it. A row of cards dealt across black, one of them orange. No reference, no gates, no measuring — just a hand-built move.</p>
-  <div class="stats"><span>runtime <i>10s</i></span></div>
-</section>
+  <div class="rack">
+    <div class="row">
+      <span class="lab">KIND</span>
+      <button data-f="kind" data-v="all" aria-pressed="true">ALL</button>
+      <button data-f="kind" data-v="object">ONE OBJECT</button>
+      <button data-f="kind" data-v="explainer">EXPLAINER</button>
+      <button data-f="kind" data-v="narrated">NARRATED</button>
+      <button data-f="kind" data-v="showcase">SHOWCASE</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="row">
+      <span class="lab">SORT</span>
+      <button data-f="sort" data-v="num" aria-pressed="true">NEWEST</button>
+      <button data-f="sort" data-v="short">SHORTEST</button>
+      <button data-f="sort" data-v="long">LONGEST</button>
+      <button data-f="sort" data-v="alive">LEAST STILL</button>
+      <button data-f="sort" data-v="quiet">FEWEST WORDS</button>
+    </div>
+  </div>
 
-<section class="film">
-  <div class="head"><span class="num">02</span><h2>DEAL II</h2><span class="what">THE SAME MOVE, IN DEPTH</span></div>
-  <video src="deal2.mp4" poster="deal2.jpg" controls preload="none" playsinline></video>
-  <p class="note">The same cards, put on a perspective plane with a warm light behind them. Twenty minutes after the first. This is where depth entered and the pile started to read as a physical object rather than a row of rectangles.</p>
-  <div class="stats"><span>runtime <i>11s</i></span></div>
-</section>
+  <div class="grid" id="grid"></div>
 
-<section class="film">
-  <div class="head"><span class="num">03</span><h2>SHORT</h2><span class="what">A REPORT THAT MOVES</span></div>
-  <video src="short.mp4" poster="short.jpg" controls preload="none" playsinline></video>
-  <p class="note">The sound density of sixteen reference reels, counted: <b>7.08 sounds per second, silent 0.3% of the time.</b> Real numbers, animated. Also the first sign of a habit that took the rest of the night to see — when the content became information, I reached for a layout.</p>
-  <div class="stats"><span>runtime <i>20s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">04</span><h2>REEL</h2><span class="what">PORTFOLIO SHOWCASE</span></div>
-  <video src="reel.mp4" poster="reel.jpg" controls preload="none" playsinline></video>
-  <p class="note">Browser windows floating in a dark room, project names catching the light. The type is real and readable; the windows are real captures. Its problem is the one Aufan named later: it is a portfolio, and a portfolio is a list, so it becomes rectangles with labels on them.</p>
-  <div class="stats"><span>runtime <i>15s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">05</span><h2>BUILD</h2><span class="what">GATES, NOT RULES · 66s</span></div>
-  <video src="build.mp4" poster="build.jpg" controls preload="none" playsinline></video>
-  <p class="note">The longest film of the night, narrated. Its subject is the thing that actually changed the work: <b>a written rule changes nothing, so build a tool that blocks the build.</b> The note said 22 broken pages. The tool that replaced it found 60.</p>
-  <div class="stats"><span>runtime <i>66s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">06</span><h2>BUILD II</h2><span class="what">WHEN THE WORK SPLITS · 53s</span></div>
-  <video src="build2.mp4" poster="build2.jpg" controls preload="none" playsinline></video>
-  <p class="note">Second cut of the same script, re-staged in violet. About parallel agents — five running at once when the work divides cleanly. The palette moved but the structure did not, which is its weakness.</p>
-  <div class="stats"><span>runtime <i>53s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">07</span><h2>BUILD IV</h2><span class="what">THE LIGHT VERSION · 55s</span></div>
-  <video src="build4.mp4" poster="build4.jpg" controls preload="none" playsinline></video>
-  <p class="note">The same film again on a near-white ground. Kept because the pair is the clearest evidence in the whole set of how much a ground colour changes the read while the composition stays identical.</p>
-  <div class="stats"><span>runtime <i>55s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">08</span><h2>QUIET</h2><span class="what">A ROOM THAT BARELY MOVES</span></div>
-  <video src="quiet.mp4" poster="quiet.jpg" controls preload="none" playsinline></video>
-  <p class="note">The restraint experiment — how little motion can carry a film. It also carried a real defect for hours: window chrome at 1.09 contrast against its own ground, invisible, and passing every check because I had never pointed the contrast tool at it.</p>
-  <div class="stats"><span>runtime <i>13s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">09</span><h2>BUILD III</h2><span class="what">THE DARK CUT · 55s</span></div>
-  <video src="build3.mp4" poster="build3.jpg" controls preload="none" playsinline></video>
-  <p class="note">The third staging, in deep violet with the windows arranged in depth. Of the four, this is the one where the layout finally has a foreground and a background instead of a grid.</p>
-  <div class="stats"><span>runtime <i>55s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">10</span><h2>LEARNED</h2><span class="what">SIX SECONDS OF REAL CRAFT</span></div>
-  <video src="learned.mp4" poster="learned.jpg" controls preload="none" playsinline></video>
-  <p class="note">A card that squashes and stretches, a waveform that draws itself, a fold into a button. <b>The most genuine animation craft of anything made that night — and every gate scored it WORST, at 86% frozen.</b> I spent five iterations trying to “fix” it toward things that were worse. It is the single best argument in this collection that a metric is not a verdict.</p>
-  <div class="stats"><span>runtime <i>6s</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">27</span><h2>LINES</h2><span class="what">6.7s &middot; BUILT TO THE SHAPE OF 10</span></div>
-  <video src="lines.mp4" poster="lines.jpg" controls preload="none" playsinline></video>
-  <p class="note">Aufan pulled films 11&ndash;26 and said <i>&ldquo;make a new one like index 10.&rdquo;</i>
-  So this is LEARNED's recipe exactly &mdash; one object through four states with no cut, a cursor
-  as protagonist, hand-drawn smears on the fast moves, squash and stretch, a ground that performs,
-  and a specular rake at 9px a frame because sub-pixel motion is not motion. New subject, and his
-  own palette rather than LEARNED's: putty shell, violet-charcoal room, signal rose.<br><br>
-  <b>Everything on screen was measured off his own repo.</b> The studio site is
-  <b>76.1 KB of code with no package.json, no build step and no framework</b>. Its
-  <code>app.js</code> is 487 lines across fourteen functions, and the card opens into a real map of
-  them &mdash; one thin row per real line of source, each column as tall as that function is long.
-  The tallest is <code>goTo()</code> at <b>59 lines</b>, and <code>goTo</code> <i>is</i> the
-  mechanic: the clunk, the lamp dying, the tray turning one detent, the slide seating. So the card
-  folds into the carousel tray itself, turns, and opens on the number.<br><br>
-  Measured against the film it was built from: <b>LEARNED 65.7% frozen, LINES 64.6% &mdash; the same
-  register on purpose.</b> Both &ldquo;fail&rdquo; the frozen gate, which is the point: that gate is
-  calibrated on reels carrying real footage, and the film he actually kept fails it too. LINES also
-  passes the contrast and palette checks that LEARNED was never put through.</p>
-  <div class="stats"><span>runtime <i>6.7s</i></span><span>frozen <i>64.6%</i></span><span>words on screen <i>19</i></span><span>prose sentences <i>0</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">28</span><h2>EMULSION</h2><span class="what">6.7s &middot; FIRST REAL 3D</span></div>
-  <video src="emulsion.mp4" poster="emulsion.jpg" controls preload="none" playsinline></video>
-  <p class="note">The first film here with <b>real lighting</b> in it. Not a gradient pretending to
-  be light &mdash; an actual studio light source, and you can see it reflected in the plastic as a
-  rose streak down the mount's edge. That reflection is the difference between an object that looks
-  <i>photographed</i> and one that looks <i>drawn</i>, and no CSS build on this page has it.<br><br>
-  <b>The object is a mounted 35mm slide</b>, at real proportions &mdash; a 50mm square with a
-  36&times;24mm window. It is chosen out of a carrier, lifted, turned edge-on through the key light,
-  and the instant the light passes <i>through</i> it the emulsion appears. That is literally how you
-  look at a slide, and it means <b>the light is what shows you the work</b> &mdash; no caption has to
-  say &ldquo;here is a project&rdquo;. Then it seats, on the sound his own site plays.<br><br>
-  <b>Four words on screen. One object. No cut.</b> And unlike the two films it was built from, it
-  passes the frozen-frame gate outright &mdash; 42.9% against LEARNED's 65.7% and LINES' 64.6%
-  &mdash; because a real camera orbiting a real lit object changes every pixel of every frame, which
-  is a thing flat graphics cannot do however hard they are animated.<br><br>
-  Getting here cost one config file the project had never had (without it every 3D frame renders
-  black) and one verified dead end: the standard depth-of-field and glow library does not work in
-  this renderer, and worse, <b>it fails silently</b> &mdash; the picture renders and the effects are
-  simply absent, byte-for-byte identical to not using it.</p>
-  <div class="stats"><span>runtime <i>6.7s</i></span><span>frozen <i>42.9%</i></span><span>words on screen <i>4</i></span><span>elements <i>1</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">29</span><h2>OPTICAL</h2><span class="what">6.1s &middot; ONE LETTER, TWO DRAWINGS</span></div>
-  <video src="optical.mp4" poster="optical.jpg" controls preload="none" playsinline></video>
-  <p class="note">Same register as 27, deliberately nothing like it to look at. That one went from
-  putty to a dark violet room with a rose accent, and morphed a card through four shapes;
-  <b>this one never leaves paper</b>, runs on ink blue with a single vermilion mark, and its object
-  is one letterform.<br><br>
-  <b>Fraunces &mdash; the display face on his own site &mdash; carries an optical size axis, 9 to
-  144.</b> That axis is not weight and it is not size: it is a <i>second drawing</i> of the same
-  letter, made for a different reading distance. Small sizes get sturdier strokes and blunter
-  serifs; display sizes get fine strokes and sharp ones. Hardly anyone knows a font does this, and
-  <b>you cannot see it happening, because the letter is changing size at the same time and the
-  growth hides the redraw.</b><br><br>
-  So the film ends on a control: <b>the very letter out of the specimen line travels down, scales up
-  to the display size, and lands on top of the big one.</b> Same letter, same size &mdash; and they
-  do not match. That comparison is the whole finding and no sentence has to state it. The specimen
-  line is real: his nine project names, set at reading size in the 9 drawing, which is exactly what
-  that drawing exists for.<br><br>
-  <b>The timing is the font's own axis</b> &mdash; two units of opsz per frame, so the drag is 68
-  frames because the axis is 135 units wide. Nothing about it is a taste decision. The first cut ran
-  one unit per frame and measured <b>99% frozen</b>: honest, and far too slow to read.</p>
-  <div class="stats"><span>runtime <i>6.1s</i></span><span>frozen <i>83.9%</i></span><span>words on screen <i>2</i></span><span>prose sentences <i>0</i></span></div>
-</section>
-
-<section class="film">
-  <div class="head"><span class="num">30</span><h2>CURVE</h2><span class="what">6s &middot; ZERO WORDS</span></div>
-  <video src="curve.mp4" poster="curve.jpg" controls preload="none" playsinline></video>
-  <p class="note">Built from two references fetched and watched the same night, not from the film
-  before it. <b>Figma's motion launch film</b> gave the device: <i>the editor chrome is the frame</i>
-  &mdash; a timeline with a playhead, selection handles, and a cursor that does the work, so the tool
-  narrates without a word of copy. <b>A working motion designer's 2025 showreel</b> gave the
-  register: saturated colour, not one careful accent on a neutral. <i>(Spotify Wrapped was fetched
-  too and is useless here &mdash; it is almost pure live action.)</i><br><br>
-  <b>The subject is a real thing you cannot see in a still.</b> Two easing presets out of a real
-  brand-to-motion table: <code>cubic-bezier(0, 0, 0.2, 1)</code> glides in and stops;
-  <code>cubic-bezier(0.34, 1.56, 0.64, 1)</code> shoots past the target and springs back. Same
-  distance, same 21 frames &mdash; and they read as two completely different companies.<br><br>
-  So the cursor grabs a <b>bezier control handle and bends the curve</b>, which is the actual gesture
-  of the craft, and the chip re-times as it bends. The original curve stays on screen as a ghost and
-  its chip keeps running beside the new one, because a film about a hidden property needs
-  <b>a control, not an explanation</b>. The dashed line is the destination: everything above it has
-  overshot.<br><br>
-  <b>Zero words on screen. Five elements. 31.5% frozen</b> &mdash; the least static film on this
-  page, against LEARNED at 65.7% and LINES at 64.6%. The reason is structural rather than clever:
-  the chips loop the track for the entire six seconds, so nothing ever comes to rest.</p>
-  <div class="stats"><span>runtime <i>6.0s</i></span><span>frozen <i>31.5%</i></span><span>words on screen <i>0</i></span><span>elements <i>5</i></span></div>
-</section>
-
-<footer>
-  <b>Ten films, everything after them gone, and one built back from the survivor.</b> Films 11&ndash;26 were pulled on 5 September
-  &mdash; Aufan looked at the run and said so plainly. They are not archived, hidden or waiting: the
-  numbers are retired and never reused. What is left is what he actually kept.<br><br>
-  <b>What the ten are evidence of.</b> <b>One:</b> choosing the right object beats fixing the film
-  later. <b>Two:</b> a measurement is not a verdict &mdash; LEARNED has the most real craft here and
-  every gate ranked it last, at 86% frozen. <b>Three:</b> a written rule changes nothing; only a
-  tool that refuses to let the work continue ever changed anything.<br><br>
-  And the hardest one, which took sixteen deletions to learn: <b>a full green board is not a film
-  worth watching.</b>
-</footer>
-
+  <footer>
+    <b>What these are evidence of.</b> <b>One:</b> a measurement is not a verdict — the film with the
+    most real craft here scored worst on every gate, and one that scored highest contained no
+    animation at all. <b>Two:</b> choosing the right subject beats fixing the film afterwards.
+    <b>Three:</b> a written rule changes nothing; only a tool that refuses to let the work continue
+    ever changed anything.<br><br>
+    Films 11&ndash;26 and 31 are not here. They were made, judged and deleted; the numbers are
+    retired and never reused.
+  </footer>
 </div>
+
+<dialog id="dlg"><div class="shell">
+  <button class="close" id="closeBtn">CLOSE ✕</button>
+  <div class="view">
+    <video id="vid" controls playsinline preload="metadata"></video>
+    <div class="meta"><h3 id="vTitle"></h3><p id="vNote"></p></div>
+  </div>
+</div></dialog>
+
+<script>
+/* Every film, with the numbers it was actually measured at. `frozen` is the share
+   of frames identical to the one before; `words` is what is on screen. Both are
+   why the sort exists — the list is a dataset, not a reel. */
+const FILMS = [
+  {n:1, s:"deal", t:"DEAL", k:"object", secs:10.0, vert:false, words:7, frozen:null,
+   note:"The first one. A single card dealt onto a table, with real overshoot and settle instead of a fade."},
+  {n:2, s:"deal2", t:"DEAL II", k:"object", secs:11.0, vert:false, words:7, frozen:null,
+   note:"The same move again, this time with depth — the card travels through space rather than across a plane."},
+  {n:3, s:"short", t:"SHORT", k:"showcase", secs:20.5, vert:true, words:null, frozen:null,
+   note:"A written report rebuilt as something that moves. The first attempt at making information travel."},
+  {n:4, s:"reel", t:"REEL", k:"showcase", secs:15.1, vert:true, words:null, frozen:null,
+   note:"A portfolio showcase in vertical format."},
+  {n:5, s:"build", t:"BUILD", k:"narrated", secs:66.8, vert:true, words:null, frozen:null,
+   note:"Narrated. Gates, not rules — why a written standard changes nothing and a tool that blocks you changes everything."},
+  {n:6, s:"build2", t:"BUILD II", k:"narrated", secs:53.9, vert:true, words:null, frozen:null,
+   note:"Narrated. What happens when one piece of work splits into two."},
+  {n:7, s:"build4", t:"BUILD IV", k:"narrated", secs:55.5, vert:true, words:null, frozen:null,
+   note:"Narrated. The same script on a light ground, to see what the ground was doing."},
+  {n:8, s:"quiet", t:"QUIET", k:"object", secs:13.0, vert:true, words:null, frozen:null,
+   note:"A room that barely moves. An experiment in how little motion a piece can survive on."},
+  {n:9, s:"build3", t:"BUILD III", k:"narrated", secs:55.5, vert:true, words:null, frozen:null,
+   note:"Narrated. The dark cut of the same piece."},
+  {n:10, s:"learned", t:"LEARNED", k:"object", secs:6.8, vert:false, words:12, frozen:65.7,
+   note:"A card that squashes and stretches, a waveform that draws itself, a fold into a button. The most genuine craft in the set — and every automated gate ranked it worst, at 65.7% still. The single best argument here that a metric is not a verdict."},
+  {n:27, s:"lines", t:"LINES", k:"object", secs:6.7, vert:false, words:2, frozen:64.6,
+   note:"Built to the shape of film 10 on purpose. A file opens into a real map of its own source — one thin row per actual line of code — and the largest function turns out to be the whole mechanic of a website, at 59 lines."},
+  {n:28, s:"emulsion", t:"EMULSION", k:"object", secs:6.7, vert:false, words:4, frozen:42.9,
+   note:"The first film here with real lighting in it. A mounted 35mm slide at true proportions is lifted from a carrier and turned edge-on through a key light — and the instant the light passes through it, the work appears. The light is what shows you the work, so nothing needs captioning."},
+  {n:29, s:"optical", t:"OPTICAL", k:"object", secs:6.1, vert:false, words:2, frozen:83.9,
+   note:"One letter, two drawings. A variable font carries a second drawing of the same letter for small sizes — and you cannot see it happening, because the growth hides the redraw. So the small drawing comes back at the same size and lands on the big one. The comparison is the finding."},
+  {n:30, s:"curve", t:"CURVE", k:"object", secs:6.1, vert:false, words:0, frozen:31.5,
+   note:"Zero words. Two easing presets, same distance, same 21 frames — one glides in and stops, the other overshoots and springs back, and they read as two different companies. The cursor bends the curve by its control handle while a block re-times beside it."},
+  {n:32, s:"sevens", t:"SEVENS", k:"explainer", secs:72.1, vert:false, words:null, frozen:74.9,
+   note:"A 72-second explainer, and the first film here that teaches rather than states. It puts 96 digits up and asks you to count the sevens — you fail — then colours them and you succeed instantly. Both halves use the identical digits; only the colour changes, or the demonstration would be a lie. There are twelve."},
+];
+
+const grid = document.getElementById("grid");
+const countEl = document.getElementById("count");
+let kind = "all", sort = "num";
+
+const fmt = (f) => {
+  const bits = [];
+  bits.push(`<span class="tag k">${f.k.toUpperCase()}</span>`);
+  bits.push(`<span class="tag">${f.secs.toFixed(1)}s</span>`);
+  if (f.frozen !== null) bits.push(`<span class="tag">${f.frozen}% still</span>`);
+  if (f.words !== null) bits.push(`<span class="tag">${f.words} words</span>`);
+  return bits.join("");
+};
+
+function render(){
+  const list = FILMS.filter((f) => kind === "all" || f.k === kind).sort((a,b) => {
+    if (sort === "num") return b.n - a.n;
+    if (sort === "short") return a.secs - b.secs;
+    if (sort === "long") return b.secs - a.secs;
+    if (sort === "alive") return (a.frozen ?? 999) - (b.frozen ?? 999);
+    if (sort === "quiet") return (a.words ?? 999) - (b.words ?? 999);
+    return 0;
+  });
+  countEl.textContent = list.length + " / " + FILMS.length;
+  grid.innerHTML = list.length ? list.map((f) => `
+    <button class="card${f.vert ? " vert" : ""}" data-s="${f.s}">
+      <img class="shot" src="${f.s}.jpg" alt="" loading="lazy">
+      <span class="meta">
+        <span class="n">${String(f.n).padStart(2,"0")}</span>
+        <h3>${f.t}</h3>
+        <p>${f.note}</p>
+        <span class="tags">${fmt(f)}</span>
+      </span>
+    </button>`).join("") : `<p class="empty">NOTHING IN THIS CATEGORY YET</p>`;
+}
+
+document.querySelectorAll("button[data-f]").forEach((b) => {
+  b.addEventListener("click", () => {
+    const f = b.dataset.f;
+    document.querySelectorAll(`button[data-f="${f}"]`).forEach((o) => o.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    if (f === "kind") kind = b.dataset.v; else sort = b.dataset.v;
+    render();
+  });
+});
+
+const dlg = document.getElementById("dlg"), vid = document.getElementById("vid");
+grid.addEventListener("click", (e) => {
+  const card = e.target.closest(".card");
+  if (!card) return;
+  const f = FILMS.find((x) => x.s === card.dataset.s);
+  vid.src = f.s + ".mp4";
+  vid.poster = f.s + ".jpg";
+  document.getElementById("vTitle").textContent = String(f.n).padStart(2,"0") + " · " + f.t;
+  document.getElementById("vNote").textContent = f.note;
+  dlg.showModal();
+  vid.play().catch(() => {});
+});
+const shut = () => { vid.pause(); vid.removeAttribute("src"); vid.load(); dlg.close(); };
+document.getElementById("closeBtn").addEventListener("click", shut);
+dlg.addEventListener("click", (e) => { if (e.target === dlg) shut(); });
+dlg.addEventListener("close", () => { vid.pause(); });
+
+render();
+</script>
 </body>
 </html>
