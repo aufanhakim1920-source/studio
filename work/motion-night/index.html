@@ -54,8 +54,8 @@
     display:grid; gap:clamp(14px,2vw,24px); margin-top:26px;
     grid-template-columns:repeat(auto-fill,minmax(268px,1fr));
   }
-  .cardwrap{position:relative}
-  .cardwrap>.card{width:100%}
+  .cardwrap{position:relative; display:flex; flex-direction:column}
+  .cardwrap>.card{width:100%; flex:1 1 auto}
   .ref{position:absolute; right:10px; top:10px; z-index:2; font:600 10px/1 system-ui,sans-serif; letter-spacing:.12em; padding:7px 9px; background:rgba(0,0,0,.72); color:#fff; text-decoration:none; border-radius:4px; opacity:.85}
   .ref:hover{opacity:1; background:#000}
   .vref{display:inline-block; margin-top:10px; font:600 12px/1 system-ui,sans-serif; letter-spacing:.06em; color:inherit; text-decoration:underline; text-underline-offset:3px}
