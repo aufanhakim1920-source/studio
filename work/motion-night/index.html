@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Motion Night — Aufan Rachmad</title>
-<meta name="description" content="Fifteen short films made to learn motion design. Filter by kind, sort by what they measure.">
+<meta name="description" content="Short films made to learn motion design, the failed ones kept alongside. Filter by kind, sort by what they measure.">
 <style>
   :root{
     --ink:#0A0B0E; --paper:#F2EDE1; --grain:#CFC6B4;
@@ -119,6 +119,7 @@
       <button data-f="kind" data-v="explainer">EXPLAINER</button>
       <button data-f="kind" data-v="narrated">NARRATED</button>
       <button data-f="kind" data-v="showcase">SHOWCASE</button>
+      <button data-f="kind" data-v="failed">FAILED</button>
       <span class="count" id="count"></span>
     </div>
     <div class="row">
@@ -179,8 +180,8 @@ const FILMS = [
    note:"Copied from a branding reel he sent, all 1447 frames watched. A photographic collage: real cut-out photographs (a Macintosh, a watch, sneakers, a presenter) on built sets, and one anchor object that returns between every scene - a spiral notebook whose pages carry the five questions, typed letter by letter. The cover flips open at the start and every page flips back at the end. Fourteen cut-outs from Creative Commons photographs, cut out locally; the brands on the sets are invented. Narrated in Aufan's voice, generated from his own recordings, with every beat pinned to the frame the word is spoken. The brands on the sets are the real ones the reference shows."},
   {n:40, s:"rebrand", t:"REBRAND", k:"explainer", secs:58.4, vert:true, words:null, frozen:null,
    note:"The same maker's second reel, built the day after 39 became his favourite and to the standard that day set. Ten sets, each a designed picture: real paper, cork, wood and fabric textures under window-blind light bands, props with contact shadows, real brands, real photographs where the reference photographs, drawn objects where drawing is the register - a torn notebook sheet, a gilt frame, a WhatsApp screen, a newspaper, pins and red string. His voice on the reference's line order, every beat on a spoken word."},
-  {n:42, s:"boring", t:"BORING WINS", k:"explainer", secs:43.5, vert:true, words:null, frozen:null,
-   note:"The fourth reel from the same maker, copied properly: all 1221 frames watched across 13 contact sheets, 19 objects cropped at full resolution, and transcribed FIRST so its 21 spoken line start-times are the beat map. Twelve registers in their order - a theatre with a phone under glass on a draped plinth, founders on stage with speech balloons, a grid card, a real supermarket aisle with a built shelf label, a built bathroom, a mirror with drawn thought clouds, a checkerboard flat-lay with a real product and a working magnifier, a chalkboard in a library where a hand writes two strategies in coloured chalk and then an eraser SMEARS THEM INTO EACH OTHER, and a notebook that asks the closing question. His voice on their line order at a 1.20 tempo lift so it lands in their container. Every photograph graded into the film rather than dropped in at native - the fault that retired 41. Sound uses the SFX pack he sent, measured file by file first."},
+  {n:42, s:"boring", t:"BORING WINS", k:"failed", secs:43.5, vert:true, words:null, frozen:null,
+   note:"FAILED. Aufan: the first ten seconds are a bit ok - the theatre and the founders are built and the motion follows the video - but after ten seconds it goes downhill, because it leans on real photographs for the supermarket, the shelf, the library wall, the chalkboard and the products. Measured: the first photograph arrives at frame 275, which is ten seconds, and his verdict lands on that frame. The count was not the problem - this film has the highest drawn-to-photographic ratio of the three at 27 to 1 - but in film 40, which he named as the model, every photograph sits BEHIND something built and out of focus, while here the photograph IS the set. A photograph may be distant blurred depth. It may never be the set or the hero object. Kept here rather than deleted because the objective is learning Remotion graphic animation, and the half that was photographed is the half that taught nothing."},
 ];
 
 const grid = document.getElementById("grid");
