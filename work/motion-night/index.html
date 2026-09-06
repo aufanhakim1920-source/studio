@@ -54,6 +54,11 @@
     display:grid; gap:clamp(14px,2vw,24px); margin-top:26px;
     grid-template-columns:repeat(auto-fill,minmax(268px,1fr));
   }
+  .cardwrap{position:relative}
+  .cardwrap>.card{width:100%}
+  .ref{position:absolute; right:10px; top:10px; z-index:2; font:600 10px/1 system-ui,sans-serif; letter-spacing:.12em; padding:7px 9px; background:rgba(0,0,0,.72); color:#fff; text-decoration:none; border-radius:4px; opacity:.85}
+  .ref:hover{opacity:1; background:#000}
+  .vref{display:inline-block; margin-top:10px; font:600 12px/1 system-ui,sans-serif; letter-spacing:.06em; color:inherit; text-decoration:underline; text-underline-offset:3px}
   .card{
     border:1px solid var(--line); border-radius:14px; overflow:hidden;
     background:#0E1014; cursor:pointer; text-align:left; padding:0;
@@ -149,7 +154,8 @@
   <button class="close" id="closeBtn">CLOSE ✕</button>
   <div class="view">
     <video id="vid" controls playsinline preload="metadata"></video>
-    <div class="meta"><h3 id="vTitle"></h3><p id="vNote"></p></div>
+    <div class="meta"><h3 id="vTitle"></h3><p id="vNote"></p>
+      <a id="vRef" class="vref" href="#" target="_blank" rel="noopener" hidden>the Instagram reel this copies ↗</a></div>
   </div>
 </div></dialog>
 
@@ -176,19 +182,19 @@ const FILMS = [
    note:"Built to match a reel he sent, after watching all 1581 of its frames. A clean green editorial style that DARES TO HOLD STILL - a third of the reference does not move at all. White ground end to end, a giant clock hand cropped by the frame, hexagon badges on leader lines, and a hand-drawn circle that draws itself round the payoff. First film under the Aufan mark."},
   {n:37, s:"signal", t:"SIGNAL", k:"object", secs:31.0, vert:false, words:null, frozen:null,
    note:"Rebuilt with real assets after going and getting them: 15 typefaces (the project had ONE, which was the actual blocker on poster work), 350 layout-composition references from a community repo, a measured library of real photographs, and a genuinely lit 3D torus rendered with three.js instead of faked in SVG. Narrated to the reference own line timings."},
-  {n:39, s:"brand", t:"BRAND", k:"explainer", secs:61.4, vert:true, words:null, frozen:null,
+  {n:39, s:"brand", t:"BRAND", k:"explainer", secs:61.4, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DbYOUcwsvHl/",
    note:"Copied from a branding reel he sent, all 1447 frames watched. A photographic collage: real cut-out photographs (a Macintosh, a watch, sneakers, a presenter) on built sets, and one anchor object that returns between every scene - a spiral notebook whose pages carry the five questions, typed letter by letter. The cover flips open at the start and every page flips back at the end. Fourteen cut-outs from Creative Commons photographs, cut out locally; the brands on the sets are invented. Narrated in Aufan's voice, generated from his own recordings, with every beat pinned to the frame the word is spoken. The brands on the sets are the real ones the reference shows."},
-  {n:40, s:"rebrand", t:"REBRAND", k:"explainer", secs:58.4, vert:true, words:null, frozen:null,
+  {n:40, s:"rebrand", t:"REBRAND", k:"explainer", secs:58.4, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/Db0fMRrTenx/",
    note:"The same maker's second reel, built the day after 39 became his favourite and to the standard that day set. Ten sets, each a designed picture: real paper, cork, wood and fabric textures under window-blind light bands, props with contact shadows, real brands, real photographs where the reference photographs, drawn objects where drawing is the register - a torn notebook sheet, a gilt frame, a WhatsApp screen, a newspaper, pins and red string. His voice on the reference's line order, every beat on a spoken word."},
-  {n:42, s:"boring", t:"BORING WINS", k:"failed", secs:43.5, vert:true, words:null, frozen:null,
+  {n:42, s:"boring", t:"BORING WINS", k:"failed", secs:43.5, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/Dcld8d1TXKY/",
    note:"FAILED. Aufan: the first ten seconds are a bit ok - the theatre and the founders are built and the motion follows the video - but after ten seconds it goes downhill, because it leans on real photographs for the supermarket, the shelf, the library wall, the chalkboard and the products. Measured: the first photograph arrives at frame 275, which is ten seconds, and his verdict lands on that frame. The count was not the problem - this film has the highest drawn-to-photographic ratio of the three at 27 to 1 - but in film 40, which he named as the model, every photograph sits BEHIND something built and out of focus, while here the photograph IS the set. A photograph may be distant blurred depth. It may never be the set or the hero object. Kept here rather than deleted because the objective is learning Remotion graphic animation, and the half that was photographed is the half that taught nothing."},
-  {n:41, s:"genz", t:"GEN Z", k:"failed", secs:54.5, vert:true, words:null, frozen:null,
+  {n:41, s:"genz", t:"GEN Z", k:"failed", secs:54.5, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DcGcBhtsAlx/",
    note:"FAILED. The third reel from the same maker. Aufan pulled it for leaving real footage untreated inside built sets, so the stock clips punched out of the film: measured against this film's own sets they sat plus 0.5 saturation and plus 19.9 local contrast, while the reference pushes its own footage DOWN by 9.9 and 1.3. Two tools came out of it, one that finds shots punching out of a film and one that treats them. The deeper fault only became clear on the next film: the photographs should not have been the sets at all. Kept here because the objective is learning Remotion graphic animation, and a failure with a measurement attached teaches more than a deletion."},
-  {n:43, s:"genzdrawn", t:"GEN Z, DRAWN", k:"failed", secs:54.4, vert:true, words:null, frozen:null,
+  {n:43, s:"genzdrawn", t:"GEN Z, DRAWN", k:"failed", secs:54.4, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DcGcBhtsAlx/",
    note:"FAILED. Too shaky. Everything in it was drawn and it ran on a stop-motion clock from the remocn registry, which reshoots every object a pixel or two off each frame. At a one-frame step that stops being hand-placed and becomes a shake across the whole picture. The clock itself is still right for arrivals and landings; running it on every element on every frame is not. Kept here because the technique is worth having and the dosage is the lesson."},
-  {n:44, s:"boringwins", t:"BORING WINS, REMADE", k:"explainer", secs:43.6, vert:true, words:null, frozen:null,
+  {n:44, s:"boringwins", t:"BORING WINS, REMADE", k:"explainer", secs:43.6, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/Dcld8d1TXKY/",
    note:"The remake of 42, built back on the thinking that produced 39 and 40. The sets are DRAWN: a red velvet theatre with a phone under glass on a draped plinth, a supermarket aisle in perspective with its own shelf rails and price strips, a wall of toothpaste, a bathroom, a round mirror, a checkerboard, a library of book spines, a slate board on a wooden easel, a notebook. The real products sit ON those drawn sets as small, cleanly cut-out objects with contact shadows, the way 40 used a real Coke bottle - the cut-outs were re-cut with an eroded, feathered edge, because his diagnosis of 42 was errors in cropping rather than the photographs themselves. His other diagnosis was missing motion: every scene now carries a continuous camera move, and the picture is in motion 34.6 per cent of the time against 15.3 in the version that failed. No frame jitter, which is what failed 43. All 1221 reference frames watched, 19 objects cropped at full resolution, transcribed first so its 21 spoken line start-times are the beat map."},
-  {n:45, s:"zenn", t:"SOME BRANDS", k:"explainer", secs:22.5, vert:true, words:null, frozen:null,
+  {n:45, s:"zenn", t:"SOME BRANDS", k:"explainer", secs:22.5, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DLCcWGBpQlV/",
    note:"The first reference I found myself, on his Instagram: a 22.5-second brand-strategy reel by @zennn.aep, copied frame for frame in the same container (1080x1920, 675 frames, six narrated lines on the same seconds). One object per beat on a white studio or a green floor plane: a brain inside an atom, four products on green tiles with their real marks, a marble pegasus, a pointing hand, a retro television, an eyeball on a card, a butterfly in a black window, a diamond on a Doric column, a chess queen with a gold crown. The television, the diamond, the column, the butterfly and the hand are drawn; the brain, the products, the pegasus, the eyeball and the queen are photographs cut out locally. Two devices learned from the reference: a fine halftone print texture over everything, and motion-blur smears instead of fades. Red condensed headlines in Bebas Neue with a soft drop shadow. The endcard carries the Aufan mark where theirs carried their credit."},
 ];
 
@@ -216,6 +222,7 @@ function render(){
   });
   countEl.textContent = list.length + " / " + FILMS.length;
   grid.innerHTML = list.length ? list.map((f) => `
+    <div class="cardwrap">${f.ref ? `<a class="ref" href="${f.ref}" target="_blank" rel="noopener" title="the Instagram reel this film copies">REFERENCE ↗</a>` : ""}
     <button class="card${f.vert ? " vert" : ""}" data-s="${f.s}">
       <img class="shot" src="${f.s}.jpg" alt="" loading="lazy">
       <span class="meta">
@@ -224,7 +231,7 @@ function render(){
         <p>${f.note}</p>
         <span class="tags">${fmt(f)}</span>
       </span>
-    </button>`).join("") : `<p class="empty">NOTHING IN THIS CATEGORY YET</p>`;
+    </button></div>`).join("") : `<p class="empty">NOTHING IN THIS CATEGORY YET</p>`;
 }
 
 document.querySelectorAll("button[data-f]").forEach((b) => {
@@ -246,6 +253,7 @@ grid.addEventListener("click", (e) => {
   vid.poster = f.s + ".jpg";
   document.getElementById("vTitle").textContent = String(f.n).padStart(2,"0") + " · " + f.t;
   document.getElementById("vNote").textContent = f.note;
+  const vr = document.getElementById("vRef"); if (f.ref) { vr.href = f.ref; vr.hidden = false; } else { vr.hidden = true; }
   dlg.showModal();
   vid.play().catch(() => {});
 });
