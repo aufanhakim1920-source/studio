@@ -226,13 +226,12 @@ function render(){
   });
   countEl.textContent = list.length + " / " + FILMS.length;
   grid.innerHTML = list.length ? list.map((f) => `
-    <div class="cardwrap">${f.ref ? `<a class="ref" href="${f.ref}" target="_blank" rel="noopener" title="the Instagram reel this film copies">REFERENCE ↗</a>` : ""}
+    <div class="cardwrap">
     <button class="card${f.vert ? " vert" : ""}" data-s="${f.s}">
       <img class="shot" src="${f.s}.jpg" alt="" loading="lazy">
       <span class="meta">
         <span class="n">${String(f.n).padStart(2,"0")}</span>
         <h3>${f.t}</h3>
-        <p>${f.note}</p>
         <span class="tags">${fmt(f)}</span>
       </span>
     </button></div>`).join("") : `<p class="empty">NOTHING IN THIS CATEGORY YET</p>`;
