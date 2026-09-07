@@ -424,5 +424,13 @@
     "blurb": "a barbershop &mdash; empty chair time, no-shows, or clients not returning: which one is the leak",
     "date": "3 Sep",
     "kind": "dashboard"
+  },
+  {
+    "n": "103",
+    "slug": "121-pitch",
+    "title": "Campaign Cut",
+    "blurb": "a spec build for a Melbourne agency &mdash; swap the client, the film re-renders from that row of data",
+    "date": "7 Sep",
+    "kind": "product"
   }
 ]
