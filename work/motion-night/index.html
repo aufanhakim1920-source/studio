@@ -58,6 +58,12 @@
   .cardwrap>.card{width:100%; flex:1 1 auto}
   .ref{position:absolute; right:10px; top:10px; z-index:2; font:600 10px/1 system-ui,sans-serif; letter-spacing:.12em; padding:7px 9px; background:rgba(0,0,0,.72); color:#fff; text-decoration:none; border-radius:4px; opacity:.85}
   .ref:hover{opacity:1; background:#000}
+  .stamp{position:absolute; left:10px; top:10px; z-index:2; font:700 10px/1 system-ui,sans-serif; letter-spacing:.14em; padding:7px 9px; border-radius:4px; pointer-events:none}
+  .stamp.failed{background:#b3261e; color:#fff}
+  .stamp.fav{background:var(--a5); color:var(--ink)}
+  .verdict{margin-top:18px; padding-top:14px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .verdict .lab{font:600 10px/1 Consolas,monospace; letter-spacing:.18em; color:rgba(242,237,225,.5); margin-right:4px}
+  .verdict .state{margin-left:auto; font:12px/1 Consolas,monospace; letter-spacing:.08em; color:rgba(242,237,225,.45)}
   .vref{display:inline-block; margin-top:10px; font:600 12px/1 system-ui,sans-serif; letter-spacing:.06em; color:inherit; text-decoration:underline; text-underline-offset:3px}
   .card{
     border:1px solid var(--line); border-radius:14px; overflow:hidden;
@@ -125,6 +131,7 @@
       <button data-f="kind" data-v="narrated">NARRATED</button>
       <button data-f="kind" data-v="showcase">SHOWCASE</button>
       <button data-f="kind" data-v="failed">FAILED</button>
+      <button data-f="kind" data-v="fav">★ FAVOURITE</button>
       <span class="count" id="count"></span>
     </div>
     <div class="row">
@@ -155,7 +162,12 @@
   <div class="view">
     <video id="vid" controls playsinline preload="metadata"></video>
     <div class="meta"><h3 id="vTitle"></h3><p id="vNote"></p>
-      <a id="vRef" class="vref" href="#" target="_blank" rel="noopener" hidden>the Instagram reel this copies ↗</a></div>
+      <a id="vRef" class="vref" href="#" target="_blank" rel="noopener" hidden>the Instagram reel this copies ↗</a>
+      <div class="verdict"><span class="lab">YOUR VERDICT</span>
+        <button class="vbtn" data-v="gallery">GALLERY</button>
+        <button class="vbtn" data-v="failed">FAILED</button>
+        <button class="vbtn" data-v="favourite">★ FAVOURITE</button>
+        <span class="state" id="vState"></span></div></div>
   </div>
 </div></dialog>
 
@@ -194,9 +206,9 @@ const FILMS = [
    note:"FAILED. Too shaky. Everything in it was drawn and it ran on a stop-motion clock from the remocn registry, which reshoots every object a pixel or two off each frame. At a one-frame step that stops being hand-placed and becomes a shake across the whole picture. The clock itself is still right for arrivals and landings; running it on every element on every frame is not. Kept here because the technique is worth having and the dosage is the lesson."},
   {n:44, s:"boringwins", t:"BORING WINS, REMADE", k:"explainer", secs:43.6, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/Dcld8d1TXKY/",
    note:"The remake of 42, built back on the thinking that produced 39 and 40. The sets are DRAWN: a red velvet theatre with a phone under glass on a draped plinth, a supermarket aisle in perspective with its own shelf rails and price strips, a wall of toothpaste, a bathroom, a round mirror, a checkerboard, a library of book spines, a slate board on a wooden easel, a notebook. The real products sit ON those drawn sets as small, cleanly cut-out objects with contact shadows, the way 40 used a real Coke bottle - the cut-outs were re-cut with an eroded, feathered edge, because his diagnosis of 42 was errors in cropping rather than the photographs themselves. His other diagnosis was missing motion: every scene now carries a continuous camera move, and the picture is in motion 34.6 per cent of the time against 15.3 in the version that failed. No frame jitter, which is what failed 43. All 1221 reference frames watched, 19 objects cropped at full resolution, transcribed first so its 21 spoken line start-times are the beat map."},
-  {n:45, s:"zenn", t:"SOME BRANDS", k:"explainer", secs:22.5, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DLCcWGBpQlV/",
+  {n:45, s:"zenn", t:"SOME BRANDS", k:"explainer", secs:21.2, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DLCcWGBpQlV/",
    note:"The first reference I found myself, on his Instagram: a 22.5-second brand-strategy reel by @zennn.aep, copied frame for frame in the same container (1080x1920, 675 frames, six narrated lines on the same seconds). One object per beat on a white studio or a green floor plane: a brain inside an atom, four products on green tiles with their real marks, a marble pegasus, a pointing hand, a retro television, an eyeball on a card, a butterfly in a black window, a diamond on a Doric column, a chess queen with a gold crown. The television, the diamond, the column, the butterfly and the hand are drawn; the brain, the products, the pegasus, the eyeball and the queen are photographs cut out locally. Two devices learned from the reference: a fine halftone print texture over everything, and motion-blur smears instead of fades. Red condensed headlines in Bebas Neue with a soft drop shadow. The endcard carries the Aufan mark where theirs carried their credit."},
-  {n:46, s:"shortcuts", t:"SHORTCUTS", k:"explainer", secs:16.3, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DTmVnVQDFn3/",
+  {n:46, s:"shortcuts", t:"SHORTCUTS", k:"explainer", secs:15.9, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DTmVnVQDFn3/",
    note:"The second reference found myself on Instagram: a 16-second black-and-white explainer by @ayushfx.studio, copied frame for frame in the same container (490 frames, three narrated lines on the same seconds). A paper dot-grid world: black cut-paper shapes rotate in from the corners as the motion device, a design-tool cursor types into dashed selection boxes as the type device, and one object per beat - a pill, an ornate frame holding an engraving of Diogenes with his lantern, a phone, a pocket watch in a funnel of light. The pill, the phone, the frame and the shapes are drawn; the watch and the engraving are photographs cut out. The first film where the Aufan mark appears inside the story: the phone's app screen carries it where the reference shows its creator's brand, with three earlier films as the cards. The mark returns small in the corner at the end, no endcard."},
   {n:47, s:"free", t:"FREE", k:"failed", secs:45.0, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/DYt77hNOaeB/",
    note:"The third reference found myself, for a brief of about a minute of informational content: a 45-second explainer on why Costco gives away free food (reciprocity), copied frame for frame - fifteen narrated lines, the picture re-timed to the voice. Twenty-one beats and twelve cuts; the ground changes on every cut. One real object per beat: the storefront twice, a burger under a silver cloche that lifts, a glass case of free samples with a chart drawn through it, a spiral notebook with a sticker, a laptop, a cube of cheese, a shopping cart, a stack of hundred-dollar bills. Five type voices from soft red condensed to heavy 3D extrusions in cream, green and gold; a word-search grid that finds GENEROSITY, three ribbons crossing in the dark, a 17% donut. The photographs are cut out locally; the cloche, the case, the notebook, the dialog, the ribbons and every ground are drawn. The Aufan mark sits on the laptop screen mid-film and small in the corner at the end."},
@@ -215,8 +227,68 @@ const fmt = (f) => {
   return bits.join("");
 };
 
+/* ── his verdicts ─ a small live table in Supabase (project aufan-studio); the page reads the
+   latest verdict per film on load and he sets one from the player. Writes go through a label key
+   he chooses the first time - it is what stops strangers relabelling the films. ── */
+const SB = { url: "https://qvveohpluoqmomzanjjj.supabase.co", key: "sb_publishable_AMDyzr9XOxlPt-6iB5IChA_NjcWdg4W" };
+const sbH = { apikey: SB.key, Authorization: "Bearer " + SB.key, "Content-Type": "application/json" };
+const VERDICTS = {};
+let current = null;
+const stamp = (f) => f.k === "failed" ? '<span class="stamp failed">FAILED</span>' : f.fav ? '<span class="stamp fav">★ FAVOURITE</span>' : "";
+function applyVerdicts(){
+  for (const f of FILMS) {
+    if (f.k0 === undefined) f.k0 = f.k === "failed" ? "explainer" : f.k;
+    const v = VERDICTS[f.n] && VERDICTS[f.n].verdict;
+    f.fav = v === "favourite";
+    if (v === "failed") f.k = "failed"; else if (v === "gallery" || v === "favourite") f.k = f.k0;
+  }
+}
+async function loadVerdicts(){
+  try {
+    const r = await fetch(SB.url + "/rest/v1/film_verdict_latest?select=film,verdict,at", { headers: sbH });
+    if (!r.ok) throw new Error(r.status);
+    for (const row of await r.json()) VERDICTS[row.film] = row;
+  } catch (e) { console.warn("verdicts unavailable", e); }
+  applyVerdicts(); render();
+}
+async function rpc(name, body){
+  const r = await fetch(SB.url + "/rest/v1/rpc/" + name, { method: "POST", headers: sbH, body: JSON.stringify(body || {}) });
+  const j = await r.json().catch(() => null);
+  if (!r.ok) throw new Error((j && j.message) || String(r.status));
+  return j;
+}
+async function labelKey(){
+  let k = null; try { k = localStorage.getItem("mn-label-key"); } catch (e) {}
+  if (k) return k;
+  let has = true; try { has = await rpc("has_label_key"); } catch (e) {}
+  k = window.prompt(has ? "Your label key:" : "First time here: choose a label key (6+ characters). Only you know it - it is what stops strangers relabelling the films.");
+  if (!k) return null;
+  if (!has) {
+    const ok = await rpc("claim_label_key", { k });
+    if (ok !== true) { alert("A key already exists - enter that one instead."); return labelKey(); }
+  }
+  try { localStorage.setItem("mn-label-key", k); } catch (e) {}
+  return k;
+}
+function paintVerdict(f){
+  const row = VERDICTS[f.n]; const eff = f.k === "failed" ? "failed" : f.fav ? "favourite" : "gallery";
+  document.querySelectorAll(".vbtn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === eff)));
+  document.getElementById("vState").textContent = row ? "labelled " + new Date(row.at).toLocaleDateString("en-AU", { day: "numeric", month: "short" }) : "not labelled yet";
+}
+async function setVerdict(f, v){
+  const k = await labelKey(); if (!k) return;
+  try {
+    const row = await rpc("set_verdict", { n: f.n, v, k });
+    VERDICTS[f.n] = row; applyVerdicts(); render(); paintVerdict(f);
+  } catch (e) {
+    if (/wrong label key/.test(e.message)) { try { localStorage.removeItem("mn-label-key"); } catch (x) {} alert("Wrong key - try again."); }
+    else alert("Could not save the verdict: " + e.message);
+  }
+}
+document.querySelectorAll(".vbtn").forEach((b) => b.addEventListener("click", () => { if (current) setVerdict(current, b.dataset.v); }));
+
 function render(){
-  const list = FILMS.filter((f) => kind === "all" || f.k === kind).sort((a,b) => {
+  const list = FILMS.filter((f) => kind === "all" || (kind === "fav" ? f.fav : f.k === kind)).sort((a,b) => {
     if (sort === "num") return b.n - a.n;
     if (sort === "short") return a.secs - b.secs;
     if (sort === "long") return b.secs - a.secs;
@@ -226,7 +298,7 @@ function render(){
   });
   countEl.textContent = list.length + " / " + FILMS.length;
   grid.innerHTML = list.length ? list.map((f) => `
-    <div class="cardwrap">
+    <div class="cardwrap">${stamp(f)}
     <button class="card${f.vert ? " vert" : ""}" data-s="${f.s}">
       <img class="shot" src="${f.s}.jpg" alt="" loading="lazy">
       <span class="meta">
@@ -257,6 +329,7 @@ grid.addEventListener("click", (e) => {
   document.getElementById("vTitle").textContent = String(f.n).padStart(2,"0") + " · " + f.t;
   document.getElementById("vNote").textContent = f.note;
   const vr = document.getElementById("vRef"); if (f.ref) { vr.href = f.ref; vr.hidden = false; } else { vr.hidden = true; }
+  current = f; paintVerdict(f);
   dlg.showModal();
   vid.play().catch(() => {});
 });
@@ -266,6 +339,7 @@ dlg.addEventListener("click", (e) => { if (e.target === dlg) shut(); });
 dlg.addEventListener("close", () => { vid.pause(); });
 
 render();
+loadVerdicts();
 </script>
 </body>
 </html>
