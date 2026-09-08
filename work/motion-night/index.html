@@ -163,7 +163,7 @@
     <video id="vid" controls playsinline preload="metadata"></video>
     <div class="meta"><h3 id="vTitle"></h3><p id="vNote"></p>
       <a id="vRef" class="vref" href="#" target="_blank" rel="noopener" hidden>the Instagram reel this copies ↗</a>
-      <div class="verdict"><span class="lab">YOUR VERDICT</span>
+      <div class="verdict" id="vPanel" hidden><span class="lab">YOUR VERDICT</span>
         <button class="vbtn" data-v="gallery">GALLERY</button>
         <button class="vbtn" data-v="failed">FAILED</button>
         <button class="vbtn" data-v="favourite">★ FAVOURITE</button>
@@ -257,10 +257,21 @@ async function rpc(name, body){
   if (!r.ok) throw new Error((j && j.message) || String(r.status));
   return j;
 }
+/* The gallery is public. Writes are revoked for the published key at the database,
+   so the panel stays hidden unless the write path actually answers. It fails CLOSED:
+   an error means no buttons, never buttons that break when clicked. */
+async function writesAvailable(){
+  try { await rpc("has_label_key"); return true; } catch (e) { return false; }
+}
+(async () => {
+  if (await writesAvailable()) {
+    const el = document.getElementById("vPanel"); if (el) el.hidden = false;
+  }
+})();
 async function labelKey(){
   let k = null; try { k = localStorage.getItem("mn-label-key"); } catch (e) {}
   if (k) return k;
-  let has = true; try { has = await rpc("has_label_key"); } catch (e) {}
+  let has = false; try { has = await rpc("has_label_key"); } catch (e) { return null; }
   k = window.prompt(has ? "Your label key:" : "First time here: choose a label key (6+ characters). Only you know it - it is what stops strangers relabelling the films.");
   if (!k) return null;
   if (!has) {
