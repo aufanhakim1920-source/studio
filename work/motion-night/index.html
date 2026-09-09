@@ -282,7 +282,9 @@ async function labelKey(){
   return k;
 }
 function paintVerdict(f){
-  const row = VERDICTS[f.n]; const eff = f.k === "failed" ? "failed" : f.fav ? "favourite" : "gallery";
+  const row = VERDICTS[f.n  {n:49, s:"asset", t:"ASSET", k:"explainer", secs:42.5, vert:true, words:null, frozen:null, ref:"https://www.instagram.com/reel/Dc0zqVKsofR/",
+   note:"A frame-for-frame copy of a 42-second brand-strategy reel by the same creator as 39 and 40, with a completely different subject. The reason for copying this one: the film before it was rejected as monotone, and measuring the reference gave the number behind that word. It changes world - meaning the ground, the palette and the hero object all at once - 26 times in 42 seconds, one every 1.6 seconds. The rejected film changed world zero times in 25 seconds. So this one changes on the same 26 frames the reference does, and its seventeen narrated lines start on the same seconds as theirs, drifting at most a fifth of a second. Ours is about distinctive assets: the colour a brand owns, which is why you know it before you read it. Tiffany blue as the proof, a fake desktop where a competitor drags your typeface, your layout and your colour out of your folder into theirs, and a shelf where one box among identical greys is the one you recognise. It ends on a demonstration rather than a claim - six torn colour cards with no logos, cycling, and then on the last line the marks resolve onto the colours you have already named. Every card is hand-torn paper with three tones and a contact shadow, every ground is a real texture under a light with a direction, and there is not one photograph in it."},
+]; const eff = f.k === "failed" ? "failed" : f.fav ? "favourite" : "gallery";
   document.querySelectorAll(".vbtn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === eff)));
   document.getElementById("vState").textContent = row ? "labelled " + new Date(row.at).toLocaleDateString("en-AU", { day: "numeric", month: "short" }) : "not labelled yet";
 }
