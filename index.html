@@ -135,6 +135,19 @@ kbd{font:500 11px/1 var(--mono);background:var(--card);border:1px solid var(--li
   .bar{padding-top:10px}
 }
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms!important}}
+/* ★ toggle on every card — only shown when the database answers (body.can-fav) */
+.c{position:relative}
+.c__fav{position:absolute;top:10px;right:10px;z-index:2;display:none;width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);background:rgba(14,11,20,.72);color:rgba(242,237,225,.55);
+  font-size:17px;line-height:1;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:transform .15s ease,color .15s ease,background .15s ease,border-color .15s ease}
+body.can-fav .c__fav{display:grid;place-items:center}
+.c__fav:hover{color:var(--gold);transform:scale(1.08)}
+.c__fav:active{transform:scale(.94)}
+.c__fav[aria-pressed="true"]{color:var(--gold);background:rgba(14,11,20,.88);border-color:var(--gold)}
+.c__fav:disabled{opacity:.5;cursor:progress}
+.c__fav:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.c__fav{transition:none}}
 </style>
 </head>
 <body data-view="all">
@@ -144,7 +157,7 @@ kbd{font:500 11px/1 var(--mono);background:var(--card);border:1px solid var(--li
 
     <h1>Aufan Rachmad</h1>
     <p class="sub">Portfolios, landing pages and storefronts. Hand-built &mdash; no framework, no template, no page builder.</p>
-    <p class="meta"><b>52</b> builds &middot; <b>7</b> favourites &middot; newest first &middot; retired numbers are not reused</p>
+    <p class="meta"><b>52</b> builds &middot; <b id="favCount">7</b> favourites &middot; newest first &middot; retired numbers are not reused</p>
   </header>
 
   <div class="bar">
@@ -966,6 +979,86 @@ kbd{font:500 11px/1 var(--mono);background:var(--card);border:1px solid var(--li
       find.blur();
     }
   });
+
+  /* ── favourites he can set himself ─────────────────────────────────────
+     2026-09-11. These used to be HARD-CODED (data-fav="1" in the markup), so
+     starring a build meant someone editing this file. Now a ★ on each card
+     writes to Supabase (project aufan-studio, table build_favourites) through
+     set_build_favourite, which checks the same bcrypt label key as the film
+     verdicts — one code for both pages, and it is never stored in this public
+     file. Fails CLOSED: if the database does not answer, the toggles stay
+     hidden and the hard-coded favourites in the markup still show. */
+  var SB={url:"https://qvveohpluoqmomzanjjj.supabase.co",key:"sb_publishable_AMDyzr9XOxlPt-6iB5IChA_NjcWdg4W"};
+  var sbH={apikey:SB.key,Authorization:"Bearer "+SB.key,"Content-Type":"application/json"};
+  var favCt=document.getElementById("favCount");
+  var favChip=document.querySelector('.chip[data-v="fav"] .ct');
+  function nOf(c){ return parseInt(c.dataset.n,10)||0; }
+  function setFav(c,on){
+    c.dataset.fav=on?"1":"0";
+    c.classList.toggle("c--fav",on);
+    if(on && !c.dataset.rank) c.dataset.rank="900";   /* new picks sort after his ranked ones */
+    var b=c.querySelector(".c__b"), s=c.querySelector(".c__star");
+    if(on && !s && b){
+      s=document.createElement("span"); s.className="c__star";
+      s.setAttribute("aria-label","favourite"); s.innerHTML="&#9733;";
+      b.insertBefore(s, b.querySelector(".c__d"));
+    }
+    if(!on && s) s.parentNode.removeChild(s);
+    var t=c.querySelector(".c__fav");
+    if(t){ t.setAttribute("aria-pressed",String(on)); t.setAttribute("aria-label",on?"Remove from favourites":"Add to favourites"); }
+  }
+  function recount(){
+    var n=cards.filter(function(c){ return c.dataset.fav==="1"; }).length;
+    if(favCt) favCt.textContent=n;
+    if(favChip) favChip.textContent=n;
+  }
+  function rpc(name,bodyJson){
+    return fetch(SB.url+"/rest/v1/rpc/"+name,{method:"POST",headers:sbH,body:JSON.stringify(bodyJson||{})})
+      .then(function(r){ return r.json().catch(function(){ return null; }).then(function(j){
+        if(!r.ok) throw new Error((j&&j.message)||String(r.status)); return j; }); });
+  }
+  /* same localStorage key as the films page — same site, so entering it there counts here */
+  function labelKey(){
+    var k=null; try{ k=localStorage.getItem("mn-label-key"); }catch(e){}
+    if(k) return Promise.resolve(k);
+    return rpc("has_label_key").then(function(has){
+      k=window.prompt(has?"Your label key:":"First time here: choose a label key (6+ characters).");
+      if(!k) return null;
+      var ready=has?Promise.resolve(true):rpc("claim_label_key",{k:k});
+      return ready.then(function(ok){
+        if(ok!==true){ alert("A key already exists - enter that one instead."); return null; }
+        try{ localStorage.setItem("mn-label-key",k); }catch(e){}
+        return k;
+      });
+    });
+  }
+  cards.forEach(function(c){
+    var b=document.createElement("button");
+    b.type="button"; b.className="c__fav"; b.innerHTML="&#9733;";
+    var on=c.dataset.fav==="1";
+    b.setAttribute("aria-pressed",String(on));
+    b.setAttribute("aria-label",on?"Remove from favourites":"Add to favourites");
+    b.addEventListener("click",function(){
+      var want=c.dataset.fav!=="1";
+      b.disabled=true;
+      labelKey().then(function(k){
+        if(!k) return;
+        return rpc("set_build_favourite",{n:nOf(c),f:want,k:k}).then(function(){ setFav(c,want); recount(); apply(); });
+      }).catch(function(e){
+        if(/wrong label key/.test(e.message)){ try{ localStorage.removeItem("mn-label-key"); }catch(x){} alert("Wrong key - try again."); }
+        else alert("Could not save: "+e.message);
+      }).then(function(){ b.disabled=false; });
+    });
+    c.appendChild(b);   /* a sibling of the link, never inside it */
+  });
+  /* the database is the truth when it answers; the markup is the fallback */
+  fetch(SB.url+"/rest/v1/build_favourites?select=build,fav",{headers:sbH})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(rows){
+      rows.forEach(function(row){ cards.forEach(function(c){ if(nOf(c)===row.build) setFav(c,row.fav); }); });
+      recount(); apply();
+    }).catch(function(){});
+  rpc("has_label_key").then(function(){ body.classList.add("can-fav"); }).catch(function(){});
 
   load();
   apply();
