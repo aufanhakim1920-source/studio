@@ -49,6 +49,7 @@
     if (c === "23503") return "Masih dipakai data lain, jadi belum bisa dihapus.";
     if (c === "23514") return "Ada isian yang tidak valid. Periksa nama, harga, dan link.";
     if (c === "P0001") return m;
+    if (c === "PGRST116") return NOT_SAVED;
     if (/Failed to fetch|NetworkError|Load failed/i.test(m)) return "Tidak ada koneksi ke server. Coba lagi sebentar.";
     return m || "Terjadi kesalahan.";
   }
@@ -61,6 +62,16 @@
     return friendly(e);
   }
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  /* When Row Level Security refuses an UPDATE or DELETE it does not raise an error — it just
+     touches 0 rows and reports success. So every change asks for the affected rows back and
+     treats "none" as a failure; otherwise a removed editor would see "Tersimpan" on nothing. */
+  var NOT_SAVED = "Perubahan tidak tersimpan. Akunmu mungkin sudah tidak punya akses — muat ulang halaman.";
+  async function changed(q) {
+    var r = await q.select();
+    if (r.error) throw r.error;
+    if (!r.data || !r.data.length) throw new Error(NOT_SAVED);
+    return r.data;
+  }
 
   /* ---------- boot ---------- */
   function init() {
@@ -401,7 +412,7 @@
     if (!/^#[0-9a-f]{6}$/i.test(hue)) { setMsg("err", "Pilih warna.", "fMsg"); return; }
     try {
       var res;
-      if (slug) res = await sb.from("series").update({ name_id: name, hue: hue }).eq("slug", slug);
+      if (slug) res = { error: null, data: await changed(sb.from("series").update({ name_id: name, hue: hue }).eq("slug", slug)) };
       else {
         var base = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 36) || "seri";
         var taken = S.series.map(function (s) { return s.slug; }), n = 2, cand = base;
@@ -425,10 +436,9 @@
     var jobs = [];
     order.forEach(function (x, idx) {
       var v = (idx + 1) * 10;
-      if (x.sort_order !== v) jobs.push(sb.from(table).update({ sort_order: v }).eq(key, x[key]));
+      if (x.sort_order !== v) jobs.push(changed(sb.from(table).update({ sort_order: v }).eq(key, x[key])));
     });
-    var res = await Promise.all(jobs);
-    res.forEach(function (r) { if (r.error) throw r.error; });
+    await Promise.all(jobs);
     await reload(table);
   }
 
@@ -444,16 +454,15 @@
       case "down-product": await move("products", "id", S.products, id, 1); break;
       case "toggle-product":
         p = S.products.find(function (x) { return x.id === id; });
-        var r1 = await sb.from("products").update({ visible: !p.visible }).eq("id", id);
-        if (r1.error) throw r1.error;
+        var wasVisible = p.visible;
+        await changed(sb.from("products").update({ visible: !wasVisible }).eq("id", id));
         await reload("products");
-        toast(p.visible ? "Disembunyikan dari situs." : "Sekarang tampil di situs.");
+        toast(wasVisible ? "Disembunyikan dari situs." : "Sekarang tampil di situs.");
         break;
       case "del-product":
         p = S.products.find(function (x) { return x.id === id; });
         if (!(await ask("Hapus produk?", "“" + p.name_id + "” akan hilang selamanya. Kalau hanya ingin menyimpannya tanpa menampilkan, pakai “Sembunyikan”.", "Ya, hapus", true))) return;
-        var r2 = await sb.from("products").delete().eq("id", id);
-        if (r2.error) throw r2.error;
+        await changed(sb.from("products").delete().eq("id", id));
         if (p.image_path) sb.storage.from(CFG.bucket || "product-photos").remove([p.image_path]);
         await reload("products");
         toast("Produk dihapus.");
@@ -473,8 +482,7 @@
         var used = S.products.filter(function (x) { return x.series === id; }).length;
         if (used) { toast("Masih ada " + used + " produk di seri ini. Pindahkan atau hapus produknya dulu.", "err"); return; }
         if (!(await ask("Hapus seri?", "Seri “" + s.name_id + "” akan dihapus.", "Ya, hapus", true))) return;
-        var r3 = await sb.from("series").delete().eq("slug", id);
-        if (r3.error) throw r3.error;
+        await changed(sb.from("series").delete().eq("slug", id));
         await reload("series");
         toast("Seri dihapus.");
         break;
@@ -487,15 +495,13 @@
       case "role-editor":
         var ed = S.editors.find(function (x) { return x.email === id; });
         var nr = ed.role === "owner" ? "editor" : "owner";
-        var r4 = await sb.from("editors").update({ role: nr }).eq("email", id);
-        if (r4.error) throw r4.error;
+        await changed(sb.from("editors").update({ role: nr }).eq("email", id));
         await reload("editors");
         toast("Peran diubah.");
         break;
       case "del-editor":
         if (!(await ask("Cabut akses?", id + " tidak akan bisa mengubah situs lagi.", "Ya, cabut", true))) return;
-        var r5 = await sb.from("editors").delete().eq("email", id);
-        if (r5.error) throw r5.error;
+        await changed(sb.from("editors").delete().eq("email", id));
         await reload("editors");
         toast("Akses dicabut.");
         break;
