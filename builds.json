@@ -23,7 +23,7 @@
     "date": "20 Aug",
     "fav": true,
     "why": "his first favourite, still frozen — projects as spines you physically pull",
-    "rank": 1,
+    "rank": 2,
     "kind": "portfolio"
   },
   {
@@ -82,7 +82,7 @@
     "date": "23 Aug",
     "fav": true,
     "why": "the price IS the thickness of the card you pick up",
-    "rank": 2,
+    "rank": 3,
     "kind": "landing"
   },
   {
@@ -189,7 +189,7 @@
     "date": "25 Aug",
     "fav": true,
     "why": "the approved baka nae. design — periwinkle and hot pink",
-    "rank": 3,
+    "rank": 4,
     "kind": "store"
   },
   {
@@ -288,7 +288,7 @@
     "date": "3 Sep",
     "fav": true,
     "why": "professional, not AI-seeming — a shader written from scratch, then modified",
-    "rank": 4,
+    "rank": 1,
     "kind": "landing"
   },
   {
@@ -339,7 +339,9 @@
     "title": "LODESTONE",
     "blurb": "a payments router &mdash; drag the magnet and a field of iron filings turns to the cheapest route",
     "date": "3 Sep",
-    "kind": "landing"
+    "kind": "landing",
+    "fav": true,
+    "rank": 8
   },
   {
     "n": "86",

@@ -218,9 +218,11 @@ const JS = `
   var sortSel=document.getElementById("sort");
   var count=document.getElementById("count");
   var clear=document.getElementById("clear");
-  var KEY="studio.view.v2";
+  var KEY="studio.view.v3";
 
-  var view="all", sort="new";
+  /* the page opens on his favourites, ranked; All is one tap away */
+  var DEF_VIEW="fav", DEF_SORT="fav";
+  var view=DEF_VIEW, sort=DEF_SORT;
 
   function save(){
     try{ localStorage.setItem(KEY, JSON.stringify({view:view,sort:sort})); }catch(e){}
@@ -271,11 +273,11 @@ const JS = `
     count.textContent=shown+(shown===1?" build":" builds");
     chips.forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.v===view)); });
     sortSel.value=sort;
-    clear.hidden = (view==="all" && !q && sort==="new");
+    clear.hidden = (view===DEF_VIEW && !q && sort===DEF_SORT);
 
     save();
     try{
-      var h = (view==="all"&&sort==="new") ? "" : "#"+view+"/"+sort;
+      var h = (view===DEF_VIEW&&sort===DEF_SORT) ? "" : "#"+view+"/"+sort;
       history.replaceState(null,"",h||location.pathname);
     }catch(e){}
   }
@@ -283,7 +285,7 @@ const JS = `
   chips.forEach(function(b){ b.addEventListener("click",function(){ view=b.dataset.v; apply(); }); });
   sortSel.addEventListener("change",function(){ sort=sortSel.value; apply(); });
   find.addEventListener("input",apply);
-  clear.addEventListener("click",function(){ view="all"; sort="new"; find.value=""; apply(); find.blur(); });
+  clear.addEventListener("click",function(){ view=DEF_VIEW; sort=DEF_SORT; find.value=""; apply(); find.blur(); });
 
   /* it is a tool, so it behaves like one */
   addEventListener("keydown",function(e){
@@ -291,7 +293,7 @@ const JS = `
     if(e.key==="/"&&document.activeElement!==find){ e.preventDefault(); find.focus(); return; }
     if(e.key==="Escape"){
       if(document.activeElement===find&&find.value){ find.value=""; apply(); }
-      else { view="all"; sort="new"; find.value=""; apply(); }
+      else { view=DEF_VIEW; sort=DEF_SORT; find.value=""; apply(); }
       find.blur();
     }
   });
@@ -303,8 +305,8 @@ const JS = `
 
 function page(o) {
   const chips = [
-    `      <button class="chip" type="button" data-v="all" aria-pressed="true">All <span class="ct">${builds.length}</span></button>`,
-    `      <button class="chip" type="button" data-v="fav" aria-pressed="false"><span class="s">&#9733;</span>Favourites <span class="ct">${favs.length}</span></button>`,
+    `      <button class="chip" type="button" data-v="fav" aria-pressed="true"><span class="s">&#9733;</span>Favourites <span class="ct">${favs.length}</span></button>`,
+    `      <button class="chip" type="button" data-v="all" aria-pressed="false">All <span class="ct">${builds.length}</span></button>`,
     `      <span class="sep" aria-hidden="true"></span>`,
     ...KINDS.filter(([k]) => count(k) > 0).map(([k, label]) =>
       `      <button class="chip" type="button" data-v="${k}" aria-pressed="false">${label} <span class="ct">${count(k)}</span></button>`),
@@ -321,14 +323,14 @@ function page(o) {
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%2317131F'/><circle cx='8' cy='8' r='3' fill='%23FF3D6E'/></svg>">
 <style>${CSS}</style>
 </head>
-<body data-view="all">
+<body data-view="fav">
 <div class="w">
 
   <header>
 ${o.back ? '    <p class="back"><a href="../">&larr; Aufan Rachmad</a></p>' : ""}
     <h1>${o.h1}</h1>
     <p class="sub">${o.sub}</p>
-    <p class="meta"><b>${builds.length}</b> builds &middot; <b>${favs.length}</b> favourites &middot; newest first &middot; retired numbers are not reused</p>
+    <p class="meta"><b>${favs.length}</b> favourites first &middot; <b>${builds.length}</b> builds in all &middot; retired numbers are not reused</p>
   </header>
 
   <div class="bar">

@@ -150,20 +150,20 @@ body.can-fav .c__fav{display:grid;place-items:center}
 @media (prefers-reduced-motion:reduce){.c__fav{transition:none}}
 </style>
 </head>
-<body data-view="all">
+<body data-view="fav">
 <div class="w">
 
   <header>
 
     <h1>Aufan Rachmad</h1>
     <p class="sub">Portfolios, landing pages and storefronts. Hand-built &mdash; no framework, no template, no page builder.</p>
-    <p class="meta"><b>52</b> builds &middot; <b id="favCount">7</b> favourites &middot; newest first &middot; retired numbers are not reused</p>
+    <p class="meta"><b id="favCount">8</b> favourites first &middot; <b>52</b> builds in all &middot; retired numbers are not reused</p>
   </header>
 
   <div class="bar">
     <div class="row" role="group" aria-label="Filter by type">
-      <button class="chip" type="button" data-v="all" aria-pressed="true">All <span class="ct">52</span></button>
-      <button class="chip" type="button" data-v="fav" aria-pressed="false"><span class="s">&#9733;</span>Favourites <span class="ct">7</span></button>
+      <button class="chip" type="button" data-v="fav" aria-pressed="true"><span class="s">&#9733;</span>Favourites <span class="ct">8</span></button>
+      <button class="chip" type="button" data-v="all" aria-pressed="false">All <span class="ct">52</span></button>
       <span class="sep" aria-hidden="true"></span>
       <button class="chip" type="button" data-v="portfolio" aria-pressed="false">Portfolios <span class="ct">12</span></button>
       <button class="chip" type="button" data-v="landing" aria-pressed="false">Landing pages <span class="ct">25</span></button>
@@ -214,7 +214,7 @@ body.can-fav .c__fav{display:grid;place-items:center}
         </a>
       </li>
       <li class="c c--fav" data-fav="1" data-kind="portfolio"
-          data-n="03" data-rank="1"
+          data-n="03" data-rank="2"
           data-k="shelf projects as book spines you pull off a shelf portfolio">
         <a href="work/shelf/">
           <span class="c__sh"><img src="work/thumbs/shelf.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
@@ -307,7 +307,7 @@ body.can-fav .c__fav{display:grid;place-items:center}
         </a>
       </li>
       <li class="c c--fav" data-fav="1" data-kind="landing"
-          data-n="10" data-rank="2"
+          data-n="10" data-rank="3"
           data-k="nocturne sleeper train   card thickness is the price landing">
         <a href="work/nocturne/">
           <span class="c__sh"><img src="work/thumbs/nocturne.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
@@ -478,7 +478,7 @@ body.can-fav .c__fav{display:grid;place-items:center}
         </a>
       </li>
       <li class="c c--fav" data-fav="1" data-kind="store"
-          data-n="34" data-rank="3"
+          data-n="34" data-rank="4"
           data-k="baka nae.   atelier the approved design   periwinkle and hot pink; 40-42 are this in her palettes store">
         <a href="work/bakanae-atelier/">
           <span class="c__sh"><img src="work/thumbs/bakanae-atelier.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
@@ -636,7 +636,7 @@ body.can-fav .c__fav{display:grid;place-items:center}
         </a>
       </li>
       <li class="c c--fav" data-fav="1" data-kind="landing"
-          data-n="67" data-rank="4"
+          data-n="67" data-rank="1"
           data-k="signal a ribbon of light in raw webgl   one shader, no library, and it leans toward your cursor landing">
         <a href="work/land-aurora/">
           <span class="c__sh"><img src="work/thumbs/land-aurora.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
@@ -716,14 +716,15 @@ body.can-fav .c__fav{display:grid;place-items:center}
           <span class="c__p">a mass of cold metal that heats where you rub it, then cools on its own</span>
         </a>
       </li>
-      <li class="c" data-fav="0" data-kind="landing"
-          data-n="85" data-rank="99"
+      <li class="c c--fav" data-fav="1" data-kind="landing"
+          data-n="85" data-rank="8"
           data-k="lodestone a payments router   drag the magnet and a field of iron filings turns to the cheapest route landing">
         <a href="work/land-lodestone/">
           <span class="c__sh"><img src="work/thumbs/land-lodestone.jpg" alt="" loading="lazy" decoding="async" width="589" height="368"></span>
           <span class="c__b">
             <span class="c__n">85</span>
             <span class="c__t">LODESTONE</span>
+            <span class="c__star" aria-label="favourite">&#9733;</span>
             <span class="c__d">3 Sep</span>
           </span>
           <span class="c__p">a payments router &mdash; drag the magnet and a field of iron filings turns to the cheapest route</span>
@@ -902,9 +903,11 @@ body.can-fav .c__fav{display:grid;place-items:center}
   var sortSel=document.getElementById("sort");
   var count=document.getElementById("count");
   var clear=document.getElementById("clear");
-  var KEY="studio.view.v2";
+  var KEY="studio.view.v3";
 
-  var view="all", sort="new";
+  /* the page opens on his favourites, ranked; All is one tap away */
+  var DEF_VIEW="fav", DEF_SORT="fav";
+  var view=DEF_VIEW, sort=DEF_SORT;
 
   function save(){
     try{ localStorage.setItem(KEY, JSON.stringify({view:view,sort:sort})); }catch(e){}
@@ -955,11 +958,11 @@ body.can-fav .c__fav{display:grid;place-items:center}
     count.textContent=shown+(shown===1?" build":" builds");
     chips.forEach(function(b){ b.setAttribute("aria-pressed",String(b.dataset.v===view)); });
     sortSel.value=sort;
-    clear.hidden = (view==="all" && !q && sort==="new");
+    clear.hidden = (view===DEF_VIEW && !q && sort===DEF_SORT);
 
     save();
     try{
-      var h = (view==="all"&&sort==="new") ? "" : "#"+view+"/"+sort;
+      var h = (view===DEF_VIEW&&sort===DEF_SORT) ? "" : "#"+view+"/"+sort;
       history.replaceState(null,"",h||location.pathname);
     }catch(e){}
   }
@@ -967,7 +970,7 @@ body.can-fav .c__fav{display:grid;place-items:center}
   chips.forEach(function(b){ b.addEventListener("click",function(){ view=b.dataset.v; apply(); }); });
   sortSel.addEventListener("change",function(){ sort=sortSel.value; apply(); });
   find.addEventListener("input",apply);
-  clear.addEventListener("click",function(){ view="all"; sort="new"; find.value=""; apply(); find.blur(); });
+  clear.addEventListener("click",function(){ view=DEF_VIEW; sort=DEF_SORT; find.value=""; apply(); find.blur(); });
 
   /* it is a tool, so it behaves like one */
   addEventListener("keydown",function(e){
@@ -975,7 +978,7 @@ body.can-fav .c__fav{display:grid;place-items:center}
     if(e.key==="/"&&document.activeElement!==find){ e.preventDefault(); find.focus(); return; }
     if(e.key==="Escape"){
       if(document.activeElement===find&&find.value){ find.value=""; apply(); }
-      else { view="all"; sort="new"; find.value=""; apply(); }
+      else { view=DEF_VIEW; sort=DEF_SORT; find.value=""; apply(); }
       find.blur();
     }
   });
