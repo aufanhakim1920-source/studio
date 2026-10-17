@@ -154,17 +154,83 @@
   var DATA = null, QUOTES = null;
   var state = { type: "all", series: null };
   var rupiah = function (n) { return "Rp " + n.toLocaleString("id-ID"); };
+  var CFG = window.BAKANAE || {};
+  var DEFAULT_SHOP = "https://shopee.co.id/baka_nae";
+  var DEFAULT_HUE = "#7A5518";
+  /* Everything below can now come from a database an editor typed into, so every
+     value is escaped on the way into markup, links must be https, and a colour must
+     be a plain hex — nothing a form field holds can become script or CSS. */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function safeUrl(u) { return /^https:\/\//i.test(u || "") ? u : DEFAULT_SHOP; }
+  function safeHue(h) { return /^#[0-9a-f]{6}$/i.test(h || "") ? h : DEFAULT_HUE; }
   /* Her real listing convention is "<Series> Nya! ver. <Type>";
-     products.json drops the "ver." — restore it without touching
-     titles that never carried the marker. */
+     the snapshot in products.json drops the "ver." — restore it there only
+     (the database already holds the correct titles). */
   function realTitle(name) {
     return name.replace(/\bNya!(?!\s*ver\.)\s+/g, "Nya! ver. ");
   }
+  function photoUrl(path) {
+    return path
+      ? CFG.url + "/storage/v1/object/public/" + (CFG.bucket || "product-photos") + "/" + path.split("/").map(encodeURIComponent).join("/")
+      : null;
+  }
+  /* The shop's live catalogue is the database. products.json stays as a snapshot so
+     the page still works if the database is paused or unreachable — a fetch ERROR
+     falls back to it, an EMPTY answer does not (an empty shelf is a real state). */
+  function dbGet(path) {
+    return fetch(CFG.url + "/rest/v1/" + path, { headers: { apikey: CFG.key } }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    });
+  }
+  function fromDatabase() {
+    if (!CFG.url || !CFG.key || CFG.url.indexOf("__") === 0) return Promise.reject(new Error("no config"));
+    return Promise.all([
+      dbGet("series?select=slug,name_id,hue&order=sort_order.asc,slug.asc"),
+      dbGet("products?select=id,name_id,price_idr,series,type_id,sold_display,shopee_url,image_path&visible=eq.true&order=sort_order.asc,created_at.asc")
+    ]).then(function (r) {
+      return { series: r[0], products: r[1] };
+    });
+  }
+  function fromSnapshot(snap) {
+    return {
+      series: Object.keys(snap.series_meta).map(function (slug) {
+        return { slug: slug, name_id: snap.series_meta[slug].name_id, hue: snap.series_meta[slug].hue };
+      }),
+      products: snap.featured.map(function (p) {
+        // snapshot "image" paths point at a folder that was never filled — ignore them
+        return { id: p.id, name_id: realTitle(p.name_id), price_idr: p.price_idr, series: p.series,
+          type_id: p.type_id, sold_display: p.sold_display, shopee_url: p.shopee_url, image_path: null };
+      })
+    };
+  }
+  function shape(raw, snap) {
+    var meta = {}, order = [];
+    raw.series.forEach(function (s) { meta[s.slug] = { name_id: s.name_id, hue: safeHue(s.hue) }; order.push(s.slug); });
+    var types = [];
+    raw.products.forEach(function (p) { if (types.indexOf(p.type_id) < 0) types.push(p.type_id); });
+    return {
+      shop_meta: snap.shop_meta,
+      series_meta: meta,
+      series_order: order,
+      type_filters: [{ id: "all", name_id: "Semua" }].concat(types.map(function (t) { return { id: t, name_id: t }; })),
+      featured: raw.products.map(function (p) {
+        return { id: p.id, name_id: p.name_id, price_idr: p.price_idr, series: p.series, type_id: p.type_id,
+          sold_display: p.sold_display || "", shopee_url: safeUrl(p.shopee_url), image_url: photoUrl(p.image_path) };
+      })
+    };
+  }
   Promise.all([
     fetch("data/products.json").then(function (r) { return r.json(); }),
-    fetch("data/testimonials.json").then(function (r) { return r.json(); })
+    fetch("data/testimonials.json").then(function (r) { return r.json(); }),
+    fromDatabase().catch(function (err) { console.warn("Database tidak terjangkau, memakai salinan katalog:", err.message); return null; })
   ]).then(function (res) {
-    DATA = res[0];
+    var snap = res[0];
+    DATA = shape(res[2] || fromSnapshot(snap), snap);
     QUOTES = res[1];
     fillShopMeta();
     renderSeries();
@@ -200,13 +266,13 @@
   }
   function renderSeries() {
     var grid = $("#seriesGrid");
-    var slugs = Object.keys(DATA.series_meta);
+    var slugs = DATA.series_order;
     grid.innerHTML = slugs.map(function (slug, i) {
       var s = DATA.series_meta[slug];
       var n = countFor(slug);
-      return '<button class="series-card" type="button" data-series="' + slug + '" aria-pressed="false" data-rise style="--d:' + (i * 55) + 'ms">' +
+      return '<button class="series-card" type="button" data-series="' + esc(slug) + '" aria-pressed="false" data-rise style="--d:' + (i * 55) + 'ms">' +
         '<span class="series-face"><svg viewBox="-16 -18.5 32 30" style="--art-hue:' + s.hue + '" aria-hidden="true"><use href="#nya-mini"/></svg></span>' +
-        '<span class="series-name">' + s.name_id + '</span>' +
+        '<span class="series-name">' + esc(s.name_id) + '</span>' +
         '<span class="series-meta">' + (n ? n + " di katalog" : "di Shopee") + "</span>" +
         "</button>";
     }).join("");
@@ -242,8 +308,8 @@
     box.innerHTML = DATA.type_filters.filter(function (t) {
       return t.id === "all" || present[t.id];
     }).map(function (t) {
-      return '<button class="pill" type="button" data-type="' + t.id + '" aria-pressed="' +
-        (state.type === t.id) + '">' + t.name_id + "</button>";
+      return '<button class="pill" type="button" data-type="' + esc(t.id) + '" aria-pressed="' +
+        (state.type === t.id) + '">' + esc(t.name_id) + "</button>";
     }).join("");
     $$(".pill", box).forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -265,28 +331,35 @@
     var grid = $("#catGrid");
     var list = visible();
     grid.innerHTML = list.map(function (p, i) {
-      var s = DATA.series_meta[p.series] || { name_id: p.series, hue: "#7A5518" };
+      var s = DATA.series_meta[p.series] || { name_id: p.series, hue: DEFAULT_HUE };
+      var art = p.image_url
+        ? '<div class="card-art has-photo"><img class="card-photo" src="' + esc(p.image_url) + '" alt="' + esc(p.name_id) + '" loading="lazy" decoding="async">'
+        : '<div class="card-art">' + artFor(p.type_id, s.hue);
       return '<article class="card" data-rise style="--d:' + Math.min(i, 5) * 60 + 'ms">' +
-        '<div class="card-art">' + artFor(p.type_id, s.hue) +
-          '<span class="card-type">' + p.type_id + "</span>" +
+        art + '<span class="card-type">' + esc(p.type_id) + "</span>" +
         "</div>" +
         '<div class="card-body">' +
-          '<h3 class="card-name">' + realTitle(p.name_id) + "</h3>" +
+          '<h3 class="card-name">' + esc(p.name_id) + "</h3>" +
           '<p class="card-price">' + rupiah(p.price_idr) + "</p>" +
         "</div>" +
-        '<div class="card-detail" data-open="false" id="d-' + p.id + '"><div><dl>' +
-          "<dt>Seri</dt><dd>" + s.name_id + "</dd>" +
-          "<dt>Terjual</dt><dd>" + p.sold_display + "</dd>" +
+        '<div class="card-detail" data-open="false" id="d-' + esc(p.id) + '"><div><dl>' +
+          "<dt>Seri</dt><dd>" + esc(s.name_id) + "</dd>" +
+          (p.sold_display ? "<dt>Terjual</dt><dd>" + esc(p.sold_display) + "</dd>" : "") +
           "<dt>Kirim</dt><dd>Jakarta Selatan &amp; Surabaya</dd>" +
         "</dl></div></div>" +
         '<div class="card-foot">' +
-          '<button class="detail-toggle" type="button" aria-expanded="false" aria-controls="d-' + p.id + '">' +
+          '<button class="detail-toggle" type="button" aria-expanded="false" aria-controls="d-' + esc(p.id) + '">' +
             'Detail <span class="chev" aria-hidden="true">▾</span></button>' +
-          '<a class="buy" href="' + p.shopee_url + '" target="_blank" rel="noopener">Beli di Shopee ↗</a>' +
+          '<a class="buy" href="' + esc(p.shopee_url) + '" target="_blank" rel="noopener">Beli di Shopee ↗</a>' +
         "</div>" +
         "</article>";
     }).join("");
     $("#catEmpty").hidden = list.length > 0;
+    // the "drawn placeholder" note only applies while some product still has no photo
+    var note = $("#catNote");
+    if (note) note.hidden = !list.some(function (p) { return !p.image_url; });
+    var lede = $("#catLede");
+    if (lede) lede.textContent = DATA.featured.length + " produk pilihan dari toko — selengkapnya ada di Shopee.";
     $$(".detail-toggle", grid).forEach(function (btn) {
       btn.addEventListener("click", function () {
         var panel = document.getElementById(btn.getAttribute("aria-controls"));

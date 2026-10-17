@@ -233,6 +233,12 @@ h1 em,h2 em{ font-style:italic; color:var(--signal-text); font-variation-setting
 }
 .card-art svg{ width:100%; max-width:190px; height:auto; transition:transform .3s var(--ease); }
 .card:hover .card-art svg{ transform:rotate(-2.5deg) scale(1.035); }
+/* a real photo fills the frame at the same 5:6 proportion the drawn forms use */
+.card-art.has-photo{ padding:0; aspect-ratio:5/6; overflow:hidden; background-image:none; background:var(--surface); }
+.card-photo{ display:block; width:100%; height:100%; object-fit:cover; transition:transform .3s var(--ease); }
+.card:hover .card-photo{ transform:scale(1.035); }
+.foot-admin{ color:var(--ground); opacity:.55; text-decoration:underline; text-underline-offset:3px; }
+.foot-admin:hover{ opacity:1; }
 .card-type{
   position:absolute; top:12px; left:12px;
   padding:5px 11px; background:var(--ink); color:var(--ground);
