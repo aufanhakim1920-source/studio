@@ -237,6 +237,20 @@ h1 em,h2 em{ font-style:italic; color:var(--signal-text); font-variation-setting
 .card-art.has-photo{ padding:0; aspect-ratio:5/6; overflow:hidden; background-image:none; background:var(--surface); }
 .card-photo{ display:block; width:100%; height:100%; object-fit:cover; transition:transform .3s var(--ease); }
 .card:hover .card-photo{ transform:scale(1.035); }
+/* currency dropdown (header) — same idea as the FanNest store, in her colours */
+.currency-select{
+  appearance:none; -webkit-appearance:none; cursor:pointer;
+  padding:8px 32px 8px 14px; border:2px solid var(--ink); border-radius:var(--radius-pill);
+  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%236B4A15' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+  color:var(--ink); font-family:var(--mono); font-size:11.5px; font-weight:600; letter-spacing:.08em;
+  max-width:132px;
+  transition:background-color .2s var(--ease), transform .2s var(--ease);
+}
+.currency-select:hover{ transform:translateY(-1px); background-color:var(--signal-wash); }
+.currency-select[hidden]{ display:none; }
+.cur-note{ text-transform:none; letter-spacing:.02em; }
+.cur-note a{ color:var(--signal-text); }
+.cur-note[hidden]{ display:none; }
 .foot-admin{ color:var(--ground); opacity:.55; text-decoration:underline; text-underline-offset:3px; }
 .foot-admin:hover{ opacity:1; }
 .card-type{

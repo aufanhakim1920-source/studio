@@ -154,6 +154,91 @@
   var DATA = null, QUOTES = null;
   var state = { type: "all", series: null };
   var rupiah = function (n) { return "Rp " + n.toLocaleString("id-ID"); };
+  /* ---------------------------------------------------------
+     Currency — the same idea as the FanNest store's dropdown (symbol table, zero-decimal
+     currencies, daily rates from open.er-api.com, remembered choice).
+     Prices are stored in rupiah. A visitor can switch the DISPLAY to another currency; the
+     amounts are approximate and the Shopee link still charges rupiah. The default is always
+     rupiah: most of her buyers are Indonesian, and a visitor with an English-language phone
+     must not suddenly see dollars. (FanNest also looked the visitor's country up through
+     ipapi.co; this page does not send anyone's IP to a third party.) The rate request uses USD
+     as the base and converts through it, because the rupiah→dollar rate alone is only
+     six decimals (about 1% rounding error on a small price).
+     --------------------------------------------------------- */
+  var CUR = {
+    IDR:{s:"Rp "}, USD:{s:"US$"}, AUD:{s:"A$"}, SGD:{s:"S$"}, MYR:{s:"RM "}, EUR:{s:"€"}, GBP:{s:"£"},
+    CAD:{s:"C$"}, NZD:{s:"NZ$"}, JPY:{s:"¥"}, CNY:{s:"¥"}, KRW:{s:"₩"}, INR:{s:"₹"}, THB:{s:"฿"},
+    PHP:{s:"₱"}, VND:{s:"₫"}, TWD:{s:"NT$"}, HKD:{s:"HK$"}, BRL:{s:"R$"}, MXN:{s:"MX$"}, AED:{s:"AED "},
+    SAR:{s:"SAR "}, CHF:{s:"CHF "}, SEK:{s:"kr "}, NOK:{s:"kr "}, DKK:{s:"kr "}, PLN:{s:"zł "},
+    TRY:{s:"₺"}, ZAR:{s:"R "}, RUB:{s:"₽"}
+  };
+  var ZERO_DEC = { JPY: 1, KRW: 1, VND: 1, IDR: 1 };
+  var fx = null, fxDate = "", curCode = "IDR";
+  function money(idr) {
+    if (curCode === "IDR" || !fx) return rupiah(idr);
+    var v = idr / fx.IDR * fx[curCode];
+    var out = ZERO_DEC[curCode]
+      ? Math.round(v).toLocaleString("en-US")
+      : v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return "≈ " + CUR[curCode].s + out;
+  }
+  function loadFx() {
+    var cached = null;
+    try { cached = JSON.parse(localStorage.getItem("bakanae_fx")); } catch (e) { cached = null; }
+    var age = cached && cached.saved ? Date.now() - cached.saved : Infinity;
+    if (age < 6 * 3600 * 1000 && cached.rates && cached.rates.IDR) return Promise.resolve(cached);
+    return fetch("https://open.er-api.com/v6/latest/USD")
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (d) {
+        if (d.result !== "success" || !d.rates || !d.rates.IDR) throw new Error("bad rates");
+        var keep = {};
+        Object.keys(CUR).forEach(function (c) { if (d.rates[c]) keep[c] = d.rates[c]; });
+        var out = { rates: keep, date: d.time_last_update_utc, saved: Date.now() };
+        try { localStorage.setItem("bakanae_fx", JSON.stringify(out)); } catch (e) { /* storage blocked */ }
+        return out;
+      })
+      .catch(function () {
+        // network down: an older saved rate is still fine for a few days, after that show rupiah only
+        return age < 14 * 24 * 3600 * 1000 && cached.rates && cached.rates.IDR ? cached : null;
+      });
+  }
+  function setCurrency(code, persist) {
+    if (!fx || (code !== "IDR" && !fx[code])) return;
+    curCode = code;
+    var sel = $("#currencySelect");
+    if (sel) sel.value = code;
+    if (persist) { try { localStorage.setItem("bakanae_currency", code); } catch (e) { /* storage blocked */ } }
+    if (DATA) renderCatalogue();
+    var note = $("#curNote");
+    if (note) {
+      if (code === "IDR") { note.hidden = true; return; }
+      var when = "";
+      try { when = new Date(fxDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }); } catch (e) { when = ""; }
+      note.innerHTML = "Harga dalam " + esc(CUR[code].s.trim()) + " hanya perkiraan" + (when ? " (kurs " + esc(when) + ")" : "") +
+        ". Pembayaran di Shopee tetap dalam Rupiah. " +
+        '<a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Kurs oleh ExchangeRate-API</a>';
+      note.hidden = false;
+    }
+  }
+  function initCurrency() {
+    loadFx().then(function (f) {
+      var sel = $("#currencySelect");
+      if (!f || !sel) return;                       // no rates: the page simply stays in rupiah
+      fx = f.rates; fxDate = f.date;
+      var codes = Object.keys(CUR).filter(function (c) { return fx[c]; }).sort(function (a, b) {
+        var rank = function (c) { return c === "IDR" ? 0 : c === "USD" ? 1 : 2; };
+        return rank(a) - rank(b) || (a < b ? -1 : 1);
+      });
+      sel.innerHTML = codes.map(function (c) {
+        return '<option value="' + c + '">' + c + " · " + esc(CUR[c].s.trim()) + "</option>";
+      }).join("");
+      sel.hidden = false;
+      sel.addEventListener("change", function () { setCurrency(sel.value, true); });
+      var chosen = null;
+      try { chosen = localStorage.getItem("bakanae_currency"); } catch (e) { chosen = null; }
+      setCurrency(chosen && fx[chosen] ? chosen : "IDR", false);
+    });
+  }
   var CFG = window.BAKANAE || {};
   var DEFAULT_SHOP = "https://shopee.co.id/baka_nae";
   var DEFAULT_HUE = "#7A5518";
@@ -238,6 +323,7 @@
     renderCatalogue();
     renderQuotes();
     register();
+    initCurrency();
   }).catch(function (err) {
     console.error("Gagal memuat data:", err);
     var g = $("#catGrid");
@@ -340,7 +426,7 @@
         "</div>" +
         '<div class="card-body">' +
           '<h3 class="card-name">' + esc(p.name_id) + "</h3>" +
-          '<p class="card-price">' + rupiah(p.price_idr) + "</p>" +
+          '<p class="card-price"' + (curCode !== "IDR" && fx ? ' title="' + esc(rupiah(p.price_idr)) + '"' : "") + ">" + money(p.price_idr) + "</p>" +
         "</div>" +
         '<div class="card-detail" data-open="false" id="d-' + esc(p.id) + '"><div><dl>' +
           "<dt>Seri</dt><dd>" + esc(s.name_id) + "</dd>" +
