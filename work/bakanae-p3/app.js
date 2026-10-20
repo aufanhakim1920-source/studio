@@ -4,6 +4,158 @@
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   /* ---------------------------------------------------------
+     0 · language — Indonesian (the default) and English.
+     Every visible string lives in the table below. The page keeps its Indonesian text in the
+     HTML (so it reads correctly with no script, and in search results); data-t / data-th /
+     data-ta mark the nodes whose text, markup or aria-label the switch rewrites. The choice is
+     remembered. The language is NEVER guessed from the browser: an Indonesian visitor with an
+     English-language phone would otherwise land on English prices.
+     --------------------------------------------------------- */
+  var I18N = {
+    id: {
+      "meta.title": "baka nae. — Fanart Nya! ver. yang bisa kamu genggam",
+      "meta.desc": "baka nae. — keychain, stiker, postcard dan art print seri Nya! ver. Digambar sendiri sejak 2019. Kirim dari Jakarta Selatan & Surabaya.",
+      "lang.aria": "Bahasa (Language)", "cur.aria": "Mata uang (Currency)", "nav.aria": "Navigasi utama",
+      "nav.series": "Seri", "nav.catalogue": "Katalog", "nav.story": "Cerita", "nav.reviews": "Ulasan", "nav.shop": "Ke Shopee",
+      "hero.kicker": "Sejak 2019 · Jakarta Selatan & Surabaya",
+      "hero.h1": "Fanart yang bisa kamu <em>genggam</em>.",
+      "hero.lede": "Keychain, stiker, dan cetakan seri <b>Nya! ver.</b> — digambar sendiri, satu per satu.",
+      "hero.cta1": "Lihat katalog", "hero.cta2": 'Buka Shopee <span aria-hidden="true">↗</span>',
+      "hero.art": "Ilustrasi gantungan kunci akrilik Nya! ver.",
+      "proof.aria": "Rekam jejak toko",
+      "proof.sub": 'rata&#8209;rata dari <b data-shop="rating_total">7.440</b> ulasan Shopee',
+      "proof.followers": "pengikut", "proof.products": "produk aktif", "proof.since": "mulai jualan",
+      "proof.note": "Angka diambil langsung dari halaman toko Shopee, diverifikasi 25 Agustus 2026.",
+      "series.kicker": '<span class="idx">01</span> Seri',
+      "series.h2": "Semesta <em>Nya! ver.</em>",
+      "series.lede": "Karakter favoritmu, versi berkuping kucing.",
+      "cat.kicker": '<span class="idx">02</span> Katalog',
+      "cat.h2": "Pilihan <em>terlaris</em>",
+      "cat.lede0": "Pilihan produk dari toko.",
+      "cat.lede": "{n} produk pilihan dari toko — selengkapnya ada di Shopee.",
+      "cat.filter.aria": "Saring menurut jenis",
+      "cat.empty": "Tidak ada produk untuk kombinasi ini.",
+      "cat.note": "Ilustrasi di atas digambar sementara untuk tata letak — foto produk asli menyusul.",
+      "cat.more": 'Lihat 32 produk di Shopee <span aria-hidden="true">↗</span>',
+      "story.kicker": '<span class="idx">03</span> Cerita',
+      "story.h2": "Digambar <em>sendiri</em>, dari awal.",
+      "story.p1": "Sketsa, warna, sampai garis potongnya dikerjakan Nae sendiri. Tidak ada desain beli jadi.",
+      "story.p2": "<b>Nya! ver.</b> jadi seri utamanya sejak 2019 — dan sudah lebih dari 7.400 pembeli membawa pulang satu.",
+      "step.draw": "Digambar", "step.print": "Dicetak", "step.ship": "Dikirim",
+      "ship.line": "Dikirim dari <b>Jakarta Selatan</b> &amp; <b>Surabaya</b>.",
+      "rev.kicker": '<span class="idx">04</span> Ulasan',
+      "rev.h2": "Kata <em>pembeli</em>",
+      "rev.warn": "Kutipan di bawah masih <b>placeholder</b> — belum diambil dari ulasan Shopee asli.",
+      "cta.h2": "Semua 32 produk<br>ada di Shopee.",
+      "cta.p": "COD, pengiriman, dan garansi ditangani lewat toko.",
+      "cta.note": "Instagram & TikTok — menyusul.",
+      "foot.credit": "Ilustrasi & produksi oleh Nae",
+      "foot.verified": "Data toko diverifikasi 25 Agu 2026",
+      "foot.admin": "Kelola toko",
+      "all": "Semua", "series.meta.n": "{n} di katalog", "series.meta.shop": "di Shopee",
+      "dt.series": "Seri", "dt.sold": "Terjual", "dt.ship": "Kirim", "ship.from": "Jakarta Selatan &amp; Surabaya",
+      "detail": "Detail", "buy": "Beli di Shopee ↗",
+      "filter.state": "Menampilkan {a} dari {b}", "reset": "Reset",
+      "cur.note": 'Harga dalam {c} hanya perkiraan{when}. Pembayaran di Shopee tetap dalam Rupiah. <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Kurs oleh ExchangeRate-API</a>',
+      "cur.when": " (kurs {d})",
+      "err.load": 'Data katalog gagal dimuat. Semua produk tetap ada di <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.'
+    },
+    en: {
+      "meta.title": "baka nae. — Nya! ver. fanart you can hold in your hand",
+      "meta.desc": "baka nae. — keychains, stickers, postcards and art prints from the Nya! ver. series. Hand-drawn since 2019. Shipped from South Jakarta & Surabaya.",
+      "lang.aria": "Language (Bahasa)", "cur.aria": "Currency (Mata uang)", "nav.aria": "Main navigation",
+      "nav.series": "Series", "nav.catalogue": "Catalogue", "nav.story": "Story", "nav.reviews": "Reviews", "nav.shop": "Go to Shopee",
+      "hero.kicker": "Since 2019 · South Jakarta & Surabaya",
+      "hero.h1": "Fanart you can <em>hold</em>.",
+      "hero.lede": "Keychains, stickers and prints from the <b>Nya! ver.</b> series — drawn by hand, one at a time.",
+      "hero.cta1": "See the catalogue", "hero.cta2": 'Open Shopee <span aria-hidden="true">↗</span>',
+      "hero.art": "Illustration of a Nya! ver. acrylic keychain",
+      "proof.aria": "Shop track record",
+      "proof.sub": 'average from <b data-shop="rating_total">7,440</b> Shopee reviews',
+      "proof.followers": "followers", "proof.products": "active products", "proof.since": "selling since",
+      "proof.note": "Figures taken directly from the Shopee shop page, verified on 25 August 2026.",
+      "series.kicker": '<span class="idx">01</span> Series',
+      "series.h2": "The <em>Nya! ver.</em> universe",
+      "series.lede": "Your favourite characters, cat-eared edition.",
+      "cat.kicker": '<span class="idx">02</span> Catalogue',
+      "cat.h2": "Best <em>sellers</em>",
+      "cat.lede0": "Selected products from the shop.",
+      "cat.lede": "{n} featured products from the shop — see the rest on Shopee.",
+      "cat.filter.aria": "Filter by type",
+      "cat.empty": "No products match this combination.",
+      "cat.note": "The illustrations above are temporary drawings for layout — real product photos are coming.",
+      "cat.more": 'See all 32 products on Shopee <span aria-hidden="true">↗</span>',
+      "story.kicker": '<span class="idx">03</span> Story',
+      "story.h2": "Drawn <em>by hand</em>, from the start.",
+      "story.p1": "The sketch, the colours, even the cut lines are all done by Nae herself. No store-bought designs.",
+      "story.p2": "<b>Nya! ver.</b> has been her main series since 2019 — and more than 7,400 buyers have taken one home.",
+      "step.draw": "Drawn", "step.print": "Printed", "step.ship": "Shipped",
+      "ship.line": "Shipped from <b>South Jakarta</b> &amp; <b>Surabaya</b>.",
+      "rev.kicker": '<span class="idx">04</span> Reviews',
+      "rev.h2": "What <em>buyers</em> say",
+      "rev.warn": "The quotes below are still <b>placeholders</b> — not taken from real Shopee reviews yet.",
+      "cta.h2": "All 32 products<br>are on Shopee.",
+      "cta.p": "COD, shipping and guarantees are handled through the shop.",
+      "cta.note": "Instagram & TikTok — coming soon.",
+      "foot.credit": "Illustration & production by Nae",
+      "foot.verified": "Shop data verified 25 Aug 2026",
+      "foot.admin": "Manage shop",
+      "all": "All", "series.meta.n": "{n} in catalogue", "series.meta.shop": "on Shopee",
+      "dt.series": "Series", "dt.sold": "Sold", "dt.ship": "Ships from", "ship.from": "South Jakarta &amp; Surabaya",
+      "detail": "Details", "buy": "Buy on Shopee ↗",
+      "filter.state": "Showing {a} of {b}", "reset": "Reset",
+      "cur.note": 'Prices in {c} are estimates only{when}. Payment on Shopee is still in rupiah. <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Rates by ExchangeRate-API</a>',
+      "cur.when": " (rate of {d})",
+      "err.load": 'The catalogue failed to load. All products are still on <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.'
+    }
+  };
+  var lang = "id";
+  /* The language picks the DEFAULT currency: Indonesian shows rupiah, English shows US dollars.
+     The dropdown still wins: a visitor who chose another currency (AUD, SGD ...) keeps it when
+     they switch language; only a currency that was the old language's default follows along. */
+  var LANG_CUR = { id: "IDR", en: "USD" };
+  function tr(key, vars) {
+    var s = (I18N[lang] && I18N[lang][key]) || I18N.id[key] || key;
+    if (vars) Object.keys(vars).forEach(function (k) { s = s.split("{" + k + "}").join(vars[k]); });
+    return s;
+  }
+  function nloc() { return lang === "en" ? "en-US" : "id-ID"; }
+  function soldText(v) { return lang === "en" ? String(v).replace(/rb/i, "K") : String(v); }
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.title = tr("meta.title");
+    var md = document.querySelector('meta[name="description"]');
+    if (md) md.setAttribute("content", tr("meta.desc"));
+    $$("[data-t]").forEach(function (el) { el.textContent = tr(el.getAttribute("data-t")); });
+    $$("[data-th]").forEach(function (el) { el.innerHTML = tr(el.getAttribute("data-th")); });
+    $$("[data-ta]").forEach(function (el) { el.setAttribute("aria-label", tr(el.getAttribute("data-ta"))); });
+    $$(".lang-toggle [data-lang]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang));
+    });
+    $$("[data-count]").forEach(function (el) {
+      el.textContent = idNum(parseFloat(el.getAttribute("data-count")), parseInt(el.getAttribute("data-dp") || "0", 10));
+    });
+  }
+  function setLang(next, user) {
+    if (next !== "id" && next !== "en") next = "id";
+    var prev = lang;
+    lang = next;
+    if (user) { try { localStorage.setItem("bakanae_lang", lang); } catch (e) { /* storage blocked */ } }
+    applyStatic();
+    if (DATA) {
+      fillShopMeta(); renderSeries(); syncSeriesButtons(); renderPills(); renderCatalogue(); renderQuotes(); register();
+    }
+    refreshCurNote();
+    if (user && prev !== lang && fx && curCode === LANG_CUR[prev]) setCurrency(LANG_CUR[lang], true);
+  }
+  try { if (localStorage.getItem("bakanae_lang") === "en") lang = "en"; } catch (e) { /* storage blocked */ }
+  /* a link ending in ?lang=en (or ?lang=id) opens in that language, so she can send an English link */
+  var qLang = /[?&]lang=(en|id)\b/.exec(location.search);
+  if (qLang) lang = qLang[1];
+  $$(".lang-toggle [data-lang]").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang"), true); });
+  });
+  /* ---------------------------------------------------------
      1 · reveal engine — rAF sweep, never IntersectionObserver
      (IO delivers async and can be outrun by a fast scroll or an
      in-page anchor jump; asking for positions cannot miss.)
@@ -44,7 +196,7 @@
      2 · counters — animate TOWARDS the value already in the HTML
      --------------------------------------------------------- */
   function idNum(n, dp) {
-    return n.toLocaleString("id-ID", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+    return n.toLocaleString(nloc(), { minimumFractionDigits: dp, maximumFractionDigits: dp });
   }
   function startCounters(scope) {
     $$("[data-count]", scope).forEach(function (el) {
@@ -153,14 +305,15 @@
      --------------------------------------------------------- */
   var DATA = null, QUOTES = null;
   var state = { type: "all", series: null };
-  var rupiah = function (n) { return "Rp " + n.toLocaleString("id-ID"); };
+  var rupiah = function (n) { return "Rp " + n.toLocaleString(nloc()); };
   /* ---------------------------------------------------------
      Currency — the same idea as the FanNest store's dropdown (symbol table, zero-decimal
      currencies, daily rates from open.er-api.com, remembered choice).
      Prices are stored in rupiah. A visitor can switch the DISPLAY to another currency; the
-     amounts are approximate and the Shopee link still charges rupiah. The default is always
-     rupiah: most of her buyers are Indonesian, and a visitor with an English-language phone
-     must not suddenly see dollars. (FanNest also looked the visitor's country up through
+     amounts are approximate and the Shopee link still charges rupiah. The default is rupiah
+     because most of her buyers are Indonesian; dollars appear when the visitor picks English
+     with the ID/EN switch (their own choice, never guessed from the browser language) or picks
+     a currency in the dropdown. (FanNest also looked the visitor's country up through
      ipapi.co; this page does not send anyone's IP to a third party.) The rate request uses USD
      as the base and converts through it, because the rupiah→dollar rate alone is only
      six decimals (about 1% rounding error on a small price).
@@ -209,16 +362,16 @@
     if (sel) sel.value = code;
     if (persist) { try { localStorage.setItem("bakanae_currency", code); } catch (e) { /* storage blocked */ } }
     if (DATA) renderCatalogue();
+    refreshCurNote();
+  }
+  function refreshCurNote() {
     var note = $("#curNote");
-    if (note) {
-      if (code === "IDR") { note.hidden = true; return; }
-      var when = "";
-      try { when = new Date(fxDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }); } catch (e) { when = ""; }
-      note.innerHTML = "Harga dalam " + esc(CUR[code].s.trim()) + " hanya perkiraan" + (when ? " (kurs " + esc(when) + ")" : "") +
-        ". Pembayaran di Shopee tetap dalam Rupiah. " +
-        '<a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Kurs oleh ExchangeRate-API</a>';
-      note.hidden = false;
-    }
+    if (!note) return;
+    if (curCode === "IDR") { note.hidden = true; return; }
+    var when = "";
+    try { when = new Date(fxDate).toLocaleDateString(nloc(), { day: "numeric", month: "short", year: "numeric" }); } catch (e) { when = ""; }
+    note.innerHTML = tr("cur.note", { c: esc(CUR[curCode].s.trim()), when: when ? tr("cur.when", { d: esc(when) }) : "" });
+    note.hidden = false;
   }
   function initCurrency() {
     loadFx().then(function (f) {
@@ -236,9 +389,11 @@
       sel.addEventListener("change", function () { setCurrency(sel.value, true); });
       var chosen = null;
       try { chosen = localStorage.getItem("bakanae_currency"); } catch (e) { chosen = null; }
-      setCurrency(chosen && fx[chosen] ? chosen : "IDR", false);
+      var dflt = LANG_CUR[lang];
+      setCurrency(chosen && fx[chosen] ? chosen : (dflt === "IDR" || fx[dflt] ? dflt : "IDR"), false);
     });
   }
+  if (lang !== "id") applyStatic();
   var CFG = window.BAKANAE || {};
   var DEFAULT_SHOP = "https://shopee.co.id/baka_nae";
   var DEFAULT_HUE = "#7A5518";
@@ -327,8 +482,7 @@
   }).catch(function (err) {
     console.error("Gagal memuat data:", err);
     var g = $("#catGrid");
-    if (g) g.innerHTML = '<p class="empty">Data katalog gagal dimuat. Semua produk tetap ada di ' +
-      '<a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.</p>';
+    if (g) g.innerHTML = '<p class="empty">' + tr("err.load") + "</p>";
     register();
   });
   function fillShopMeta() {
@@ -337,8 +491,8 @@
       var k = el.getAttribute("data-shop");
       if (m[k] == null) return;
       var b = el.querySelector("[data-count]");
-      if (b) { b.setAttribute("data-count", m[k]); b.textContent = m[k].toLocaleString("id-ID"); }
-      else el.textContent = m[k].toLocaleString("id-ID");
+      if (b) { b.setAttribute("data-count", m[k]); b.textContent = m[k].toLocaleString(nloc()); }
+      else el.textContent = m[k].toLocaleString(nloc());
     });
     var lead = $(".proof-lead");
     if (lead) lead.setAttribute("data-counts", "");
@@ -359,7 +513,7 @@
       return '<button class="series-card" type="button" data-series="' + esc(slug) + '" aria-pressed="false" data-rise style="--d:' + (i * 55) + 'ms">' +
         '<span class="series-face"><svg viewBox="-16 -18.5 32 30" style="--art-hue:' + s.hue + '" aria-hidden="true"><use href="#nya-mini"/></svg></span>' +
         '<span class="series-name">' + esc(s.name_id) + '</span>' +
-        '<span class="series-meta">' + (n ? n + " di katalog" : "di Shopee") + "</span>" +
+        '<span class="series-meta">' + (n ? tr("series.meta.n", { n: n }) : tr("series.meta.shop")) + "</span>" +
         "</button>";
     }).join("");
     $$(".series-card", grid).forEach(function (btn) {
@@ -395,7 +549,7 @@
       return t.id === "all" || present[t.id];
     }).map(function (t) {
       return '<button class="pill" type="button" data-type="' + esc(t.id) + '" aria-pressed="' +
-        (state.type === t.id) + '">' + esc(t.name_id) + "</button>";
+        (state.type === t.id) + '">' + esc(t.id === "all" ? tr("all") : t.name_id) + "</button>";
     }).join("");
     $$(".pill", box).forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -429,14 +583,14 @@
           '<p class="card-price"' + (curCode !== "IDR" && fx ? ' title="' + esc(rupiah(p.price_idr)) + '"' : "") + ">" + money(p.price_idr) + "</p>" +
         "</div>" +
         '<div class="card-detail" data-open="false" id="d-' + esc(p.id) + '"><div><dl>' +
-          "<dt>Seri</dt><dd>" + esc(s.name_id) + "</dd>" +
-          (p.sold_display ? "<dt>Terjual</dt><dd>" + esc(p.sold_display) + "</dd>" : "") +
-          "<dt>Kirim</dt><dd>Jakarta Selatan &amp; Surabaya</dd>" +
+          "<dt>" + tr("dt.series") + "</dt><dd>" + esc(s.name_id) + "</dd>" +
+          (p.sold_display ? "<dt>" + tr("dt.sold") + "</dt><dd>" + esc(soldText(p.sold_display)) + "</dd>" : "") +
+          "<dt>" + tr("dt.ship") + "</dt><dd>" + tr("ship.from") + "</dd>" +
         "</dl></div></div>" +
         '<div class="card-foot">' +
           '<button class="detail-toggle" type="button" aria-expanded="false" aria-controls="d-' + esc(p.id) + '">' +
-            'Detail <span class="chev" aria-hidden="true">▾</span></button>' +
-          '<a class="buy" href="' + esc(p.shopee_url) + '" target="_blank" rel="noopener">Beli di Shopee ↗</a>' +
+            tr("detail") + ' <span class="chev" aria-hidden="true">▾</span></button>' +
+          '<a class="buy" href="' + esc(p.shopee_url) + '" target="_blank" rel="noopener">' + tr("buy") + "</a>" +
         "</div>" +
         "</article>";
     }).join("");
@@ -445,7 +599,7 @@
     var note = $("#catNote");
     if (note) note.hidden = !list.some(function (p) { return !p.image_url; });
     var lede = $("#catLede");
-    if (lede) lede.textContent = DATA.featured.length + " produk pilihan dari toko — selengkapnya ada di Shopee.";
+    if (lede) lede.textContent = tr("cat.lede", { n: DATA.featured.length });
     $$(".detail-toggle", grid).forEach(function (btn) {
       btn.addEventListener("click", function () {
         var panel = document.getElementById(btn.getAttribute("aria-controls"));
@@ -456,9 +610,9 @@
     });
     var srs = state.series ? (DATA.series_meta[state.series] || {}).name_id : null;
     $("#filterState").innerHTML =
-      "Menampilkan " + list.length + " dari " + DATA.featured.length +
+      tr("filter.state", { a: list.length, b: DATA.featured.length }) +
       (srs || state.type !== "all"
-        ? ' <button class="clear-filter" type="button" id="clearFilter">Reset' +
+        ? ' <button class="clear-filter" type="button" id="clearFilter">' + tr("reset") +
           (srs ? " · " + srs : "") + "</button>"
         : "");
     var clear = $("#clearFilter");
@@ -477,10 +631,10 @@
     $("#quoteGrid").innerHTML = QUOTES.quotes.map(function (q, i) {
       var s = DATA.series_meta[q.series] || { hue: "#7A5518" };
       return '<figure class="quote" data-rise style="--d:' + (i * 70) + 'ms">' +
-        "<p>" + q.text_id + "</p>" +
+        "<p>" + (lang === "en" && q.text_en ? q.text_en : q.text_id) + "</p>" +
         "<footer>" +
           '<span class="quote-face"><svg viewBox="-16 -18.5 32 30" style="--art-hue:' + s.hue + '" aria-hidden="true"><use href="#nya-mini"/></svg></span>' +
-          "<b>" + q.author + "</b><span>" + q.meta_id + "</span>" +
+          "<b>" + q.author + "</b><span>" + (lang === "en" && q.meta_en ? q.meta_en : q.meta_id) + "</span>" +
           '<span class="tag-ph">placeholder</span>' +
         "</footer></figure>";
     }).join("");
