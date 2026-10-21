@@ -58,7 +58,15 @@
       "filter.state": "Menampilkan {a} dari {b}", "reset": "Reset",
       "cur.note": 'Harga dalam {c} hanya perkiraan{when}. Pembayaran di Shopee tetap dalam Rupiah. <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Kurs oleh ExchangeRate-API</a>',
       "cur.when": " (kurs {d})",
-      "err.load": 'Data katalog gagal dimuat. Semua produk tetap ada di <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.'
+      "err.load": 'Data katalog gagal dimuat. Semua produk tetap ada di <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.',
+      "buy.pp": "Bayar PayPal",
+      "pp.test": "Mode uji — belum menerima pembayaran sungguhan",
+      "pp.close": "Tutup",
+      "pp.loading": "Memuat PayPal…",
+      "pp.unavail": "PayPal tidak tersedia saat ini. Coba lagi, atau beli lewat Shopee.",
+      "pp.success": "Terima kasih! Pembayaran berhasil (No. {id}).",
+      "pp.success2": "Kak Afi akan menghubungi kamu lewat email untuk pengiriman.",
+      "pp.error": "Pembayaran gagal atau dibatalkan. Coba lagi, atau beli lewat Shopee."
     },
     en: {
       "meta.title": "baka nae. — Nya! ver. fanart you can hold in your hand",
@@ -106,7 +114,15 @@
       "filter.state": "Showing {a} of {b}", "reset": "Reset",
       "cur.note": 'Prices in {c} are estimates only{when}. Payment on Shopee is still in rupiah. <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Rates by ExchangeRate-API</a>',
       "cur.when": " (rate of {d})",
-      "err.load": 'The catalogue failed to load. All products are still on <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.'
+      "err.load": 'The catalogue failed to load. All products are still on <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.',
+      "buy.pp": "Pay with PayPal",
+      "pp.test": "Test mode — not accepting real payment yet",
+      "pp.close": "Close",
+      "pp.loading": "Loading PayPal…",
+      "pp.unavail": "PayPal isn't available right now. Try again, or buy on Shopee.",
+      "pp.success": "Thank you! Payment succeeded (No. {id}).",
+      "pp.success2": "Kak Afi will email you about shipping.",
+      "pp.error": "Payment failed or was cancelled. Try again, or buy on Shopee."
     }
   };
   var lang = "id";
@@ -393,6 +409,103 @@
       setCurrency(chosen && fx[chosen] ? chosen : (dflt === "IDR" || fx[dflt] ? dflt : "IDR"), false);
     });
   }
+  /* ---------------------------------------------------------
+     Direct payment — PayPal, for buyers currency switched to one Shopee cannot take.
+     Shopee already covers rupiah, so this never shows while curCode is IDR. It is wired
+     against PayPal's SHARED SANDBOX (client-id "sb"), which only accepts PayPal's own
+     published test buyer logins — it cannot take a real card or a real PayPal account yet.
+     That is why "pp.test" is shown on every open of the dialog, not just once. Going live
+     needs Kak Afi's own PayPal Business account: swap PAYPAL_CLIENT_ID for its client id,
+     nothing else in this file changes.
+     A captured order is written to the `orders` table in the same Supabase project as the
+     catalogue (anon INSERT only — nobody but an approved editor/owner can read the list
+     back, from the admin page).
+     --------------------------------------------------------- */
+  var PAYPAL_CLIENT_ID = "sb"; // PayPal's public sandbox id — swap for a real client id to go live
+  var PAYPAL_OK = { USD:1, EUR:1, GBP:1, AUD:1, CAD:1, SGD:1, MYR:1, NZD:1, JPY:1, CNY:1, THB:1,
+    PHP:1, TWD:1, HKD:1, BRL:1, MXN:1, CHF:1, SEK:1, NOK:1, DKK:1, PLN:1 };
+  var PAYPAL_ZERO_DEC = { JPY: 1, TWD: 1 };
+  function paypalEligible() { return curCode !== "IDR" && PAYPAL_OK[curCode] && fx; }
+  function paypalAmount(idr) {
+    var v = idr / fx.IDR * fx[curCode];
+    return PAYPAL_ZERO_DEC[curCode] ? String(Math.max(1, Math.round(v))) : (Math.round(v * 100) / 100).toFixed(2);
+  }
+  var ppLoadedFor = null, ppLoading = null;
+  function loadPaypalSdk(code) {
+    if (ppLoadedFor === code && window.paypal) return Promise.resolve();
+    if (ppLoading && ppLoadedFor === code) return ppLoading;
+    var old = document.getElementById("pp-sdk");
+    if (old) old.remove();
+    delete window.paypal;
+    ppLoadedFor = code;
+    ppLoading = new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.id = "pp-sdk";
+      s.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(PAYPAL_CLIENT_ID) +
+        "&currency=" + encodeURIComponent(code) + "&intent=capture";
+      s.onload = function () { window.paypal ? resolve() : reject(new Error("paypal sdk did not attach")); };
+      s.onerror = function () { reject(new Error("paypal sdk failed to load")); };
+      document.body.appendChild(s);
+    });
+    return ppLoading;
+  }
+  function recordOrder(row) {
+    return fetch(CFG.url + "/rest/v1/orders", {
+      method: "POST",
+      headers: { apikey: CFG.key, "Content-Type": "application/json", Prefer: "return=minimal" },
+      body: JSON.stringify(row)
+    });
+  }
+  var ppOverlay = $("#ppOverlay"), ppModal = $("#ppModal"), ppButtons = $("#ppButtons"),
+    ppStatus = $("#ppStatus"), ppPrice = $("#ppPrice"), ppTitle = $("#ppModalTitle");
+  function closePpModal() {
+    ppOverlay.hidden = true; ppModal.hidden = true;
+    ppButtons.innerHTML = ""; ppStatus.hidden = true; ppStatus.textContent = "";
+  }
+  $("#ppClose").addEventListener("click", closePpModal);
+  ppOverlay.addEventListener("click", closePpModal);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !ppModal.hidden) closePpModal(); });
+  function openPpModal(product) {
+    ppTitle.textContent = esc(product.name_id);
+    var amt = paypalAmount(product.price_idr);
+    ppPrice.textContent = CUR[curCode].s.trim() + " " + amt + " " + curCode;
+    ppButtons.innerHTML = "";
+    ppStatus.hidden = true; ppStatus.className = "pp-status";
+    ppOverlay.hidden = false; ppModal.hidden = false;
+    ppButtons.innerHTML = '<p class="pp-load">' + esc(tr("pp.loading")) + '</p><div id="ppRender"></div>';
+    loadPaypalSdk(curCode).then(function () {
+      var shown = window.paypal.Buttons({
+        style: { layout: "vertical", color: "black", shape: "pill", label: "paypal" },
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [{ description: product.name_id.slice(0, 120), amount: { currency_code: curCode, value: amt } }]
+          });
+        },
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function (details) {
+            var payer = details.payer || {};
+            var name = payer.name ? [payer.name.given_name, payer.name.surname].filter(Boolean).join(" ") : null;
+            recordOrder({
+              product_id: /^[0-9a-f-]{36}$/i.test(product.id) ? product.id : null,
+              product_name: product.name_id, qty: 1, currency: curCode, amount: Number(amt),
+              paypal_order_id: data.orderID, payer_name: name, payer_email: payer.email_address || null,
+              shipping: (details.purchase_units && details.purchase_units[0] && details.purchase_units[0].shipping) || null
+            }).catch(function () { /* the PayPal receipt already exists even if this log write fails */ });
+            ppButtons.innerHTML = "";
+            ppStatus.hidden = false; ppStatus.className = "pp-status pp-ok";
+            ppStatus.innerHTML = esc(tr("pp.success", { id: data.orderID })) + "<br>" + esc(tr("pp.success2"));
+          });
+        },
+        onCancel: function () { ppStatus.hidden = false; ppStatus.className = "pp-status pp-err"; ppStatus.textContent = tr("pp.error"); },
+        onError: function () { ppStatus.hidden = false; ppStatus.className = "pp-status pp-err"; ppStatus.textContent = tr("pp.error"); }
+      }).render("#ppRender");
+      // keep "Loading PayPal…" on screen until the buttons have actually painted
+      return shown.then(function () { var l = ppButtons.querySelector(".pp-load"); if (l) l.remove(); });
+    }).catch(function () {
+      ppButtons.innerHTML = "";
+      ppStatus.hidden = false; ppStatus.className = "pp-status pp-err"; ppStatus.textContent = tr("pp.unavail");
+    });
+  }
   if (lang !== "id") applyStatic();
   var CFG = window.BAKANAE || {};
   var DEFAULT_SHOP = "https://shopee.co.id/baka_nae";
@@ -590,6 +703,7 @@
         '<div class="card-foot">' +
           '<button class="detail-toggle" type="button" aria-expanded="false" aria-controls="d-' + esc(p.id) + '">' +
             tr("detail") + ' <span class="chev" aria-hidden="true">▾</span></button>' +
+          (paypalEligible() ? '<button class="buy buy-pp" type="button" data-pp="' + esc(p.id) + '">' + tr("buy.pp") + "</button>" : "") +
           '<a class="buy" href="' + esc(p.shopee_url) + '" target="_blank" rel="noopener">' + tr("buy") + "</a>" +
         "</div>" +
         "</article>";
@@ -606,6 +720,12 @@
         var open = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", String(!open));
         panel.setAttribute("data-open", String(!open));
+      });
+    });
+    $$("[data-pp]", grid).forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var p = DATA.featured.filter(function (x) { return String(x.id) === btn.getAttribute("data-pp"); })[0];
+        if (p) openPpModal(p);
       });
     });
     var srs = state.series ? (DATA.series_meta[state.series] || {}).name_id : null;

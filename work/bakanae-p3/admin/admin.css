@@ -108,9 +108,12 @@ input[type=color]{ width:44px; height:44px; padding:2px; border:2px solid var(--
 #toast.show{ opacity:1; transform:translate(-50%,0); }
 #toast.err{ background:var(--danger); border-color:var(--danger); }
 
+.row.order{ grid-template-columns:minmax(0,1fr); }
+.row.order .info .meta{ font-size:12.5px; }
 @media (min-width:700px){
   .row{ grid-template-columns:72px minmax(0,1fr) auto; align-items:center; }
   .row.series{ grid-template-columns:72px minmax(0,1fr) auto; }
+  .row.order{ grid-template-columns:minmax(0,1fr) auto; }
   .acts{ grid-column:auto; border-top:0; padding-top:0; justify-content:flex-end; max-width:340px; }
 }
 @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }

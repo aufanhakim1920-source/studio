@@ -436,3 +436,43 @@ h1 em,h2 em{ font-style:italic; color:var(--signal-text); font-variation-setting
   .nav-toggle{ gap:0; min-width:44px; justify-content:center; }
   .nav-toggle-txt{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 }
+
+/* ---------------------------------------------------------
+   Direct payment — PayPal checkout dialog
+   --------------------------------------------------------- */
+.buy-pp{
+  background:none; border:none; cursor:pointer; font:inherit;
+  margin-right:14px;
+}
+.pp-overlay{
+  position:fixed; inset:0; z-index:199; background:rgba(107,74,21,.38);
+  backdrop-filter:blur(2px);
+}
+.pp-modal{
+  position:fixed; z-index:200; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:min(420px, calc(100vw - 32px)); max-height:calc(100vh - 48px); overflow:auto;
+  background:var(--ground); border:1.5px solid var(--ink); border-radius:var(--radius-card);
+  box-shadow:0 20px 50px -14px rgba(107,74,21,.45);
+  padding:22px 22px 26px;
+}
+.pp-close{
+  position:absolute; top:14px; right:14px; width:30px; height:30px; border-radius:50%;
+  border:1.5px solid var(--line); background:transparent; color:var(--ink-soft); cursor:pointer;
+  font-family:var(--mono); font-size:0; line-height:1;
+}
+.pp-close::before{ content:"\2715"; font-size:13px; }
+.pp-close:hover{ border-color:var(--ink); color:var(--ink); }
+.pp-test{
+  margin:0 0 14px; padding:7px 11px; border-radius:var(--radius-nib);
+  background:var(--signal-wash); color:var(--signal-text);
+  font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.05em;
+}
+.pp-modal h3{
+  margin:0 0 4px; font-family:var(--serif); font-size:19px; line-height:1.25;
+  padding-right:30px;
+}
+.pp-price{ margin:0 0 18px; font-family:var(--mono); font-size:15px; font-weight:600; }
+#ppButtons{ min-height:44px; font-family:var(--mono); font-size:12px; color:var(--ink-soft); }
+.pp-status{ margin:14px 0 0; padding:10px 12px; border-radius:var(--radius-nib); font-size:13.5px; line-height:1.5; }
+.pp-status.pp-ok{ background:#E9F3DF; color:#3E5A22; }
+.pp-status.pp-err{ background:#FBE3DF; color:#8A2E1F; }

@@ -203,6 +203,15 @@
     <a class="foot-admin" href="admin/" data-t="foot.admin">Kelola toko</a>
   </div>
 </footer>
+<div class="pp-overlay" id="ppOverlay" hidden></div>
+<div class="pp-modal" id="ppModal" role="dialog" aria-modal="true" aria-labelledby="ppModalTitle" hidden>
+  <button class="pp-close" type="button" id="ppClose" data-t="pp.close" data-ta="pp.close">Tutup</button>
+  <p class="pp-test" data-t="pp.test">Mode uji — belum menerima pembayaran sungguhan</p>
+  <h3 id="ppModalTitle"></h3>
+  <p class="pp-price" id="ppPrice"></p>
+  <div id="ppButtons"></div>
+  <p class="pp-status" id="ppStatus" role="status" aria-live="polite" hidden></p>
+</div>
 <noscript>
   <div class="noscript-bar">Katalog butuh JavaScript untuk memuat data produk. Semua produk tetap bisa dilihat di
     <a href="https://shopee.co.id/baka_nae">shopee.co.id/baka_nae</a>.<br><span lang="en">The catalogue needs JavaScript to load product data. All products can still be seen at <a href="https://shopee.co.id/baka_nae">shopee.co.id/baka_nae</a>.</span></div>

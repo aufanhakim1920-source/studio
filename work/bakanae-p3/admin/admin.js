@@ -16,7 +16,7 @@
   var sb = null;
   var S = {
     ready: false, loaded: false, session: null, userId: null, role: null,
-    series: [], products: [], editors: [],
+    series: [], products: [], editors: [], orders: [],
     tab: "produk", authTab: "login", recovery: false, loadError: null
   };
   var F = null; // state of the product form that is open (photo choice)
@@ -107,10 +107,11 @@
       var r = await Promise.all([
         sb.from("series").select("*").order("sort_order").order("slug"),
         sb.from("products").select("*").order("sort_order").order("created_at"),
-        sb.from("editors").select("*").order("added_at")
+        sb.from("editors").select("*").order("added_at"),
+        sb.from("orders").select("*").order("created_at", { ascending: false })
       ]);
       r.forEach(function (x) { if (x.error) throw x.error; });
-      S.series = r[0].data; S.products = r[1].data; S.editors = r[2].data;
+      S.series = r[0].data; S.products = r[1].data; S.editors = r[2].data; S.orders = r[3].data;
       var me = S.editors.find(function (e) { return e.email === email; });
       S.role = me ? me.role : null;
       S.loadError = null;
@@ -122,7 +123,8 @@
     var q = {
       products: function () { return sb.from("products").select("*").order("sort_order").order("created_at"); },
       series: function () { return sb.from("series").select("*").order("sort_order").order("slug"); },
-      editors: function () { return sb.from("editors").select("*").order("added_at"); }
+      editors: function () { return sb.from("editors").select("*").order("added_at"); },
+      orders: function () { return sb.from("orders").select("*").order("created_at", { ascending: false }); }
     };
     var r = await q[what]();
     if (r.error) throw r.error;
@@ -208,7 +210,7 @@
 
   function dashView() {
     var owner = S.role === "owner";
-    var tabs = [["produk", "Produk"], ["seri", "Seri"]];
+    var tabs = [["produk", "Produk"], ["seri", "Seri"], ["pesanan", "Pesanan" + (S.orders.length ? " (" + S.orders.length + ")" : "")]];
     if (owner) tabs.push(["akses", "Akses"]);
     if (!owner && S.tab === "akses") S.tab = "produk";
     var h = '<header class="bar"><div class="bar-in"><a class="wordmark" href="../" target="_blank" rel="noopener">baka&nbsp;nae<span>.</span></a>' +
@@ -217,8 +219,42 @@
       '<div class="wrap"><nav class="nav" aria-label="Bagian">' +
       tabs.map(function (t) { return '<button class="tab" type="button" data-tab="' + t[0] + '" aria-selected="' + (S.tab === t[0]) + '">' + t[1] + '</button>'; }).join("") +
       '</nav>';
-    h += S.tab === "seri" ? seriesView() : S.tab === "akses" ? accessView() : productsView();
+    h += S.tab === "seri" ? seriesView() : S.tab === "pesanan" ? ordersView() : S.tab === "akses" ? accessView() : productsView();
     return h + '</div>';
+  }
+
+  /* PayPal's own address block, flattened to the lines a parcel label needs */
+  function addressLines(sh) {
+    if (!sh) return "";
+    var a = sh.address || {}, n = sh.name && sh.name.full_name;
+    return [n, a.address_line_1, a.address_line_2, [a.admin_area_2, a.admin_area_1, a.postal_code].filter(Boolean).join(" "), a.country_code]
+      .filter(Boolean).join(", ");
+  }
+  var ORDER_STATUS = { paid: "Dibayar — belum dikirim", fulfilled: "Sudah dikirim", refunded: "Dikembalikan", cancelled: "Dibatalkan" };
+  function ordersView() {
+    var open = S.orders.filter(function (o) { return o.status === "paid"; }).length;
+    var h = '<div class="head-row"><div><h2>Pesanan</h2><p class="lead">Pembayaran PayPal dari situs. ' +
+      (open ? '<b>' + open + ' belum dikirim.</b> ' : 'Semua sudah dikirim. ') +
+      'Pengembalian dana dilakukan di akun PayPal-mu, lalu tandai di sini.</p></div></div>' +
+      '<p class="note"><b>Sebelum mengirim barang, cek dulu di akun PayPal-mu bahwa uangnya benar-benar masuk</b> (cocokkan nomor PayPal di bawah). Daftar ini dicatat oleh browser pembeli, jadi PayPal yang jadi bukti pembayaran, bukan daftar ini.</p>' +
+      '<p class="note">Saat ini PayPal masih <b>mode uji</b>: tidak ada uang sungguhan yang masuk sampai akun PayPal Business-mu dipasang. Pesanan uji juga muncul di sini.</p>';
+    if (!S.orders.length) return h + '<div class="empty">Belum ada pesanan.</div>';
+    return h + '<ul class="list">' + S.orders.map(function (o) {
+      var when = new Date(o.created_at).toLocaleString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      var addr = addressLines(o.shipping);
+      return '<li class="row order' + (o.status === "paid" ? "" : " is-off") + '">' +
+        '<div class="info"><b>' + esc(o.product_name) + ' ×' + o.qty + '</b>' +
+        '<span class="meta">' + esc(o.currency) + ' ' + Number(o.amount).toFixed(2) + ' · ' + esc(when) + '</span>' +
+        '<span class="meta">' + esc(o.payer_name || "—") + (o.payer_email ? ' · ' + esc(o.payer_email) : "") + '</span>' +
+        (addr ? '<span class="meta">' + esc(addr) + '</span>' : '<span class="meta">Alamat belum ada dari PayPal — minta lewat email.</span>') +
+        '<span class="meta">PayPal: ' + esc(o.paypal_order_id) + '</span>' +
+        '<span><span class="badge ' + (o.status === "paid" ? "" : "off") + '">' + esc(ORDER_STATUS[o.status] || o.status) + '</span></span></div>' +
+        '<div class="acts">' +
+        (o.status === "paid" ? '<button class="btn btn-sm btn-ink" type="button" data-act="order-sent" data-id="' + esc(o.id) + '">Tandai terkirim</button>' : "") +
+        (o.status === "fulfilled" ? '<button class="btn btn-sm" type="button" data-act="order-unsent" data-id="' + esc(o.id) + '">Batal terkirim</button>' : "") +
+        (o.status !== "refunded" ? '<button class="btn btn-sm" type="button" data-act="order-refunded" data-id="' + esc(o.id) + '">Dikembalikan</button>' : "") +
+        '</div></li>';
+    }).join("") + '</ul>';
   }
 
   function productsView() {
@@ -491,6 +527,12 @@
         dlg.querySelector('input[name="hue"]').value = hue;
         dlg.querySelector("#s-color").value = hue;
         Array.prototype.forEach.call(dlg.querySelectorAll(".pal"), function (b) { b.setAttribute("aria-pressed", String(b === el)); });
+        break;
+      case "order-sent": case "order-unsent": case "order-refunded":
+        var ns = name === "order-sent" ? "fulfilled" : name === "order-unsent" ? "paid" : "refunded";
+        await changed(sb.from("orders").update({ status: ns }).eq("id", id));
+        await reload("orders");
+        toast(ns === "fulfilled" ? "Ditandai terkirim." : ns === "paid" ? "Kembali ke belum dikirim." : "Ditandai dikembalikan.");
         break;
       case "role-editor":
         var ed = S.editors.find(function (x) { return x.email === id; });
