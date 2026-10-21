@@ -476,3 +476,14 @@ h1 em,h2 em{ font-style:italic; color:var(--signal-text); font-variation-setting
 .pp-status{ margin:14px 0 0; padding:10px 12px; border-radius:var(--radius-nib); font-size:13.5px; line-height:1.5; }
 .pp-status.pp-ok{ background:#E9F3DF; color:#3E5A22; }
 .pp-status.pp-err{ background:#FBE3DF; color:#8A2E1F; }
+
+/* ---------------------------------------------------------
+   Her own top picture (set in the admin "Situs" tab) replaces the drawn keychain
+   --------------------------------------------------------- */
+.charm.has-photo svg{ display:none; }
+.charm-photo{
+  display:block; width:100%; aspect-ratio:260 / 330; object-fit:cover;
+  border-radius:26px; border:5px solid var(--ink); background:var(--surface);
+}
+.cta-links a{ color:inherit; text-underline-offset:3px; }
+.cta-links[hidden]{ display:none; }

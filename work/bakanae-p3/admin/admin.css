@@ -117,3 +117,12 @@ input[type=color]{ width:44px; height:44px; padding:2px; border:2px solid var(--
   .acts{ grid-column:auto; border-top:0; padding-top:0; justify-content:flex-end; max-width:340px; }
 }
 @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+
+/* "Situs" tab: long text fields and the sections of its form */
+.field textarea{ width:100%; padding:10px 14px; border:2px solid var(--line); border-radius:12px; background:#fff; color:var(--ink); font:500 16px/1.45 var(--sans); resize:vertical; }
+.field textarea:focus{ border-color:var(--ink); outline:none; box-shadow:0 0 0 3px var(--purple); }
+.field label.sub{ font:500 12px var(--sans); letter-spacing:0; text-transform:none; color:var(--ink-soft); }
+.site-form section.note{ margin-top:18px; }
+.site-form section.note h3{ margin:0 0 6px; color:var(--ink); }
+.site-form section.note > .hint{ margin:0 0 14px; font-size:13px; color:var(--ink-soft); }
+.site-form > .dlg-acts{ justify-content:flex-start; margin:22px 0 30px; }

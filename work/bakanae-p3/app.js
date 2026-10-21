@@ -36,7 +36,7 @@
       "cat.filter.aria": "Saring menurut jenis",
       "cat.empty": "Tidak ada produk untuk kombinasi ini.",
       "cat.note": "Ilustrasi di atas digambar sementara untuk tata letak — foto produk asli menyusul.",
-      "cat.more": 'Lihat 32 produk di Shopee <span aria-hidden="true">↗</span>',
+      "cat.more": 'Lihat {pc} produk di Shopee <span aria-hidden="true">↗</span>',
       "story.kicker": '<span class="idx">03</span> Cerita',
       "story.h2": "Digambar <em>sendiri</em>, dari awal.",
       "story.p1": "Sketsa, warna, sampai garis potongnya dikerjakan Nae sendiri. Tidak ada desain beli jadi.",
@@ -46,7 +46,7 @@
       "rev.kicker": '<span class="idx">04</span> Ulasan',
       "rev.h2": "Kata <em>pembeli</em>",
       "rev.warn": "Kutipan di bawah masih <b>placeholder</b> — belum diambil dari ulasan Shopee asli.",
-      "cta.h2": "Semua 32 produk<br>ada di Shopee.",
+      "cta.h2": "Semua {pc} produk<br>ada di Shopee.",
       "cta.p": "COD, pengiriman, dan garansi ditangani lewat toko.",
       "cta.note": "Instagram & TikTok — menyusul.",
       "foot.credit": "Ilustrasi & produksi oleh Nae",
@@ -59,6 +59,7 @@
       "cur.note": 'Harga dalam {c} hanya perkiraan{when}. Pembayaran di Shopee tetap dalam Rupiah. <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Kurs oleh ExchangeRate-API</a>',
       "cur.when": " (kurs {d})",
       "err.load": 'Data katalog gagal dimuat. Semua produk tetap ada di <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.',
+      "hero.photo": "Foto produk baka nae",
       "buy.pp": "Bayar PayPal",
       "pp.test": "Mode uji — belum menerima pembayaran sungguhan",
       "pp.close": "Tutup",
@@ -92,7 +93,7 @@
       "cat.filter.aria": "Filter by type",
       "cat.empty": "No products match this combination.",
       "cat.note": "The illustrations above are temporary drawings for layout — real product photos are coming.",
-      "cat.more": 'See all 32 products on Shopee <span aria-hidden="true">↗</span>',
+      "cat.more": 'See all {pc} products on Shopee <span aria-hidden="true">↗</span>',
       "story.kicker": '<span class="idx">03</span> Story',
       "story.h2": "Drawn <em>by hand</em>, from the start.",
       "story.p1": "The sketch, the colours, even the cut lines are all done by Nae herself. No store-bought designs.",
@@ -102,7 +103,7 @@
       "rev.kicker": '<span class="idx">04</span> Reviews',
       "rev.h2": "What <em>buyers</em> say",
       "rev.warn": "The quotes below are still <b>placeholders</b> — not taken from real Shopee reviews yet.",
-      "cta.h2": "All 32 products<br>are on Shopee.",
+      "cta.h2": "All {pc} products<br>are on Shopee.",
       "cta.p": "COD, shipping and guarantees are handled through the shop.",
       "cta.note": "Instagram & TikTok — coming soon.",
       "foot.credit": "Illustration & production by Nae",
@@ -115,6 +116,7 @@
       "cur.note": 'Prices in {c} are estimates only{when}. Payment on Shopee is still in rupiah. <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Rates by ExchangeRate-API</a>',
       "cur.when": " (rate of {d})",
       "err.load": 'The catalogue failed to load. All products are still on <a href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">Shopee</a>.',
+      "hero.photo": "baka nae product photo",
       "buy.pp": "Pay with PayPal",
       "pp.test": "Test mode — not accepting real payment yet",
       "pp.close": "Close",
@@ -130,8 +132,10 @@
      The dropdown still wins: a visitor who chose another currency (AUD, SGD ...) keeps it when
      they switch language; only a currency that was the old language's default follows along. */
   var LANG_CUR = { id: "IDR", en: "USD" };
+  var pc = 32;           // how many products the shop has; her "Situs" settings can change it
   function tr(key, vars) {
     var s = (I18N[lang] && I18N[lang][key]) || I18N.id[key] || key;
+    s = s.split("{pc}").join(String(pc));
     if (vars) Object.keys(vars).forEach(function (k) { s = s.split("{" + k + "}").join(vars[k]); });
     return s;
   }
@@ -151,6 +155,8 @@
     $$("[data-count]").forEach(function (el) {
       el.textContent = idNum(parseFloat(el.getAttribute("data-count")), parseInt(el.getAttribute("data-dp") || "0", 10));
     });
+    var hp = document.querySelector(".charm-photo");
+    if (hp) hp.alt = tr("hero.photo");
   }
   function setLang(next, user) {
     if (next !== "id" && next !== "en") next = "id";
@@ -506,6 +512,84 @@
       ppStatus.hidden = false; ppStatus.className = "pp-status pp-err"; ppStatus.textContent = tr("pp.unavail");
     });
   }
+  /* ---------------------------------------------------------
+     Her own settings (the "Situs" tab of the admin). One database row; every field is optional and
+     an empty field means "use what the page always had", so the page looks exactly as before until
+     she changes something. Only the keys listed in COPY_KEYS can be replaced (1 = the text may mark
+     *bold*), and every value goes in as text or as escaped markup, never as raw HTML.
+     --------------------------------------------------------- */
+  var SET = null, SET_SHOP = null;
+  var ORIGINAL_SHOP = "https://shopee.co.id/baka_nae";
+  var COPY_KEYS = { "hero.kicker": 0, "hero.lede": 1, "story.p1": 0, "story.p2": 1, "cta.p": 0 };
+  function boldMark(t) { return esc(t).replace(/\*([^*\n]{1,80})\*/g, "<b>$1</b>"); }
+  function applySettings(row) {
+    if (!row || typeof row !== "object") return;
+    SET = row;
+    var c = row.copy && typeof row.copy === "object" ? row.copy : {};
+    Object.keys(COPY_KEYS).forEach(function (k) {
+      var v = c[k];
+      if (!v || typeof v !== "object") return;
+      ["id", "en"].forEach(function (l) {
+        var t = typeof v[l] === "string" ? v[l].trim() : "";
+        if (t && t.length <= 600) I18N[l][k] = COPY_KEYS[k] ? boldMark(t) : t;
+      });
+    });
+    if (Number.isInteger(row.product_count)) pc = row.product_count;
+    if (typeof row.shopee_url === "string" && /^https:\/\//i.test(row.shopee_url)) SET_SHOP = row.shopee_url;
+  }
+  function swapShop(u) { return SET_SHOP && u === ORIGINAL_SHOP ? SET_SHOP : u; }
+  function applyNumbers() {
+    if (!SET) return;
+    var m = DATA.shop_meta;
+    if (Number.isInteger(SET.followers)) m.followers = SET.followers;
+    if (Number.isInteger(SET.rating_total)) m.rating_total = SET.rating_total;
+    var ra = $("#ratingAvg"), pcEl = $("#prodCount"), yr = $("#sinceYear");
+    if (ra && SET.rating_avg != null && isFinite(Number(SET.rating_avg))) ra.setAttribute("data-count", String(Number(SET.rating_avg)));
+    if (pcEl && Number.isInteger(SET.product_count)) pcEl.setAttribute("data-count", String(SET.product_count));
+    if (yr && Number.isInteger(SET.since_year)) yr.textContent = String(SET.since_year);
+    // the page used to say "verified 25 August 2026"; that is no longer true of numbers she typed herself
+    if (["followers", "rating_avg", "rating_total", "product_count", "since_year"].some(function (k) { return SET[k] != null; })) {
+      $$('[data-t="proof.note"],[data-t="foot.verified"]').forEach(function (el) { el.hidden = true; });
+    }
+    if (SET_SHOP) {
+      $$("[data-shop-link]").forEach(function (a) {
+        a.setAttribute("href", SET_SHOP);
+        var t = a.querySelector("[data-shop-text]");
+        if (t) t.textContent = SET_SHOP.replace(/^https:\/\//i, "").replace(/\/$/, "");
+      });
+    }
+  }
+  function applyHero() {
+    var charm = $("#heroCharm");
+    if (!charm || !SET || !SET.hero_image_path) return;
+    var url = photoUrl(SET.hero_image_path);
+    if (!url) return;
+    var img = charm.querySelector(".charm-photo");
+    if (!img) {
+      img = new Image();
+      img.className = "charm-photo"; img.decoding = "async";
+      img.onerror = function () { img.remove(); charm.classList.remove("has-photo"); };   // file gone: back to the drawing
+      img.src = url;
+      charm.insertBefore(img, charm.firstChild);
+      charm.classList.add("has-photo");
+    }
+    img.alt = tr("hero.photo");
+  }
+  var HANDLE_RE = /^[A-Za-z0-9._]{1,30}$/, MAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function applyLinks() {
+    var box = $("#ctaLinks"), note = $("#ctaNote");
+    if (!box || !SET) return;
+    var parts = [];
+    if (HANDLE_RE.test(SET.instagram || "")) parts.push(["Instagram", "@" + SET.instagram, "https://www.instagram.com/" + SET.instagram + "/"]);
+    if (HANDLE_RE.test(SET.tiktok || "")) parts.push(["TikTok", "@" + SET.tiktok, "https://www.tiktok.com/@" + SET.tiktok]);
+    if (MAIL_RE.test(SET.email || "")) parts.push(["Email", SET.email, "mailto:" + SET.email]);
+    if (!parts.length) return;
+    box.innerHTML = parts.map(function (x) {
+      return esc(x[0]) + ' <a href="' + esc(x[2]) + '"' + (x[2].indexOf("https:") === 0 ? ' target="_blank" rel="noopener"' : "") + ">" + esc(x[1]) + "</a>";
+    }).join(" · ");
+    box.hidden = false;
+    if (note) note.hidden = true;
+  }
   if (lang !== "id") applyStatic();
   var CFG = window.BAKANAE || {};
   var DEFAULT_SHOP = "https://shopee.co.id/baka_nae";
@@ -573,23 +657,29 @@
       type_filters: [{ id: "all", name_id: "Semua" }].concat(types.map(function (t) { return { id: t, name_id: t }; })),
       featured: raw.products.map(function (p) {
         return { id: p.id, name_id: p.name_id, price_idr: p.price_idr, series: p.series, type_id: p.type_id,
-          sold_display: p.sold_display || "", shopee_url: safeUrl(p.shopee_url), image_url: photoUrl(p.image_path) };
+          sold_display: p.sold_display || "", shopee_url: swapShop(safeUrl(p.shopee_url)), image_url: photoUrl(p.image_path) };
       })
     };
   }
   Promise.all([
     fetch("data/products.json").then(function (r) { return r.json(); }),
     fetch("data/testimonials.json").then(function (r) { return r.json(); }),
-    fromDatabase().catch(function (err) { console.warn("Database tidak terjangkau, memakai salinan katalog:", err.message); return null; })
+    fromDatabase().catch(function (err) { console.warn("Database tidak terjangkau, memakai salinan katalog:", err.message); return null; }),
+    dbGet("site_settings?select=*&id=eq.1").then(function (r) { return r && r[0] ? r[0] : null; }).catch(function () { return null; })
   ]).then(function (res) {
     var snap = res[0];
+    applySettings(res[3]);                       // her texts, product count and shop link, BEFORE anything is built
     DATA = shape(res[2] || fromSnapshot(snap), snap);
+    applyNumbers();
     QUOTES = res[1];
+    if (SET) applyStatic();                      // the static text now reflects her settings
     fillShopMeta();
     renderSeries();
     renderPills();
     renderCatalogue();
     renderQuotes();
+    applyHero();
+    applyLinks();
     register();
     initCurrency();
   }).catch(function (err) {

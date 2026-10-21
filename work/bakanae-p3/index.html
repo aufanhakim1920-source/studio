@@ -55,7 +55,7 @@
       <a href="#katalog" data-t="nav.catalogue">Katalog</a>
       <a href="#cerita" data-t="nav.story">Cerita</a>
       <a href="#ulasan" data-t="nav.reviews">Ulasan</a>
-      <a class="btn btn-signal nav-cta" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener" data-t="nav.shop">Ke Shopee</a>
+      <a class="btn btn-signal nav-cta" href="https://shopee.co.id/baka_nae" data-shop-link target="_blank" rel="noopener" data-t="nav.shop">Ke Shopee</a>
     </nav>
   </div>
 </header>
@@ -68,7 +68,7 @@
         <p class="lede" data-rise data-th="hero.lede">Keychain, stiker, dan cetakan seri <b>Nya! ver.</b> — digambar sendiri, satu per satu.</p>
         <div class="hero-cta" data-rise>
           <a class="btn btn-ink" href="#katalog" data-t="hero.cta1">Lihat katalog</a>
-          <a class="btn btn-ghost" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener" data-th="hero.cta2">Buka Shopee <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="https://shopee.co.id/baka_nae" data-shop-link target="_blank" rel="noopener" data-th="hero.cta2">Buka Shopee <span aria-hidden="true">↗</span></a>
         </div>
       </div>
       <div class="hero-art" data-rise>
@@ -99,13 +99,13 @@
             <svg viewBox="0 0 24 24"><path d="M12 2.6 15 9l7 .9-5.1 4.7 1.4 6.8L12 18l-6.3 3.4L7 14.6 2 9.9 9 9Z"/></svg>
             <svg viewBox="0 0 24 24"><path d="M12 2.6 15 9l7 .9-5.1 4.7 1.4 6.8L12 18l-6.3 3.4L7 14.6 2 9.9 9 9Z"/></svg>
           </div>
-          <p class="proof-big"><b data-count="4.97" data-dp="2">4,97</b></p>
+          <p class="proof-big"><b id="ratingAvg" data-count="4.97" data-dp="2">4,97</b></p>
           <p class="proof-sub" data-th="proof.sub">rata&#8209;rata dari <b data-shop="rating_total">7.440</b> ulasan Shopee</p>
         </div>
         <dl class="proof-list">
           <div data-rise><dt data-shop="followers"><b data-count="10711">10.711</b></dt><dd data-t="proof.followers">pengikut</dd></div>
-          <div data-rise><dt><b data-count="32">32</b></dt><dd data-t="proof.products">produk aktif</dd></div>
-          <div data-rise><dt><span class="no-count">2019</span></dt><dd data-t="proof.since">mulai jualan</dd></div>
+          <div data-rise><dt><b id="prodCount" data-count="32">32</b></dt><dd data-t="proof.products">produk aktif</dd></div>
+          <div data-rise><dt><span class="no-count" id="sinceYear">2019</span></dt><dd data-t="proof.since">mulai jualan</dd></div>
         </dl>
       </div>
       <p class="proof-note" data-rise data-t="proof.note">Angka diambil langsung dari halaman toko Shopee, diverifikasi 25 Agustus 2026.</p>
@@ -137,7 +137,7 @@
       <p class="cat-note cur-note" id="curNote" role="status" hidden></p>
       <p class="cat-note" id="catNote" data-rise data-t="cat.note">Ilustrasi di atas digambar sementara untuk tata letak — foto produk asli menyusul.</p>
       <div class="cat-foot" data-rise>
-        <a class="btn btn-ink btn-wide" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener" data-th="cat.more">Lihat 32 produk di Shopee <span aria-hidden="true">↗</span></a>
+        <a class="btn btn-ink btn-wide" href="https://shopee.co.id/baka_nae" data-shop-link target="_blank" rel="noopener" data-th="cat.more">Lihat 32 produk di Shopee <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
@@ -188,8 +188,9 @@
         <p data-t="cta.p">COD, pengiriman, dan garansi ditangani lewat toko.</p>
       </div>
       <div class="cta-actions">
-        <a class="btn btn-ink btn-wide" href="https://shopee.co.id/baka_nae" target="_blank" rel="noopener">shopee.co.id/baka_nae <span aria-hidden="true">↗</span></a>
-        <p class="cta-note" data-t="cta.note">Instagram &amp; TikTok — menyusul.</p>
+        <a class="btn btn-ink btn-wide" href="https://shopee.co.id/baka_nae" data-shop-link target="_blank" rel="noopener"><span data-shop-text>shopee.co.id/baka_nae</span> <span aria-hidden="true">↗</span></a>
+        <p class="cta-note" id="ctaNote" data-t="cta.note">Instagram &amp; TikTok — menyusul.</p>
+        <p class="cta-note cta-links" id="ctaLinks" hidden></p>
       </div>
       <svg class="cta-mark" viewBox="0 0 120 120" aria-hidden="true"><g style="--art-hue:#FFFFFF"><use href="#nya-head" transform="translate(60 66) scale(1.05)"/></g></svg>
     </div>

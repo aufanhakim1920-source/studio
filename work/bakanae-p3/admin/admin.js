@@ -16,10 +16,11 @@
   var sb = null;
   var S = {
     ready: false, loaded: false, session: null, userId: null, role: null,
-    series: [], products: [], editors: [], orders: [],
+    series: [], products: [], editors: [], orders: [], settings: null,
     tab: "produk", authTab: "login", recovery: false, loadError: null
   };
   var F = null; // state of the product form that is open (photo choice)
+  var H = null; // state of the "Situs" picture choice
 
   /* ---------- helpers ---------- */
   function esc(s) {
@@ -108,10 +109,12 @@
         sb.from("series").select("*").order("sort_order").order("slug"),
         sb.from("products").select("*").order("sort_order").order("created_at"),
         sb.from("editors").select("*").order("added_at"),
-        sb.from("orders").select("*").order("created_at", { ascending: false })
+        sb.from("orders").select("*").order("created_at", { ascending: false }),
+        sb.from("site_settings").select("*").eq("id", 1)
       ]);
       r.forEach(function (x) { if (x.error) throw x.error; });
       S.series = r[0].data; S.products = r[1].data; S.editors = r[2].data; S.orders = r[3].data;
+      S.settings = (r[4].data && r[4].data[0]) || null;
       var me = S.editors.find(function (e) { return e.email === email; });
       S.role = me ? me.role : null;
       S.loadError = null;
@@ -124,11 +127,12 @@
       products: function () { return sb.from("products").select("*").order("sort_order").order("created_at"); },
       series: function () { return sb.from("series").select("*").order("sort_order").order("slug"); },
       editors: function () { return sb.from("editors").select("*").order("added_at"); },
-      orders: function () { return sb.from("orders").select("*").order("created_at", { ascending: false }); }
+      orders: function () { return sb.from("orders").select("*").order("created_at", { ascending: false }); },
+      settings: function () { return sb.from("site_settings").select("*").eq("id", 1); }
     };
     var r = await q[what]();
     if (r.error) throw r.error;
-    S[what] = r.data;
+    S[what] = what === "settings" ? (r.data && r.data[0]) || null : r.data;
     render();
   }
 
@@ -210,7 +214,7 @@
 
   function dashView() {
     var owner = S.role === "owner";
-    var tabs = [["produk", "Produk"], ["seri", "Seri"], ["pesanan", "Pesanan" + (S.orders.length ? " (" + S.orders.length + ")" : "")]];
+    var tabs = [["produk", "Produk"], ["seri", "Seri"], ["situs", "Situs"], ["pesanan", "Pesanan" + (S.orders.length ? " (" + S.orders.length + ")" : "")]];
     if (owner) tabs.push(["akses", "Akses"]);
     if (!owner && S.tab === "akses") S.tab = "produk";
     var h = '<header class="bar"><div class="bar-in"><a class="wordmark" href="../" target="_blank" rel="noopener">baka&nbsp;nae<span>.</span></a>' +
@@ -219,7 +223,7 @@
       '<div class="wrap"><nav class="nav" aria-label="Bagian">' +
       tabs.map(function (t) { return '<button class="tab" type="button" data-tab="' + t[0] + '" aria-selected="' + (S.tab === t[0]) + '">' + t[1] + '</button>'; }).join("") +
       '</nav>';
-    h += S.tab === "seri" ? seriesView() : S.tab === "pesanan" ? ordersView() : S.tab === "akses" ? accessView() : productsView();
+    h += S.tab === "seri" ? seriesView() : S.tab === "situs" ? siteView() : S.tab === "pesanan" ? ordersView() : S.tab === "akses" ? accessView() : productsView();
     return h + '</div>';
   }
 
@@ -292,6 +296,129 @@
         '<button class="btn btn-sm" type="button" data-act="down-series" data-id="' + esc(s.slug) + '"' + (i === S.series.length - 1 ? " disabled" : "") + ' aria-label="Turunkan urutan">↓</button>' +
         '<button class="btn btn-sm btn-danger" type="button" data-act="del-series" data-id="' + esc(s.slug) + '">Hapus</button></div></li>';
     }).join("") + '</ul>';
+  }
+
+
+  /* ---------- "Situs": the picture, numbers, texts and links of the public page ---------- */
+  /* Keep these in step with COPY_KEYS and the I18N table in ../app.js. An empty field, or one left
+     identical to the original, stores nothing, so the page keeps using its own text. */
+  var COPY_FIELDS = [
+    { key: "hero.kicker", label: "Baris kecil di atas judul", rows: 2,
+      id: "Sejak 2019 · Jakarta Selatan & Surabaya", en: "Since 2019 · South Jakarta & Surabaya" },
+    { key: "hero.lede", label: "Kalimat di bawah judul", rows: 3,
+      id: "Keychain, stiker, dan cetakan seri *Nya! ver.* — digambar sendiri, satu per satu.",
+      en: "Keychains, stickers and prints from the *Nya! ver.* series — drawn by hand, one at a time." },
+    { key: "story.p1", label: "Cerita — paragraf 1", rows: 3,
+      id: "Sketsa, warna, sampai garis potongnya dikerjakan Nae sendiri. Tidak ada desain beli jadi.",
+      en: "The sketch, the colours, even the cut lines are all done by Nae herself. No store-bought designs." },
+    { key: "story.p2", label: "Cerita — paragraf 2", rows: 3,
+      id: "*Nya! ver.* jadi seri utamanya sejak 2019 — dan sudah lebih dari 7.400 pembeli membawa pulang satu.",
+      en: "*Nya! ver.* has been her main series since 2019 — and more than 7,400 buyers have taken one home." },
+    { key: "cta.p", label: "Kalimat di bagian bawah halaman", rows: 3,
+      id: "COD, pengiriman, dan garansi ditangani lewat toko.",
+      en: "COD, shipping and guarantees are handled through the shop." }
+  ];
+  function numVal(v) { return v == null ? "" : esc(String(v).replace(".", ",")); }
+  function textField(id, label, name, value, placeholder, mode) {
+    return '<div class="field"><label for="' + id + '">' + label + '</label><input id="' + id + '" name="' + name + '" type="text"' +
+      (mode ? ' inputmode="' + mode + '"' : "") + ' maxlength="300" autocomplete="off" value="' + esc(value == null ? "" : value) + '" placeholder="' + esc(placeholder || "") + '"></div>';
+  }
+  function siteView() {
+    var st = S.settings;
+    if (!st) return '<div class="empty">Pengaturan situs belum bisa dimuat. Muat ulang halaman.</div>';
+    H = { existingPath: st.hero_image_path || null, file: null, remove: false };
+    var img = photoUrl(H.existingPath);
+    var h = '<div class="head-row"><div><h2>Situs</h2><p class="lead">Ubah gambar utama, angka toko, teks, dan link yang tampil di situs. <b>Kosongkan isian untuk memakai yang asli.</b></p></div>' +
+      '<div><a class="btn" href="../" target="_blank" rel="noopener">Lihat situs ↗</a></div></div>';
+    h += '<form data-form="site" class="site-form" novalidate>' + msgBox("siteMsg");
+    h += '<section class="note"><h3>Gambar utama</h3><p class="hint">Gambar besar di bagian paling atas situs (yang sekarang kartu gantungan kunci gambar). Foto tegak paling pas.</p>' +
+      '<div class="photo-box"><div class="photo-prev" id="h-prev">' + (img ? '<img src="' + esc(img) + '" alt="">' : "Belum ada foto — situs memakai gambar ilustrasi") + '</div>' +
+      '<div class="photo-ctl"><input id="h-file" type="file" accept="image/*" aria-label="Pilih foto utama"><button class="btn btn-sm" type="button" data-act="clear-hero" id="clearHero"' + (img ? "" : " hidden") + '>Hapus foto</button>' +
+      '<p class="hint">Ukuran diperkecil otomatis. Foto baru tampil di situs begitu kamu tekan Simpan.</p></div></div></section>';
+    h += '<section class="note"><h3>Angka toko</h3><p class="hint">Tampil di strip “rekam jejak” di bawah judul. Begitu diisi, tulisan “diverifikasi 25 Agustus 2026” disembunyikan karena angkanya sudah dari kamu.</p>' +
+      textField("s-followers", "Pengikut", "followers", st.followers, "mis. 10711", "numeric") +
+      textField("s-rating", "Rating (0 sampai 5)", "rating", st.rating_avg == null ? "" : String(st.rating_avg).replace(".", ","), "mis. 4,97", "decimal") +
+      textField("s-reviews", "Jumlah ulasan", "reviews", st.rating_total, "mis. 7440", "numeric") +
+      textField("s-products", "Jumlah produk di toko", "products", st.product_count, "mis. 32", "numeric") +
+      textField("s-since", "Mulai jualan (tahun)", "since", st.since_year, "mis. 2019", "numeric") + '</section>';
+    h += '<section class="note"><h3>Teks</h3><p class="hint">Ubah teksnya, atau biarkan seperti aslinya. Tulis <b>*seperti ini*</b> (pakai bintang) untuk huruf tebal. Versi English dipakai saat pengunjung memilih EN.</p>';
+    COPY_FIELDS.forEach(function (f, i) {
+      var c = (st.copy && st.copy[f.key]) || {};
+      h += '<div class="field"><span class="lab">' + esc(f.label) + '</span>' +
+        '<label class="sub" for="c-id-' + i + '">Bahasa Indonesia</label><textarea id="c-id-' + i + '" name="c_id_' + i + '" rows="' + f.rows + '" maxlength="600">' + esc(c.id || f.id) + '</textarea>' +
+        '<label class="sub" for="c-en-' + i + '">English</label><textarea id="c-en-' + i + '" name="c_en_' + i + '" rows="' + f.rows + '" maxlength="600">' + esc(c.en || f.en) + '</textarea></div>';
+    });
+    h += '</section>';
+    h += '<section class="note"><h3>Link dan kontak</h3><p class="hint">Instagram dan TikTok: tulis nama akunnya saja (boleh tempel linknya). Kalau diisi, tulisan “menyusul” di bagian bawah situs diganti linknya.</p>' +
+      textField("s-shop", "Link toko Shopee", "shop", st.shopee_url, "https://shopee.co.id/…", "url") +
+      textField("s-ig", "Instagram", "instagram", st.instagram, "mis. baka_nae", "") +
+      textField("s-tt", "TikTok", "tiktok", st.tiktok, "mis. baka_nae", "") +
+      textField("s-mail", "Email", "email", st.email, "mis. halo@contoh.com", "email") + '</section>';
+    return h + '<div class="dlg-acts"><button class="btn btn-ink" type="submit" id="siteSave">Simpan</button></div></form>';
+  }
+  function handleFrom(raw) {
+    raw = String(raw || "").trim();
+    if (!raw) return null;
+    var m = /(?:instagram\.com|tiktok\.com)\/@?([A-Za-z0-9._]+)/i.exec(raw);
+    raw = (m ? m[1] : raw).replace(/^@+/, "");
+    return /^[A-Za-z0-9._]{1,30}$/.test(raw) ? raw : false;
+  }
+  function wholeNumber(raw, lo, hi, name) {
+    raw = String(raw || "").replace(/[.\s,]/g, "");
+    if (!raw) return null;
+    var n = /^\d+$/.test(raw) ? parseInt(raw, 10) : NaN;
+    if (!(n >= lo && n <= hi)) throw new Error(name + " harus berupa angka (" + lo + " sampai " + hi + ").");
+    return n;
+  }
+  async function saveSite(form) {
+    var row;
+    try {
+      var rt = String(form.rating.value || "").trim().replace(",", ".");
+      var rating = null;
+      if (rt) { rating = Math.round(parseFloat(rt) * 100) / 100; if (!(rating >= 0 && rating <= 5)) throw new Error("Rating harus antara 0 dan 5."); }
+      var ig = handleFrom(form.instagram.value), tt = handleFrom(form.tiktok.value);
+      if (ig === false) throw new Error("Nama akun Instagram hanya boleh huruf, angka, titik atau garis bawah.");
+      if (tt === false) throw new Error("Nama akun TikTok hanya boleh huruf, angka, titik atau garis bawah.");
+      var shop = form.shop.value.trim(), mail = form.email.value.trim();
+      if (shop && !/^https:\/\//i.test(shop)) throw new Error("Link Shopee harus diawali https://");
+      if (mail && !EMAIL_RE.test(mail)) throw new Error("Isi alamat email yang benar.");
+      var copy = {};
+      COPY_FIELDS.forEach(function (f, i) {
+        var a = form["c_id_" + i].value.trim(), b = form["c_en_" + i].value.trim(), e = {};
+        if (a && a !== f.id) e.id = a;
+        if (b && b !== f.en) e.en = b;
+        if (e.id || e.en) copy[f.key] = e;
+      });
+      row = {
+        followers: wholeNumber(form.followers.value, 0, 100000000, "Pengikut"),
+        rating_avg: rating,
+        rating_total: wholeNumber(form.reviews.value, 0, 100000000, "Jumlah ulasan"),
+        product_count: wholeNumber(form.products.value, 0, 100000, "Jumlah produk"),
+        since_year: wholeNumber(form.since.value, 1990, 2100, "Tahun"),
+        shopee_url: shop || null, instagram: ig || null, tiktok: tt || null, email: mail || null, copy: copy
+      };
+    } catch (err) { setMsg("err", err.message, "siteMsg"); return; }
+    var btn = document.getElementById("siteSave");
+    btn.disabled = true; btn.textContent = "Menyimpan…";
+    var hs = H, newPath = null, oldPath = null;
+    try {
+      row.hero_image_path = hs.existingPath;
+      if (hs.file) {
+        var blob = await toImageBlob(hs.file);
+        newPath = "hero/" + crypto.randomUUID() + (blob.type === "image/webp" ? ".webp" : ".jpg");
+        var up = await sb.storage.from(CFG.bucket || "product-photos").upload(newPath, blob, { contentType: blob.type, cacheControl: "31536000", upsert: false });
+        if (up.error) throw up.error;
+        oldPath = hs.existingPath; row.hero_image_path = newPath;
+      } else if (hs.remove) { oldPath = hs.existingPath; row.hero_image_path = null; }
+      await changed(sb.from("site_settings").update(row).eq("id", 1));
+      if (oldPath) sb.storage.from(CFG.bucket || "product-photos").remove([oldPath]);
+      await reload("settings");
+      toast("Tersimpan — situs sudah berubah.");
+    } catch (e) {
+      if (newPath) sb.storage.from(CFG.bucket || "product-photos").remove([newPath]); // don't leave an orphan upload
+      setMsg("err", friendly(e), "siteMsg");
+      btn.disabled = false; btn.textContent = "Simpan";
+    }
   }
 
   function accessView() {
@@ -528,6 +655,12 @@
         dlg.querySelector("#s-color").value = hue;
         Array.prototype.forEach.call(dlg.querySelectorAll(".pal"), function (b) { b.setAttribute("aria-pressed", String(b === el)); });
         break;
+      case "clear-hero":
+        H.file = null; H.remove = true;
+        document.getElementById("h-prev").textContent = "Foto akan dihapus — situs memakai gambar ilustrasi";
+        el.hidden = true;
+        var hf = document.getElementById("h-file"); if (hf) hf.value = "";
+        break;
       case "order-sent": case "order-unsent": case "order-refunded":
         var ns = name === "order-sent" ? "fulfilled" : name === "order-unsent" ? "paid" : "refunded";
         await changed(sb.from("orders").update({ status: ns }).eq("id", id));
@@ -560,6 +693,21 @@
   }
   app.addEventListener("click", onClick);
   dlg.addEventListener("click", onClick);
+  app.addEventListener("change", function (e) {
+    if (e.target.id !== "h-file") return;
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!/^image\//.test(file.type)) { setMsg("err", "File itu bukan gambar.", "siteMsg"); e.target.value = ""; return; }
+    if (file.size > 25 * 1024 * 1024) { setMsg("err", "Foto terlalu besar (maks 25 MB).", "siteMsg"); e.target.value = ""; return; }
+    setMsg("", "", "siteMsg");
+    H.file = file; H.remove = false;
+    var prev = document.getElementById("h-prev");
+    prev.innerHTML = "";
+    var im = document.createElement("img");
+    im.alt = ""; im.src = URL.createObjectURL(file);
+    prev.appendChild(im);
+    var cl = document.getElementById("clearHero"); if (cl) cl.hidden = false;
+  });
 
   async function onSubmit(e) {
     var f = e.target.closest("form[data-form]");
@@ -570,6 +718,7 @@
     try {
       if (kind === "product") return await saveProduct(f);
       if (kind === "series") return await saveSeries(f);
+      if (kind === "site") return await saveSite(f);
       if (kind === "login" || kind === "signup" || kind === "reset" || kind === "recovery") {
         var email = f.email ? f.email.value.trim() : "", pw = f.password ? f.password.value : "";
         if (kind !== "recovery" && !EMAIL_RE.test(email)) { setMsg("err", "Isi alamat email yang benar."); f.email.focus(); return; }
@@ -602,7 +751,7 @@
       }
     } catch (err) {
       if (btn) btn.disabled = false;
-      var box = kind === "product" || kind === "series" ? "fMsg" : kind === "editor" ? "edMsg" : "authMsg";
+      var box = kind === "product" || kind === "series" ? "fMsg" : kind === "editor" ? "edMsg" : kind === "site" ? "siteMsg" : "authMsg";
       setMsg("err", friendly(err), box);
     }
   }
