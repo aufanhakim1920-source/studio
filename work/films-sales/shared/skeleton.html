@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aufan Rachmad — Company films, built for your company</title>
+<meta name="description" content="Company profile films, explainers and monthly social films, made from your own footage and voice-over with the titles, maps, graphics and sound built for you.">
+<link rel="stylesheet" href="base.css">
+<style>body{font:17px/1.55 system-ui,sans-serif;margin:0;padding:0 16px;max-width:1100px}header{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}[data-film]{border-radius:10px}</style>
+</head>
+<body>
+<!-- CONTRACT: every element below that carries data-i18n / data-i18n-html / data-i18n-attr /
+     data-price / data-film / data-region-* / data-brief must exist in each version.
+     Markup, order (within reason), classes and styling are each version's own. -->
+<div data-region-strip hidden></div>
+
+<a class="skip" href="#merlo" data-i18n="skip">Skip to the Merlo film</a>
+
+<header>
+  <a href="#top">Aufan Rachmad</a>
+  <nav aria-label="Sections">
+    <a href="#merlo" data-i18n="nav.merlo">The Merlo film</a>
+    <a href="#films" data-i18n="nav.films">Films</a>
+    <a href="#prices" data-i18n="nav.prices">Prices</a>
+    <a href="#questions" data-i18n="nav.questions">Questions</a>
+  </nav>
+  <div data-region-switch></div>
+  <a href="#start" data-i18n="nav.start">Start a film</a>
+</header>
+
+<main id="top">
+  <section>
+    <p data-i18n="hero.avail">Taking film projects worldwide</p>
+    <h1><span data-i18n="hero.h1a">Company films,</span> <em data-i18n="hero.h1b">built for your company.</em></h1>
+    <p data-i18n="hero.lede">Your footage and your voice-over, with the titles, maps, graphics and sound made for you and timed to every line. One film for your website, or a short one every month for social media.</p>
+    <a href="#start" data-i18n="hero.cta1">Start a film</a>
+    <a href="#prices" data-i18n="hero.cta2">See the prices</a>
+
+    <figure>
+      <div data-film="merlo">
+        <img src="media/merlo.jpg" alt="Merlo's Bali office sign, with a map built for the film marking their Jakarta and Bali offices" width="1600" height="900">
+        <button type="button" data-film-play data-i18n-attr="aria-label:film.play"><span aria-hidden="true">▶</span></button>
+      </div>
+      <figcaption><b data-i18n="hero.filmTitle">Merlo — company profile</b> <span data-i18n="hero.filmLine">1:36 · the first thing a client sees on merlo.id</span></figcaption>
+    </figure>
+  </section>
+
+  <section aria-label="Track record">
+    <div><b data-i18n="proof.1n">96 s</b> <span data-i18n="proof.1">The company profile that now opens Merlo’s homepage</span></div>
+    <div><b data-i18n="proof.2n">4</b> <span data-i18n="proof.2">More films Merlo booked after the first, through 2027</span></div>
+    <div><b data-i18n="proof.3n">2 days</b> <span data-i18n="proof.3">From your brief to a fixed price and a date</span></div>
+  </section>
+
+  <section id="merlo">
+    <h2 data-i18n="case.h2">The Merlo film</h2>
+    <p data-i18n="case.kind">Company film · made at Merlo · live on their homepage</p>
+    <h3 data-i18n="case.h3">Merlo — company profile</h3>
+    <dl>
+      <dt data-i18n="case.askT">The ask</dt><dd data-i18n="case.ask">…</dd>
+      <dt data-i18n="case.madeT">What I made</dt><dd data-i18n="case.made">…</dd>
+      <dt data-i18n="case.whereT">Where it works</dt><dd data-i18n="case.where">…</dd>
+      <dt data-i18n="case.happenedT">What happened</dt><dd data-i18n="case.happened">…</dd>
+    </dl>
+    <p data-i18n="case.prov">…</p>
+  </section>
+
+  <section id="films">
+    <h2 data-i18n="films.h2">Films that teach something</h2>
+    <p data-i18n="films.lede">…</p>
+    <div class="grid">
+      <article>
+        <div data-film="diamond"><img src="media/diamond.jpg" alt="DIAMOND — a plastic bottle filling with tiny diamonds on a plinth" width="720" height="1280"><button type="button" data-film-play data-i18n-attr="aria-label:film.play"><span aria-hidden="true">▶</span></button></div>
+        <h3><span data-i18n="films.diamond.t">DIAMOND</span> <small data-i18n="films.diamond.len">26 s · vertical</small></h3>
+        <p data-i18n="films.diamond.d">…</p><p data-i18n="films.diamond.w">…</p>
+      </article>
+      <article>
+        <div data-film="sevens"><img src="media/sevens.jpg" alt="SEVENS — rows of digits with every seven coloured in" width="1280" height="720"><button type="button" data-film-play data-i18n-attr="aria-label:film.play"><span aria-hidden="true">▶</span></button></div>
+        <h3><span data-i18n="films.sevens.t">SEVENS</span> <small data-i18n="films.sevens.len">72 s</small></h3>
+        <p data-i18n="films.sevens.d">…</p><p data-i18n="films.sevens.w">…</p>
+      </article>
+      <article>
+        <div data-film="callflag"><img src="media/callflag.jpg" alt="CALLFLAG — the same call twice: every sign missed, every sign handled" width="1280" height="720"><button type="button" data-film-play data-i18n-attr="aria-label:film.play"><span aria-hidden="true">▶</span></button></div>
+        <h3><span data-i18n="films.callflag.t">CALLFLAG</span> <small data-i18n="films.callflag.len">3 min</small></h3>
+        <p data-i18n="films.callflag.d">…</p><p data-i18n="films.callflag.w">…</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="prices">
+    <h2 data-i18n="prices.h2">Three films, priced up front</h2>
+    <p data-i18n="prices.sub">Set for your market, shown in AUD.</p>
+    <div class="grid">
+      <article><p data-i18n="tier.social.job">To teach on social media</p><h3 data-i18n="tier.social.name">Social explainer</h3><p data-price="social">from A$600</p><p data-i18n="tier.social.desc">…</p></article>
+      <article><p data-i18n="tier.homepage.note">Start here</p><p data-i18n="tier.homepage.job">For your website</p><h3 data-i18n="tier.homepage.name">Homepage film</h3><p data-price="homepage">from A$1,400</p><p data-i18n="tier.homepage.desc">…</p></article>
+      <article><p data-i18n="tier.pitch.job">For investors, funders, launches</p><h3 data-i18n="tier.pitch.name">Pitch or programme film</h3><p data-price="pitch">from A$2,800</p><p data-i18n="tier.pitch.desc">…</p></article>
+    </div>
+    <ul>
+      <li><b data-i18n="terms.seriesT">A film every month or quarter?</b> <span data-i18n="terms.series">…</span></li>
+      <li><b data-i18n="terms.charityT">Charities and young startups</b> <span data-i18n="terms.charity">…</span></li>
+      <li><b data-i18n="terms.supplyT">You send</b> <span data-i18n="terms.supply">…</span></li>
+    </ul>
+  </section>
+
+  <section id="questions">
+    <h2 data-i18n="faq.h2">Questions people ask first</h2>
+    <details><summary data-i18n="faq.q1">…</summary><p data-i18n="faq.a1">…</p></details>
+    <details><summary data-i18n="faq.q2">…</summary><p data-i18n="faq.a2">…</p></details>
+    <details><summary data-i18n="faq.q3">…</summary><p data-i18n="faq.a3">…</p></details>
+    <details><summary data-i18n="faq.q4">…</summary><p data-i18n="faq.a4">…</p></details>
+    <details><summary data-i18n="faq.q5">…</summary><p data-i18n="faq.a5">…</p></details>
+    <details><summary data-i18n="faq.q6">…</summary><p data-i18n="faq.a6">…</p></details>
+  </section>
+
+  <section id="start">
+    <h2 data-i18n="start.h2">Start a film</h2>
+    <p data-i18n="start.big">…</p>
+    <ol><li data-i18n="start.s1">…</li><li data-i18n="start.s2">…</li><li data-i18n="start.s3">…</li></ol>
+    <form data-brief novalidate>
+      <label for="f-name" data-i18n="form.name">Your name</label><input id="f-name" name="name" autocomplete="name" required>
+      <label for="f-email" data-i18n="form.email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required>
+      <label for="f-film" data-i18n="form.film">Which film?</label>
+      <select id="f-film" name="film" required>
+        <option value="" data-i18n="form.choose">Choose one…</option>
+        <option value="homepage" data-i18n="form.opt.homepage">Homepage film — from A$1,400</option>
+        <option value="social" data-i18n="form.opt.social">Social explainer — from A$600</option>
+        <option value="pitch" data-i18n="form.opt.pitch">Pitch or programme film — from A$2,800</option>
+        <option value="series" data-i18n="form.opt.series">A film every month or quarter</option>
+        <option value="unsure" data-i18n="form.opt.unsure">Not sure yet</option>
+      </select>
+      <label for="f-brief" data-i18n="form.brief">What is the film for?</label>
+      <textarea id="f-brief" name="brief" rows="5" required data-i18n-attr="placeholder:form.briefPh"></textarea>
+      <p data-brief-err role="alert" hidden></p>
+      <button type="submit" data-i18n="form.send">Send the brief</button>
+      <p data-i18n="start.note">…</p>
+    </form>
+  </section>
+
+  <section id="about">
+    <h2 data-i18n="about.h2">About</h2>
+    <p data-i18n="about.big">…</p>
+    <dl>
+      <dt data-i18n="about.basedT">Based</dt><dd data-i18n="about.based">…</dd>
+      <dt data-i18n="about.langT">Languages</dt><dd data-i18n="about.lang">…</dd>
+      <dt data-i18n="about.toolsT">Made with</dt><dd data-i18n="about.tools">…</dd>
+      <dt data-i18n="about.takingT">Taking</dt><dd data-i18n="about.taking">…</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2 data-i18n="closer.h2">Got a film that needs making?</h2>
+    <p data-i18n="closer.p">…</p>
+    <a href="#start" data-i18n="nav.start">Start a film</a>
+  </section>
+</main>
+<footer><p data-i18n="foot.left">Aufan Rachmad · Melbourne</p><p data-i18n="foot.right">Every film and this page, built by hand.</p></footer>
+<script type="module" src="site.js"></script>
+</body>
+</html>
