@@ -5,6 +5,7 @@
    - brief:    validated form that opens the visitor's email app, pre-filled
    The English text is already in the HTML, so the page reads correctly with JavaScript off. */
 import { FX, COUNTRIES } from "./regions.js";
+import { TZ_COUNTRY } from "./tzmap.js";
 
 const BASE = new URL(".", import.meta.url);
 const STUDIO = new URL("../../", BASE); // .../work/ - the films live in work/motion-night/
@@ -120,6 +121,13 @@ function guess() {
   const sl = store.get("afs.lang");
   const navs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en"];
   let country = COUNTRIES[qr] ? qr : COUNTRIES[sr] ? sr : null;
+  // Where the visitor IS: the device time zone (no network lookup). Prices follow this.
+  if (!country) {
+    let tz = "";
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch {}
+    const c = TZ_COUNTRY[tz];
+    if (c && COUNTRIES[c]) country = c;
+  }
   if (!country) {
     for (const n of navs) {
       const m = /-([A-Za-z]{2})\b/.exec(n);
@@ -131,6 +139,10 @@ function guess() {
     country = { id: "ID", kk: "KZ", ru: "RU", ja: "JP", de: "DE", fr: "FR", es: "ES", pt: "BR", zh: "CN" }[base] || "AU";
   }
   let lang = LANGS[ql] ? ql : LANGS[sl] ? sl : null;
+  // The local language wins when the visitor reads it at all (it is anywhere in their browser languages),
+  // otherwise the language their browser asks for first, so nobody lands on text they cannot read.
+  const local = COUNTRY_LANG[country];
+  if (!lang && local && LANGS[local] && navs.some((n) => n.slice(0, 2).toLowerCase() === local)) lang = local;
   if (!lang) {
     for (const n of navs) {
       const b = n.slice(0, 2).toLowerCase();
